@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace AmongUsCloneServer
+namespace AmongUsClone.Server
 {
-    internal class Program
+    internal static class EntryPoint
     {
         public static void Main()
         {

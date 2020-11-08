@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 352271955}
   - component: {fileID: 352271954}
   m_Layer: 5
-  m_Name: Start
+  m_Name: StartMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 1629206414}
   - component: {fileID: 1629206413}
   m_Layer: 5
-  m_Name: Menu
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1048,9 +1048,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62a0f94943468fe489f8196c691d4bc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   ip: 127.0.0.1
   port: 26950
-  id: 0
 --- !u!1 &2066218776
 GameObject:
   m_ObjectHideFlags: 0
