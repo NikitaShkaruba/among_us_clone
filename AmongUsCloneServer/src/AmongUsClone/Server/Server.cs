@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using AmongUsClone.Server.Infrastructure;
 using AmongUsClone.Server.Networking;
 
@@ -9,40 +10,85 @@ namespace AmongUsClone.Server
 {
     public static class Server
     {
-        private static int MaxPlayers { get; set; }
+        private static bool isRunning = true;
+        private const int TicksPerSecond = 30;
+        private const int MillisecondsPerTick = 1000 / TicksPerSecond;
+
+        public const int MinPlayerId = 1;
+        public static int MaxPlayerId { get; private set; }
+        
+        private static TcpListener tcpListener;
+        public static readonly Dictionary<int, Client> Clients = new Dictionary<int, Client>();
         private static int Port { get; set; }
 
-        private static TcpListener tcpListener;
-        private static readonly Dictionary<int, Client> Clients = new Dictionary<int, Client>();
-        
         public static void Start(int maxPlayers, int port)
         {
-            MaxPlayers = maxPlayers;
-            Port = port;
-
             Logger.LogEvent("Starting server...");
+
+            Console.Title = "Among Us Server";
+            InitializeMainThread();
+            InitializeTcpListener(maxPlayers, port);
+
+            Logger.LogEvent($"Server started.");
+        }
+
+        private static void InitializeMainThread()
+        {
+            Thread mainThread = new Thread(ExecuteMainThread);
+            mainThread.Start();
+        }
+
+        private static void InitializeTcpListener(int maxPlayers, int port)
+        {
+            MaxPlayerId = maxPlayers;
+            Port = port;
 
             tcpListener = new TcpListener(IPAddress.Any, Port);
             tcpListener.Start();
-            tcpListener.BeginAcceptTcpClient(TcpConnectCallback, null);
-
-            Logger.LogEvent($"Server is started on {Port}");
+            tcpListener.BeginAcceptTcpClient(OnTcpConnection, null);
+            
+            Logger.LogEvent($"TCP listener started. Listening on port {Port}.");
         }
 
-        private static void TcpConnectCallback(IAsyncResult result)
+        private static void ExecuteMainThread()
+        {
+            Logger.LogEvent($"Main thread started. Running at {TicksPerSecond} ticks per second.");
+            DateTime nextLoopDateTime = DateTime.Now;
+
+            while (isRunning)
+            {
+                while (nextLoopDateTime < DateTime.Now)
+                {
+                    GameLogic.Update();
+
+                    nextLoopDateTime = nextLoopDateTime.AddMilliseconds(MillisecondsPerTick);
+                    if (nextLoopDateTime > DateTime.Now)
+                    {
+                        Thread.Sleep(nextLoopDateTime - DateTime.Now);
+                    }
+                }
+            }
+        }
+
+        private static void OnTcpConnection(IAsyncResult result)
         {
             TcpClient tcpClient = tcpListener.EndAcceptTcpClient(result);
-            tcpListener.BeginAcceptTcpClient(TcpConnectCallback, null);
-            Logger.LogEvent($"Incoming connection from {tcpClient.Client.RemoteEndPoint}...");
+            Logger.LogEvent($"Incoming tcp connection from {tcpClient.Client.RemoteEndPoint}...");
+            
+            // Start listening for the next client
+            tcpListener.BeginAcceptTcpClient(OnTcpConnection, null);
 
-            for (int clientId = 1; clientId <= MaxPlayers; clientId++)
+            for (int clientId = MinPlayerId; clientId <= MaxPlayerId; clientId++)
             {
-                if (!Clients.ContainsKey(clientId))
+                // If this client exists already - skip this clientId in order to find a free one
+                if (Clients.ContainsKey(clientId))
                 {
-                    Clients[clientId] = new Client(clientId);
-                    Clients[clientId].TcpConnection.Connect(tcpClient);
-                    return;
+                    continue;
                 }
+
+                Clients[clientId] = new Client(clientId);
+                Clients[clientId].TcpConnection.Connect(tcpClient);
+                return;
             }
 
             Logger.LogError($"{tcpClient.Client.RemoteEndPoint} failed to connect a client: Server is full");

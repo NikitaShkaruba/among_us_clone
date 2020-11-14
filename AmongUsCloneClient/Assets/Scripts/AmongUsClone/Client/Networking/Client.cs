@@ -6,10 +6,10 @@ namespace AmongUsClone.Client.Networking
     {
         public static Client Instance;
 
-        public int id = 0;
+        [HideInInspector] public int id = 0;
         public string ip = "127.0.0.1";
         public int port = 26950;
-        private TcpConnection tcpConnection;
+        public TcpConnectionToServer TcpConnectionToServer;
 
         private void Awake()
         {
@@ -26,12 +26,12 @@ namespace AmongUsClone.Client.Networking
 
         private void Start()
         {
-            tcpConnection = new TcpConnection();
+            TcpConnectionToServer = new TcpConnectionToServer();
         }
 
         public void ConnectToServer()
         {
-            tcpConnection.Connect();
+            TcpConnectionToServer.Connect();
         }
     }
 }
