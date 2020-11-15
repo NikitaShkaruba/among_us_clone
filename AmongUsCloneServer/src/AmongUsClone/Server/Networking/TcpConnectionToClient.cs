@@ -53,10 +53,5 @@ namespace AmongUsClone.Server.Networking
                 Logger.LogError($"Error receiving TCP data: {exception}");
             }
         }
-        
-        private void HandleDataCallback(int packetTypeId, Packet packet)
-        {
-            
-        }
     }
 }

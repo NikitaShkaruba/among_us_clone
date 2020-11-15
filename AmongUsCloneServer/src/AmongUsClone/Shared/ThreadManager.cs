@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AmongUsClone.Server.Infrastructure;
 
 namespace AmongUsClone.Shared
 {

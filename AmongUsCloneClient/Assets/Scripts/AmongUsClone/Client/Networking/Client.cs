@@ -10,6 +10,7 @@ namespace AmongUsClone.Client.Networking
         public string ip = "127.0.0.1";
         public int port = 26950;
         public TcpConnectionToServer TcpConnectionToServer;
+        public UdpConnectionToServer UdpConnectionToServer;
 
         private void Awake()
         {
@@ -27,6 +28,7 @@ namespace AmongUsClone.Client.Networking
         private void Start()
         {
             TcpConnectionToServer = new TcpConnectionToServer();
+            UdpConnectionToServer = new UdpConnectionToServer();
         }
 
         public void ConnectToServer()

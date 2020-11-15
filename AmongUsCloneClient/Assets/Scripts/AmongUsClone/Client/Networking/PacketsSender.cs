@@ -14,14 +14,29 @@ namespace AmongUsClone.Client.Networking
                 packet.Write(Client.Instance.id);
                 packet.Write(UiManager.Instance.userNameField.text);
 
-                SendPacket(packet);
+                SendTcpPacket(packet);
             }
         }
 
-        private static void SendPacket(Packet packet)
+        public static void SendUdpTestReceived()
+        {
+            using (Packet packet = new Packet((int) ClientPacketType.UdpTestReceived))
+            {
+                packet.Write("Received a test UDP packet");
+                SendUdpPacket(packet);
+            }
+        }
+
+        private static void SendTcpPacket(Packet packet)
         {
             packet.WriteLength();
             Client.Instance.TcpConnectionToServer.SendPacket(packet);
+        }
+
+        private static void SendUdpPacket(Packet packet)
+        {
+            packet.WriteLength();
+            Client.Instance.UdpConnectionToServer.SendPacket(packet);
         }
     }
 }

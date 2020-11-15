@@ -16,33 +16,45 @@ namespace AmongUsClone.Server.Networking
                 packet.Write(message);
                 packet.Write(clientId);
 
-                SendPacket(clientId, packetTypeId, packet);
+                SendTcpPacket(clientId, packetTypeId, packet);
             }
         }
 
-        private static void SendPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
+        public static void SendUdpTestPacket(int clientId)
         {
-            packet.WriteLength();
-            Server.Clients[clientId].TcpConnection.SendPacket(packet);
+            const ServerPacketType serverPacketType = ServerPacketType.UdpTest;
 
-            string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent data packet «{packetTypeName}» to the client {clientId}");
+            using (Packet packet = new Packet((int) serverPacketType))
+            {
+                packet.Write("A test UDP packet");
+                SendUdpPacket(clientId, serverPacketType, packet);
+            }
         }
 
-        private static void SendPacketToAll(ServerPacketType packetTypeId, Packet packet)
+        private static void SendTcpPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
+        {
+            packet.WriteLength();
+            
+            Server.Clients[clientId].TcpConnectionToClient.SendPacket(packet);
+
+            string packetTypeName = GetPacketTypeName(packetTypeId);
+            Logger.LogEvent($"Sent «{packetTypeName}» TCP packet to the client {clientId}");
+        }
+
+        private static void SendTcpPacketToAll(ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
             
             for (int clientId = Server.MinPlayerId; clientId <= Server.MaxPlayerId; clientId++)
             {
-                Server.Clients[clientId].TcpConnection.SendPacket(packet);
+                Server.Clients[clientId].TcpConnectionToClient.SendPacket(packet);
             }
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent data packet «{packetTypeName}» to all clients");
+            Logger.LogEvent($"Sent «{packetTypeName}» TCP packet to all clients");
         }
  
-        private static void SendPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendTcpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
             
@@ -53,11 +65,51 @@ namespace AmongUsClone.Server.Networking
                     continue;
                 }
                 
-                Server.Clients[clientId].TcpConnection.SendPacket(packet);
+                Server.Clients[clientId].TcpConnectionToClient.SendPacket(packet);
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent data packet «{packetTypeName}» to all clients except ${exceptClientId}");
+            Logger.LogEvent($"Sent «{packetTypeName}» TCP packet to all clients except ${exceptClientId}");
+        }
+
+        private static void SendUdpPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
+        {
+            packet.WriteLength();
+            Server.Clients[clientId].UdpConnectionToClient.SendPacket(packet);
+            
+            string packetTypeName = GetPacketTypeName(packetTypeId);
+            Logger.LogEvent($"Sent «{packetTypeName}» UDP packet to the client {clientId}");
+        }
+
+        private static void SendUdpPacketToAll(ServerPacketType packetTypeId, Packet packet)
+        {
+            packet.WriteLength();
+            
+            for (int clientId = Server.MinPlayerId; clientId <= Server.MaxPlayerId; clientId++)
+            {
+                Server.Clients[clientId].UdpConnectionToClient.SendPacket(packet);
+            }
+            
+            string packetTypeName = GetPacketTypeName(packetTypeId);
+            Logger.LogEvent($"Sent «{packetTypeName}» UDP packet to all clients");
+        }
+ 
+        private static void SendUdpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
+        {
+            packet.WriteLength();
+            
+            for (int clientId = Server.MinPlayerId; clientId <= Server.MaxPlayerId; clientId++)
+            {
+                if (clientId == exceptClientId)
+                {
+                    continue;
+                }
+                
+                Server.Clients[clientId].UdpConnectionToClient.SendPacket(packet);
+            }
+
+            string packetTypeName = GetPacketTypeName(packetTypeId);
+            Logger.LogEvent($"Sent «{packetTypeName}» UDP packet to all clients except ${exceptClientId}");
         }
 
         private static string GetPacketTypeName(ServerPacketType serverPacketType)

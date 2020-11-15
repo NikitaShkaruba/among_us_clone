@@ -10,7 +10,8 @@ namespace AmongUsClone.Server.Networking
     {
         private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> PacketHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
         {
-            {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket}
+            {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
+            {(int) ClientPacketType.UdpTestReceived, ProcessUdpTestReceivedPacket}
         };
 
         public static void ProcessPacket(int clientId, int packetTypeId, Packet packet)
@@ -33,7 +34,14 @@ namespace AmongUsClone.Server.Networking
             
             // Todo: send the player into the game
             
-            Logger.LogEvent($"{Server.Clients[clientId].TcpConnection.TcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
+            Logger.LogEvent($"{Server.Clients[clientId].TcpConnectionToClient.TcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
+        }
+
+        private static void ProcessUdpTestReceivedPacket(int clientId, Packet packet)
+        {
+            string message = packet.ReadString();
+            
+            Logger.LogEvent($"Received a packet via UDP. Contains message: {message}");
         }
 
         private static string GetPacketTypeName(ClientPacketType clientPacketType)
