@@ -20,14 +20,14 @@ namespace AmongUsClone.Server
 
         public static void Start(int maxPlayers, int port)
         {
-            Logger.LogEvent("Starting server...");
+            Logger.LogEvent(LoggerSection.Initialization, "Starting server...");
 
             InitializeStaticVariables(maxPlayers, port);
             InitializeMainThread();
             InitializeTcpListener();
             InitializeUdpListener();
 
-            Logger.LogEvent($"Server started. Listening on port {port}.");
+            Logger.LogEvent(LoggerSection.Initialization, $"Server started. Listening on port {port}.");
         }
 
         private static void InitializeStaticVariables(int maxPlayers, int port)
@@ -36,7 +36,7 @@ namespace AmongUsClone.Server
             MaxPlayerId = maxPlayers;
             Server.port = port;
             
-            Logger.LogEvent($"Static variables initialized.");
+            Logger.LogEvent(LoggerSection.Initialization, $"Static variables initialized.");
         }
 
         private static void InitializeMainThread()
@@ -48,18 +48,18 @@ namespace AmongUsClone.Server
         private static void InitializeTcpListener()
         {
             TcpConnectionToClient.InitializeListener(port);
-            Logger.LogEvent($"TCP listener started.");
+            Logger.LogEvent(LoggerSection.Initialization, $"TCP listener started.");
         }
 
         private static void InitializeUdpListener()
         {
             UdpConnectionToClient.InitializeListener(port);
-            Logger.LogEvent($"UDP listener started.");
+            Logger.LogEvent(LoggerSection.Initialization, $"UDP listener started.");
         }
 
         private static void ExecuteMainThread()
         {
-            Logger.LogEvent($"Main thread started. Running at {TicksPerSecond} ticks per second.");
+            Logger.LogEvent(LoggerSection.Initialization, $"Main thread started. Running at {TicksPerSecond} ticks per second.");
             DateTime nextLoopDateTime = DateTime.Now;
 
             while (isRunning)

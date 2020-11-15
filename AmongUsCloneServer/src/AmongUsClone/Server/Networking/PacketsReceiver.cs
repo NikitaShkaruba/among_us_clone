@@ -14,8 +14,12 @@ namespace AmongUsClone.Server.Networking
             {(int) ClientPacketType.UdpTestReceived, ProcessUdpTestReceivedPacket}
         };
 
-        public static void ProcessPacket(int clientId, int packetTypeId, Packet packet)
+        public static void ProcessPacket(int clientId, int packetTypeId, Packet packet, bool isTcp)
         {
+            string packetTypeName = GetPacketTypeName((ClientPacketType)packetTypeId);
+            string protocolName = isTcp ? "TCP" : "UDP";
+            Logger.LogEvent(LoggerSection.Network, $"Received «{packetTypeName}» {protocolName} packet from the client {clientId}");
+
             PacketHandlers[packetTypeId](clientId, packet);
         }
 
@@ -29,19 +33,16 @@ namespace AmongUsClone.Server.Networking
                 throw new Exception($"Bad clientId {clientId} received");
             }
 
-            string packetTypeName = GetPacketTypeName(ClientPacketType.WelcomeReceived);
-            Logger.LogEvent($"Received «{packetTypeName}» packet from the client {clientId}");
-            
             // Todo: send the player into the game
             
-            Logger.LogEvent($"{Server.Clients[clientId].TcpConnectionToClient.TcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
+            Logger.LogEvent(LoggerSection.ClientConnection, $"{Server.Clients[clientId].TcpConnectionToClient.TcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
         }
 
         private static void ProcessUdpTestReceivedPacket(int clientId, Packet packet)
         {
             string message = packet.ReadString();
             
-            Logger.LogEvent($"Received a packet via UDP. Contains message: {message}");
+            Logger.LogEvent(LoggerSection.Test, $"Received a packet via UDP. Contains message: {message}");
         }
 
         private static string GetPacketTypeName(ClientPacketType clientPacketType)

@@ -52,21 +52,21 @@ namespace AmongUsClone.Server.Networking
                 byte[] data = new byte[byteLength];
                 Array.Copy(ReceiveBuffer, data, byteLength);
 
-                bool shouldReset = HandleData(data, (packetTypeId, packet) => PacketsReceiver.ProcessPacket(clientId, packetTypeId, packet));
+                bool shouldReset = HandleData(data, (packetTypeId, packet) => PacketsReceiver.ProcessPacket(clientId, packetTypeId, packet, true));
                 ReceivePacket.Reset(shouldReset);
 
                 Stream.BeginRead(ReceiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
             }
             catch (Exception exception)
             {
-                Logger.LogError($"Error receiving TCP data: {exception}");
+                Logger.LogError(LoggerSection.Network, $"Error receiving TCP data: {exception}");
             }
         }
 
         private static void OnConnection(IAsyncResult result)
         {
             TcpClient tcpClient = tcpListener.EndAcceptTcpClient(result);
-            Logger.LogEvent($"Incoming tcp connection from {tcpClient.Client.RemoteEndPoint}...");
+            Logger.LogEvent(LoggerSection.Network, $"Incoming tcp connection from {tcpClient.Client.RemoteEndPoint}...");
 
             // Start listening for the next client connection
             tcpListener.BeginAcceptTcpClient(OnConnection, null);
@@ -84,7 +84,7 @@ namespace AmongUsClone.Server.Networking
                 return;
             }
 
-            Logger.LogError($"{tcpClient.Client.RemoteEndPoint} failed to connect a client: Server is full");
+            Logger.LogError(LoggerSection.ClientConnection, $"{tcpClient.Client.RemoteEndPoint} failed to connect a client: Server is full");
         }
     }
 }

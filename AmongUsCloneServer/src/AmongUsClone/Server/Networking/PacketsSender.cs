@@ -38,7 +38,7 @@ namespace AmongUsClone.Server.Networking
             Server.Clients[clientId].TcpConnectionToClient.SendPacket(packet);
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent «{packetTypeName}» TCP packet to the client {clientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to the client {clientId}");
         }
 
         private static void SendTcpPacketToAll(ServerPacketType packetTypeId, Packet packet)
@@ -51,7 +51,7 @@ namespace AmongUsClone.Server.Networking
             }
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent «{packetTypeName}» TCP packet to all clients");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients");
         }
  
         private static void SendTcpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
@@ -69,7 +69,7 @@ namespace AmongUsClone.Server.Networking
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent «{packetTypeName}» TCP packet to all clients except ${exceptClientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients except ${exceptClientId}");
         }
 
         private static void SendUdpPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
@@ -78,7 +78,7 @@ namespace AmongUsClone.Server.Networking
             Server.Clients[clientId].UdpConnectionToClient.SendPacket(packet);
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent «{packetTypeName}» UDP packet to the client {clientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to the client {clientId}");
         }
 
         private static void SendUdpPacketToAll(ServerPacketType packetTypeId, Packet packet)
@@ -91,7 +91,7 @@ namespace AmongUsClone.Server.Networking
             }
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent «{packetTypeName}» UDP packet to all clients");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients");
         }
  
         private static void SendUdpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
@@ -109,7 +109,7 @@ namespace AmongUsClone.Server.Networking
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent($"Sent «{packetTypeName}» UDP packet to all clients except ${exceptClientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients except ${exceptClientId}");
         }
 
         private static string GetPacketTypeName(ServerPacketType serverPacketType)

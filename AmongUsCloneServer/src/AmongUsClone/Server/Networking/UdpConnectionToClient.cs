@@ -38,7 +38,7 @@ namespace AmongUsClone.Server.Networking
             }
             catch (Exception exception)
             {
-                Logger.LogError($"Error sending data to {ipEndPoint} via UDP: {exception}");
+                Logger.LogError(LoggerSection.Network, $"Error sending UDP data to {ipEndPoint}: {exception}");
             }
         }
  
@@ -69,7 +69,7 @@ namespace AmongUsClone.Server.Networking
 
                     if (clientId == 0)
                     {
-                        Logger.LogError("Undefined client id in OnUdpConnection");
+                        Logger.LogError(LoggerSection.Network, "Undefined client id in UDP packet");
                         return;
                     }
 
@@ -81,7 +81,7 @@ namespace AmongUsClone.Server.Networking
                     {
                         if (Server.Clients[clientId].UdpConnectionToClient.ipEndPoint.ToString() != clientIpEndPoint.ToString())
                         {
-                            Logger.LogError("Hack attempt, client ids doesn't match");
+                            Logger.LogError(LoggerSection.Network, "Hacking attempt, client ids doesn't match");
                             return;
                         }
 
@@ -91,7 +91,7 @@ namespace AmongUsClone.Server.Networking
             }
             catch (Exception exception)
             {
-                Logger.LogError($"Error receiving Udp data: {exception}");
+                Logger.LogError(LoggerSection.Network, $"Error receiving UDP data: {exception}");
             }
         }
 
@@ -105,7 +105,7 @@ namespace AmongUsClone.Server.Networking
                 using (Packet newPacket = new Packet(packetBytes))
                 {
                     int packetTypeId = newPacket.ReadInt();
-                    PacketsReceiver.ProcessPacket(clientId, packetTypeId, newPacket);
+                    PacketsReceiver.ProcessPacket(clientId, packetTypeId, newPacket, false);
                 }
             });
         }

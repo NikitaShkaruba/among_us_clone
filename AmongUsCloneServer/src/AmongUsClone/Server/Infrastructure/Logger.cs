@@ -4,19 +4,19 @@ namespace AmongUsClone.Server.Infrastructure
 {
     public static class Logger
     {
-        public static void LogEvent(string eventDescription)
+        public static void LogEvent(LoggerSection loggerSection, string eventDescription)
         {
-            Log("Event", eventDescription);
+            Log("event", loggerSection, eventDescription);
         }
 
-        public static void LogError(string errorDescription)
+        public static void LogError(LoggerSection loggerSection, string errorDescription)
         {
-            Log("Error", errorDescription);
+            Log("error", loggerSection, errorDescription);
         }
 
-        private static void Log(string logType, string logDescription)
+        private static void Log(string logType, LoggerSection loggerSection, string logDescription)
         {
-            Console.WriteLine($"[{logType}] {logDescription}");
+            Console.WriteLine($"[{loggerSection} {logType}] {logDescription}");
         }
     }
 }
