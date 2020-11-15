@@ -5,6 +5,8 @@ namespace AmongUsClone.Server.Infrastructure
 {
     public static class Logger
     {
+        private static readonly DateTime StartupDateTime = DateTime.Now;
+        
         private const string LogTypeEvent = "event";
         private const string LogTypeError = "error";
 
@@ -27,7 +29,7 @@ namespace AmongUsClone.Server.Infrastructure
                 return;
             }
             
-            Console.WriteLine($"[{loggerSection} {logType}] {logDescription}");
+            Console.WriteLine($"[{RenderTimeLabel()} {loggerSection} {logType}] {logDescription}");
         }
 
         private static bool IsSkippedLoggerSection(LoggerSection loggerSection)
@@ -37,6 +39,27 @@ namespace AmongUsClone.Server.Infrastructure
             };
 
             return skippedLoggerSections.Contains(loggerSection);
+        }
+
+        private static string RenderTimeLabel()
+        {
+            float secondsSinceStart = (DateTime.Now - StartupDateTime).Seconds;
+            
+            const int minutesInHour = 60;
+            const int secondsInMinute = 60;
+            const int secondsInHour = 60 * secondsInMinute;
+
+            int hoursToDisplay = (int)Math.Floor(secondsSinceStart / secondsInHour);
+            int minutesToDisplay = (int)Math.Floor(secondsSinceStart / secondsInMinute % minutesInHour);
+            int secondsToDisplay = (int)Math.Floor(secondsSinceStart - Math.Floor(secondsSinceStart / secondsInMinute) * secondsInMinute);
+
+            string timeLabel = $"{minutesToDisplay:D2}:{secondsToDisplay:D2}";
+            if (hoursToDisplay > 0)
+            {
+                timeLabel = $"{hoursToDisplay:D2}:{timeLabel}";
+            }
+
+            return timeLabel;
         }
     }
 }
