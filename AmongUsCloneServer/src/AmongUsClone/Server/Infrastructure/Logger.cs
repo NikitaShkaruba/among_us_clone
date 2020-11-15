@@ -10,11 +10,13 @@ namespace AmongUsClone.Server.Infrastructure
 
         public static void LogEvent(LoggerSection loggerSection, string eventDescription)
         {
+            Console.ForegroundColor = ConsoleColor.Gray;
             Log(LogTypeEvent, loggerSection, eventDescription);
         }
 
         public static void LogError(LoggerSection loggerSection, string errorDescription)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Log(LogTypeError, loggerSection, errorDescription);
         }
 
