@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading;
 using AmongUsClone.Server.Infrastructure;
 using AmongUsClone.Server.Networking;
@@ -17,7 +15,6 @@ namespace AmongUsClone.Server
         public const int MinPlayerId = 1;
         public static int MaxPlayerId { get; private set; }
 
-        private static TcpListener tcpListener;
         public static readonly Dictionary<int, Client> Clients = new Dictionary<int, Client>();
         private static int port;
 
@@ -25,19 +22,21 @@ namespace AmongUsClone.Server
         {
             Logger.LogEvent("Starting server...");
 
-            InitializeBase(maxPlayers, port);
+            InitializeStaticVariables(maxPlayers, port);
             InitializeMainThread();
             InitializeTcpListener();
             InitializeUdpListener();
 
-            Logger.LogEvent($"Server started. Listening on port {port}");
+            Logger.LogEvent($"Server started. Listening on port {port}.");
         }
 
-        private static void InitializeBase(int maxPlayers, int port)
+        private static void InitializeStaticVariables(int maxPlayers, int port)
         {
             Console.Title = "Among Us Server";
             MaxPlayerId = maxPlayers;
             Server.port = port;
+            
+            Logger.LogEvent($"Static variables initialized.");
         }
 
         private static void InitializeMainThread()
@@ -48,22 +47,19 @@ namespace AmongUsClone.Server
 
         private static void InitializeTcpListener()
         {
-            tcpListener = new TcpListener(IPAddress.Any, port);
-            tcpListener.Start();
-            tcpListener.BeginAcceptTcpClient(OnTcpConnection, null);
-
-            Logger.LogEvent($"TCP listener started");
+            TcpConnectionToClient.InitializeListener(port);
+            Logger.LogEvent($"TCP listener started.");
         }
 
         private static void InitializeUdpListener()
         {
             UdpConnectionToClient.InitializeListener(port);
-            Logger.LogEvent($"UDP listener started");
+            Logger.LogEvent($"UDP listener started.");
         }
 
         private static void ExecuteMainThread()
         {
-            Logger.LogEvent($"Main thread started. Running at {TicksPerSecond} ticks per second");
+            Logger.LogEvent($"Main thread started. Running at {TicksPerSecond} ticks per second.");
             DateTime nextLoopDateTime = DateTime.Now;
 
             while (isRunning)
@@ -79,30 +75,6 @@ namespace AmongUsClone.Server
                     }
                 }
             }
-        }
-
-        private static void OnTcpConnection(IAsyncResult result)
-        {
-            TcpClient tcpClient = tcpListener.EndAcceptTcpClient(result);
-            Logger.LogEvent($"Incoming tcp connection from {tcpClient.Client.RemoteEndPoint}...");
-
-            // Start listening for the next client connection
-            tcpListener.BeginAcceptTcpClient(OnTcpConnection, null);
-
-            for (int clientId = MinPlayerId; clientId <= MaxPlayerId; clientId++)
-            {
-                // If this client exists already - skip this clientId in order to find a free one
-                if (Clients.ContainsKey(clientId))
-                {
-                    continue;
-                }
-
-                Clients[clientId] = new Client(clientId);
-                Clients[clientId].TcpConnectionToClient.Connect(tcpClient);
-                return;
-            }
-
-            Logger.LogError($"{tcpClient.Client.RemoteEndPoint} failed to connect a client: Server is full");
         }
     }
 }
