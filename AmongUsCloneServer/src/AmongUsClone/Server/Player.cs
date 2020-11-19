@@ -30,9 +30,8 @@ namespace AmongUsClone.Server
         {
             Vector2 moveDirection = GetMoveDirection();
 
-            // Todo: remove each coordinate multiplication when migrating to standard Vector2
-            Position.x += moveDirection.x * MoveSpeed;
-            Position.y += moveDirection.y * MoveSpeed;
+            Position.X += moveDirection.X * MoveSpeed;
+            Position.Y += moveDirection.Y * MoveSpeed;
 
             PacketsSender.SendPositionPacket(this);
         }
@@ -43,22 +42,22 @@ namespace AmongUsClone.Server
 
             if (inputs[0])
             {
-                moveDirection.y++;
+                moveDirection.Y++;
             }
 
             if (inputs[1])
             {
-                moveDirection.x--;
+                moveDirection.X--;
             }
 
             if (inputs[2])
             {
-                moveDirection.y--;
+                moveDirection.Y--;
             }
 
             if (inputs[3])
             {
-                moveDirection.x++;
+                moveDirection.X++;
             }
 
             return moveDirection;
