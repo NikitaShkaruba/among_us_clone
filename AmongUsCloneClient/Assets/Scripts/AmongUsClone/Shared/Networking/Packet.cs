@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AmongUsClone.Shared.DataStructures;
 
 namespace AmongUsClone.Shared.Networking
 {
@@ -14,7 +15,7 @@ namespace AmongUsClone.Shared.Networking
         // Maybe it would be good to refactor those two buffers into one
         private List<byte> buffer;
         private byte[] readableBuffer;
-        
+
         private int readPosition;
         private bool disposed;
 
@@ -105,6 +106,12 @@ namespace AmongUsClone.Shared.Networking
         {
             Write(value.Length);
             buffer.AddRange(Encoding.ASCII.GetBytes(value));
+        }
+
+        public void Write(Vector2 value)
+        {
+            Write(value.x);
+            Write(value.y);
         }
 
         #endregion
@@ -264,6 +271,14 @@ namespace AmongUsClone.Shared.Networking
             {
                 throw new Exception("Could not read value of type 'string'!");
             }
+        }
+
+        /**
+         * Reads a Vector2 from the packet
+         */
+        public Vector2 ReadVector2(bool updateReadPosition = true)
+        {
+            return new Vector2(ReadFloat(updateReadPosition), ReadFloat(updateReadPosition));
         }
 
         #endregion

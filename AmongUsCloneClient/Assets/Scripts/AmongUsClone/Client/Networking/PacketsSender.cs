@@ -18,11 +18,16 @@ namespace AmongUsClone.Client.Networking
             }
         }
 
-        public static void SendUdpTestReceived()
+        public static void SendPlayerInputPacket(bool[] playerInputs)
         {
-            using (Packet packet = new Packet((int) ClientPacketType.UdpTestReceived))
+            using (Packet packet = new Packet((int) ClientPacketType.PlayerInput))
             {
-                packet.Write("Received a test UDP packet");
+                packet.Write(playerInputs.Length);
+                foreach (bool input in playerInputs)
+                {
+                    packet.Write(input);    
+                }
+                
                 SendUdpPacket(packet);
             }
         }

@@ -3,6 +3,7 @@ using System.Net;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using UnityEngine;
+using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
 namespace AmongUsClone.Client.Networking
 {
@@ -13,7 +14,8 @@ namespace AmongUsClone.Client.Networking
         private static readonly Dictionary<int, OnPacketReceivedCallback> PacketHandlers = new Dictionary<int, OnPacketReceivedCallback>
         {
             {(int) ServerPacketType.Welcome, ProcessWelcomePacket},
-            {(int) ServerPacketType.UdpTest, ProcessUdpTestReceiver}
+            {(int) ServerPacketType.SpawnPlayer, ProcessSpawnPlayerPacket},
+            {(int) ServerPacketType.PlayerPosition, ProcessPlayerPositionPacket},
         };
 
         public static void ProcessPacket(int packetTypeId, Packet packet)
@@ -24,23 +26,37 @@ namespace AmongUsClone.Client.Networking
         private static void ProcessWelcomePacket(Packet packet)
         {
             string message = packet.ReadString();
-            int id = packet.ReadInt();
+            int clientId = packet.ReadInt();
 
             // Todo: remove useless message?
             Debug.Log($"Message from server: {message}");
-            Client.Instance.id = id;
+            Client.Instance.id = clientId;
             PacketsSender.SendWelcomeReceivedPacket();
 
             // Connect with the server via udp
             Client.Instance.UdpConnectionToServer.Connect(((IPEndPoint) Client.Instance.TcpConnectionToServer.TcpClient.Client.LocalEndPoint).Port);
         }
 
-        private static void ProcessUdpTestReceiver(Packet packet)
+        private static void ProcessSpawnPlayerPacket(Packet packet)
         {
-            string message = packet.ReadString();
+            int playerId = packet.ReadInt();
+            string playerName = packet.ReadString();
+            Vector2 playerPosition = packet.ReadVector2();
+            
+            GameManager.Instance.SpawnPlayer(playerId, playerName, playerPosition);
+        }
+        
+        private static void ProcessPlayerPositionPacket(Packet packet)
+        {
+            int playerId = packet.ReadInt();
+            Vector2 playerPosition = packet.ReadVector2();
 
-            Debug.Log($"Received a packet via UDP: Contains message: {message}");
-            PacketsSender.SendUdpTestReceived();
+            if (!GameManager.Players.ContainsKey(playerId))
+            {
+                return;
+            }
+            
+            GameManager.Players[playerId].transform.position = new Vector3(playerPosition.x, playerPosition.y, 0);
         }
     }
 }

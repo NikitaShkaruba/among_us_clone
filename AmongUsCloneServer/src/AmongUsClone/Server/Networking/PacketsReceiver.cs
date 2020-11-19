@@ -11,7 +11,7 @@ namespace AmongUsClone.Server.Networking
         private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> PacketHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
         {
             {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
-            {(int) ClientPacketType.UdpTestReceived, ProcessUdpTestReceivedPacket}
+            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
         };
 
         public static void ProcessPacket(int clientId, int packetTypeId, Packet packet, bool isTcp)
@@ -33,16 +33,22 @@ namespace AmongUsClone.Server.Networking
                 throw new Exception($"Bad clientId {clientId} received");
             }
 
-            // Todo: send the player into the game
-            
             Logger.LogEvent(LoggerSection.ClientConnection, $"{Server.Clients[clientId].TcpConnectionToClient.TcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
+            
+            Server.Clients[clientId].SendIntoGame(userName);
         }
 
-        private static void ProcessUdpTestReceivedPacket(int clientId, Packet packet)
+        private static void ProcessPlayerInputPacket(int clientId, Packet packet)
         {
-            string message = packet.ReadString();
+            int playerInputsAmount = packet.ReadInt();
             
-            Logger.LogEvent(LoggerSection.Test, $"Received a packet via UDP. Contains message: {message}");
+            bool[] playerInputs = new bool[playerInputsAmount];
+            for (int playerInputIndex = 0; playerInputIndex < playerInputs.Length; playerInputIndex++)
+            {
+                playerInputs[playerInputIndex] = packet.ReadBool();
+            }
+
+            Server.Clients[clientId].Player.SetInputs(playerInputs);
         }
 
         private static string GetPacketTypeName(ClientPacketType clientPacketType)

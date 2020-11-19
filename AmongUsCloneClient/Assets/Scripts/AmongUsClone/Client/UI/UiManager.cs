@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AmongUsClone.Shared;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace AmongUsClone.Client.UI

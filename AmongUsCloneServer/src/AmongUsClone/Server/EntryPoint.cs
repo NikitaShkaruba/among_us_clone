@@ -4,7 +4,7 @@
     {
         public static void Main()
         {
-            Server.Start(5, 26950);
+            Server.Start(10, 26950);
         }
     }
 }

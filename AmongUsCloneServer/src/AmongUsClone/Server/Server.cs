@@ -9,7 +9,7 @@ namespace AmongUsClone.Server
     public static class Server
     {
         private static bool isRunning = true;
-        private const int TicksPerSecond = 30;
+        public const int TicksPerSecond = 30;
         private const int MillisecondsPerTick = 1000 / TicksPerSecond;
 
         public const int MinPlayerId = 1;

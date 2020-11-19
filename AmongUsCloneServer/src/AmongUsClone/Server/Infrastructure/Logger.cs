@@ -29,7 +29,7 @@ namespace AmongUsClone.Server.Infrastructure
                 return;
             }
             
-            Console.WriteLine($"[{RenderTimeLabel()} {loggerSection} {logType}] {logDescription}");
+            Console.WriteLine($"[{RenderTimeSinceStartupLabel()} {loggerSection} {logType}] {logDescription}");
         }
 
         private static bool IsSkippedLoggerSection(LoggerSection loggerSection)
@@ -41,7 +41,7 @@ namespace AmongUsClone.Server.Infrastructure
             return skippedLoggerSections.Contains(loggerSection);
         }
 
-        private static string RenderTimeLabel()
+        private static string RenderTimeSinceStartupLabel()
         {
             float secondsSinceStart = (DateTime.Now - StartupDateTime).Seconds;
             

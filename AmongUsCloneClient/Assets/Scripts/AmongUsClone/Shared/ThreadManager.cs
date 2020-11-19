@@ -17,12 +17,6 @@ namespace AmongUsClone.Shared
          */
         public static void ExecuteOnMainThread(Action action)
         {
-            if (action == null)
-            {
-                // Debug.Log("No action to execute on main thread!");
-                return;
-            }
-
             lock (ActionsToExecuteOnMainThread)
             {
                 ActionsToExecuteOnMainThread.Add(action);

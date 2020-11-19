@@ -27,9 +27,10 @@ namespace AmongUsClone.Server.Networking
 
         public void SendPacket(Packet packet)
         {
+            // Because of a multithreading we can have a client, but he might not have an ipEndPoint
             if (ipEndPoint == null)
             {
-                throw new Exception("Undefined clientIpEndPoint");
+                return;
             }
 
             try
@@ -45,7 +46,6 @@ namespace AmongUsClone.Server.Networking
         private void Connect(IPEndPoint ipEndPoint)
         {
             this.ipEndPoint = ipEndPoint;
-            PacketsSender.SendUdpTestPacket(clientId);
         }
 
         private static void OnConnection(IAsyncResult result)
@@ -114,6 +114,5 @@ namespace AmongUsClone.Server.Networking
         {
             return Server.Clients[clientId].UdpConnectionToClient.ipEndPoint == null;
         }
-
     }
 }

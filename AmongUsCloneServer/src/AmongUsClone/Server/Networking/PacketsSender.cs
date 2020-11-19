@@ -20,14 +20,30 @@ namespace AmongUsClone.Server.Networking
             }
         }
 
-        public static void SendUdpTestPacket(int clientId)
+        public static void SendSpawnPlayerPacket(int clientId, Player player)
         {
-            const ServerPacketType serverPacketType = ServerPacketType.UdpTest;
+            const ServerPacketType packetType = ServerPacketType.SpawnPlayer;
 
-            using (Packet packet = new Packet((int) serverPacketType))
+            using (Packet packet = new Packet((int) packetType))
             {
-                packet.Write("A test UDP packet");
-                SendUdpPacket(clientId, serverPacketType, packet);
+                packet.Write(player.Id);
+                packet.Write(player.Name);
+                packet.Write(player.Position);
+                
+                SendTcpPacket(clientId, packetType, packet);
+            }
+        }
+ 
+        public static void SendPositionPacket(Player player)
+        {
+            const ServerPacketType packetType = ServerPacketType.PlayerPosition;
+
+            using (Packet packet = new Packet((int) packetType))
+            {
+                packet.Write(player.Id);
+                packet.Write(player.Position);
+                
+                SendUdpPacketToAll(packetType, packet);
             }
         }
 
@@ -45,9 +61,9 @@ namespace AmongUsClone.Server.Networking
         {
             packet.WriteLength();
             
-            for (int clientId = Server.MinPlayerId; clientId <= Server.MaxPlayerId; clientId++)
+            foreach (Client client in Server.Clients.Values)
             {
-                Server.Clients[clientId].TcpConnectionToClient.SendPacket(packet);
+                client.TcpConnectionToClient.SendPacket(packet);
             }
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
@@ -58,14 +74,14 @@ namespace AmongUsClone.Server.Networking
         {
             packet.WriteLength();
             
-            for (int clientId = Server.MinPlayerId; clientId <= Server.MaxPlayerId; clientId++)
+            foreach (Client client in Server.Clients.Values)
             {
-                if (clientId == exceptClientId)
+                if (client.id == exceptClientId)
                 {
                     continue;
                 }
                 
-                Server.Clients[clientId].TcpConnectionToClient.SendPacket(packet);
+                client.TcpConnectionToClient.SendPacket(packet);
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
@@ -84,28 +100,28 @@ namespace AmongUsClone.Server.Networking
         private static void SendUdpPacketToAll(ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
-            
-            for (int clientId = Server.MinPlayerId; clientId <= Server.MaxPlayerId; clientId++)
+
+            foreach (Client client in Server.Clients.Values)
             {
-                Server.Clients[clientId].UdpConnectionToClient.SendPacket(packet);
+                client.UdpConnectionToClient.SendPacket(packet);
             }
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients");
         }
- 
+
         private static void SendUdpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
             
-            for (int clientId = Server.MinPlayerId; clientId <= Server.MaxPlayerId; clientId++)
+            foreach (Client client in Server.Clients.Values)
             {
-                if (clientId == exceptClientId)
+                if (client.id == exceptClientId)
                 {
                     continue;
                 }
                 
-                Server.Clients[clientId].UdpConnectionToClient.SendPacket(packet);
+                client.UdpConnectionToClient.SendPacket(packet);
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
