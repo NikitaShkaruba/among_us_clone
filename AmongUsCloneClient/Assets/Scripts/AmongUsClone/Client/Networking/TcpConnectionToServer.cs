@@ -41,7 +41,7 @@ namespace AmongUsClone.Client.Networking
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    // Todo: disconnect
+                    Client.instance.DisconnectFromServer();
                     return;
                 }
 
@@ -55,7 +55,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                // Todo: disconnect
+                Client.instance.DisconnectFromServer();
             }
         }
     }

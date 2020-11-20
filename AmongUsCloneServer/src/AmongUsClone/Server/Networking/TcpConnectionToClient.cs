@@ -45,7 +45,7 @@ namespace AmongUsClone.Server.Networking
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    // Todo: disconnect the client
+                    Server.DisconnectClient(clientId);
                     return;
                 }
 
@@ -60,6 +60,7 @@ namespace AmongUsClone.Server.Networking
             catch (Exception exception)
             {
                 Logger.LogError(LoggerSection.Network, $"Error receiving TCP data: {exception}");
+                Server.DisconnectClient(clientId);
             }
         }
 

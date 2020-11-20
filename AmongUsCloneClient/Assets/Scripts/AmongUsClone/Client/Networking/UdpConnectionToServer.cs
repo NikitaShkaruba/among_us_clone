@@ -9,7 +9,7 @@ namespace AmongUsClone.Client.Networking
 {
     public class UdpConnectionToServer
     {
-        private UdpClient udpClient;
+        public UdpClient udpClient;
         private IPEndPoint ipEndPoint;
 
         public UdpConnectionToServer()
@@ -59,7 +59,7 @@ namespace AmongUsClone.Client.Networking
 
                 if (data.Length < sizeof(int))
                 {
-                    // Todo: disconnect
+                    Client.instance.DisconnectFromServer();
                     return;
                 }
                 
@@ -67,7 +67,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                // Todo: disconnect
+                Client.instance.DisconnectFromServer();
             }
         }
 

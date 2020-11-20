@@ -31,6 +31,14 @@ namespace AmongUsClone.Server
             Logger.LogEvent(LoggerSection.Initialization, $"Server started. Listening on port {port}.");
         }
 
+        public static void DisconnectClient(int clientId)
+        {
+            Logger.LogEvent(LoggerSection.ClientConnection, $"{Clients[clientId].tcpConnectionToClient.tcpClient.Client.RemoteEndPoint} has disconnected (player {clientId})");
+            
+            Clients.Remove(clientId);
+            PacketsSender.SendPlayerDisconnectedPacket(clientId);
+        }
+
         private static void InitializeStaticVariables(int maxPlayers, int port)
         {
             Console.Title = "Among Us Server";

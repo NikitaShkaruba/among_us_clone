@@ -7,11 +7,15 @@ namespace AmongUsClone.Server
     {
         public static void Update()
         {
-            foreach (Client client in Server.Clients.Values)
+            // We need to lock the collection, because in multi-thread environment it can be modified while being iterated
+            lock (Server.Clients)
             {
-                client.player?.Update();
+                foreach (Client client in Server.Clients.Values)
+                {
+                    client.player?.Update();
+                }
             }
-            
+
             ThreadManager.UpdateMain();
         }
     }

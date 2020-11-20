@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
@@ -37,6 +39,19 @@ namespace AmongUsClone.Client
             playerManager.name = name;
             
             Players.Add(id, playerManager);
+        }
+
+        public void RemovePlayer(int playerId)
+        {
+            PlayerManager[] gameManagers = FindObjectsOfType<PlayerManager>();
+            PlayerManager manager = gameManagers.Single(playerManager => playerManager.id == playerId);
+            if (manager == null)
+            {
+                throw new Exception("Unable to remove disconnected player");
+            }
+            
+            Destroy(manager.gameObject);
+            Players.Remove(playerId);
         }
     }
 }

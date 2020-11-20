@@ -15,6 +15,7 @@ namespace AmongUsClone.Client.Networking
         {
             {(int) ServerPacketType.Welcome, ProcessWelcomePacket},
             {(int) ServerPacketType.SpawnPlayer, ProcessSpawnPlayerPacket},
+            {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
             {(int) ServerPacketType.PlayerPosition, ProcessPlayerPositionPacket},
         };
 
@@ -45,6 +46,13 @@ namespace AmongUsClone.Client.Networking
             GameManager.instance.SpawnPlayer(playerId, playerName, playerPosition);
         }
         
+        private static void ProcessPlayerDisconnectedPacket(Packet packet)
+        {
+            int playerId = packet.ReadInt();
+            
+            GameManager.instance.RemovePlayer(playerId);
+        }
+
         private static void ProcessPlayerPositionPacket(Packet packet)
         {
             int playerId = packet.ReadInt();

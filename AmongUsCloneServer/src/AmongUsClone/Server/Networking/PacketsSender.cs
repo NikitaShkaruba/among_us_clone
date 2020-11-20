@@ -33,7 +33,19 @@ namespace AmongUsClone.Server.Networking
                 SendTcpPacket(clientId, packetType, packet);
             }
         }
- 
+
+        public static void SendPlayerDisconnectedPacket(int playerId)
+        {
+            const ServerPacketType packetType = ServerPacketType.PlayerDisconnected;
+
+            using (Packet packet = new Packet((int) packetType))
+            {
+                packet.Write(playerId);
+
+                SendTcpPacketToAll(packetType, packet);
+            }
+        }
+
         public static void SendPositionPacket(Player player)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerPosition;

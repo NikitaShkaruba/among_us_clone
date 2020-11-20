@@ -4,6 +4,7 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
     {
         Welcome,
         SpawnPlayer,
+        PlayerDisconnected,
         PlayerPosition,
     }
 }
