@@ -41,22 +41,22 @@ namespace AmongUsClone.Server
         {
             Vector2 moveDirection = new Vector2(0f, 0f);
 
-            if (playerInput.MoveTop)
+            if (playerInput.moveTop)
             {
                 moveDirection.y++;
             }
 
-            if (playerInput.MoveLeft)
+            if (playerInput.moveLeft)
             {
                 moveDirection.x--;
             }
 
-            if (playerInput.MoveBottom)
+            if (playerInput.moveBottom)
             {
                 moveDirection.y--;
             }
 
-            if (playerInput.MoveRight)
+            if (playerInput.moveRight)
             {
                 moveDirection.x++;
             }

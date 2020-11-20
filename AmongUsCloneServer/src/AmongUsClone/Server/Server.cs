@@ -15,6 +15,8 @@ namespace AmongUsClone.Server
         
         public static readonly Dictionary<int, Client> Clients = new Dictionary<int, Client>();
         private static int port;
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        // ReSharper disable once ConvertToConstant.Local
         private static bool isRunning = true;
 
         public static void Start(int maxPlayers, int port)
@@ -35,7 +37,7 @@ namespace AmongUsClone.Server
             MaxPlayerId = maxPlayers;
             Server.port = port;
             
-            Logger.LogEvent(LoggerSection.Initialization, $"Static variables initialized.");
+            Logger.LogEvent(LoggerSection.Initialization, "Static variables initialized.");
         }
 
         private static void InitializeMainThread()
@@ -47,13 +49,13 @@ namespace AmongUsClone.Server
         private static void InitializeTcpListener()
         {
             TcpConnectionToClient.InitializeListener(port);
-            Logger.LogEvent(LoggerSection.Initialization, $"TCP listener started.");
+            Logger.LogEvent(LoggerSection.Initialization, "TCP listener started.");
         }
 
         private static void InitializeUdpListener()
         {
             UdpConnectionToClient.InitializeListener(port);
-            Logger.LogEvent(LoggerSection.Initialization, $"UDP listener started.");
+            Logger.LogEvent(LoggerSection.Initialization, "UDP listener started.");
         }
 
         private static void ExecuteMainThread()

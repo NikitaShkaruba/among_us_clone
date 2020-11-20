@@ -1,11 +1,14 @@
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable UnusedMember.Global
+
 namespace AmongUsClone.Shared
 {
     public class PlayerInput
     {
-        public bool MoveTop;
-        public bool MoveLeft;
-        public bool MoveRight;
-        public bool MoveBottom;
+        public bool moveTop;
+        public bool moveLeft;
+        public bool moveRight;
+        public bool moveBottom;
 
         public PlayerInput()
         {
@@ -13,10 +16,10 @@ namespace AmongUsClone.Shared
 
         private PlayerInput(bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
         {
-            MoveTop = moveTop;
-            MoveLeft = moveLeft;
-            MoveBottom = moveBottom;
-            MoveRight = moveRight;
+            this.moveTop = moveTop;
+            this.moveLeft = moveLeft;
+            this.moveBottom = moveBottom;
+            this.moveRight = moveRight;
         }
 
         public static PlayerInput Deserialize(bool[] serializedPlayerInput)
@@ -33,10 +36,10 @@ namespace AmongUsClone.Shared
         {
             return new[]
             {
-                MoveTop,
-                MoveLeft,
-                MoveBottom,
-                MoveRight
+                moveTop,
+                moveLeft,
+                moveBottom,
+                moveRight
             };
         }
     }

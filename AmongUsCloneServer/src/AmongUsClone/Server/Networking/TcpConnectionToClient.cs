@@ -25,9 +25,9 @@ namespace AmongUsClone.Server.Networking
 
         private void Connect(TcpClient tcpClient)
         {
-            base.tcpClient = tcpClient;
-            base.tcpClient.ReceiveBufferSize = DataBufferSize;
-            base.tcpClient.SendBufferSize = DataBufferSize;
+            this.tcpClient = tcpClient;
+            this.tcpClient.ReceiveBufferSize = DataBufferSize;
+            this.tcpClient.SendBufferSize = DataBufferSize;
 
             receivePacket = new Packet();
             receiveBuffer = new byte[DataBufferSize];

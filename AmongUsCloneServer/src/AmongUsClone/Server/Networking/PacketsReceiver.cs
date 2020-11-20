@@ -12,7 +12,7 @@ namespace AmongUsClone.Server.Networking
         private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> PacketHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
         {
             {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
-            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
+            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket}
         };
 
         public static void ProcessPacket(int clientId, int packetTypeId, Packet packet, bool isTcp)

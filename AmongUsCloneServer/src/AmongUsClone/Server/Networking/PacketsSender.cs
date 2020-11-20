@@ -57,6 +57,7 @@ namespace AmongUsClone.Server.Networking
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to the client {clientId}");
         }
 
+        // ReSharper disable once UnusedMember.Local
         private static void SendTcpPacketToAll(ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
@@ -70,6 +71,7 @@ namespace AmongUsClone.Server.Networking
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients");
         }
  
+        // ReSharper disable once UnusedMember.Local
         private static void SendTcpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
@@ -88,6 +90,7 @@ namespace AmongUsClone.Server.Networking
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients except ${exceptClientId}");
         }
 
+        // ReSharper disable once UnusedMember.Local
         private static void SendUdpPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
@@ -110,6 +113,7 @@ namespace AmongUsClone.Server.Networking
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients");
         }
 
+        // ReSharper disable once UnusedMember.Local
         private static void SendUdpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();

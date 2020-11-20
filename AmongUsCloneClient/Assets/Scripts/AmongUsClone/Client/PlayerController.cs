@@ -1,13 +1,12 @@
 ﻿using AmongUsClone.Client.Networking;
 using AmongUsClone.Shared;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace AmongUsClone.Client
 {
     public class PlayerController : MonoBehaviour
     {
-        private PlayerInput playerInput = new PlayerInput();
+        private readonly PlayerInput playerInput = new PlayerInput();
         
         private void Update()
         {

@@ -1,3 +1,5 @@
+// ReSharper disable MemberCanBeProtected.Global
+
 using System;
 using System.Net.Sockets;
 

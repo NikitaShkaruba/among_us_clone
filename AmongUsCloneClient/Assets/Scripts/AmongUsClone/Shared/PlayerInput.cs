@@ -1,3 +1,6 @@
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable UnusedMember.Global
+
 namespace AmongUsClone.Shared
 {
     public class PlayerInput
