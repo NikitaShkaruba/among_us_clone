@@ -20,15 +20,15 @@ namespace AmongUsClone.Server.Networking
             }
         }
 
-        public static void SendSpawnPlayerPacket(int clientId, Player player)
+        public static void SendPlayerConnectedPacket(int clientId, Player connectedPlayer)
         {
-            const ServerPacketType packetType = ServerPacketType.SpawnPlayer;
+            const ServerPacketType packetType = ServerPacketType.PlayerConnected;
 
             using (Packet packet = new Packet((int) packetType))
             {
-                packet.Write(player.id);
-                packet.Write(player.name);
-                packet.Write(player.position);
+                packet.Write(connectedPlayer.id);
+                packet.Write(connectedPlayer.name);
+                packet.Write(connectedPlayer.position);
                 
                 SendTcpPacket(clientId, packetType, packet);
             }

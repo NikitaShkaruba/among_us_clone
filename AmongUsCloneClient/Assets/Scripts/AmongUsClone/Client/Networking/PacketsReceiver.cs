@@ -14,7 +14,7 @@ namespace AmongUsClone.Client.Networking
         private static readonly Dictionary<int, OnPacketReceivedCallback> PacketHandlers = new Dictionary<int, OnPacketReceivedCallback>
         {
             {(int) ServerPacketType.Welcome, ProcessWelcomePacket},
-            {(int) ServerPacketType.SpawnPlayer, ProcessSpawnPlayerPacket},
+            {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
             {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
             {(int) ServerPacketType.PlayerPosition, ProcessPlayerPositionPacket},
         };
@@ -37,7 +37,7 @@ namespace AmongUsClone.Client.Networking
             Client.instance.udpConnectionToServer.Connect(((IPEndPoint) Client.instance.tcpConnectionToServer.tcpClient.Client.LocalEndPoint).Port);
         }
 
-        private static void ProcessSpawnPlayerPacket(Packet packet)
+        private static void ProcessPlayerConnectedPacket(Packet packet)
         {
             int playerId = packet.ReadInt();
             string playerName = packet.ReadString();
@@ -50,7 +50,7 @@ namespace AmongUsClone.Client.Networking
         {
             int playerId = packet.ReadInt();
             
-            GameManager.instance.RemovePlayer(playerId);
+            GameManager.RemovePlayer(playerId);
         }
 
         private static void ProcessPlayerPositionPacket(Packet packet)

@@ -30,13 +30,13 @@ namespace AmongUsClone.Server.Networking
                     continue;
                 }
                 
-                // Spawn players (including himself) at each client
-                PacketsSender.SendSpawnPlayerPacket(client.id, player);
+                // Connect existent players with the new client (including himself)
+                PacketsSender.SendPlayerConnectedPacket(client.id, player);
                 
-                // Spawn new player at each client (himself is already spawned)
+                // Connect new player with each client (himself is already spawned)
                 if (client.id != id)
                 {
-                    PacketsSender.SendSpawnPlayerPacket(id, client.player);
+                    PacketsSender.SendPlayerConnectedPacket(id, client.player);
                 }
             }
         }

@@ -28,20 +28,20 @@ namespace AmongUsClone.Client
             }
         }
 
-        public void SpawnPlayer(int id, string name, Vector2 position)
+        public void SpawnPlayer(int playerId, string playerName, Vector2 playerPosition)
         {
-            GameObject playerPrefab = id == Networking.Client.instance.id ? localPlayerPrefab : remotePlayerPrefab;
-            GameObject player = Instantiate(playerPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
+            GameObject playerPrefab = playerId == Networking.Client.instance.id ? localPlayerPrefab : remotePlayerPrefab;
+            GameObject player = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
             
             PlayerManager playerManager = player.GetComponent<PlayerManager>();
             
-            playerManager.id = id;
-            playerManager.name = name;
+            playerManager.id = playerId;
+            playerManager.name = playerName;
             
-            Players.Add(id, playerManager);
+            Players.Add(playerId, playerManager);
         }
 
-        public void RemovePlayer(int playerId)
+        public static void RemovePlayer(int playerId)
         {
             PlayerManager[] gameManagers = FindObjectsOfType<PlayerManager>();
             PlayerManager manager = gameManagers.Single(playerManager => playerManager.id == playerId);
