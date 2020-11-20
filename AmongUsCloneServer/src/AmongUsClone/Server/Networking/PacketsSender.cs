@@ -76,7 +76,7 @@ namespace AmongUsClone.Server.Networking
             
             foreach (Client client in Server.Clients.Values)
             {
-                if (client.id == exceptClientId)
+                if (client.Id == exceptClientId)
                 {
                     continue;
                 }
@@ -116,7 +116,7 @@ namespace AmongUsClone.Server.Networking
             
             foreach (Client client in Server.Clients.Values)
             {
-                if (client.id == exceptClientId)
+                if (client.Id == exceptClientId)
                 {
                     continue;
                 }

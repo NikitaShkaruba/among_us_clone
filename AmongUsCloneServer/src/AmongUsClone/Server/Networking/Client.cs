@@ -4,7 +4,7 @@ namespace AmongUsClone.Server.Networking
 {
     public class Client
     {
-        public readonly int id;
+        public readonly int Id;
         public Player Player;
         
         public readonly TcpConnectionToClient TcpConnectionToClient;
@@ -12,7 +12,7 @@ namespace AmongUsClone.Server.Networking
 
         public Client(int id)
         {
-            this.id = id;
+            Id = id;
             
             TcpConnectionToClient = new TcpConnectionToClient(id);
             UdpConnectionToClient = new UdpConnectionToClient(id);
@@ -20,7 +20,7 @@ namespace AmongUsClone.Server.Networking
 
         public void SendIntoGame(string playerName)
         {
-            Player = new Player(id, playerName, new Vector2(0, 0));
+            Player = new Player(Id, playerName, new Vector2(0, 0));
 
             foreach (Client client in Server.Clients.Values)
             {
@@ -31,12 +31,12 @@ namespace AmongUsClone.Server.Networking
                 }
                 
                 // Spawn players (including himself) at each client
-                PacketsSender.SendSpawnPlayerPacket(client.id, Player);
+                PacketsSender.SendSpawnPlayerPacket(client.Id, Player);
                 
                 // Spawn new player at each client (himself is already spawned)
-                if (client.id != id)
+                if (client.Id != Id)
                 {
-                    PacketsSender.SendSpawnPlayerPacket(id, client.Player);
+                    PacketsSender.SendSpawnPlayerPacket(Id, client.Player);
                 }
             }
         }

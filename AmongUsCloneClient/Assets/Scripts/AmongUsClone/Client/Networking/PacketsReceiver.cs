@@ -33,7 +33,6 @@ namespace AmongUsClone.Client.Networking
             Client.Instance.id = clientId;
             PacketsSender.SendWelcomeReceivedPacket();
 
-            // Connect with the server via udp
             Client.Instance.UdpConnectionToServer.Connect(((IPEndPoint) Client.Instance.TcpConnectionToServer.TcpClient.Client.LocalEndPoint).Port);
         }
 

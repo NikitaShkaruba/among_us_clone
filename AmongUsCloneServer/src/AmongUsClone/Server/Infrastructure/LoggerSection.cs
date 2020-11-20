@@ -5,6 +5,5 @@ namespace AmongUsClone.Server.Infrastructure
         Initialization,
         Network,
         ClientConnection,
-        Test,
     }
 }
