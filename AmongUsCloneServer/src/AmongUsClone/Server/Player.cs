@@ -1,4 +1,5 @@
 using AmongUsClone.Server.Networking;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.DataStructures;
 
 namespace AmongUsClone.Server
@@ -8,7 +9,7 @@ namespace AmongUsClone.Server
         public readonly int Id;
         public readonly string Name;
 
-        private bool[] inputs;
+        private PlayerInput playerInput;
         public readonly Vector2 Position;
 
         private const float MoveSpeed = 5f / Server.TicksPerSecond; // This matches client's fixedUpdateTime
@@ -18,7 +19,7 @@ namespace AmongUsClone.Server
             Id = id;
             Name = name;
             Position = position;
-            inputs = new bool[4];
+            playerInput = new PlayerInput();
         }
 
         public void Update()
@@ -30,8 +31,8 @@ namespace AmongUsClone.Server
         {
             Vector2 moveDirection = GetMoveDirection();
 
-            Position.X += moveDirection.X * MoveSpeed;
-            Position.Y += moveDirection.Y * MoveSpeed;
+            Position.x += moveDirection.x * MoveSpeed;
+            Position.y += moveDirection.y * MoveSpeed;
 
             PacketsSender.SendPositionPacket(this);
         }
@@ -40,32 +41,32 @@ namespace AmongUsClone.Server
         {
             Vector2 moveDirection = new Vector2(0f, 0f);
 
-            if (inputs[0])
+            if (playerInput.MoveTop)
             {
-                moveDirection.Y++;
+                moveDirection.y++;
             }
 
-            if (inputs[1])
+            if (playerInput.MoveLeft)
             {
-                moveDirection.X--;
+                moveDirection.x--;
             }
 
-            if (inputs[2])
+            if (playerInput.MoveBottom)
             {
-                moveDirection.Y--;
+                moveDirection.y--;
             }
 
-            if (inputs[3])
+            if (playerInput.MoveRight)
             {
-                moveDirection.X++;
+                moveDirection.x++;
             }
 
             return moveDirection;
         }
 
-        public void SetInputs(bool[] inputs)
+        public void UpdateInput(PlayerInput playerInput)
         {
-            this.inputs = inputs;
+            this.playerInput = playerInput;
         }
     }
 }

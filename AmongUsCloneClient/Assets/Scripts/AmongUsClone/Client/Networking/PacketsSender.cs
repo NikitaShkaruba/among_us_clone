@@ -1,4 +1,5 @@
 ﻿using AmongUsClone.Client.UI;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using UnityEngine;
@@ -18,14 +19,16 @@ namespace AmongUsClone.Client.Networking
             }
         }
 
-        public static void SendPlayerInputPacket(bool[] playerInputs)
+        public static void SendPlayerInputPacket(PlayerInput playerInput)
         {
+            bool[] serializedPlayerInput = playerInput.Serialize();
+                
             using (Packet packet = new Packet((int) ClientPacketType.PlayerInput))
             {
-                packet.Write(playerInputs.Length);
-                foreach (bool input in playerInputs)
+                packet.Write(serializedPlayerInput.Length);
+                foreach (bool input in serializedPlayerInput)
                 {
-                    packet.Write(input);    
+                    packet.Write(input);
                 }
                 
                 SendUdpPacket(packet);

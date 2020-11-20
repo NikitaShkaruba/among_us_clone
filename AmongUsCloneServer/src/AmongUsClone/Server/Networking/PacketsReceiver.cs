@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AmongUsClone.Server.Infrastructure;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 
@@ -42,13 +43,14 @@ namespace AmongUsClone.Server.Networking
         {
             int playerInputsAmount = packet.ReadInt();
             
-            bool[] playerInputs = new bool[playerInputsAmount];
-            for (int playerInputIndex = 0; playerInputIndex < playerInputs.Length; playerInputIndex++)
+            bool[] serializedPlayerInput = new bool[playerInputsAmount];
+            for (int playerInputIndex = 0; playerInputIndex < serializedPlayerInput.Length; playerInputIndex++)
             {
-                playerInputs[playerInputIndex] = packet.ReadBool();
+                serializedPlayerInput[playerInputIndex] = packet.ReadBool();
             }
 
-            Server.Clients[clientId].Player.SetInputs(playerInputs);
+            PlayerInput playerInput = PlayerInput.Deserialize(serializedPlayerInput);
+            Server.Clients[clientId].Player.UpdateInput(playerInput);
         }
 
         private static string GetPacketTypeName(ClientPacketType clientPacketType)

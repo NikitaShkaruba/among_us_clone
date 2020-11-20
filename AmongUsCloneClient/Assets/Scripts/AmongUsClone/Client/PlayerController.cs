@@ -1,26 +1,31 @@
-﻿using System;
-using AmongUsClone.Client.Networking;
+﻿using AmongUsClone.Client.Networking;
+using AmongUsClone.Shared;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace AmongUsClone.Client
 {
     public class PlayerController : MonoBehaviour
     {
+        private PlayerInput playerInput = new PlayerInput();
+        
         private void Update()
         {
+            UpdatePlayerInput();
             SendInputToServer();
         }
 
-        private static void SendInputToServer()
+        private void UpdatePlayerInput()
         {
-            bool[] playerInputs = {
-                Input.GetKey(KeyCode.W),
-                Input.GetKey(KeyCode.A),
-                Input.GetKey(KeyCode.S),
-                Input.GetKey(KeyCode.D),
-            };
+            playerInput.MoveTop = Input.GetKey(KeyCode.W);
+            playerInput.MoveLeft = Input.GetKey(KeyCode.A);
+            playerInput.MoveBottom = Input.GetKey(KeyCode.S);
+            playerInput.MoveRight = Input.GetKey(KeyCode.D);
+        }
 
-            PacketsSender.SendPlayerInputPacket(playerInputs);
+        private void SendInputToServer()
+        {
+            PacketsSender.SendPlayerInputPacket(playerInput);
         }
     }
 }

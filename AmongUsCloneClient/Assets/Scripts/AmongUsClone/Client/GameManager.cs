@@ -8,7 +8,7 @@ namespace AmongUsClone.Client
     {
         public static GameManager Instance;
 
-        public static Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
+        public static readonly Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
         
         public GameObject localPlayerPrefab;
         public GameObject remotePlayerPrefab;

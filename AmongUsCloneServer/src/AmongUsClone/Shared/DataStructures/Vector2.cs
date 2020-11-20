@@ -1,3 +1,6 @@
+// This class will be removed later after migrating the server into unity project
+// ReSharper disable InconsistentNaming
+
 namespace AmongUsClone.Shared.DataStructures
 {
     /**
@@ -5,13 +8,13 @@ namespace AmongUsClone.Shared.DataStructures
      */
     public class Vector2
     {
-        public float X;
-        public float Y;
+        public float x;
+        public float y;
         
         public Vector2(float x, float y)
         {
-            X = x;
-            Y = y;
+            this.x = x;
+            this.y = y;
         }
     }
 }

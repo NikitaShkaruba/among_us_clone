@@ -110,8 +110,8 @@ namespace AmongUsClone.Shared.Networking
 
         public void Write(Vector2 value)
         {
-            Write(value.X);
-            Write(value.Y);
+            Write(value.x);
+            Write(value.y);
         }
 
         #endregion
