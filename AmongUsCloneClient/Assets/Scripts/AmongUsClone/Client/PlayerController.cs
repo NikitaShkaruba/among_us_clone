@@ -17,10 +17,10 @@ namespace AmongUsClone.Client
 
         private void UpdatePlayerInput()
         {
-            playerInput.MoveTop = Input.GetKey(KeyCode.W);
-            playerInput.MoveLeft = Input.GetKey(KeyCode.A);
-            playerInput.MoveBottom = Input.GetKey(KeyCode.S);
-            playerInput.MoveRight = Input.GetKey(KeyCode.D);
+            playerInput.moveTop = Input.GetKey(KeyCode.W);
+            playerInput.moveLeft = Input.GetKey(KeyCode.A);
+            playerInput.moveBottom = Input.GetKey(KeyCode.S);
+            playerInput.moveRight = Input.GetKey(KeyCode.D);
         }
 
         private void SendInputToServer()

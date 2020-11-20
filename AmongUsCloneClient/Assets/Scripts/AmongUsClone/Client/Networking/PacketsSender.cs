@@ -12,8 +12,8 @@ namespace AmongUsClone.Client.Networking
         {
             using (Packet packet = new Packet((int) ClientPacketType.WelcomeReceived))
             {
-                packet.Write(Client.Instance.id);
-                packet.Write(UiManager.Instance.userNameField.text);
+                packet.Write(Client.instance.id);
+                packet.Write(UiManager.instance.userNameField.text);
 
                 SendTcpPacket(packet);
             }
@@ -38,13 +38,13 @@ namespace AmongUsClone.Client.Networking
         private static void SendTcpPacket(Packet packet)
         {
             packet.WriteLength();
-            Client.Instance.TcpConnectionToServer.SendPacket(packet);
+            Client.instance.tcpConnectionToServer.SendPacket(packet);
         }
 
         private static void SendUdpPacket(Packet packet)
         {
             packet.WriteLength();
-            Client.Instance.UdpConnectionToServer.SendPacket(packet);
+            Client.instance.udpConnectionToServer.SendPacket(packet);
         }
     }
 }

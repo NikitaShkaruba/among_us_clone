@@ -1,5 +1,4 @@
 // This class will be removed later after migrating the server into unity project
-// ReSharper disable InconsistentNaming
 
 namespace AmongUsClone.Shared.DataStructures
 {

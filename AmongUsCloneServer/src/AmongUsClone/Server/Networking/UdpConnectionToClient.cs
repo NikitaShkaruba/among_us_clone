@@ -75,17 +75,17 @@ namespace AmongUsClone.Server.Networking
 
                     if (IsUnknownClient(clientId))
                     {
-                        Server.Clients[clientId].UdpConnectionToClient.Connect(clientIpEndPoint);
+                        Server.Clients[clientId].udpConnectionToClient.Connect(clientIpEndPoint);
                     }
                     else
                     {
-                        if (Server.Clients[clientId].UdpConnectionToClient.ipEndPoint.ToString() != clientIpEndPoint.ToString())
+                        if (Server.Clients[clientId].udpConnectionToClient.ipEndPoint.ToString() != clientIpEndPoint.ToString())
                         {
                             Logger.LogError(LoggerSection.Network, "Hacking attempt, client ids doesn't match");
                             return;
                         }
 
-                        Server.Clients[clientId].UdpConnectionToClient.HandlePacketData(packet);
+                        Server.Clients[clientId].udpConnectionToClient.HandlePacketData(packet);
                     }
                 }
             }
@@ -112,7 +112,7 @@ namespace AmongUsClone.Server.Networking
         
         private static bool IsUnknownClient(int clientId)
         {
-            return Server.Clients[clientId].UdpConnectionToClient.ipEndPoint == null;
+            return Server.Clients[clientId].udpConnectionToClient.ipEndPoint == null;
         }
     }
 }

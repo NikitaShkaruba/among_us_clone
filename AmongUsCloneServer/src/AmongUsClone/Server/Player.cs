@@ -6,19 +6,19 @@ namespace AmongUsClone.Server
 {
     public class Player
     {
-        public readonly int Id;
-        public readonly string Name;
+        public readonly int id;
+        public readonly string name;
 
         private PlayerInput playerInput;
-        public readonly Vector2 Position;
+        public readonly Vector2 position;
 
         private const float MoveSpeed = 5f / Server.TicksPerSecond; // This matches client's fixedUpdateTime
         
         public Player(int id, string name, Vector2 position)
         {
-            Id = id;
-            Name = name;
-            Position = position;
+            this.id = id;
+            this.name = name;
+            this.position = position;
             playerInput = new PlayerInput();
         }
 
@@ -31,8 +31,8 @@ namespace AmongUsClone.Server
         {
             Vector2 moveDirection = GetMoveDirection();
 
-            Position.x += moveDirection.x * MoveSpeed;
-            Position.y += moveDirection.y * MoveSpeed;
+            position.x += moveDirection.x * MoveSpeed;
+            position.y += moveDirection.y * MoveSpeed;
 
             PacketsSender.SendPositionPacket(this);
         }

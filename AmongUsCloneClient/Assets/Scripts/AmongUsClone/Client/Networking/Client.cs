@@ -4,21 +4,21 @@ namespace AmongUsClone.Client.Networking
 {
     public class Client : MonoBehaviour
     {
-        public static Client Instance;
+        public static Client instance;
 
-        [HideInInspector] public int id = 0;
+        [HideInInspector] public int id;
         public string ip = "127.0.0.1";
         public int port = 26950;
-        public TcpConnectionToServer TcpConnectionToServer;
-        public UdpConnectionToServer UdpConnectionToServer;
+        public TcpConnectionToServer tcpConnectionToServer;
+        public UdpConnectionToServer udpConnectionToServer;
 
         private void Awake()
         {
-            if (Instance == null)
+            if (instance == null)
             {
-                Instance = this;
+                instance = this;
             }
-            else if (Instance != this)
+            else if (instance != this)
             {
                 Debug.Log("Instance already exists, destroying the object!");
                 Destroy(this);
@@ -27,13 +27,13 @@ namespace AmongUsClone.Client.Networking
 
         private void Start()
         {
-            TcpConnectionToServer = new TcpConnectionToServer();
-            UdpConnectionToServer = new UdpConnectionToServer();
+            tcpConnectionToServer = new TcpConnectionToServer();
+            udpConnectionToServer = new UdpConnectionToServer();
         }
 
         public void ConnectToServer()
         {
-            TcpConnectionToServer.Connect();
+            tcpConnectionToServer.Connect();
         }
     }
 }

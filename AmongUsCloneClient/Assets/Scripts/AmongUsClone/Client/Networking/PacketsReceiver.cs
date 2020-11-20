@@ -30,10 +30,10 @@ namespace AmongUsClone.Client.Networking
 
             // Todo: remove useless message?
             Debug.Log($"Message from server: {message}");
-            Client.Instance.id = clientId;
+            Client.instance.id = clientId;
             PacketsSender.SendWelcomeReceivedPacket();
 
-            Client.Instance.UdpConnectionToServer.Connect(((IPEndPoint) Client.Instance.TcpConnectionToServer.TcpClient.Client.LocalEndPoint).Port);
+            Client.instance.udpConnectionToServer.Connect(((IPEndPoint) Client.instance.tcpConnectionToServer.tcpClient.Client.LocalEndPoint).Port);
         }
 
         private static void ProcessSpawnPlayerPacket(Packet packet)
@@ -42,7 +42,7 @@ namespace AmongUsClone.Client.Networking
             string playerName = packet.ReadString();
             Vector2 playerPosition = packet.ReadVector2();
             
-            GameManager.Instance.SpawnPlayer(playerId, playerName, playerPosition);
+            GameManager.instance.SpawnPlayer(playerId, playerName, playerPosition);
         }
         
         private static void ProcessPlayerPositionPacket(Packet packet)

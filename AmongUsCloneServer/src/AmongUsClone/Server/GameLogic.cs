@@ -9,7 +9,7 @@ namespace AmongUsClone.Server
         {
             foreach (Client client in Server.Clients.Values)
             {
-                client.Player?.Update();
+                client.player?.Update();
             }
             
             ThreadManager.UpdateMain();

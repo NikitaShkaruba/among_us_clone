@@ -8,15 +8,14 @@ namespace AmongUsClone.Server
 {
     public static class Server
     {
-        private static bool isRunning = true;
         public const int TicksPerSecond = 30;
         private const int MillisecondsPerTick = 1000 / TicksPerSecond;
-
         public const int MinPlayerId = 1;
         public static int MaxPlayerId { get; private set; }
-
+        
         public static readonly Dictionary<int, Client> Clients = new Dictionary<int, Client>();
         private static int port;
+        private static bool isRunning = true;
 
         public static void Start(int maxPlayers, int port)
         {

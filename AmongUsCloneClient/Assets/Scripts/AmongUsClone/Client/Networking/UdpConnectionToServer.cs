@@ -14,7 +14,7 @@ namespace AmongUsClone.Client.Networking
 
         public UdpConnectionToServer()
         {
-            ipEndPoint = new IPEndPoint(IPAddress.Parse(Client.Instance.ip), Client.Instance.port);
+            ipEndPoint = new IPEndPoint(IPAddress.Parse(Client.instance.ip), Client.instance.port);
         }
 
         public void Connect(int localPort)
@@ -39,7 +39,7 @@ namespace AmongUsClone.Client.Networking
 
             try
             {
-                packet.InsertInt(Client.Instance.id);
+                packet.InsertInt(Client.instance.id);
                 udpClient.BeginSend(packet.ToArray(), packet.GetLength(), null, null);
             }
             catch (Exception exception)

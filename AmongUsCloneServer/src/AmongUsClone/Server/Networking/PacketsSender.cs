@@ -26,9 +26,9 @@ namespace AmongUsClone.Server.Networking
 
             using (Packet packet = new Packet((int) packetType))
             {
-                packet.Write(player.Id);
-                packet.Write(player.Name);
-                packet.Write(player.Position);
+                packet.Write(player.id);
+                packet.Write(player.name);
+                packet.Write(player.position);
                 
                 SendTcpPacket(clientId, packetType, packet);
             }
@@ -40,8 +40,8 @@ namespace AmongUsClone.Server.Networking
 
             using (Packet packet = new Packet((int) packetType))
             {
-                packet.Write(player.Id);
-                packet.Write(player.Position);
+                packet.Write(player.id);
+                packet.Write(player.position);
                 
                 SendUdpPacketToAll(packetType, packet);
             }
@@ -51,7 +51,7 @@ namespace AmongUsClone.Server.Networking
         {
             packet.WriteLength();
             
-            Server.Clients[clientId].TcpConnectionToClient.SendPacket(packet);
+            Server.Clients[clientId].tcpConnectionToClient.SendPacket(packet);
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to the client {clientId}");
@@ -63,7 +63,7 @@ namespace AmongUsClone.Server.Networking
             
             foreach (Client client in Server.Clients.Values)
             {
-                client.TcpConnectionToClient.SendPacket(packet);
+                client.tcpConnectionToClient.SendPacket(packet);
             }
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
@@ -76,12 +76,12 @@ namespace AmongUsClone.Server.Networking
             
             foreach (Client client in Server.Clients.Values)
             {
-                if (client.Id == exceptClientId)
+                if (client.id == exceptClientId)
                 {
                     continue;
                 }
                 
-                client.TcpConnectionToClient.SendPacket(packet);
+                client.tcpConnectionToClient.SendPacket(packet);
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
@@ -91,7 +91,7 @@ namespace AmongUsClone.Server.Networking
         private static void SendUdpPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
-            Server.Clients[clientId].UdpConnectionToClient.SendPacket(packet);
+            Server.Clients[clientId].udpConnectionToClient.SendPacket(packet);
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to the client {clientId}");
@@ -103,7 +103,7 @@ namespace AmongUsClone.Server.Networking
 
             foreach (Client client in Server.Clients.Values)
             {
-                client.UdpConnectionToClient.SendPacket(packet);
+                client.udpConnectionToClient.SendPacket(packet);
             }
             
             string packetTypeName = GetPacketTypeName(packetTypeId);
@@ -116,12 +116,12 @@ namespace AmongUsClone.Server.Networking
             
             foreach (Client client in Server.Clients.Values)
             {
-                if (client.Id == exceptClientId)
+                if (client.id == exceptClientId)
                 {
                     continue;
                 }
                 
-                client.UdpConnectionToClient.SendPacket(packet);
+                client.udpConnectionToClient.SendPacket(packet);
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);

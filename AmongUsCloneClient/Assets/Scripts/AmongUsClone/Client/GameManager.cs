@@ -6,7 +6,7 @@ namespace AmongUsClone.Client
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance;
+        public static GameManager instance;
 
         public static readonly Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
         
@@ -15,11 +15,11 @@ namespace AmongUsClone.Client
 
         private void Awake()
         {
-            if (Instance == null)
+            if (instance == null)
             {
-                Instance = this;
+                instance = this;
             }
-            else if (Instance != this)
+            else if (instance != this)
             {
                 Debug.Log("Instance already exists, destroying the object!");
                 Destroy(this);
@@ -28,7 +28,7 @@ namespace AmongUsClone.Client
 
         public void SpawnPlayer(int id, string name, Vector2 position)
         {
-            GameObject playerPrefab = id == Networking.Client.Instance.id ? localPlayerPrefab : remotePlayerPrefab;
+            GameObject playerPrefab = id == Networking.Client.instance.id ? localPlayerPrefab : remotePlayerPrefab;
             GameObject player = Instantiate(playerPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
             
             PlayerManager playerManager = player.GetComponent<PlayerManager>();

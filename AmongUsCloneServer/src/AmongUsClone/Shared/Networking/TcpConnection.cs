@@ -10,11 +10,11 @@ namespace AmongUsClone.Shared.Networking
     {
         protected const int DataBufferSize = 4096;
 
-        public TcpClient TcpClient;
+        public TcpClient tcpClient;
 
-        protected NetworkStream Stream;
-        protected Packet ReceivePacket;
-        protected byte[] ReceiveBuffer;
+        protected NetworkStream stream;
+        protected Packet receivePacket;
+        protected byte[] receiveBuffer;
 
         // Todo: move packetTypeId computation into Packet
         public delegate void OnPacketReceivedCallback(int packetTypeId, Packet packet);
@@ -24,14 +24,14 @@ namespace AmongUsClone.Shared.Networking
          */
         public void SendPacket(Packet packet)
         {
-            if (TcpClient == null)
+            if (tcpClient == null)
             {
                 throw new Exception("TcpConnection has no tcpClient");
             }
 
             try
             {
-                Stream.BeginWrite(packet.ToArray(), 0, packet.GetLength(), null, null);
+                stream.BeginWrite(packet.ToArray(), 0, packet.GetLength(), null, null);
             }
             catch (Exception exception)
             {
@@ -50,12 +50,12 @@ namespace AmongUsClone.Shared.Networking
         {
             int packetLength = 0;
             
-            ReceivePacket.WriteBytesAndPrepareToRead(data);
+            receivePacket.WriteBytesAndPrepareToRead(data);
 
             // If start of the packet is (DataPacketTypeId) - read it and let try to create a packet to handle
-            if (ReceivePacket.GetUnreadLength() >= sizeof(int))
+            if (receivePacket.GetUnreadLength() >= sizeof(int))
             {
-                packetLength = ReceivePacket.ReadInt();
+                packetLength = receivePacket.ReadInt();
                 if (packetLength <= 0)
                 {
                     return true;
@@ -63,9 +63,9 @@ namespace AmongUsClone.Shared.Networking
             }
 
             // If we have a packet to handle - handle it on main thread
-            while (packetLength > 0 && packetLength <= ReceivePacket.GetUnreadLength())
+            while (packetLength > 0 && packetLength <= receivePacket.GetUnreadLength())
             {
-                byte[] packetBytes = ReceivePacket.ReadBytes(packetLength);
+                byte[] packetBytes = receivePacket.ReadBytes(packetLength);
                 
                 ThreadManager.ExecuteOnMainThread(() =>
                 {
@@ -79,9 +79,9 @@ namespace AmongUsClone.Shared.Networking
                 packetLength = 0;
                 
                 // If we still have a packet
-                if (ReceivePacket.GetUnreadLength() >= sizeof(int))
+                if (receivePacket.GetUnreadLength() >= sizeof(int))
                 {
-                    packetLength = ReceivePacket.ReadInt();
+                    packetLength = receivePacket.ReadInt();
                     if (packetLength <= 0)
                     {
                         return true;

@@ -34,7 +34,7 @@ namespace AmongUsClone.Server.Networking
                 throw new Exception($"Bad clientId {clientId} received");
             }
 
-            Logger.LogEvent(LoggerSection.ClientConnection, $"{Server.Clients[clientId].TcpConnectionToClient.TcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
+            Logger.LogEvent(LoggerSection.ClientConnection, $"{Server.Clients[clientId].tcpConnectionToClient.tcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
             
             Server.Clients[clientId].SendIntoGame(userName);
         }
@@ -50,7 +50,7 @@ namespace AmongUsClone.Server.Networking
             }
 
             PlayerInput playerInput = PlayerInput.Deserialize(serializedPlayerInput);
-            Server.Clients[clientId].Player.UpdateInput(playerInput);
+            Server.Clients[clientId].player.UpdateInput(playerInput);
         }
 
         private static string GetPacketTypeName(ClientPacketType clientPacketType)

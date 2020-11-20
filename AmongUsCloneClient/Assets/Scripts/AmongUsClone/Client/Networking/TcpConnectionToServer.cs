@@ -8,37 +8,37 @@ namespace AmongUsClone.Client.Networking
     {
         public void Connect()
         {
-            TcpClient = new TcpClient
+            tcpClient = new TcpClient
             {
                 ReceiveBufferSize = DataBufferSize,
                 SendBufferSize = DataBufferSize
             };
 
-            ReceiveBuffer = new byte[DataBufferSize];
-            TcpClient.BeginConnect(Client.Instance.ip, Client.Instance.port, ConnectCallback, TcpClient);
+            receiveBuffer = new byte[DataBufferSize];
+            tcpClient.BeginConnect(Client.instance.ip, Client.instance.port, ConnectCallback, tcpClient);
         }
 
         private void ConnectCallback(IAsyncResult result)
         {
-            TcpClient.EndConnect(result);
+            tcpClient.EndConnect(result);
 
-            if (!TcpClient.Connected)
+            if (!tcpClient.Connected)
             {
                 return;
             }
 
-            Stream = TcpClient.GetStream();
+            stream = tcpClient.GetStream();
 
-            ReceivePacket = new Packet();
+            receivePacket = new Packet();
 
-            Stream.BeginRead(ReceiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
+            stream.BeginRead(receiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
         }
 
         private void ReceiveDataCallback(IAsyncResult result)
         {
             try
             {
-                int byteLength = Stream.EndRead(result);
+                int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
                     // Todo: disconnect
@@ -46,12 +46,12 @@ namespace AmongUsClone.Client.Networking
                 }
 
                 byte[] data = new byte[byteLength];
-                Array.Copy(ReceiveBuffer, data, byteLength);
+                Array.Copy(receiveBuffer, data, byteLength);
 
                 bool hasReadFullPacket = HandleData(data, PacketsReceiver.ProcessPacket);
-                ReceivePacket.Reset(hasReadFullPacket);
+                receivePacket.Reset(hasReadFullPacket);
 
-                Stream.BeginRead(ReceiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
+                stream.BeginRead(receiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
             }
             catch
             {

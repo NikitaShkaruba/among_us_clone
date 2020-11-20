@@ -25,15 +25,15 @@ namespace AmongUsClone.Server.Networking
 
         private void Connect(TcpClient tcpClient)
         {
-            TcpClient = tcpClient;
-            TcpClient.ReceiveBufferSize = DataBufferSize;
-            TcpClient.SendBufferSize = DataBufferSize;
+            base.tcpClient = tcpClient;
+            base.tcpClient.ReceiveBufferSize = DataBufferSize;
+            base.tcpClient.SendBufferSize = DataBufferSize;
 
-            ReceivePacket = new Packet();
-            ReceiveBuffer = new byte[DataBufferSize];
+            receivePacket = new Packet();
+            receiveBuffer = new byte[DataBufferSize];
 
-            Stream = tcpClient.GetStream();
-            Stream.BeginRead(ReceiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
+            stream = tcpClient.GetStream();
+            stream.BeginRead(receiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
 
             PacketsSender.SendWelcomePacket(clientId, "Welcome to the server!");
         }
@@ -42,7 +42,7 @@ namespace AmongUsClone.Server.Networking
         {
             try
             {
-                int byteLength = Stream.EndRead(result);
+                int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
                     // Todo: disconnect the client
@@ -50,12 +50,12 @@ namespace AmongUsClone.Server.Networking
                 }
 
                 byte[] data = new byte[byteLength];
-                Array.Copy(ReceiveBuffer, data, byteLength);
+                Array.Copy(receiveBuffer, data, byteLength);
 
                 bool shouldReset = HandleData(data, (packetTypeId, packet) => PacketsReceiver.ProcessPacket(clientId, packetTypeId, packet, true));
-                ReceivePacket.Reset(shouldReset);
+                receivePacket.Reset(shouldReset);
 
-                Stream.BeginRead(ReceiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
+                stream.BeginRead(receiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);
             }
             catch (Exception exception)
             {
@@ -80,7 +80,7 @@ namespace AmongUsClone.Server.Networking
                 }
 
                 Server.Clients[clientId] = new Client(clientId);
-                Server.Clients[clientId].TcpConnectionToClient.Connect(tcpClient);
+                Server.Clients[clientId].tcpConnectionToClient.Connect(tcpClient);
                 return;
             }
 
