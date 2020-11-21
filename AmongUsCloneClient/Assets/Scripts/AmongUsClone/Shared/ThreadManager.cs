@@ -8,8 +8,8 @@ namespace AmongUsClone.Shared
      */
     public static class ThreadManager
     {
-        private static readonly List<Action> ActionsToExecuteOnMainThread = new List<Action>();
-        private static readonly List<Action> CopyOfActionsToExecuteCopiedOnMainThread = new List<Action>();
+        private static readonly List<Action> actionsToExecuteOnMainThread = new List<Action>();
+        private static readonly List<Action> copyOfActionsToExecuteCopiedOnMainThread = new List<Action>();
         private static bool executionNeeded;
 
         /**
@@ -17,16 +17,16 @@ namespace AmongUsClone.Shared
          */
         public static void ExecuteOnMainThread(Action action)
         {
-            lock (ActionsToExecuteOnMainThread)
+            lock (actionsToExecuteOnMainThread)
             {
-                ActionsToExecuteOnMainThread.Add(action);
+                actionsToExecuteOnMainThread.Add(action);
                 executionNeeded = true;
             }
         }
 
         /**
          * Executes all code meant to run on the main thread
-         * 
+         *
          * NOTE: Call this ONLY from the main thread
          */
         public static void UpdateMain()
@@ -36,15 +36,15 @@ namespace AmongUsClone.Shared
                 return;
             }
 
-            CopyOfActionsToExecuteCopiedOnMainThread.Clear();
-            lock (ActionsToExecuteOnMainThread)
+            copyOfActionsToExecuteCopiedOnMainThread.Clear();
+            lock (actionsToExecuteOnMainThread)
             {
-                CopyOfActionsToExecuteCopiedOnMainThread.AddRange(ActionsToExecuteOnMainThread);
-                ActionsToExecuteOnMainThread.Clear();
+                copyOfActionsToExecuteCopiedOnMainThread.AddRange(actionsToExecuteOnMainThread);
+                actionsToExecuteOnMainThread.Clear();
                 executionNeeded = false;
             }
 
-            foreach (Action action in CopyOfActionsToExecuteCopiedOnMainThread)
+            foreach (Action action in copyOfActionsToExecuteCopiedOnMainThread)
             {
                 action();
             }

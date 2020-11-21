@@ -1,44 +1,63 @@
-using AmongUsClone.Shared.DataStructures;
+using System.Net;
+using AmongUsClone.Server.Networking.Udp;
+using AmongUsClone.Shared.Networking;
+using TcpClient = System.Net.Sockets.TcpClient;
 
 namespace AmongUsClone.Server.Networking
 {
+    /**
+     * Client is a player + networking information about how to communicate with him
+     */
     public class Client
     {
-        public readonly int id;
+        public readonly int playerId;
         public Player player;
-        
-        public readonly TcpConnectionToClient tcpConnectionToClient;
-        public readonly UdpConnectionToClient udpConnectionToClient;
 
-        public Client(int id)
+        private Tcp.TcpConnection tcpConnection;
+        private IPEndPoint udpIpEndPoint;
+
+        public Client(int playerId)
         {
-            this.id = id;
-            
-            tcpConnectionToClient = new TcpConnectionToClient(id);
-            udpConnectionToClient = new UdpConnectionToClient(id);
+            this.playerId = playerId;
+
+            tcpConnection = null;
+            udpIpEndPoint = null;
         }
 
-        public void SendIntoGame(string playerName)
+        public void ConnectTcp(TcpClient tcpClient)
         {
-            player = new Player(id, playerName, new Vector2(0, 0));
+            tcpConnection = new Tcp.TcpConnection(playerId, tcpClient);
+            tcpConnection.InitializeCommunication();
+        }
 
-            foreach (Client client in Server.Clients.Values)
-            {
-                // Because of a multithreading we should check for it
-                if (client.player == null)
-                {
-                    continue;
-                }
-                
-                // Connect existent players with the new client (including himself)
-                PacketsSender.SendPlayerConnectedPacket(client.id, player);
-                
-                // Connect new player with each client (himself is already spawned)
-                if (client.id != id)
-                {
-                    PacketsSender.SendPlayerConnectedPacket(id, client.player);
-                }
-            }
+        public void ConnectUdp(IPEndPoint clientIpEndPoint)
+        {
+            udpIpEndPoint = clientIpEndPoint;
+        }
+
+        public void SendTcpPacket(Packet packet)
+        {
+            tcpConnection.SendPacket(packet);
+        }
+
+        public void SendUdpPacket(Packet packet)
+        {
+            UdpClient.SendPacket(packet, udpIpEndPoint);
+        }
+
+        public EndPoint GetTcpEndPoint()
+        {
+            return tcpConnection.tcpClient.Client.RemoteEndPoint;
+        }
+
+        public bool IsConnectedViaUdp()
+        {
+            return udpIpEndPoint != null;
+        }
+
+        public bool IsCorrectUdpIpEndPoint(IPEndPoint clientIpEndPoint)
+        {
+            return udpIpEndPoint.ToString() == clientIpEndPoint.ToString();
         }
     }
 }

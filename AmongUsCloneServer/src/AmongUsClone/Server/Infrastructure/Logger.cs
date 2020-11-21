@@ -5,8 +5,8 @@ namespace AmongUsClone.Server.Infrastructure
 {
     public static class Logger
     {
-        private static readonly DateTime StartupDateTime = DateTime.Now;
-        
+        private static readonly DateTime startupDateTime = DateTime.Now;
+
         private const string LogTypeEvent = "event";
         private const string LogTypeError = "error";
 
@@ -28,7 +28,7 @@ namespace AmongUsClone.Server.Infrastructure
             {
                 return;
             }
-            
+
             Console.WriteLine($"[{RenderTimeSinceStartupLabel()} {loggerSection} {logType}] {logDescription}");
         }
 
@@ -43,8 +43,8 @@ namespace AmongUsClone.Server.Infrastructure
 
         private static string RenderTimeSinceStartupLabel()
         {
-            float secondsSinceStart = (DateTime.Now - StartupDateTime).Seconds;
-            
+            float secondsSinceStart = (DateTime.Now - startupDateTime).Seconds;
+
             const int minutesInHour = 60;
             const int secondsInMinute = 60;
             const int secondsInHour = 60 * secondsInMinute;

@@ -1,26 +1,23 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Networking;
 using UnityEngine;
 
 namespace AmongUsClone.Client.Networking
 {
-    public class UdpConnectionToServer
+    public class UdpConnection
     {
-        public UdpClient udpClient;
+        private readonly UdpClient udpClient;
         private IPEndPoint ipEndPoint;
 
-        public UdpConnectionToServer()
+        public UdpConnection(int localPort)
         {
-            ipEndPoint = new IPEndPoint(IPAddress.Parse(Client.instance.ip), Client.instance.port);
-        }
+            ipEndPoint = new IPEndPoint(IPAddress.Parse(ConnectionToServer.ServerIP), ConnectionToServer.ServerPort);
 
-        public void Connect(int localPort)
-        {
             udpClient = new UdpClient(localPort);
-
             udpClient.Connect(ipEndPoint);
             udpClient.BeginReceive(OnConnection, null);
 
@@ -39,13 +36,18 @@ namespace AmongUsClone.Client.Networking
 
             try
             {
-                packet.InsertInt(Client.instance.id);
+                packet.InsertInt(Game.instance.connectionToServer.myPlayerId);
                 udpClient.BeginSend(packet.ToArray(), packet.GetLength(), null, null);
             }
             catch (Exception exception)
             {
                 Debug.Log($"Error sending data through udp: {exception}");
             }
+        }
+
+        public void CloseConnection()
+        {
+            udpClient.Close();
         }
 
         private void OnConnection(IAsyncResult result)
@@ -59,15 +61,15 @@ namespace AmongUsClone.Client.Networking
 
                 if (data.Length < sizeof(int))
                 {
-                    Client.instance.DisconnectFromServer();
+                    Game.instance.DisconnectFromLobby();
                     return;
                 }
-                
+
                 HandlePacketData(data);
             }
             catch
             {
-                Client.instance.DisconnectFromServer();
+                Game.instance.DisconnectFromLobby();
             }
         }
 

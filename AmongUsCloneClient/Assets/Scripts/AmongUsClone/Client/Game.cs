@@ -1,4 +1,6 @@
-﻿using AmongUsClone.Client.UI;
+﻿using AmongUsClone.Client.Networking;
+using AmongUsClone.Client.UI;
+using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using UnityEngine;
 using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
@@ -9,8 +11,10 @@ namespace AmongUsClone.Client
     {
         public static Game instance;
 
+        public readonly ConnectionToServer connectionToServer = new ConnectionToServer();
+
         public UserInterface userInterface;
-        public GameObject mainMenu;
+        public MainMenu mainMenu;
         public Lobby lobby;
 
         private void Awake()
@@ -34,25 +38,25 @@ namespace AmongUsClone.Client
         // Unity holds some data between running game instances, so we need to cleanup by hand
         private void OnApplicationQuit()
         {
-            Networking.Client.instance.DisconnectFromServer();
+            connectionToServer.Disconnect();
         }
 
         public void ConnectToLobby()
         {
-            instance.mainMenu.SetActive(false);
-            instance.lobby.gameObject.SetActive(true);
-            
-            Networking.Client.instance.ConnectToServer();
+            mainMenu.gameObject.SetActive(false);
+            lobby.gameObject.SetActive(true);
+
+            connectionToServer.Connect();
         }
 
         public void DisconnectFromLobby()
         {
             userInterface.RemovePauseMenu();
-            instance.mainMenu.SetActive(true);
-            instance.lobby.gameObject.SetActive(false);
+            mainMenu.gameObject.SetActive(true);
+            lobby.gameObject.SetActive(false);
             lobby.Reset();
-            
-            Networking.Client.instance.DisconnectFromServer();
+
+            connectionToServer.Disconnect();
         }
 
         public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)

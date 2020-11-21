@@ -8,12 +8,24 @@ namespace AmongUsClone.Client.PlayerLogic
         public int id;
         // ReSharper disable once NotAccessedField.Global
         public new string name;
+        public bool isControllable;
 
-        private readonly PlayerControllable playerControllable = new PlayerControllable();
+        private PlayerControllable playerControllable;
+
+        public void Awake()
+        {
+            if (isControllable)
+            {
+                playerControllable = new PlayerControllable();
+            }
+        }
 
         public void Update()
         {
-            playerControllable.Update();
+            if (isControllable)
+            {
+                playerControllable.Update();
+            }
         }
     }
 }

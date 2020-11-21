@@ -40,7 +40,7 @@ namespace AmongUsClone.Shared.Networking
                 throw new Exception($"Unable to send tcp data: ${exception}");
             }
         }
-        
+
         /**
          * TCP protocol is stream based - that means that we don't always have exactly 1 packet there - we just have
          * random bytes which can include half a packet, one packet, one and a half packet, or even more.
@@ -51,7 +51,7 @@ namespace AmongUsClone.Shared.Networking
         protected bool HandleData(byte[] data, OnPacketReceivedCallback onPacketReceivedCallback)
         {
             int packetLength = 0;
-            
+
             receivePacket.WriteBytesAndPrepareToRead(data);
 
             // If start of the packet is (DataPacketTypeId) - read it and let try to create a packet to handle
@@ -68,7 +68,7 @@ namespace AmongUsClone.Shared.Networking
             while (packetLength > 0 && packetLength <= receivePacket.GetUnreadLength())
             {
                 byte[] packetBytes = receivePacket.ReadBytes(packetLength);
-                
+
                 ThreadManager.ExecuteOnMainThread(() =>
                 {
                     using (Packet packet = new Packet(packetBytes))
@@ -79,7 +79,7 @@ namespace AmongUsClone.Shared.Networking
                 });
 
                 packetLength = 0;
-                
+
                 // If we still have a packet
                 if (receivePacket.GetUnreadLength() >= sizeof(int))
                 {

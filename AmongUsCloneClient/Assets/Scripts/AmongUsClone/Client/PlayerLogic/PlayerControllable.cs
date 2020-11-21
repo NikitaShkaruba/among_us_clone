@@ -1,4 +1,4 @@
-﻿using AmongUsClone.Client.Networking;
+﻿using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared;
 using UnityEngine;
 
@@ -7,7 +7,7 @@ namespace AmongUsClone.Client.PlayerLogic
     public class PlayerControllable
     {
         private readonly PlayerInput playerInput = new PlayerInput();
-        
+
         public void Update()
         {
             UpdatePlayerInput();

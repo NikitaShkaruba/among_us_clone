@@ -16,7 +16,7 @@ namespace AmongUsClone.Client
 
         public void AddPlayer(int playerId, string playerName, Vector2 playerPosition)
         {
-            GameObject playerPrefab = playerId == Networking.Client.instance.id ? localPlayerPrefab : remotePlayerPrefab;
+            GameObject playerPrefab = playerId == Game.instance.connectionToServer.myPlayerId ? localPlayerPrefab : remotePlayerPrefab;
             GameObject playerGameObject = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
             playerGameObject.transform.parent = playersParentGameObject.transform;
 
@@ -43,7 +43,7 @@ namespace AmongUsClone.Client
 
         public void UpdatePlayerPosition(int playerId, Vector2 playerPosition)
         {
-            // Because of multi threading, we might not have a player yet 
+            // Because of multi threading, we might not have a player yet
             if (!players.ContainsKey(playerId))
             {
                 return;
@@ -60,7 +60,7 @@ namespace AmongUsClone.Client
             {
                 Destroy(player.gameObject);
             }
-            
+
             players.Clear();
         }
     }

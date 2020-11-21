@@ -1,4 +1,4 @@
-using AmongUsClone.Server.Networking;
+using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.DataStructures;
 
@@ -13,7 +13,7 @@ namespace AmongUsClone.Server
         public readonly Vector2 position;
 
         private const float MoveSpeed = 5f / Server.TicksPerSecond; // This matches client's fixedUpdateTime
-        
+
         public Player(int id, string name, Vector2 position)
         {
             this.id = id;

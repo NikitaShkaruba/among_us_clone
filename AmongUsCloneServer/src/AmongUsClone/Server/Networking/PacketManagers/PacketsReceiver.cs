@@ -5,50 +5,50 @@ using AmongUsClone.Shared;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 
-namespace AmongUsClone.Server.Networking
+namespace AmongUsClone.Server.Networking.PacketManagers
 {
     public static class PacketsReceiver
     {
-        private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> PacketHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
+        private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> packetHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
         {
             {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
-            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket}
+            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
         };
 
-        public static void ProcessPacket(int clientId, int packetTypeId, Packet packet, bool isTcp)
+        public static void ProcessPacket(int playerId, int packetTypeId, Packet packet, bool isTcp)
         {
             string packetTypeName = GetPacketTypeName((ClientPacketType)packetTypeId);
             string protocolName = isTcp ? "TCP" : "UDP";
-            Logger.LogEvent(LoggerSection.Network, $"Received «{packetTypeName}» {protocolName} packet from the client {clientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Received «{packetTypeName}» {protocolName} packet from the client {playerId}");
 
-            PacketHandlers[packetTypeId](clientId, packet);
+            packetHandlers[packetTypeId](playerId, packet);
         }
 
-        private static void ProcessWelcomeReceivedPacket(int clientId, Packet packet)
+        private static void ProcessWelcomeReceivedPacket(int playerId, Packet packet)
         {
-            int packetClientId = packet.ReadInt();
+            int packetPlayerId = packet.ReadInt();
             string userName = packet.ReadString();
 
-            if (clientId != packetClientId)
+            if (playerId != packetPlayerId)
             {
-                throw new Exception($"Bad clientId {clientId} received");
+                throw new Exception($"Bad playerId {playerId} received");
             }
 
-            Logger.LogEvent(LoggerSection.ClientConnection, $"{Server.Clients[clientId].tcpConnectionToClient.tcpClient.Client.RemoteEndPoint} connected successfully and is now a player {clientId}");
-            
-            Server.Clients[clientId].SendIntoGame(userName);
+            Logger.LogEvent(LoggerSection.ClientConnection, $"{Server.clients[playerId].GetTcpEndPoint()} connected successfully and is now a player {playerId}");
+
+            GameLogic.ConnectPlayer(playerId, userName);
         }
 
-        private static void ProcessPlayerInputPacket(int clientId, Packet packet)
+        private static void ProcessPlayerInputPacket(int playerId, Packet packet)
         {
             int playerInputsAmount = packet.ReadInt();
 
             // Because of multi threading we might not have this client
-            if (!Server.Clients.ContainsKey(clientId))
+            if (!Server.clients.ContainsKey(playerId))
             {
                 return;
             }
-            
+
             bool[] serializedPlayerInput = new bool[playerInputsAmount];
             for (int playerInputIndex = 0; playerInputIndex < serializedPlayerInput.Length; playerInputIndex++)
             {
@@ -56,7 +56,7 @@ namespace AmongUsClone.Server.Networking
             }
 
             PlayerInput playerInput = PlayerInput.Deserialize(serializedPlayerInput);
-            Server.Clients[clientId].player.UpdateInput(playerInput);
+            GameLogic.UpdatePlayerInput(playerId, playerInput);
         }
 
         private static string GetPacketTypeName(ClientPacketType clientPacketType)

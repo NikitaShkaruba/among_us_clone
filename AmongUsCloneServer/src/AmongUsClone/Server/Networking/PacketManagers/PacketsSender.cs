@@ -3,24 +3,23 @@ using AmongUsClone.Server.Infrastructure;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 
-namespace AmongUsClone.Server.Networking
+namespace AmongUsClone.Server.Networking.PacketManagers
 {
     public static class PacketsSender
     {
-        public static void SendWelcomePacket(int clientId, string message)
+        public static void SendWelcomePacket(int playerId)
         {
             const ServerPacketType packetTypeId = ServerPacketType.Welcome;
 
             using (Packet packet = new Packet((int)packetTypeId))
             {
-                packet.Write(message);
-                packet.Write(clientId);
+                packet.Write(playerId);
 
-                SendTcpPacket(clientId, packetTypeId, packet);
+                SendTcpPacket(playerId, packetTypeId, packet);
             }
         }
 
-        public static void SendPlayerConnectedPacket(int clientId, Player connectedPlayer)
+        public static void SendPlayerConnectedPacket(int playerId, Player connectedPlayer)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerConnected;
 
@@ -29,8 +28,8 @@ namespace AmongUsClone.Server.Networking
                 packet.Write(connectedPlayer.id);
                 packet.Write(connectedPlayer.name);
                 packet.Write(connectedPlayer.position);
-                
-                SendTcpPacket(clientId, packetType, packet);
+
+                SendTcpPacket(playerId, packetType, packet);
             }
         }
 
@@ -54,94 +53,94 @@ namespace AmongUsClone.Server.Networking
             {
                 packet.Write(player.id);
                 packet.Write(player.position);
-                
+
                 SendUdpPacketToAll(packetType, packet);
             }
         }
 
-        private static void SendTcpPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendTcpPacket(int playerId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
-            
-            Server.Clients[clientId].tcpConnectionToClient.SendPacket(packet);
+
+            Server.clients[playerId].SendTcpPacket(packet);
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to the client {clientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to the client {playerId}");
         }
 
         // ReSharper disable once UnusedMember.Local
         private static void SendTcpPacketToAll(ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
-            
-            foreach (Client client in Server.Clients.Values)
+
+            foreach (Client client in Server.clients.Values)
             {
-                client.tcpConnectionToClient.SendPacket(packet);
+                client.SendTcpPacket(packet);
             }
-            
+
             string packetTypeName = GetPacketTypeName(packetTypeId);
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients");
         }
- 
+
         // ReSharper disable once UnusedMember.Local
-        private static void SendTcpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendTcpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
-            
-            foreach (Client client in Server.Clients.Values)
+
+            foreach (Client client in Server.clients.Values)
             {
-                if (client.id == exceptClientId)
+                if (client.playerId == ignoredPlayerId)
                 {
                     continue;
                 }
-                
-                client.tcpConnectionToClient.SendPacket(packet);
+
+                client.SendTcpPacket(packet);
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients except ${exceptClientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients except ${ignoredPlayerId}");
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendUdpPacket(int clientId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendUdpPacket(int playerId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
-            Server.Clients[clientId].udpConnectionToClient.SendPacket(packet);
-            
+            Server.clients[playerId].SendUdpPacket(packet);
+
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to the client {clientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to the client {playerId}");
         }
 
         private static void SendUdpPacketToAll(ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
 
-            foreach (Client client in Server.Clients.Values)
+            foreach (Client client in Server.clients.Values)
             {
-                client.udpConnectionToClient.SendPacket(packet);
+                client.SendUdpPacket(packet);
             }
-            
+
             string packetTypeName = GetPacketTypeName(packetTypeId);
             Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients");
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendUdpPacketToAllExceptOne(int exceptClientId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendUdpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType packetTypeId, Packet packet)
         {
             packet.WriteLength();
-            
-            foreach (Client client in Server.Clients.Values)
+
+            foreach (Client client in Server.clients.Values)
             {
-                if (client.id == exceptClientId)
+                if (client.playerId == ignoredPlayerId)
                 {
                     continue;
                 }
-                
-                client.udpConnectionToClient.SendPacket(packet);
+
+                client.SendUdpPacket(packet);
             }
 
             string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients except ${exceptClientId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients except ${ignoredPlayerId}");
         }
 
         private static string GetPacketTypeName(ServerPacketType serverPacketType)

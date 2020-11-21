@@ -1,10 +1,9 @@
-﻿using AmongUsClone.Client.UI;
-using AmongUsClone.Shared;
+﻿using AmongUsClone.Shared;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using UnityEngine;
 
-namespace AmongUsClone.Client.Networking
+namespace AmongUsClone.Client.Networking.PacketManagers
 {
     public class PacketsSender : MonoBehaviour
     {
@@ -12,17 +11,17 @@ namespace AmongUsClone.Client.Networking
         {
             using (Packet packet = new Packet((int) ClientPacketType.WelcomeReceived))
             {
-                packet.Write(Client.instance.id);
-                packet.Write(MainMenu.instance.userNameField.text);
+                packet.Write(Game.instance.connectionToServer.myPlayerId);
+                packet.Write(Game.instance.mainMenu.userNameField.text);
 
-                SendTcpPacket(packet);
+                Game.instance.connectionToServer.SendTcpPacket(packet);
             }
         }
 
         public static void SendPlayerInputPacket(PlayerInput playerInput)
         {
             bool[] serializedPlayerInput = playerInput.Serialize();
-                
+
             using (Packet packet = new Packet((int) ClientPacketType.PlayerInput))
             {
                 packet.Write(serializedPlayerInput.Length);
@@ -30,21 +29,9 @@ namespace AmongUsClone.Client.Networking
                 {
                     packet.Write(input);
                 }
-                
-                SendUdpPacket(packet);
+
+                Game.instance.connectionToServer.SendUdpPacket(packet);
             }
-        }
-
-        private static void SendTcpPacket(Packet packet)
-        {
-            packet.WriteLength();
-            Client.instance.tcpConnectionToServer.SendPacket(packet);
-        }
-
-        private static void SendUdpPacket(Packet packet)
-        {
-            packet.WriteLength();
-            Client.instance.udpConnectionToServer.SendPacket(packet);
         }
     }
 }

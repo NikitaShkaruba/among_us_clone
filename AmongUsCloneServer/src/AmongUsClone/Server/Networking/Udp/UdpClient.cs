@@ -1,31 +1,23 @@
 using System;
 using System.Net;
-using System.Net.Sockets;
 using AmongUsClone.Server.Infrastructure;
+using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Networking;
 
-namespace AmongUsClone.Server.Networking
+namespace AmongUsClone.Server.Networking.Udp
 {
-    public class UdpConnectionToClient
+    public static class UdpClient
     {
-        private readonly int clientId;
-        
-        private static UdpClient udpClient;
-        private IPEndPoint ipEndPoint;
+        private static System.Net.Sockets.UdpClient udpClient;
 
-        public UdpConnectionToClient(int clientId)
+        public static void Initialize(int port)
         {
-            this.clientId = clientId;
-        }
-
-        public static void InitializeListener(int port)
-        {
-            udpClient = new UdpClient(port);
+            udpClient = new System.Net.Sockets.UdpClient(port);
             udpClient.BeginReceive(OnConnection, null);
         }
 
-        public void SendPacket(Packet packet)
+        public static void SendPacket(Packet packet, IPEndPoint ipEndPoint)
         {
             // Because of a multithreading we can have a client, but he might not have an ipEndPoint
             if (ipEndPoint == null)
@@ -41,11 +33,6 @@ namespace AmongUsClone.Server.Networking
             {
                 Logger.LogError(LoggerSection.Network, $"Error sending UDP data to {ipEndPoint}: {exception}");
             }
-        }
- 
-        private void Connect(IPEndPoint ipEndPoint)
-        {
-            this.ipEndPoint = ipEndPoint;
         }
 
         private static void OnConnection(IAsyncResult result)
@@ -65,28 +52,27 @@ namespace AmongUsClone.Server.Networking
 
                 using (Packet packet = new Packet(data))
                 {
-                    int clientId = packet.ReadInt();
+                    int playerId = packet.ReadInt();
 
-                    if (clientId == 0)
+                    if (playerId == 0)
                     {
                         Logger.LogError(LoggerSection.Network, "Undefined client id in UDP packet");
                         return;
                     }
 
-                    if (IsUnknownClient(clientId))
+                    if (!Server.clients[playerId].IsConnectedViaUdp())
                     {
-                        Server.Clients[clientId].udpConnectionToClient.Connect(clientIpEndPoint);
+                        Server.clients[playerId].ConnectUdp(clientIpEndPoint);
+                        return;
                     }
-                    else
-                    {
-                        if (Server.Clients[clientId].udpConnectionToClient.ipEndPoint.ToString() != clientIpEndPoint.ToString())
-                        {
-                            Logger.LogError(LoggerSection.Network, "Hacking attempt, client ids doesn't match");
-                            return;
-                        }
 
-                        Server.Clients[clientId].udpConnectionToClient.HandlePacketData(packet);
+                    if (!Server.clients[playerId].IsCorrectUdpIpEndPoint(clientIpEndPoint))
+                    {
+                        Logger.LogError(LoggerSection.Network, "Hacking attempt, client ids doesn't match");
+                        return;
                     }
+
+                    HandlePacketData(playerId, packet);
                 }
             }
             catch (Exception exception)
@@ -95,24 +81,19 @@ namespace AmongUsClone.Server.Networking
             }
         }
 
-        private void HandlePacketData(Packet packet)
+        private static void HandlePacketData(int playerId, Packet packet)
         {
             int packetLength = packet.ReadInt();
             byte[] packetBytes = packet.ReadBytes(packetLength);
-            
+
             ThreadManager.ExecuteOnMainThread(() =>
             {
                 using (Packet newPacket = new Packet(packetBytes))
                 {
                     int packetTypeId = newPacket.ReadInt();
-                    PacketsReceiver.ProcessPacket(clientId, packetTypeId, newPacket, false);
+                    PacketsReceiver.ProcessPacket(playerId, packetTypeId, newPacket, false);
                 }
             });
-        }
-        
-        private static bool IsUnknownClient(int clientId)
-        {
-            return Server.Clients[clientId].udpConnectionToClient.ipEndPoint == null;
         }
     }
 }

@@ -1,21 +1,22 @@
 using System;
 using System.Net.Sockets;
+using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Networking;
 
 namespace AmongUsClone.Client.Networking
 {
-    public class TcpConnectionToServer : TcpConnection
+    public class TcpConnection : Shared.Networking.TcpConnection
     {
-        public void Connect()
+        public TcpConnection()
         {
-            tcpClient = new TcpClient
-            {
-                ReceiveBufferSize = DataBufferSize,
-                SendBufferSize = DataBufferSize
-            };
+             tcpClient = new TcpClient
+             {
+                 ReceiveBufferSize = DataBufferSize,
+                 SendBufferSize = DataBufferSize
+             };
 
-            receiveBuffer = new byte[DataBufferSize];
-            tcpClient.BeginConnect(Client.instance.ip, Client.instance.port, ConnectCallback, tcpClient);
+             receiveBuffer = new byte[DataBufferSize];
+             tcpClient.BeginConnect(ConnectionToServer.ServerIP, ConnectionToServer.ServerPort, ConnectCallback, tcpClient);
         }
 
         private void ConnectCallback(IAsyncResult result)
@@ -41,7 +42,7 @@ namespace AmongUsClone.Client.Networking
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    Client.instance.DisconnectFromServer();
+                    Game.instance.DisconnectFromLobby();
                     return;
                 }
 
@@ -55,7 +56,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                Client.instance.DisconnectFromServer();
+                Game.instance.DisconnectFromLobby();
             }
         }
     }

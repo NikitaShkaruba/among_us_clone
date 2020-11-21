@@ -10,7 +10,7 @@ namespace AmongUsClone.Shared.DataStructures
     {
         public float x;
         public float y;
-        
+
         public Vector2(float x, float y)
         {
             this.x = x;
