@@ -405,7 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddfdf9d67378f849b77c21dbd7f831f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localPlayerPrefab: {fileID: 9061134681553405023, guid: 00a9b60cb8373a940ab47dd37c0dcc13, type: 3}
+  localPlayerPrefab: {fileID: 1121168635532208351, guid: 734f05b1c4ef4084a9b0fcac486a710d, type: 3}
   remotePlayerPrefab: {fileID: 9061134681553405023, guid: ffaa7a1607de80745bb94cd5e0bbf7b5, type: 3}
 --- !u!1 &959020404
 GameObject:
