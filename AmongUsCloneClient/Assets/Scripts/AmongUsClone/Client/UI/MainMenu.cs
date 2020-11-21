@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 namespace AmongUsClone.Client.UI
 {
-    public class MainMenuManager : MonoBehaviour
+    public class MainMenu : MonoBehaviour
     {
-        public static MainMenuManager instance;
+        public static MainMenu instance;
 
         public InputField userNameField;
 

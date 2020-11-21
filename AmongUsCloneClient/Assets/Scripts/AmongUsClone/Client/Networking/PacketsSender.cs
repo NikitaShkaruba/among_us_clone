@@ -13,7 +13,7 @@ namespace AmongUsClone.Client.Networking
             using (Packet packet = new Packet((int) ClientPacketType.WelcomeReceived))
             {
                 packet.Write(Client.instance.id);
-                packet.Write(MainMenuManager.instance.userNameField.text);
+                packet.Write(MainMenu.instance.userNameField.text);
 
                 SendTcpPacket(packet);
             }

@@ -43,14 +43,14 @@ namespace AmongUsClone.Client.Networking
             string playerName = packet.ReadString();
             Vector2 playerPosition = packet.ReadVector2();
             
-            GameManager.instance.AddPlayerToLobby(playerId, playerName, playerPosition);
+            Game.instance.AddPlayerToLobby(playerId, playerName, playerPosition);
         }
         
         private static void ProcessPlayerDisconnectedPacket(Packet packet)
         {
             int playerId = packet.ReadInt();
             
-            GameManager.instance.RemovePlayerFromLobby(playerId);
+            Game.instance.RemovePlayerFromLobby(playerId);
         }
 
         private static void ProcessPlayerPositionPacket(Packet packet)
@@ -58,7 +58,7 @@ namespace AmongUsClone.Client.Networking
             int playerId = packet.ReadInt();
             Vector2 playerPosition = packet.ReadVector2();
 
-            GameManager.instance.UpdatePlayerPosition(playerId, playerPosition);
+            Game.instance.UpdatePlayerPosition(playerId, playerPosition);
         }
     }
 }

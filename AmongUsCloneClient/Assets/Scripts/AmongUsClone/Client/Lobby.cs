@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUsClone.Client.PlayerLogic;
 using UnityEngine;
 using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
@@ -11,22 +12,22 @@ namespace AmongUsClone.Client
         [SerializeField] public GameObject localPlayerPrefab;
         [SerializeField] public GameObject remotePlayerPrefab;
 
-        private readonly Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();
+        private readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
         public void AddPlayer(int playerId, string playerName, Vector2 playerPosition)
         {
             GameObject playerPrefab = playerId == Networking.Client.instance.id ? localPlayerPrefab : remotePlayerPrefab;
-            GameObject player = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
-            player.transform.parent = playersParentGameObject.transform;
+            GameObject playerGameObject = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
+            playerGameObject.transform.parent = playersParentGameObject.transform;
 
             Debug.Log($"player position: {playerPosition.x}, {playerPosition.y}");
 
-            PlayerManager playerManager = player.GetComponent<PlayerManager>();
+            Player player = playerGameObject.GetComponent<Player>();
 
-            playerManager.id = playerId;
-            playerManager.name = playerName;
+            player.id = playerId;
+            player.name = playerName;
 
-            players.Add(playerId, playerManager);
+            players.Add(playerId, player);
         }
 
         public void RemovePlayer(int playerId)
@@ -55,7 +56,7 @@ namespace AmongUsClone.Client
 
         public void Reset()
         {
-            foreach (PlayerManager player in players.Values)
+            foreach (Player player in players.Values)
             {
                 Destroy(player.gameObject);
             }

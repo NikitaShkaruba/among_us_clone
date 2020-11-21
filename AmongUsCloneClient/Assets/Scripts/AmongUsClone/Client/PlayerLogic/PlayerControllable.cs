@@ -2,13 +2,13 @@
 using AmongUsClone.Shared;
 using UnityEngine;
 
-namespace AmongUsClone.Client
+namespace AmongUsClone.Client.PlayerLogic
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerControllable
     {
         private readonly PlayerInput playerInput = new PlayerInput();
         
-        private void Update()
+        public void Update()
         {
             UpdatePlayerInput();
             SendInputToServer();

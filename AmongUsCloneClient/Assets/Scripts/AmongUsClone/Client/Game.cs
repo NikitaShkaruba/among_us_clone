@@ -1,12 +1,13 @@
 ﻿using AmongUsClone.Client.UI;
+using AmongUsClone.Shared;
 using UnityEngine;
 using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
 namespace AmongUsClone.Client
 {
-    public class GameManager : MonoBehaviour
+    public class Game : MonoBehaviour
     {
-        public static GameManager instance;
+        public static Game instance;
 
         public UserInterface userInterface;
         public GameObject mainMenu;
@@ -23,6 +24,11 @@ namespace AmongUsClone.Client
                 Debug.Log("Instance already exists, destroying the object!");
                 Destroy(this);
             }
+        }
+
+        private void Update()
+        {
+            ThreadManager.UpdateMain();
         }
 
         // Unity holds some data between running game instances, so we need to cleanup by hand
