@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
 namespace AmongUsClone.Client
@@ -10,10 +7,8 @@ namespace AmongUsClone.Client
     {
         public static GameManager instance;
 
-        public static readonly Dictionary<int, PlayerManager> Players = new Dictionary<int, PlayerManager>();
-        
-        public GameObject localPlayerPrefab;
-        public GameObject remotePlayerPrefab;
+        public GameObject mainMenu;
+        public Lobby lobby;
 
         private void Awake()
         {
@@ -28,30 +23,27 @@ namespace AmongUsClone.Client
             }
         }
 
-        public void SpawnPlayer(int playerId, string playerName, Vector2 playerPosition)
+        public void ConnectToLobby()
         {
-            GameObject playerPrefab = playerId == Networking.Client.instance.id ? localPlayerPrefab : remotePlayerPrefab;
-            GameObject player = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
+            instance.mainMenu.SetActive(false);
+            instance.lobby.gameObject.SetActive(true);
             
-            PlayerManager playerManager = player.GetComponent<PlayerManager>();
-            
-            playerManager.id = playerId;
-            playerManager.name = playerName;
-            
-            Players.Add(playerId, playerManager);
+            Networking.Client.instance.ConnectToServer();
         }
 
-        public static void RemovePlayer(int playerId)
+        public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)
         {
-            PlayerManager[] gameManagers = FindObjectsOfType<PlayerManager>();
-            PlayerManager manager = gameManagers.Single(playerManager => playerManager.id == playerId);
-            if (manager == null)
-            {
-                throw new Exception("Unable to remove disconnected player");
-            }
-            
-            Destroy(manager.gameObject);
-            Players.Remove(playerId);
+            lobby.AddPlayer(playerId, playerName, playerPosition);
+        }
+
+        public void RemovePlayerFromLobby(int playerId)
+        {
+            lobby.RemovePlayer(playerId);
+        }
+
+        public void UpdatePlayerPosition(int playerId, Vector2 playerPosition)
+        {
+            lobby.UpdatePlayerPosition(playerId, playerPosition);
         }
     }
 }
