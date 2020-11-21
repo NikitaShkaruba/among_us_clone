@@ -27,20 +27,11 @@ namespace AmongUsClone.Client.Networking
             }
         }
 
-        private void Start()
+        public void ConnectToServer()
         {
             tcpConnectionToServer = new TcpConnectionToServer();
             udpConnectionToServer = new UdpConnectionToServer();
-        }
-
-        // Unity holds some data between running game instances, so we need to cleanup by hand
-        private void OnApplicationQuit()
-        {
-            DisconnectFromServer();
-        }
-
-        public void ConnectToServer()
-        {
+            
             tcpConnectionToServer.Connect();
             isConnected = true;
         }
@@ -54,12 +45,13 @@ namespace AmongUsClone.Client.Networking
             }
             
             isConnected = false;
+            
             tcpConnectionToServer.tcpClient.Close();
+            tcpConnectionToServer = null;
             udpConnectionToServer.udpClient.Close();
+            udpConnectionToServer = null;
             
             Debug.Log("Disconnected from the server");
-            
-            Application.Quit();
         }
     }
 }

@@ -3,6 +3,7 @@ using AmongUsClone.Shared;
 
 namespace AmongUsClone.Server
 {
+    // Todo: properly handle locks
     public static class GameLogic
     {
         public static void Update()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AmongUsClone.Client.UI;
+using UnityEngine;
 using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
 namespace AmongUsClone.Client
@@ -7,6 +8,7 @@ namespace AmongUsClone.Client
     {
         public static GameManager instance;
 
+        public UserInterface userInterface;
         public GameObject mainMenu;
         public Lobby lobby;
 
@@ -23,12 +25,28 @@ namespace AmongUsClone.Client
             }
         }
 
+        // Unity holds some data between running game instances, so we need to cleanup by hand
+        private void OnApplicationQuit()
+        {
+            Networking.Client.instance.DisconnectFromServer();
+        }
+
         public void ConnectToLobby()
         {
             instance.mainMenu.SetActive(false);
             instance.lobby.gameObject.SetActive(true);
             
             Networking.Client.instance.ConnectToServer();
+        }
+
+        public void DisconnectFromLobby()
+        {
+            userInterface.RemovePauseMenu();
+            instance.mainMenu.SetActive(true);
+            instance.lobby.gameObject.SetActive(false);
+            lobby.Reset();
+            
+            Networking.Client.instance.DisconnectFromServer();
         }
 
         public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)

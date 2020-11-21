@@ -52,5 +52,15 @@ namespace AmongUsClone.Client
 
             players[playerId].transform.position = new Vector3(playerPosition.x, playerPosition.y, 0);
         }
+
+        public void Reset()
+        {
+            foreach (PlayerManager player in players.Values)
+            {
+                Destroy(player.gameObject);
+            }
+            
+            players.Clear();
+        }
     }
 }

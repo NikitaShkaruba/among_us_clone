@@ -42,6 +42,12 @@ namespace AmongUsClone.Server.Networking
         private static void ProcessPlayerInputPacket(int clientId, Packet packet)
         {
             int playerInputsAmount = packet.ReadInt();
+
+            // Because of multi threading we might not have this client
+            if (!Server.Clients.ContainsKey(clientId))
+            {
+                return;
+            }
             
             bool[] serializedPlayerInput = new bool[playerInputsAmount];
             for (int playerInputIndex = 0; playerInputIndex < serializedPlayerInput.Length; playerInputIndex++)
