@@ -3,7 +3,6 @@ using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using UnityEngine;
-using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
 namespace AmongUsClone.Client
 {

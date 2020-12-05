@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using AmongUsClone.Client.PlayerLogic;
 using UnityEngine;
-using Vector2 = AmongUsClone.Shared.DataStructures.Vector2;
 
 namespace AmongUsClone.Client
 {
