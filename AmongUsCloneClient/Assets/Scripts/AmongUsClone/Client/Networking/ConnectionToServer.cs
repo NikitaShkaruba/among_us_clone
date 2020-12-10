@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using AmongUsClone.Client.Networking.PacketManagers;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
@@ -58,7 +59,7 @@ namespace AmongUsClone.Client.Networking
             packet.WriteLength();
             tcpConnection.SendPacket(packet);
 
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{GetPacketTypeName(clientPacketType)}» TCP packet to the server");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(clientPacketType)}» TCP packet to the server");
         }
 
         public void SendUdpPacket(ClientPacketType clientPacketType, Packet packet)
@@ -66,17 +67,12 @@ namespace AmongUsClone.Client.Networking
             packet.WriteLength();
             udpConnection.SendPacket(packet);
 
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{GetPacketTypeName(clientPacketType)}» UDP packet to the server");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(clientPacketType)}» UDP packet to the server");
         }
 
         private IPEndPoint GetTcpLocalEndpoint()
         {
             return (IPEndPoint) tcpConnection.tcpClient.Client.LocalEndPoint;
-        }
-
-        private static string GetPacketTypeName(ClientPacketType clientPacketType)
-        {
-            return Enum.GetName(clientPacketType.GetType(), clientPacketType);
         }
     }
 }

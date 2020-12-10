@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using AmongUsClone.Client.PlayerLogic;
+﻿using System.Collections.Generic;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
@@ -23,9 +22,8 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
         public static void ProcessPacket(int packetTypeId, Packet packet, bool isTcp)
         {
-            string packetTypeName = GetPacketTypeName((ClientPacketType)packetTypeId);
             string protocolName = isTcp ? "TCP" : "UDP";
-            Logger.LogEvent(LoggerSection.Network, $"Received «{packetTypeName}» {protocolName} packet from server");
+            Logger.LogEvent(LoggerSection.Network, $"Received «{Helpers.GetEnumName((ServerPacketType)packetTypeId)}» {protocolName} packet from server");
 
             packetHandlers[packetTypeId](packet);
         }
@@ -73,11 +71,6 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             }
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {snapshotId}");
-        }
-
-        private static string GetPacketTypeName(ClientPacketType clientPacketType)
-        {
-            return Enum.GetName(typeof(ClientPacketType), clientPacketType);
         }
     }
 }

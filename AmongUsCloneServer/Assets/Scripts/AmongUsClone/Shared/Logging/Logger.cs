@@ -45,8 +45,8 @@ namespace AmongUsClone.Shared.Logging
         private static bool IsSkippedLoggerSection(LoggerSection loggerSection)
         {
             LoggerSection[] skippedLoggerSections = {
-                // LoggerSection.Network,
-                // LoggerSection.GameSnapshots,
+                LoggerSection.Network,
+                LoggerSection.GameSnapshots,
             };
 
             return skippedLoggerSections.Contains(loggerSection);

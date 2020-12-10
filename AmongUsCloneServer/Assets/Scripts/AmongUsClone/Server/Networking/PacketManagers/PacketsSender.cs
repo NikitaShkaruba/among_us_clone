@@ -1,6 +1,6 @@
-using System;
 using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.Snapshots;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
@@ -66,18 +66,17 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
         }
 
-        private static void SendTcpPacket(int playerId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendTcpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
             Server.clients[playerId].SendTcpPacket(packet);
 
-            string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to the client {playerId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to the client {playerId}");
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendTcpPacketToAll(ServerPacketType packetTypeId, Packet packet)
+        private static void SendTcpPacketToAll(ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
@@ -86,12 +85,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 client.SendTcpPacket(packet);
             }
 
-            string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to all clients");
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendTcpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendTcpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
@@ -105,21 +103,19 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 client.SendTcpPacket(packet);
             }
 
-            string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» TCP packet to all clients except ${ignoredPlayerId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to all clients except ${ignoredPlayerId}");
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendUdpPacket(int playerId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendUdpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
             Server.clients[playerId].SendUdpPacket(packet);
 
-            string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to the client {playerId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» UDP packet to the client {playerId}");
         }
 
-        private static void SendUdpPacketToAll(ServerPacketType packetTypeId, Packet packet)
+        private static void SendUdpPacketToAll(ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
@@ -128,12 +124,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 client.SendUdpPacket(packet);
             }
 
-            string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» UDP packet to all clients");
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendUdpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType packetTypeId, Packet packet)
+        private static void SendUdpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
@@ -147,13 +142,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 client.SendUdpPacket(packet);
             }
 
-            string packetTypeName = GetPacketTypeName(packetTypeId);
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{packetTypeName}» UDP packet to all clients except ${ignoredPlayerId}");
-        }
-
-        private static string GetPacketTypeName(ServerPacketType serverPacketType)
-        {
-            return Enum.GetName(typeof(ServerPacketType), serverPacketType);
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» UDP packet to all clients except ${ignoredPlayerId}");
         }
     }
 }
