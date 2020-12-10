@@ -2,7 +2,9 @@
 using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Logging;
 using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client
 {
@@ -24,14 +26,14 @@ namespace AmongUsClone.Client
             }
             else if (instance != this)
             {
-                Debug.Log("Instance already exists, destroying the object!");
+                Logger.LogError(LoggerSection.Initialization, "Instance already exists, destroying the object!");
                 Destroy(this);
             }
         }
 
         private void Update()
         {
-            ThreadManager.UpdateMain();
+            MainThread.Execute();
         }
 
         // Unity holds some data between running game instances, so we need to cleanup by hand

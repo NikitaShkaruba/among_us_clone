@@ -1,5 +1,7 @@
 using System;
-using AmongUsClone.Server.Infrastructure;
+using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Game.Snapshots;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 
@@ -11,7 +13,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetTypeId = ServerPacketType.Welcome;
 
-            using (Packet packet = new Packet((int)packetTypeId))
+            using (Packet packet = new Packet((int) packetTypeId))
             {
                 packet.Write(playerId);
 
@@ -45,14 +47,20 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
         }
 
-        public static void SendPositionPacket(Player player)
+        public static void SendGameSnapshotPackets(GameSnapshot gameSnapshot)
         {
-            const ServerPacketType packetType = ServerPacketType.PlayerPosition;
+            const ServerPacketType packetType = ServerPacketType.GameSnapshot;
 
             using (Packet packet = new Packet((int) packetType))
             {
-                packet.Write(player.id);
-                packet.Write(player.transform.position);
+                packet.Write(gameSnapshot.id);
+                packet.Write(gameSnapshot.players.Count);
+
+                foreach (Player player in gameSnapshot.players)
+                {
+                    packet.Write(player.id);
+                    packet.Write(player.Position);
+                }
 
                 SendUdpPacketToAll(packetType, packet);
             }

@@ -1,8 +1,9 @@
 using System;
 using System.Net.Sockets;
-using AmongUsClone.Server.Infrastructure;
+using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 
 namespace AmongUsClone.Server.Networking.Tcp
@@ -38,7 +39,7 @@ namespace AmongUsClone.Server.Networking.Tcp
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    ThreadManager.ExecuteOnMainThread(() => Game.instance.DisconnectPlayer(playerId));
+                    MainThread.ScheduleExecution(() => GameManager.instance.DisconnectPlayer(playerId));
                     return;
                 }
 
@@ -53,7 +54,7 @@ namespace AmongUsClone.Server.Networking.Tcp
             catch (Exception exception)
             {
                 Logger.LogError(LoggerSection.Network, $"Error receiving TCP data: {exception}");
-                ThreadManager.ExecuteOnMainThread(() => Game.instance.DisconnectPlayer(playerId));
+                MainThread.ScheduleExecution(() => GameManager.instance.DisconnectPlayer(playerId));
             }
         }
     }

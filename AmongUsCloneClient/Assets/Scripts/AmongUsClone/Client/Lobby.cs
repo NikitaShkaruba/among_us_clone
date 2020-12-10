@@ -19,8 +19,6 @@ namespace AmongUsClone.Client
             GameObject playerGameObject = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
             playerGameObject.transform.parent = playersParentGameObject.transform;
 
-            Debug.Log($"player position: {playerPosition.x}, {playerPosition.y}");
-
             Player player = playerGameObject.GetComponent<Player>();
 
             player.id = playerId;
@@ -47,8 +45,6 @@ namespace AmongUsClone.Client
             {
                 return;
             }
-
-            Debug.Log($"Update player position: {playerPosition.x}, {playerPosition.y}");
 
             players[playerId].transform.position = new Vector3(playerPosition.x, playerPosition.y, 0);
         }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using AmongUsClone.Server.Infrastructure;
-using AmongUsClone.Shared;
+using AmongUsClone.Server.Game;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 
@@ -34,9 +34,9 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 throw new Exception($"Bad playerId {playerId} received");
             }
 
-            Logger.LogEvent(LoggerSection.ClientConnection, $"{Server.clients[playerId].GetTcpEndPoint()} connected successfully and is now a player {playerId}");
+            Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} connected successfully and is now a player {playerId}");
 
-            Game.instance.ConnectPlayer(playerId, userName);
+            GameManager.instance.ConnectPlayer(playerId, userName);
         }
 
         private static void ProcessPlayerInputPacket(int playerId, Packet packet)
@@ -56,7 +56,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
 
             PlayerInput playerInput = PlayerInput.Deserialize(serializedPlayerInput);
-            Game.instance.UpdatePlayerInput(playerId, playerInput);
+            GameManager.instance.UpdatePlayerInput(playerId, playerInput);
         }
 
         private static string GetPacketTypeName(ClientPacketType clientPacketType)

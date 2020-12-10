@@ -1,8 +1,8 @@
 using System;
 using System.Net;
-using AmongUsClone.Server.Infrastructure;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 
 namespace AmongUsClone.Server.Networking.Udp
@@ -87,7 +87,7 @@ namespace AmongUsClone.Server.Networking.Udp
             int packetLength = packet.ReadInt();
             byte[] packetBytes = packet.ReadBytes(packetLength);
 
-            ThreadManager.ExecuteOnMainThread(() =>
+            MainThread.ScheduleExecution(() =>
             {
                 using (Packet newPacket = new Packet(packetBytes))
                 {

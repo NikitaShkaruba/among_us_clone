@@ -1,7 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using AmongUsClone.Client.Networking.PacketManagers;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
-using UnityEngine;
+using AmongUsClone.Shared.Networking.PacketTypes;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking
 {
@@ -47,24 +50,33 @@ namespace AmongUsClone.Client.Networking
             udpConnection.CloseConnection();
             udpConnection = null;
 
-            Debug.Log("Disconnected from the server");
+            Logger.LogEvent(LoggerSection.Connection, "Disconnected from the server");
         }
 
-        public void SendTcpPacket(Packet packet)
+        public void SendTcpPacket(ClientPacketType clientPacketType, Packet packet)
         {
             packet.WriteLength();
             tcpConnection.SendPacket(packet);
+
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{GetPacketTypeName(clientPacketType)}» TCP packet to the server");
         }
 
-        public void SendUdpPacket(Packet packet)
+        public void SendUdpPacket(ClientPacketType clientPacketType, Packet packet)
         {
             packet.WriteLength();
             udpConnection.SendPacket(packet);
+
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{GetPacketTypeName(clientPacketType)}» UDP packet to the server");
         }
 
         private IPEndPoint GetTcpLocalEndpoint()
         {
             return (IPEndPoint) tcpConnection.tcpClient.Client.LocalEndPoint;
+        }
+
+        private static string GetPacketTypeName(ClientPacketType clientPacketType)
+        {
+            return Enum.GetName(clientPacketType.GetType(), clientPacketType);
         }
     }
 }

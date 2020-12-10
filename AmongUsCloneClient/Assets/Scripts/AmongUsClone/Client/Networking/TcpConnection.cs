@@ -49,7 +49,7 @@ namespace AmongUsClone.Client.Networking
                 byte[] data = new byte[byteLength];
                 Array.Copy(receiveBuffer, data, byteLength);
 
-                bool hasReadFullPacket = HandleData(data, PacketsReceiver.ProcessPacket);
+                bool hasReadFullPacket = HandleData(data, (packetTypeId, packet) => PacketsReceiver.ProcessPacket(packetTypeId, packet, true));
                 receivePacket.Reset(hasReadFullPacket);
 
                 stream.BeginRead(receiveBuffer, 0, DataBufferSize, ReceiveDataCallback, null);

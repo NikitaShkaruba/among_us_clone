@@ -3,8 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
-using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking
 {
@@ -41,7 +42,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch (Exception exception)
             {
-                Debug.Log($"Error sending data through udp: {exception}");
+                Logger.LogError(LoggerSection.Network, $"Error sending data through udp: {exception}");
             }
         }
 
@@ -81,12 +82,12 @@ namespace AmongUsClone.Client.Networking
                 data = packet.ReadBytes(packetLength);
             }
 
-            ThreadManager.ExecuteOnMainThread(() =>
+            MainThread.ScheduleExecution(() =>
             {
                 using (Packet packet = new Packet(data))
                 {
                     int packetTypeId = packet.ReadInt();
-                    PacketsReceiver.ProcessPacket(packetTypeId, packet);
+                    PacketsReceiver.ProcessPacket(packetTypeId, packet, false);
                 }
             });
         }

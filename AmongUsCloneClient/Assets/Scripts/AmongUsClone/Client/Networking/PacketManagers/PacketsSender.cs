@@ -9,28 +9,33 @@ namespace AmongUsClone.Client.Networking.PacketManagers
     {
         public static void SendWelcomeReceivedPacket()
         {
-            using (Packet packet = new Packet((int) ClientPacketType.WelcomeReceived))
+            const ClientPacketType clientPacketType = ClientPacketType.WelcomeReceived;
+
+            using (Packet packet = new Packet((int) clientPacketType))
             {
                 packet.Write(Game.instance.connectionToServer.myPlayerId);
                 packet.Write(Game.instance.mainMenu.userNameField.text);
 
-                Game.instance.connectionToServer.SendTcpPacket(packet);
+                Game.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
             }
         }
 
         public static void SendPlayerInputPacket(PlayerInput playerInput)
         {
-            bool[] serializedPlayerInput = playerInput.Serialize();
+            const ClientPacketType clientPacketType = ClientPacketType.PlayerInput;
 
-            using (Packet packet = new Packet((int) ClientPacketType.PlayerInput))
+            using (Packet packet = new Packet((int) clientPacketType))
             {
+                bool[] serializedPlayerInput = playerInput.Serialize();
+
                 packet.Write(serializedPlayerInput.Length);
+
                 foreach (bool input in serializedPlayerInput)
                 {
                     packet.Write(input);
                 }
 
-                Game.instance.connectionToServer.SendUdpPacket(packet);
+                Game.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);
             }
         }
     }

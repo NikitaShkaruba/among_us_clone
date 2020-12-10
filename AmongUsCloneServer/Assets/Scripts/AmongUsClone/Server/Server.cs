@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
-using AmongUsClone.Server.Infrastructure;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.Tcp;
 using AmongUsClone.Server.Networking.Udp;
+using AmongUsClone.Server.Game.Snapshots;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Logging;
 using UnityEngine;
-using Logger = AmongUsClone.Server.Infrastructure.Logger;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server
 {
@@ -45,7 +46,8 @@ namespace AmongUsClone.Server
 
         private void FixedUpdate()
         {
-            ThreadManager.ExecuteMainThreadActions();
+            MainThread.Execute();
+            StartCoroutine(GameSnapshots.ProcessCurrentGameSnapshot());
         }
     }
 }

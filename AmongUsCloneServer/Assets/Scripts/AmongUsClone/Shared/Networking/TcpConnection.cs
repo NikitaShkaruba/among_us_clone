@@ -69,7 +69,7 @@ namespace AmongUsClone.Shared.Networking
             {
                 byte[] packetBytes = receivePacket.ReadBytes(packetLength);
 
-                ThreadManager.ExecuteOnMainThread(() =>
+                MainThread.ScheduleExecution(() =>
                 {
                     using (Packet packet = new Packet(packetBytes))
                     {

@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using AmongUsClone.Server.Infrastructure;
+using AmongUsClone.Shared.Logging;
 
 namespace AmongUsClone.Server.Networking.Tcp
 {
@@ -36,7 +36,7 @@ namespace AmongUsClone.Server.Networking.Tcp
                 return;
             }
 
-            Logger.LogError(LoggerSection.ClientConnection, $"{tcpClient.Client.RemoteEndPoint} failed to connect a client: Server is full");
+            Logger.LogError(LoggerSection.Connection, $"{tcpClient.Client.RemoteEndPoint} failed to connect a client: Server is full");
         }
 
         public static void Stop()

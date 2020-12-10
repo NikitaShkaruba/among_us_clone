@@ -69,7 +69,7 @@ namespace AmongUsClone.Shared.Networking
             {
                 byte[] packetBytes = receivePacket.ReadBytes(packetLength);
 
-                ThreadManager.ExecuteOnMainThread(() =>
+                MainThread.ScheduleExecution(() =>
                 {
                     using (Packet packet = new Packet(packetBytes))
                     {
@@ -91,7 +91,6 @@ namespace AmongUsClone.Shared.Networking
                 }
             }
 
-            // Todo: understand why... This is most probably a hotfix of some kind
             if (packetLength <= 1)
             {
                 return true;
