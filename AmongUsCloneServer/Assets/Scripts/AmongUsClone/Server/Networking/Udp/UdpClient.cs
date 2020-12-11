@@ -19,12 +19,6 @@ namespace AmongUsClone.Server.Networking.Udp
 
         public static void SendPacket(Packet packet, IPEndPoint ipEndPoint)
         {
-            // Because of a multithreading we can have a client, but he might not have an ipEndPoint
-            if (ipEndPoint == null)
-            {
-                return;
-            }
-
             try
             {
                 udpClient.BeginSend(packet.ToArray(), packet.GetLength(), ipEndPoint, null, null);

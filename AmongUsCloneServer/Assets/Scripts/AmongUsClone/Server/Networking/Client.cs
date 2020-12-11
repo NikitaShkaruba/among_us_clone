@@ -60,5 +60,10 @@ namespace AmongUsClone.Server.Networking
         {
             return udpIpEndPoint.ToString() == clientIpEndPoint.ToString();
         }
+
+        public bool IsPlayerInitialized()
+        {
+            return player != null;
+        }
     }
 }

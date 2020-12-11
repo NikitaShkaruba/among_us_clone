@@ -32,8 +32,7 @@ namespace AmongUsClone.Server.Game
 
             foreach (Client client in Server.clients.Values)
             {
-                // Because of a multithreading we should check for it
-                if (client.player == null)
+                if (!client.IsPlayerInitialized())
                 {
                     continue;
                 }

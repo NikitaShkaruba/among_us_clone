@@ -1,11 +1,9 @@
 using Logger = AmongUsClone.Shared.Logging.Logger;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Logging;
-using UnityEngine;
 
 namespace AmongUsClone.Server.Game.Snapshots
 {
@@ -13,10 +11,8 @@ namespace AmongUsClone.Server.Game.Snapshots
     {
         private static readonly List<GameSnapshot> gameSnapshots = new List<GameSnapshot>();
 
-        public static IEnumerator ProcessCurrentGameSnapshot()
+        public static void ProcessCurrentGameSnapshot()
         {
-            yield return new WaitForFixedUpdate();
-
             GameSnapshot lastGameSnapshot = CaptureGameSnapshot();
 
             SaveGameSnapshot(lastGameSnapshot);
@@ -58,6 +54,11 @@ namespace AmongUsClone.Server.Game.Snapshots
 
             foreach (Client client in Server.clients.Values)
             {
+                if (!client.IsPlayerInitialized())
+                {
+                    continue;
+                }
+
                 snapshotPlayers.Add(client.player);
             }
 

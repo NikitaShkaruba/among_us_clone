@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.Tcp;
@@ -47,7 +48,14 @@ namespace AmongUsClone.Server
         private void FixedUpdate()
         {
             MainThread.Execute();
-            StartCoroutine(GameSnapshots.ProcessCurrentGameSnapshot());
+            StartCoroutine(PostFixedUpdate());
+        }
+
+        private static IEnumerator PostFixedUpdate()
+        {
+            yield return new WaitForFixedUpdate();
+
+            GameSnapshots.ProcessCurrentGameSnapshot();
         }
     }
 }
