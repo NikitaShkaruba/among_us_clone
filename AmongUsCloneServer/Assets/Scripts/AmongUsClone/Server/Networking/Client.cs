@@ -1,6 +1,7 @@
 using System.Net;
 using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Networking.Udp;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using TcpClient = System.Net.Sockets.TcpClient;
 
@@ -43,6 +44,12 @@ namespace AmongUsClone.Server.Networking
 
         public void SendUdpPacket(Packet packet)
         {
+            if (!IsConnectedViaUdp())
+            {
+                Logger.LogEvent(LoggerSection.Network, $"Skipped sending udp packet to client {playerId}, because it is not connected via udp yet");
+                return;
+            }
+
             UdpClient.SendPacket(packet, udpIpEndPoint);
         }
 
