@@ -9,6 +9,7 @@ namespace AmongUsClone.Shared.Logging
         private static readonly DateTime startupDateTime = DateTime.Now;
 
         private const string LogTypeEvent = "event";
+        private const string LogTypeNotice = "notice";
         private const string LogTypeError = "error";
         private const string LogTypeCritical = "critical";
 
@@ -16,6 +17,12 @@ namespace AmongUsClone.Shared.Logging
         {
             Console.ForegroundColor = ConsoleColor.Gray;
             Log(LogTypeEvent, loggerSection, eventDescription);
+        }
+
+        public static void LogNotice(LoggerSection loggerSection, string errorDescription)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Log(LogTypeNotice, loggerSection, errorDescription);
         }
 
         public static void LogError(LoggerSection loggerSection, string errorDescription)
@@ -34,7 +41,11 @@ namespace AmongUsClone.Shared.Logging
 
         private static void Log(string logType, LoggerSection loggerSection, string logDescription)
         {
-            if (IsSkippedLoggerSection(loggerSection) && logType == LogTypeEvent)
+            if (logType == LogTypeEvent && IsSkippedLoggerSection(loggerSection))
+            {
+                return;
+            }
+            if (logType == LogTypeNotice && AreNoticesSkipped())
             {
                 return;
             }
@@ -50,6 +61,11 @@ namespace AmongUsClone.Shared.Logging
             };
 
             return skippedLoggerSections.Contains(loggerSection);
+        }
+
+        private static bool AreNoticesSkipped()
+        {
+            return true;
         }
 
         private static string RenderTimeSinceStartupLabel()

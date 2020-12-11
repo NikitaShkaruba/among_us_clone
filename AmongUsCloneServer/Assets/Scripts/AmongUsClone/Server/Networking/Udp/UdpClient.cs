@@ -70,9 +70,13 @@ namespace AmongUsClone.Server.Networking.Udp
                     HandlePacketData(playerId, packet);
                 }
             }
+            catch (ObjectDisposedException objectDisposedException)
+            {
+                Logger.LogNotice(LoggerSection.Network, $"Error receiving UDP data because udpClient is already disposed: {objectDisposedException}");
+            }
             catch (SocketException socketException)
             {
-                // Todo: handle randomly occured exception on OnConnection
+                // Todo: handle randomly occured exception on OnConnection. Replace with warning when found
                 Logger.LogError(LoggerSection.Network, $"[FOUND IT] Error receiving UDP data: {socketException}, {socketException.ErrorCode}");
             }
             catch (Exception exception)
