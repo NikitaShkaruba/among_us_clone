@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Net.Sockets;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
@@ -69,9 +70,13 @@ namespace AmongUsClone.Server.Networking.Udp
                     HandlePacketData(playerId, packet);
                 }
             }
-            catch (Exception exception)
+            catch (SocketException socketException)
             {
                 // Todo: handle randomly occured exception on OnConnection
+                Logger.LogError(LoggerSection.Network, $"[FOUND IT] Error receiving UDP data: {socketException}, {socketException.ErrorCode}");
+            }
+            catch (Exception exception)
+            {
                 Logger.LogError(LoggerSection.Network, $"Error receiving UDP data: {exception}");
             }
         }
