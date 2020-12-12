@@ -1,7 +1,7 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable UnusedMember.Global
 
-namespace AmongUsClone.Server.Game
+namespace AmongUsClone.Shared
 {
     public class PlayerInput
     {
@@ -40,6 +40,17 @@ namespace AmongUsClone.Server.Game
                 moveLeft,
                 moveBottom,
                 moveRight
+            };
+        }
+
+        public PlayerInput Clone()
+        {
+            return new PlayerInput
+            {
+                moveTop = moveTop,
+                moveBottom = moveBottom,
+                moveLeft = moveLeft,
+                moveRight = moveRight
             };
         }
     }

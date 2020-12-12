@@ -77,7 +77,7 @@ namespace AmongUsClone.Client.PlayerLogic
         }
 
 
-        private IEnumerator SendInputToServer(PlayerInput playerInput)
+        private static IEnumerator SendInputToServer(PlayerInput playerInput)
         {
             float secondsToWait = NetworkingOptimizationTests.millisecondsLag * 0.001f;
             yield return new WaitForSeconds(secondsToWait);

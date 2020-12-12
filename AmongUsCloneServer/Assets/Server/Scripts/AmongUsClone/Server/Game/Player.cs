@@ -1,3 +1,4 @@
+using AmongUsClone.Shared;
 using UnityEngine;
 
 namespace AmongUsClone.Server.Game

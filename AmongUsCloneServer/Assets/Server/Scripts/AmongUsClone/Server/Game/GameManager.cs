@@ -3,6 +3,7 @@
 
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
