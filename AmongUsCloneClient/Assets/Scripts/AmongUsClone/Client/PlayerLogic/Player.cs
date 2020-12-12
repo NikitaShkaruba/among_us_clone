@@ -2,30 +2,19 @@
 
 namespace AmongUsClone.Client.PlayerLogic
 {
+    [RequireComponent(typeof(Movable))]
     public class Player : MonoBehaviour
     {
         // ReSharper disable once NotAccessedField.Global
         public int id;
         // ReSharper disable once NotAccessedField.Global
         public new string name;
-        public bool isControllable;
 
-        private PlayerControllable playerControllable;
+        [HideInInspector] public Movable movable;
 
-        public void Awake()
+        private void Awake()
         {
-            if (isControllable)
-            {
-                playerControllable = new PlayerControllable();
-            }
-        }
-
-        public void Update()
-        {
-            if (isControllable)
-            {
-                playerControllable.Update();
-            }
+            movable = GetComponent<Movable>();
         }
     }
 }

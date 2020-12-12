@@ -40,6 +40,7 @@ namespace AmongUsClone.Server.Game
             rigidbody.MovePosition(newPosition);
         }
 
+        // Todo: refactor into shared
         private Vector2 GetMoveDirection()
         {
             Vector2 moveDirection = new Vector2(0f, 0f);

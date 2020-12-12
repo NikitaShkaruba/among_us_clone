@@ -46,7 +46,7 @@ namespace AmongUsClone.Client
                 return;
             }
 
-            players[playerId].transform.position = new Vector3(playerPosition.x, playerPosition.y, 0);
+            players[playerId].movable.Move(playerPosition);
         }
 
         public void Reset()

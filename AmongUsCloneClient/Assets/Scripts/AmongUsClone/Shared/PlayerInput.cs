@@ -42,5 +42,16 @@ namespace AmongUsClone.Shared
                 moveRight
             };
         }
+
+        public PlayerInput Clone()
+        {
+            return new PlayerInput
+            {
+                moveTop = moveTop,
+                moveBottom = moveBottom,
+                moveLeft = moveLeft,
+                moveRight = moveRight
+            };
+        }
     }
 }
