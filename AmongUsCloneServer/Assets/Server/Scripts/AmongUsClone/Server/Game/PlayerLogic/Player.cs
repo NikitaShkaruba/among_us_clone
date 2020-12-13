@@ -1,7 +1,8 @@
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
-namespace AmongUsClone.Server.Game
+namespace AmongUsClone.Server.Game.PlayerLogic
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class Player : MonoBehaviour
@@ -10,15 +11,16 @@ namespace AmongUsClone.Server.Game
         public new string name;
 
         private PlayerInput playerInput;
-        private new Rigidbody2D rigidbody;
 
         private const float MoveSpeed = 0.2f;
 
-        public Vector2 Position => rigidbody.position;
+        public Movable movable;
+
+        public Vector2 Position => movable.rigidbody.position;
 
         private void Awake()
         {
-            rigidbody = GetComponent<Rigidbody2D>();
+            movable = GetComponent<Movable>();
         }
 
         public void Initialize(int id, string name)
@@ -35,10 +37,8 @@ namespace AmongUsClone.Server.Game
 
         private void Move()
         {
-            Vector2 moveDirection = GetMoveDirection();
-
-            Vector2 newPosition = rigidbody.position + moveDirection * MoveSpeed;
-            rigidbody.MovePosition(newPosition);
+            Vector2 relativePosition = GetMoveDirection() * MoveSpeed;
+            movable.MoveRelative(relativePosition);
         }
 
         // Todo: refactor into shared

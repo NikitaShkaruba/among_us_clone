@@ -2,6 +2,7 @@
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
 namespace AmongUsClone.Client.PlayerLogic
@@ -42,10 +43,8 @@ namespace AmongUsClone.Client.PlayerLogic
 
         private void MovePlayer()
         {
-            Vector2 moveDirection = GetMoveDirection();
-
-            Vector2 relativePosition = moveDirection * MoveSpeed;
-            movable.RelativeMove(relativePosition);
+            Vector2 relativePosition = GetMoveDirection() * MoveSpeed;
+            movable.MoveRelative(relativePosition);
         }
 
         // Todo: refactor into shared

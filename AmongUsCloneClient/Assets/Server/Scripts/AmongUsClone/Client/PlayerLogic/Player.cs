@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AmongUsClone.Shared.Game.PlayerLogic;
+using UnityEngine;
 
 namespace AmongUsClone.Client.PlayerLogic
 {

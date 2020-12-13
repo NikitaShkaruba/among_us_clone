@@ -1,6 +1,7 @@
 // I want a class to have either static or non static methods
 // ReSharper disable MemberCanBeMadeStatic.Global
 
+using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;

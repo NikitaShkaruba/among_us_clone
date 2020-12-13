@@ -1,4 +1,4 @@
-using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Game.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;

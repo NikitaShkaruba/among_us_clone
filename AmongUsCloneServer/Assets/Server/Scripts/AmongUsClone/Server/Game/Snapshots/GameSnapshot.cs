@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUsClone.Server.Game.PlayerLogic;
 
 namespace AmongUsClone.Server.Game.Snapshots
 {

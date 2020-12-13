@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace AmongUsClone.Client.PlayerLogic
+namespace AmongUsClone.Shared.Game.PlayerLogic
 {
     public class Movable : MonoBehaviour
     {
         public new Rigidbody2D rigidbody;
 
-        public void RelativeMove(Vector2 relativePosition)
+        public void MoveRelative(Vector2 relativePosition)
         {
             Move(rigidbody.position + relativePosition);
         }

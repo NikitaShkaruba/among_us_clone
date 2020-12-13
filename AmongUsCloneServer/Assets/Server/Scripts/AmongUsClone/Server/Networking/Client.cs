@@ -1,5 +1,5 @@
 using System.Net;
-using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking.Udp;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
