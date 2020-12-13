@@ -4,6 +4,7 @@
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
@@ -14,6 +15,8 @@ namespace AmongUsClone.Server.Game
     public class GameManager : MonoBehaviour
     {
         public static GameManager instance; // Instance is needed in order to have inspector variables and call MonoBehaviour methods
+
+        public Lobby lobby;
 
         public GameObject serverMovablePrefab;
 
@@ -29,8 +32,7 @@ namespace AmongUsClone.Server.Game
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Server.clients[playerId].player = Instantiate(serverMovablePrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
-            Server.clients[playerId].player.Initialize(playerId, playerName);
+            Server.clients[playerId].player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab);
 
             foreach (Client client in Server.clients.Values)
             {
@@ -54,7 +56,7 @@ namespace AmongUsClone.Server.Game
         {
             Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
 
-            Destroy(Server.clients[playerId].player.gameObject);
+            lobby.RemovePlayer(playerId);
             Server.clients.Remove(playerId);
             PacketsSender.SendPlayerDisconnectedPacket(playerId);
         }

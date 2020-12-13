@@ -2,6 +2,7 @@
 using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -17,6 +18,9 @@ namespace AmongUsClone.Client
         public UserInterface userInterface;
         public MainMenu mainMenu;
         public Lobby lobby;
+
+        [SerializeField] public GameObject clientControllablePlayerPrefab;
+        [SerializeField] public GameObject playerPrefab;
 
         private void Awake()
         {
@@ -62,7 +66,8 @@ namespace AmongUsClone.Client
 
         public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)
         {
-            lobby.AddPlayer(playerId, playerName, playerPosition);
+            GameObject chosenPlayerPrefab = playerId == Game.instance.connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
+            lobby.AddPlayer(playerId, playerName, playerPosition, chosenPlayerPrefab);
         }
 
         public void RemovePlayerFromLobby(int playerId)
