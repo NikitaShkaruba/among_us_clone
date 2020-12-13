@@ -10,9 +10,6 @@ namespace AmongUsClone.Client.PlayerLogic
     [RequireComponent(typeof(Movable))]
     public class Controllable : MonoBehaviour
     {
-        // Todo: move to shared
-        private const float MoveSpeed = 0.2f;
-
         private readonly PlayerInput playerInput = new PlayerInput();
         private Movable movable;
 
@@ -29,7 +26,7 @@ namespace AmongUsClone.Client.PlayerLogic
 
             if (NetworkingOptimizationTests.isPredictionEnabled)
             {
-                MovePlayer();
+                movable.MoveByPlayerInput(playerInput);
             }
         }
 
@@ -40,41 +37,6 @@ namespace AmongUsClone.Client.PlayerLogic
             playerInput.moveBottom = Input.GetKey(KeyCode.S);
             playerInput.moveRight = Input.GetKey(KeyCode.D);
         }
-
-        private void MovePlayer()
-        {
-            Vector2 relativePosition = GetMoveDirection() * MoveSpeed;
-            movable.MoveRelative(relativePosition);
-        }
-
-        // Todo: refactor into shared
-        private Vector2 GetMoveDirection()
-        {
-            Vector2 moveDirection = new Vector2(0f, 0f);
-
-            if (playerInput.moveTop)
-            {
-                moveDirection.y++;
-            }
-
-            if (playerInput.moveLeft)
-            {
-                moveDirection.x--;
-            }
-
-            if (playerInput.moveBottom)
-            {
-                moveDirection.y--;
-            }
-
-            if (playerInput.moveRight)
-            {
-                moveDirection.x++;
-            }
-
-            return moveDirection;
-        }
-
 
         private static IEnumerator SendInputToServer(PlayerInput playerInput)
         {
