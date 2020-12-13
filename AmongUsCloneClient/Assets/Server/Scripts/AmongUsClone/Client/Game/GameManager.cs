@@ -7,11 +7,11 @@ using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
-namespace AmongUsClone.Client
+namespace AmongUsClone.Client.Game
 {
-    public class Game : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
-        public static Game instance;
+        public static GameManager instance;
 
         public readonly ConnectionToServer connectionToServer = new ConnectionToServer();
 
@@ -66,7 +66,7 @@ namespace AmongUsClone.Client
 
         public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)
         {
-            GameObject chosenPlayerPrefab = playerId == Game.instance.connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
+            GameObject chosenPlayerPrefab = playerId == GameManager.instance.connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
             lobby.AddPlayer(playerId, playerName, playerPosition, chosenPlayerPrefab);
         }
 

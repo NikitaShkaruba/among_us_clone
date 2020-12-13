@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 892969310}
   - component: {fileID: 892969311}
   m_Layer: 0
-  m_Name: Game
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1164,6 +1164,10 @@ PrefabInstance:
     - target: {fileID: 1353335452106418286, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
       propertyPath: m_Name
       value: Lobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353335452106418286, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}

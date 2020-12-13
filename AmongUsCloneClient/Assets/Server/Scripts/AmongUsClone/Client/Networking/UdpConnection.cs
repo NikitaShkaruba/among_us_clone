@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
@@ -37,7 +38,7 @@ namespace AmongUsClone.Client.Networking
 
             try
             {
-                packet.InsertInt(Game.instance.connectionToServer.myPlayerId);
+                packet.InsertInt(GameManager.instance.connectionToServer.myPlayerId);
                 udpClient.BeginSend(packet.ToArray(), packet.GetLength(), null, null);
             }
             catch (Exception exception)
@@ -62,7 +63,7 @@ namespace AmongUsClone.Client.Networking
 
                 if (data.Length < sizeof(int))
                 {
-                    Game.instance.DisconnectFromLobby();
+                    GameManager.instance.DisconnectFromLobby();
                     return;
                 }
 
@@ -70,7 +71,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                Game.instance.DisconnectFromLobby();
+                GameManager.instance.DisconnectFromLobby();
             }
         }
 

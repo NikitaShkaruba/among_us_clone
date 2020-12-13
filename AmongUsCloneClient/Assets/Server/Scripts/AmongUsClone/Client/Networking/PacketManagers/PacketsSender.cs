@@ -1,4 +1,5 @@
-﻿using AmongUsClone.Shared;
+﻿using AmongUsClone.Client.Game;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using UnityEngine;
@@ -13,10 +14,10 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
             using (Packet packet = new Packet((int) clientPacketType))
             {
-                packet.Write(Game.instance.connectionToServer.myPlayerId);
-                packet.Write(Game.instance.mainMenu.userNameField.text);
+                packet.Write(GameManager.instance.connectionToServer.myPlayerId);
+                packet.Write(GameManager.instance.mainMenu.userNameField.text);
 
-                Game.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
+                GameManager.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
             }
         }
 
@@ -35,7 +36,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                     packet.Write(control);
                 }
 
-                Game.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);
+                GameManager.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);
             }
         }
     }

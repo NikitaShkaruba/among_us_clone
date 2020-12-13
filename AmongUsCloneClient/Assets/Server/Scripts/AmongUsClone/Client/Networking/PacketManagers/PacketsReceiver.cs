@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
@@ -32,7 +33,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         {
             int myPlayerId = packet.ReadInt();
 
-            Game.instance.connectionToServer.FinishConnection(myPlayerId);
+            GameManager.instance.connectionToServer.FinishConnection(myPlayerId);
 
             Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
         }
@@ -43,7 +44,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             string playerName = packet.ReadString();
             Vector2 playerPosition = packet.ReadVector2();
 
-            Game.instance.AddPlayerToLobby(playerId, playerName, playerPosition);
+            GameManager.instance.AddPlayerToLobby(playerId, playerName, playerPosition);
 
             Logger.LogEvent(LoggerSection.Connection, $"Added player {playerId} to lobby");
         }
@@ -52,7 +53,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         {
             int playerId = packet.ReadInt();
 
-            Game.instance.RemovePlayerFromLobby(playerId);
+            GameManager.instance.RemovePlayerFromLobby(playerId);
 
             Logger.LogEvent(LoggerSection.Connection, $"Player {playerId} has disconnected");
         }
@@ -67,7 +68,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 int playerId = packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
 
-                Game.instance.UpdatePlayerPosition(playerId, playerPosition);
+                GameManager.instance.UpdatePlayerPosition(playerId, playerPosition);
             }
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {snapshotId}");

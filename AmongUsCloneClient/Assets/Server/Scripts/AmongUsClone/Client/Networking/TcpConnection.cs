@@ -1,5 +1,6 @@
 using System;
 using System.Net.Sockets;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Networking;
 
@@ -42,7 +43,7 @@ namespace AmongUsClone.Client.Networking
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    Game.instance.DisconnectFromLobby();
+                    GameManager.instance.DisconnectFromLobby();
                     return;
                 }
 
@@ -56,7 +57,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                Game.instance.DisconnectFromLobby();
+                GameManager.instance.DisconnectFromLobby();
             }
         }
     }
