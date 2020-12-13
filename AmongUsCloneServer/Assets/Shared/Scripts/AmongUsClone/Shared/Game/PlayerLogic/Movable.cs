@@ -16,7 +16,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 
         public void MoveByPlayerControls(PlayerControls playerControls)
         {
-            Vector2 relativePosition = GetMoveDirection(playerControls) * moveSpeed;
+            Vector2 relativePosition = GetMoveDirection(playerControls) * moveSpeed * Time.fixedDeltaTime;
             MoveRelative(relativePosition);
         }
 
@@ -27,7 +27,9 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 
         public void Move(Vector2 newPosition)
         {
-            rigidbody.MovePosition(newPosition);
+            // Todo: replace with MovePosition
+            // rigidbody.MovePosition(newPosition);
+            transform.position = newPosition;
         }
 
         private static Vector2 GetMoveDirection(PlayerControls playerControls)
