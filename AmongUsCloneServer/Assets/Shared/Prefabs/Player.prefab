@@ -90,9 +90,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6088089826452821131}
-  - component: {fileID: 6196941555256028704}
   - component: {fileID: 1518571814465363439}
   - component: {fileID: 4279429012235666599}
+  - component: {fileID: 6196941555256028704}
+  - component: {fileID: 7819642408614097577}
+  - component: {fileID: 205960661744032705}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -115,20 +117,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6196941555256028704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8167787386373783868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fe3275aaeef44fdb882e96fada5cbbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 0
-  name: 
 --- !u!50 &1518571814465363439
 Rigidbody2D:
   serializedVersion: 4
@@ -166,3 +154,45 @@ CapsuleCollider2D:
   m_Offset: {x: 0.00000008940697, y: 0.00000023841858}
   m_Size: {x: 0.9948241, y: 1.9996319}
   m_Direction: 0
+--- !u!114 &6196941555256028704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8167787386373783868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fe3275aaeef44fdb882e96fada5cbbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  name: 
+  movable: {fileID: 0}
+  controllable: {fileID: 0}
+--- !u!114 &7819642408614097577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8167787386373783868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1059369b4aff447bba09e64d02592dd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.2
+  rigidbody: {fileID: 0}
+--- !u!114 &205960661744032705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8167787386373783868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a790f1e36f547178a8617f730311abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -13,12 +13,12 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> packetHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
         {
             {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
-            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
+            {(int) ClientPacketType.PlayerControls, ProcessPlayerControlsPacket},
         };
 
         public static void ProcessPacket(int playerId, int packetTypeId, Packet packet, bool isTcp)
         {
-            string packetTypeName = Helpers.GetEnumName((ClientPacketType)packetTypeId);
+            string packetTypeName = Helpers.GetEnumName((ClientPacketType) packetTypeId);
             string protocolName = isTcp ? "TCP" : "UDP";
             Logger.LogEvent(LoggerSection.Network, $"Received «{packetTypeName}» {protocolName} packet from the client {playerId}");
 
@@ -40,9 +40,9 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             GameManager.instance.ConnectPlayer(playerId, userName);
         }
 
-        private static void ProcessPlayerInputPacket(int playerId, Packet packet)
+        private static void ProcessPlayerControlsPacket(int playerId, Packet packet)
         {
-            int playerInputsAmount = packet.ReadInt();
+            int playerControlsAmount = packet.ReadInt();
 
             // Because of multi threading we might not have this client
             if (!Server.clients.ContainsKey(playerId))
@@ -50,14 +50,14 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 return;
             }
 
-            bool[] serializedPlayerInput = new bool[playerInputsAmount];
-            for (int playerInputIndex = 0; playerInputIndex < serializedPlayerInput.Length; playerInputIndex++)
+            bool[] serializedPlayerControls = new bool[playerControlsAmount];
+            for (int playerControlIndex = 0; playerControlIndex < serializedPlayerControls.Length; playerControlIndex++)
             {
-                serializedPlayerInput[playerInputIndex] = packet.ReadBool();
+                serializedPlayerControls[playerControlIndex] = packet.ReadBool();
             }
+            PlayerControls playerControls = PlayerControls.Deserialize(serializedPlayerControls);
 
-            PlayerInput playerInput = PlayerInput.Deserialize(serializedPlayerInput);
-            GameManager.instance.UpdatePlayerInput(playerId, playerInput);
+            GameManager.instance.UpdatePlayerControls(playerId, playerControls);
         }
     }
 }

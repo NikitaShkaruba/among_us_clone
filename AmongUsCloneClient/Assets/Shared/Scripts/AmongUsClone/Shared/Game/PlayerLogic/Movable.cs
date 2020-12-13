@@ -2,15 +2,21 @@ using UnityEngine;
 
 namespace AmongUsClone.Shared.Game.PlayerLogic
 {
+    [RequireComponent(typeof(Rigidbody2D))]
     public class Movable : MonoBehaviour
     {
         public float moveSpeed;
 
-        public new Rigidbody2D rigidbody;
+        [HideInInspector] public new Rigidbody2D rigidbody;
 
-        public void MoveByPlayerInput(PlayerInput playerInput)
+        public void Start()
         {
-            Vector2 relativePosition = GetMoveDirection(playerInput) * moveSpeed;
+            rigidbody = GetComponent<Rigidbody2D>();
+        }
+
+        public void MoveByPlayerControls(PlayerControls playerControls)
+        {
+            Vector2 relativePosition = GetMoveDirection(playerControls) * moveSpeed;
             MoveRelative(relativePosition);
         }
 
@@ -24,26 +30,26 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             rigidbody.MovePosition(newPosition);
         }
 
-        private static Vector2 GetMoveDirection(PlayerInput playerInput)
+        private static Vector2 GetMoveDirection(PlayerControls playerControls)
         {
             Vector2 moveDirection = new Vector2(0f, 0f);
 
-            if (playerInput.moveTop)
+            if (playerControls.moveTop)
             {
                 moveDirection.y++;
             }
 
-            if (playerInput.moveLeft)
+            if (playerControls.moveLeft)
             {
                 moveDirection.x--;
             }
 
-            if (playerInput.moveBottom)
+            if (playerControls.moveBottom)
             {
                 moveDirection.y--;
             }
 
-            if (playerInput.moveRight)
+            if (playerControls.moveRight)
             {
                 moveDirection.x++;
             }

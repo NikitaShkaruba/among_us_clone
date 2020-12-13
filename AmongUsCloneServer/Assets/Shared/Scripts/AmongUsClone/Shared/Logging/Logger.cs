@@ -13,6 +13,12 @@ namespace AmongUsClone.Shared.Logging
         private const string LogTypeError = "error";
         private const string LogTypeCritical = "critical";
 
+        public static void LogDebug(string eventDescription)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Log(LogTypeEvent, LoggerSection.Debug, eventDescription);
+        }
+
         public static void LogEvent(LoggerSection loggerSection, string eventDescription)
         {
             Console.ForegroundColor = ConsoleColor.Gray;

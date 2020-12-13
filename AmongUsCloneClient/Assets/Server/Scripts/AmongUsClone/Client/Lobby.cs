@@ -1,28 +1,27 @@
 using System;
 using System.Collections.Generic;
-using AmongUsClone.Client.PlayerLogic;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client
 {
     public class Lobby : MonoBehaviour
     {
         [SerializeField] private GameObject playersParentGameObject;
-        [SerializeField] public GameObject localPlayerPrefab;
-        [SerializeField] public GameObject remotePlayerPrefab;
+        [SerializeField] public GameObject clientControllablePlayerPrefab;
+        [SerializeField] public GameObject playerPrefab;
 
         private readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
         public void AddPlayer(int playerId, string playerName, Vector2 playerPosition)
         {
-            GameObject playerPrefab = playerId == Game.instance.connectionToServer.myPlayerId ? localPlayerPrefab : remotePlayerPrefab;
-            GameObject playerGameObject = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
+            GameObject chosenPlayerPrefab = playerId == Game.instance.connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
+            GameObject playerGameObject = Instantiate(chosenPlayerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
             playerGameObject.transform.parent = playersParentGameObject.transform;
 
             Player player = playerGameObject.GetComponent<Player>();
-
-            player.id = playerId;
-            player.name = playerName;
+            player.Initialize(playerId, playerName);
 
             players.Add(playerId, player);
         }

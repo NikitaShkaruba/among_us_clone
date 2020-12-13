@@ -1,10 +1,10 @@
 // I want a class to have either static or non static methods
 // ReSharper disable MemberCanBeMadeStatic.Global
 
-using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -15,7 +15,7 @@ namespace AmongUsClone.Server.Game
     {
         public static GameManager instance; // Instance is needed in order to have inspector variables and call MonoBehaviour methods
 
-        public GameObject playerPrefab;
+        public GameObject serverMovablePrefab;
 
         private void Awake()
         {
@@ -29,7 +29,7 @@ namespace AmongUsClone.Server.Game
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Server.clients[playerId].player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
+            Server.clients[playerId].player = Instantiate(serverMovablePrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
             Server.clients[playerId].player.Initialize(playerId, playerName);
 
             foreach (Client client in Server.clients.Values)
@@ -59,9 +59,9 @@ namespace AmongUsClone.Server.Game
             PacketsSender.SendPlayerDisconnectedPacket(playerId);
         }
 
-        public void UpdatePlayerInput(int playerId, PlayerInput playerInput)
+        public void UpdatePlayerControls(int playerId, PlayerControls playerControls)
         {
-            Server.clients[playerId].player.UpdateInput(playerInput);
+            Server.clients[playerId].player.controllable.UpdateControls(playerControls);
         }
     }
 }

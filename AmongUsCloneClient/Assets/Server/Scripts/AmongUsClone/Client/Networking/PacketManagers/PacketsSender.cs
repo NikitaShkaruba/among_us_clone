@@ -20,19 +20,19 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             }
         }
 
-        public static void SendPlayerInputPacket(PlayerInput playerInput)
+        public static void SendPlayerControlsPacket(PlayerControls playerControls)
         {
-            const ClientPacketType clientPacketType = ClientPacketType.PlayerInput;
+            const ClientPacketType clientPacketType = ClientPacketType.PlayerControls;
 
             using (Packet packet = new Packet((int) clientPacketType))
             {
-                bool[] serializedPlayerInput = playerInput.Serialize();
+                bool[] serializedPlayerControls = playerControls.Serialize();
 
-                packet.Write(serializedPlayerInput.Length);
+                packet.Write(serializedPlayerControls.Length);
 
-                foreach (bool input in serializedPlayerInput)
+                foreach (bool control in serializedPlayerControls)
                 {
-                    packet.Write(input);
+                    packet.Write(control);
                 }
 
                 Game.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);

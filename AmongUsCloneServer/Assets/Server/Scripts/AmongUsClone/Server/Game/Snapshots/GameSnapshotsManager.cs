@@ -4,6 +4,7 @@ using System.Linq;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 
 namespace AmongUsClone.Server.Game.Snapshots

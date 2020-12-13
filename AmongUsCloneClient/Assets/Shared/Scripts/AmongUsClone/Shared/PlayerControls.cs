@@ -3,18 +3,18 @@
 
 namespace AmongUsClone.Shared
 {
-    public class PlayerInput
+    public class PlayerControls
     {
         public bool moveTop;
         public bool moveLeft;
         public bool moveRight;
         public bool moveBottom;
 
-        public PlayerInput()
+        public PlayerControls()
         {
         }
 
-        private PlayerInput(bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
+        private PlayerControls(bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
         {
             this.moveTop = moveTop;
             this.moveLeft = moveLeft;
@@ -22,13 +22,13 @@ namespace AmongUsClone.Shared
             this.moveRight = moveRight;
         }
 
-        public static PlayerInput Deserialize(bool[] serializedPlayerInput)
+        public static PlayerControls Deserialize(bool[] serializedPlayerControls)
         {
-            return new PlayerInput(
-                serializedPlayerInput[0],
-                serializedPlayerInput[1],
-                serializedPlayerInput[2],
-                serializedPlayerInput[3]
+            return new PlayerControls(
+                serializedPlayerControls[0],
+                serializedPlayerControls[1],
+                serializedPlayerControls[2],
+                serializedPlayerControls[3]
             );
         }
 
@@ -43,9 +43,9 @@ namespace AmongUsClone.Shared
             };
         }
 
-        public PlayerInput Clone()
+        public PlayerControls Clone()
         {
-            return new PlayerInput
+            return new PlayerControls
             {
                 moveTop = moveTop,
                 moveBottom = moveBottom,

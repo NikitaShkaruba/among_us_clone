@@ -250,8 +250,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playersParentGameObject: {fileID: 433347916}
-  localPlayerPrefab: {fileID: 1121168635532208351, guid: 734f05b1c4ef4084a9b0fcac486a710d, type: 3}
-  remotePlayerPrefab: {fileID: 9061134681553405023, guid: ffaa7a1607de80745bb94cd5e0bbf7b5, type: 3}
+  clientControllablePlayerPrefab: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+  playerPrefab: {fileID: 8167787386373783868, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
 --- !u!1 &120125046
 GameObject:
   m_ObjectHideFlags: 0
