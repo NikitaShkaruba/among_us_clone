@@ -1,7 +1,7 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable UnusedMember.Global
 
-namespace AmongUsClone.Shared
+namespace AmongUsClone.Shared.Game.PlayerLogic
 {
     public class PlayerControls
     {
