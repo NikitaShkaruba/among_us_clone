@@ -1,5 +1,6 @@
 ﻿using AmongUsClone.Client.Game;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using UnityEngine;
