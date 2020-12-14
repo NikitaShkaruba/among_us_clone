@@ -1,3 +1,5 @@
+// ReSharper disable UnusedMember.Global
+
 using UnityEngine;
 
 namespace AmongUsClone.Shared.Game.PlayerLogic

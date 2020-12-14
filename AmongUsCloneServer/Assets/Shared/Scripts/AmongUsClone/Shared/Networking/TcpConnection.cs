@@ -1,4 +1,6 @@
 // ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable UnusedMember.Global
+
 
 using System;
 using System.Net.Sockets;

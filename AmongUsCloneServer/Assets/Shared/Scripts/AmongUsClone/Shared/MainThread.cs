@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable UnusedMember.Global
+
+using System;
 using System.Collections.Generic;
 
 namespace AmongUsClone.Shared
