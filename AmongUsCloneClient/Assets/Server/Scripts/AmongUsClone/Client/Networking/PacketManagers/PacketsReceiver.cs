@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
+using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking.PacketManagers
 {
+    // Todo: consider creating a class for every packet type, which can serialize, deserialize itself
     public class PacketsReceiver : MonoBehaviour
     {
         private delegate void OnPacketReceivedCallback(Packet packet);
@@ -24,7 +27,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         public static void ProcessPacket(int packetTypeId, Packet packet, bool isTcp)
         {
             string protocolName = isTcp ? "TCP" : "UDP";
-            Logger.LogEvent(LoggerSection.Network, $"Received «{Helpers.GetEnumName((ServerPacketType)packetTypeId)}» {protocolName} packet from server");
+            Logger.LogEvent(LoggerSection.Network, $"Received «{Helpers.GetEnumName((ServerPacketType) packetTypeId)}» {protocolName} packet from server");
 
             packetHandlers[packetTypeId](packet);
         }
@@ -63,15 +66,18 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             int snapshotId = packet.ReadInt();
             int snapshotPlayersAmount = packet.ReadInt();
 
+            List<SnapshotPlayerInfo> snapshotPlayerInfos = new List<SnapshotPlayerInfo>();
             for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
             {
                 int playerId = packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
 
-                GameManager.instance.UpdatePlayerPosition(playerId, playerPosition);
+                snapshotPlayerInfos.Add(new SnapshotPlayerInfo(playerId, playerPosition));
             }
 
-            Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {snapshotId}");
+            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, snapshotPlayerInfos);
+
+            GameSnapshotsManager.ProcessGameSnapshot(gameSnapshot);
         }
     }
 }

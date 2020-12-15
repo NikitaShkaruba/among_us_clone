@@ -1,10 +1,9 @@
-using AmongUsClone.Server.Game.PlayerLogic;
-using AmongUsClone.Server.Game.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
+using AmongUsClone.Shared.Snapshots;
 
 namespace AmongUsClone.Server.Networking.PacketManagers
 {
@@ -55,12 +54,12 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             using (Packet packet = new Packet((int) packetType))
             {
                 packet.Write(gameSnapshot.id);
-                packet.Write(gameSnapshot.players.Count);
+                packet.Write(gameSnapshot.playersInfo.Count);
 
-                foreach (Player player in gameSnapshot.players)
+                foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo)
                 {
-                    packet.Write(player.id);
-                    packet.Write(player.Position);
+                    packet.Write(snapshotPlayerInfo.id);
+                    packet.Write(snapshotPlayerInfo.position);
                 }
 
                 SendUdpPacketToAll(packetType, packet);

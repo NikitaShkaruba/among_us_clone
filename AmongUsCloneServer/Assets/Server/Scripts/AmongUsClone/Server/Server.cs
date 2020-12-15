@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.Tcp;
 using AmongUsClone.Server.Networking.Udp;
-using AmongUsClone.Server.Game.Snapshots;
+using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
@@ -53,7 +53,7 @@ namespace AmongUsClone.Server
         {
             yield return new WaitForFixedUpdate();
 
-            GameSnapshots.ProcessCurrentGameSnapshot();
+            GameSnapshotsManager.ProcessCurrentGameSnapshot();
         }
     }
 }

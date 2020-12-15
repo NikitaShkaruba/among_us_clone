@@ -1,15 +1,15 @@
-using Logger = AmongUsClone.Shared.Logging.Logger;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
+using AmongUsClone.Shared.Snapshots;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
-namespace AmongUsClone.Server.Game.Snapshots
+namespace AmongUsClone.Server.Snapshots
 {
-    public static class GameSnapshots
+    public static class GameSnapshotsManager
     {
         private static readonly List<GameSnapshot> gameSnapshots = new List<GameSnapshot>();
 
