@@ -24,8 +24,6 @@ namespace AmongUsClone.Server
             Logger.LogEvent(LoggerSection.Initialization, "Starting the server...");
 
             Console.Title = "Among Us Server";
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = 30;
             const int port = 26950;
             MaxPlayerId = 10;
             Logger.LogEvent(LoggerSection.Initialization, $"Global variables initialized. Running at {Application.targetFrameRate} ticks per second.");

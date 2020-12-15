@@ -18,12 +18,15 @@ namespace AmongUsClone.Server.Game.UI.Debug
         private IEnumerator UpdateInitialServerTicksPerSecond()
         {
             yield return new WaitForEndOfFrame();
-            inputField.text = Application.targetFrameRate.ToString();
+
+            int ticksPerSecond = (int)Mathf.Floor(1 / Time.fixedDeltaTime);
+            inputField.text = ticksPerSecond.ToString();
         }
 
         private void UpdateServerTicksPerSecond()
         {
-            Application.targetFrameRate = int.Parse(inputField.text);
+            int ticksPerSecond = int.Parse(inputField.text);
+            Time.fixedDeltaTime = 1 / (float)ticksPerSecond;
         }
     }
 }
