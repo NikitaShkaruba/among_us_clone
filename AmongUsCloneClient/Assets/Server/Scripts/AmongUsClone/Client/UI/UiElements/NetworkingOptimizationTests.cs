@@ -15,6 +15,8 @@ namespace AmongUsClone.Client.UI.UiElements
         public static bool isInterpolationEnabled;
         public static int millisecondsLag = 100;
 
+        public static float SecondsLag => millisecondsLag * 0.001f;
+
         private void Awake()
         {
             lagInput.onValueChanged.AddListener(delegate { UpdateLag(); });

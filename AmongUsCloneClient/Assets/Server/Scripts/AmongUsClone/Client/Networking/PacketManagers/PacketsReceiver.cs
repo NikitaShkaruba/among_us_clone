@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using AmongUsClone.Client.Game;
-using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
@@ -63,21 +62,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
         private static void ProcessGameSnapshotPacket(Packet packet)
         {
-            int snapshotId = packet.ReadInt();
-            int lastControlsRequestId = packet.ReadInt();
-
-            List<SnapshotPlayerInfo> snapshotPlayerInfos = new List<SnapshotPlayerInfo>();
-            int snapshotPlayersAmount = packet.ReadInt();
-            for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
-            {
-                int playerId = packet.ReadInt();
-                Vector2 playerPosition = packet.ReadVector2();
-
-                snapshotPlayerInfos.Add(new SnapshotPlayerInfo(playerId, playerPosition));
-            }
-
-            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, lastControlsRequestId, snapshotPlayerInfos);
-            GameSnapshots.ProcessSnapshot(gameSnapshot);
+            GameManager.instance.ProcessGameSnapshotPacketWithLag(packet);
         }
     }
 }

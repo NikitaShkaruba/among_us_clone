@@ -1,9 +1,14 @@
-﻿using AmongUsClone.Client.Networking;
+﻿using System.Collections;
+using System.Collections.Generic;
+using AmongUsClone.Client.Networking;
+using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
+using AmongUsClone.Shared.Networking;
+using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
@@ -79,5 +84,34 @@ namespace AmongUsClone.Client.Game
         {
             lobby.UpdatePlayerPosition(playerId, playerPosition);
         }
+
+        public void ProcessGameSnapshotPacketWithLag(Packet packet)
+        {
+            StartCoroutine(ProcessGameSnapshotPacketWithLagCoroutine(packet));
+        }
+
+        private IEnumerator ProcessGameSnapshotPacketWithLagCoroutine(Packet packet)
+        {
+            // Simulate network lag
+            float secondsToWait = NetworkingOptimizationTests.SecondsLag;
+            yield return new WaitForSeconds(secondsToWait);
+
+            int snapshotId = packet.ReadInt();
+            int lastControlsRequestId = packet.ReadInt();
+
+            List<SnapshotPlayerInfo> snapshotPlayerInfos = new List<SnapshotPlayerInfo>();
+            int snapshotPlayersAmount = packet.ReadInt();
+            for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
+            {
+                int playerId = packet.ReadInt();
+                Vector2 playerPosition = packet.ReadVector2();
+
+                snapshotPlayerInfos.Add(new SnapshotPlayerInfo(playerId, playerPosition));
+            }
+
+            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, lastControlsRequestId, snapshotPlayerInfos);
+            GameSnapshots.ProcessSnapshot(gameSnapshot);
+        }
+
     }
 }

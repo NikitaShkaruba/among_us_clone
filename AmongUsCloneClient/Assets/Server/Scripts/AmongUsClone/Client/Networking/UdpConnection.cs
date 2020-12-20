@@ -85,11 +85,9 @@ namespace AmongUsClone.Client.Networking
 
             MainThread.ScheduleExecution(() =>
             {
-                using (Packet packet = new Packet(data))
-                {
-                    int packetTypeId = packet.ReadInt();
-                    PacketsReceiver.ProcessPacket(packetTypeId, packet, false);
-                }
+                Packet packet = new Packet(data);
+                int packetTypeId = packet.ReadInt();
+                PacketsReceiver.ProcessPacket(packetTypeId, packet, false);
             });
         }
     }
