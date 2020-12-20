@@ -1,3 +1,4 @@
+using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
@@ -51,18 +52,24 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetType = ServerPacketType.GameSnapshot;
 
-            using (Packet packet = new Packet((int) packetType))
+            foreach (Client client in Server.clients.Values)
             {
-                packet.Write(gameSnapshot.id);
-                packet.Write(gameSnapshot.playersInfo.Count);
+                GameSnapshot clientGameSnapshot = new GameSnapshot(gameSnapshot, LastClientRequestIds.Get(client.playerId));
 
-                foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo)
+                using (Packet packet = new Packet((int) packetType))
                 {
-                    packet.Write(snapshotPlayerInfo.id);
-                    packet.Write(snapshotPlayerInfo.position);
-                }
+                    packet.Write(clientGameSnapshot.id);
+                    packet.Write(clientGameSnapshot.lastControlsRequestId);
+                    packet.Write(clientGameSnapshot.playersInfo.Count);
 
-                SendUdpPacketToAll(packetType, packet);
+                    foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo)
+                    {
+                        packet.Write(snapshotPlayerInfo.id);
+                        packet.Write(snapshotPlayerInfo.position);
+                    }
+
+                    SendUdpPacket(client.playerId, packetType, packet);
+                }
             }
         }
 

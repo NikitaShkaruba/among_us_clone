@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
@@ -43,6 +44,9 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
         private static void ProcessPlayerControlsPacket(int playerId, Packet packet)
         {
+            int lastRequestId = packet.ReadInt();
+            LastClientRequestIds.Update(playerId, lastRequestId);
+
             int playerControlsAmount = packet.ReadInt();
 
             // Because of multi threading we might not have this client

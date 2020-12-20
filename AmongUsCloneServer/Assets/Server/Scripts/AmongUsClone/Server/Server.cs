@@ -53,7 +53,7 @@ namespace AmongUsClone.Server
         {
             yield return new WaitForFixedUpdate();
 
-            GameSnapshotsManager.ProcessCurrentGameSnapshot();
+            GameSnapshots.ProcessSnapshot();
         }
     }
 }

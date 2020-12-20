@@ -9,15 +9,15 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Snapshots
 {
-    public static class GameSnapshotsManager
+    public static class GameSnapshots
     {
         private static readonly List<GameSnapshot> gameSnapshots = new List<GameSnapshot>();
 
-        public static void ProcessCurrentGameSnapshot()
+        public static void ProcessSnapshot()
         {
-            GameSnapshot lastGameSnapshot = CaptureGameSnapshot();
+            GameSnapshot lastGameSnapshot = CaptureSnapshot();
 
-            SaveGameSnapshot(lastGameSnapshot);
+            CacheSnapshot(lastGameSnapshot);
 
             if (Server.clients.Count != 0)
             {
@@ -25,7 +25,7 @@ namespace AmongUsClone.Server.Snapshots
             }
         }
 
-        private static void SaveGameSnapshot(GameSnapshot lastGameSnapshot)
+        private static void CacheSnapshot(GameSnapshot lastGameSnapshot)
         {
             gameSnapshots.Add(lastGameSnapshot);
 
@@ -37,15 +37,15 @@ namespace AmongUsClone.Server.Snapshots
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Game snapshot #{lastGameSnapshot.id} captured");
         }
 
-        private static GameSnapshot CaptureGameSnapshot()
+        private static GameSnapshot CaptureSnapshot()
         {
             int gameSnapshotId = gameSnapshots.Count == 0 ? 0 : gameSnapshots.Last().id + 1;
-            List<Player> players = GetPlayersForSnapshot();
+            List<Player> players = CaptureSnapshotPlayers().ToList();
 
             return new GameSnapshot(gameSnapshotId, players);
         }
 
-        private static List<Player> GetPlayersForSnapshot()
+        private static IEnumerable<Player> CaptureSnapshotPlayers()
         {
             List<Player> snapshotPlayers = new List<Player>();
 

@@ -11,7 +11,7 @@ namespace AmongUsClone.Shared.Game
     {
         [SerializeField] private GameObject playersParentGameObject;
 
-        private readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
+        public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
         public Player AddPlayer(int playerId, string playerName, Vector2 playerPosition, GameObject playerPrefab)
         {

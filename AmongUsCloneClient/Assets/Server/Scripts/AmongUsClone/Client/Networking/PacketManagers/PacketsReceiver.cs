@@ -64,9 +64,10 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         private static void ProcessGameSnapshotPacket(Packet packet)
         {
             int snapshotId = packet.ReadInt();
-            int snapshotPlayersAmount = packet.ReadInt();
+            int lastControlsRequestId = packet.ReadInt();
 
             List<SnapshotPlayerInfo> snapshotPlayerInfos = new List<SnapshotPlayerInfo>();
+            int snapshotPlayersAmount = packet.ReadInt();
             for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
             {
                 int playerId = packet.ReadInt();
@@ -75,9 +76,8 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 snapshotPlayerInfos.Add(new SnapshotPlayerInfo(playerId, playerPosition));
             }
 
-            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, snapshotPlayerInfos);
-
-            GameSnapshotsManager.ProcessGameSnapshot(gameSnapshot);
+            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, lastControlsRequestId, snapshotPlayerInfos);
+            GameSnapshots.ProcessSnapshot(gameSnapshot);
         }
     }
 }

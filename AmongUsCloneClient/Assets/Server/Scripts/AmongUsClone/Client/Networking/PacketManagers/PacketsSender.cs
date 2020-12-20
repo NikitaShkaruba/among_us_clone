@@ -22,14 +22,15 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             }
         }
 
-        public static void SendPlayerControlsPacket(PlayerControls playerControls)
+        public static void SendPlayerControlsPacket(int controlsRequestId, PlayerControls playerControls)
         {
             const ClientPacketType clientPacketType = ClientPacketType.PlayerControls;
 
             using (Packet packet = new Packet((int) clientPacketType))
             {
-                bool[] serializedPlayerControls = playerControls.Serialize();
+                packet.Write(controlsRequestId);
 
+                bool[] serializedPlayerControls = playerControls.Serialize();
                 packet.Write(serializedPlayerControls.Length);
 
                 foreach (bool control in serializedPlayerControls)

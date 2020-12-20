@@ -3,6 +3,7 @@
 
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
+using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
@@ -33,6 +34,7 @@ namespace AmongUsClone.Server.Game
         public void ConnectPlayer(int playerId, string playerName)
         {
             Server.clients[playerId].player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab);
+            LastClientRequestIds.Initialize(playerId);
 
             foreach (Client client in Server.clients.Values)
             {

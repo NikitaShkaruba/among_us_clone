@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Client.UI.UiElements;
-using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
-using AmongUsClone.Shared.Logging;
+using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
-using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.PlayerLogic
 {
@@ -14,6 +13,9 @@ namespace AmongUsClone.Client.PlayerLogic
     public class ClientControllable : MonoBehaviour
     {
         private Player player;
+
+        private int controlsRequestId;
+        public readonly Dictionary<int, PlayerControls> cachedSentToServerControls = new Dictionary<int, PlayerControls>();
 
         private void Awake()
         {
@@ -23,7 +25,11 @@ namespace AmongUsClone.Client.PlayerLogic
         private void FixedUpdate()
         {
             UpdatePlayerControls();
-            StartCoroutine(SendControlsToServer(player.controllable.playerControls.Clone()));
+
+            if (HasNewInputsForServer())
+            {
+                StartCoroutine(SendControlsToServer(player.controllable.playerControls.Clone()));
+            }
 
             if (NetworkingOptimizationTests.isPredictionEnabled)
             {
@@ -44,12 +50,44 @@ namespace AmongUsClone.Client.PlayerLogic
             player.controllable.UpdateControls(newPlayerControls);
         }
 
-        private static IEnumerator SendControlsToServer(PlayerControls playerControls)
+        private bool HasNewInputsForServer()
         {
+            return player.controllable.playerControls.moveTop ||
+                   player.controllable.playerControls.moveLeft ||
+                   player.controllable.playerControls.moveRight ||
+                   player.controllable.playerControls.moveBottom;
+        }
+
+        private IEnumerator SendControlsToServer(PlayerControls playerControls)
+        {
+            controlsRequestId++;
+            cachedSentToServerControls[controlsRequestId] = playerControls;
+
+            // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.millisecondsLag * 0.001f;
             yield return new WaitForSeconds(secondsToWait);
 
-            PacketsSender.SendPlayerControlsPacket(playerControls);
+            PacketsSender.SendPlayerControlsPacket(controlsRequestId, playerControls);
+        }
+
+        public void RemoveObsoleteRequests(in GameSnapshot gameSnapshot)
+        {
+            // No snapshots to remove
+            if (cachedSentToServerControls.Keys.Count == 0)
+            {
+                return;
+            }
+
+            int minRequestId = cachedSentToServerControls.Keys.Min();
+            int maxRequestId = cachedSentToServerControls.Keys.Max();
+
+            for (int requestId = minRequestId; requestId <= maxRequestId; requestId++)
+            {
+                if (requestId <= gameSnapshot.lastControlsRequestId)
+                {
+                    cachedSentToServerControls.Remove(requestId);
+                }
+            }
         }
     }
 }

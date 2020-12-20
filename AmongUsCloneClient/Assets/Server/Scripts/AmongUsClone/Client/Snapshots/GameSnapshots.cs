@@ -1,14 +1,21 @@
 using System.Collections.Generic;
+using System.Linq;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.PlayerLogic;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Snapshots;
 
 namespace AmongUsClone.Client.Snapshots
 {
-    public static class GameSnapshotsManager
+    public static class GameSnapshots
     {
-        public static void ProcessGameSnapshot(in GameSnapshot gameSnapshot)
+        public static void ProcessSnapshot(in GameSnapshot gameSnapshot)
         {
+            // Todo: fix always playerId being always 1
+            ClientControllable clientControllable = GameManager.instance.lobby.players[1].GetComponent<ClientControllable>();
+            clientControllable.RemoveObsoleteRequests(gameSnapshot);
+
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo)
             {
                 GameManager.instance.UpdatePlayerPosition(snapshotPlayerInfo.id, snapshotPlayerInfo.position);
