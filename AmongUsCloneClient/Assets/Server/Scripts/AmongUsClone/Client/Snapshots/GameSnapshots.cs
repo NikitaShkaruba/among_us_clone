@@ -1,6 +1,5 @@
 using AmongUsClone.Client.Game;
 using AmongUsClone.Client.PlayerLogic;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Snapshots;
 
@@ -20,15 +19,7 @@ namespace AmongUsClone.Client.Snapshots
             }
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot.id}");
-            LogCurrentSnapshot(gameSnapshot);
-        }
-
-        private static void LogCurrentSnapshot(GameSnapshot lastGameSnapshot)
-        {
-            Player firstPlayer = GameManager.instance.lobby.players.Count != 0 ? GameManager.instance.lobby.players[0] : null;
-            string firstPlayerInfo = firstPlayer != null ? $"position: {firstPlayer.movable.rigidbody.position}, controls: {firstPlayer.controllable.playerControls}" : "none";
-
-            Logger.LogDebug($"Snapshot #{lastGameSnapshot.id}. p1: {{{firstPlayerInfo}}}");
+            GameSnapshotsDebug.Log(gameSnapshot, GameManager.instance.lobby.players.Count != 0 ? GameManager.instance.lobby.players[0] : null);
         }
     }
 }
