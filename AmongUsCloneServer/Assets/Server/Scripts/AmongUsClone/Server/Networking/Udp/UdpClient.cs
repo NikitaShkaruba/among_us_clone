@@ -49,12 +49,6 @@ namespace AmongUsClone.Server.Networking.Udp
                 {
                     int playerId = packet.ReadInt();
 
-                    if (playerId == 0)
-                    {
-                        Logger.LogError(LoggerSection.Network, "Undefined client id in UDP packet");
-                        return;
-                    }
-
                     if (!Server.clients[playerId].IsConnectedViaUdp())
                     {
                         Server.clients[playerId].ConnectUdp(clientIpEndPoint);

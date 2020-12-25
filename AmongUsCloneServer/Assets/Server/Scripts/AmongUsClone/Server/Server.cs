@@ -14,7 +14,7 @@ namespace AmongUsClone.Server
 {
     public class Server : MonoBehaviour
     {
-        public const int MinPlayerId = 1;
+        public const int MinPlayerId = 0;
         public static int MaxPlayerId { get; private set; }
 
         public static readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
