@@ -1981,6 +1981,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lagInput: {fileID: 1400512902}
+  predictionToggle: {fileID: 1976094651}
+  reconciliationToggle: {fileID: 1346115607}
 --- !u!1 &1960786903
 GameObject:
   m_ObjectHideFlags: 0
