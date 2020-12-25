@@ -10,7 +10,7 @@ namespace AmongUsClone.Client.Snapshots
 {
     public static class GameSnapshots
     {
-        public static void ProcessSnapshot(in GameSnapshot gameSnapshot)
+        public static void ProcessSnapshot(GameSnapshot gameSnapshot)
         {
             // Todo: fix always playerId being always 1
             ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();

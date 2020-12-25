@@ -70,7 +70,7 @@ namespace AmongUsClone.Client.PlayerLogic
             PacketsSender.SendPlayerControlsPacket(controlsRequestId, playerControls);
         }
 
-        public void RemoveObsoleteRequests(in GameSnapshot gameSnapshot)
+        public void RemoveObsoleteRequests(GameSnapshot gameSnapshot)
         {
             // No snapshots to remove
             if (cachedSentToServerControls.Keys.Count == 0)
