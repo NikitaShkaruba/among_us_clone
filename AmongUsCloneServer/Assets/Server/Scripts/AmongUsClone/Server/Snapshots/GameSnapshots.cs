@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.PlayerLogic;
@@ -16,6 +17,7 @@ namespace AmongUsClone.Server.Snapshots
         public static void ProcessSnapshot()
         {
             GameSnapshot lastGameSnapshot = CaptureSnapshot();
+            LogCurrentSnapshot(lastGameSnapshot);
 
             CacheSnapshot(lastGameSnapshot);
 
@@ -65,6 +67,14 @@ namespace AmongUsClone.Server.Snapshots
             }
 
             return snapshotPlayers;
+        }
+
+        private static void LogCurrentSnapshot(GameSnapshot lastGameSnapshot)
+        {
+            Player firstPlayer = GameManager.instance.lobby.players.Count != 0 ? GameManager.instance.lobby.players[0] : null;
+            string firstPlayerInfo = firstPlayer != null ? $"position: {firstPlayer.movable.rigidbody.position}, controls: {firstPlayer.controllable.playerControls}" : "none";
+
+            Logger.LogDebug($"Snapshot #{lastGameSnapshot.id}. p1: {{{firstPlayerInfo}}}");
         }
     }
 }

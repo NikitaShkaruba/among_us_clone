@@ -53,5 +53,20 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 moveRight = moveRight
             };
         }
+
+        public override string ToString()
+        {
+            return "(" +
+                   $"w: {SerializeControlValue(moveTop)}," +
+                   $"a: {SerializeControlValue(moveLeft)}," +
+                   $"s: {SerializeControlValue(moveBottom)}," +
+                   $"d: {SerializeControlValue(moveRight)}" +
+                   ")";
+        }
+
+        private static int SerializeControlValue(bool controlValue)
+        {
+            return controlValue ? 1 : 0;
+        }
     }
 }
