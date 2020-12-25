@@ -6,16 +6,19 @@ namespace AmongUsClone.Shared.Snapshots
 {
     public static class GameSnapshotsDebug
     {
+        private static string previousPlayerInformation = "";
+
         public static void Log(GameSnapshot lastGameSnapshot, [CanBeNull] Player playerToDebug)
         {
-            string message = $"Snapshot #{lastGameSnapshot.id}";
+            string playerInformation = playerToDebug != null ? $" player: {{ position: {playerToDebug.movable.rigidbody.position}, controls: {playerToDebug.controllable.playerControls} }}" : "";
 
-            if (playerToDebug != null)
+            if (previousPlayerInformation.Equals(playerInformation))
             {
-                message += $" player: {{ position: {playerToDebug.movable.rigidbody.position}, controls: {playerToDebug.controllable.playerControls} }}";
+                return;
             }
 
-            Logger.LogDebug(message);
+            previousPlayerInformation = playerInformation;
+            Logger.LogDebug($"Snapshot #{lastGameSnapshot.id}{playerInformation}");
         }
     }
 }
