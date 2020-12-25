@@ -57,9 +57,9 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         public override string ToString()
         {
             return "(" +
-                   $"w: {SerializeControlValue(moveTop)}," +
-                   $"a: {SerializeControlValue(moveLeft)}," +
-                   $"s: {SerializeControlValue(moveBottom)}," +
+                   $"w: {SerializeControlValue(moveTop)}, " +
+                   $"a: {SerializeControlValue(moveLeft)}, " +
+                   $"s: {SerializeControlValue(moveBottom)}, " +
                    $"d: {SerializeControlValue(moveRight)}" +
                    ")";
         }

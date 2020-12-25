@@ -12,7 +12,7 @@ namespace AmongUsClone.Shared.Snapshots
 
             if (playerToDebug != null)
             {
-                message += $"player: {{position: {playerToDebug.movable.rigidbody.position}, controls: {playerToDebug.controllable.playerControls}}}";
+                message += $" player: {{ position: {playerToDebug.movable.rigidbody.position}, controls: {playerToDebug.controllable.playerControls} }}";
             }
 
             Logger.LogDebug(message);
