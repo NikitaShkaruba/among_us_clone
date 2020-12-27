@@ -12,14 +12,18 @@ namespace AmongUsClone.Server.Snapshots
 {
     public static class GameSnapshots
     {
-        private static readonly List<GameSnapshot> gameSnapshots = new List<GameSnapshot>();
+        private static readonly Dictionary<int, GameSnapshot> gameSnapshots = new Dictionary<int, GameSnapshot>();
 
         public static void ProcessSnapshot()
         {
             GameSnapshot lastGameSnapshot = CaptureSnapshot();
-            GameSnapshotsDebug.Log(lastGameSnapshot, GameManager.instance.lobby.players.Count != 0 ? GameManager.instance.lobby.players[0] : null);
 
-            CacheSnapshot(lastGameSnapshot);
+            if (GameManager.instance.lobby.players.ContainsKey(0))
+            {
+                GameSnapshotsDebug.Log(lastGameSnapshot, GameManager.instance.lobby.players[0]);
+            }
+
+            SaveSnapshot(lastGameSnapshot);
 
             if (Server.clients.Count != 0)
             {
@@ -27,24 +31,25 @@ namespace AmongUsClone.Server.Snapshots
             }
         }
 
-        private static void CacheSnapshot(GameSnapshot lastGameSnapshot)
+        private static void SaveSnapshot(GameSnapshot gameSnapshot)
         {
-            gameSnapshots.Add(lastGameSnapshot);
+            gameSnapshots.Add(gameSnapshot.id, gameSnapshot);
 
             if (gameSnapshots.Count > 1000)
             {
-                gameSnapshots.RemoveAt(0);
+                gameSnapshots.Remove(gameSnapshots.Keys.Min());
             }
 
-            Logger.LogEvent(LoggerSection.GameSnapshots, $"Game snapshot #{lastGameSnapshot.id} captured");
+            // Todo: add more descriptive logs
+            Logger.LogEvent(LoggerSection.GameSnapshots, $"Game snapshot #{gameSnapshot.id} captured");
         }
 
         private static GameSnapshot CaptureSnapshot()
         {
-            int gameSnapshotId = gameSnapshots.Count == 0 ? 0 : gameSnapshots.Last().id + 1;
+            int snapshotId = gameSnapshots.Count != 0 ? gameSnapshots.Keys.Max() + 1 : 0;
             List<Player> players = CaptureSnapshotPlayers().ToList();
 
-            return new GameSnapshot(gameSnapshotId, players);
+            return new GameSnapshot(snapshotId, players);
         }
 
         private static IEnumerable<Player> CaptureSnapshotPlayers()

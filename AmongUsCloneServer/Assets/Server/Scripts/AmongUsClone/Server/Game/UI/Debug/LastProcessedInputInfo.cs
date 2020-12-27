@@ -5,7 +5,7 @@ using UnityEngine;
 namespace AmongUsClone.Server.Game.UI.Debug
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class LastAcknowledgedControlsInfo : MonoBehaviour
+    public class LastProcessedInputInfo : MonoBehaviour
     {
         private TextMeshProUGUI textMeshPro;
 
@@ -21,15 +21,15 @@ namespace AmongUsClone.Server.Game.UI.Debug
 
         private void UpdateInfo()
         {
-            string lastAcknowledgedInputsInformation = "Last acknowledged inputs:\n";
+            string labelText = "Last processed inputs:\n";
 
-            foreach (int playerId in LastClientRequestIds.lastPlayerRequestIds.Keys)
+            foreach (int playerId in ProcessedPlayerInputs.lastPlayersProcessedInputIds.Keys)
             {
-                int lastRequestId = LastClientRequestIds.lastPlayerRequestIds[playerId];
-                lastAcknowledgedInputsInformation += $"Player {playerId}: {lastRequestId} \n";
+                int lastInputId = ProcessedPlayerInputs.lastPlayersProcessedInputIds[playerId];
+                labelText += $"Player {playerId}: {lastInputId} \n";
             }
 
-            textMeshPro.text = lastAcknowledgedInputsInformation;
+            textMeshPro.text = labelText;
         }
     }
 }

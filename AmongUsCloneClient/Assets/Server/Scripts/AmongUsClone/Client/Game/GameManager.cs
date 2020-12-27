@@ -71,7 +71,7 @@ namespace AmongUsClone.Client.Game
 
         public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)
         {
-            GameObject chosenPlayerPrefab = playerId == GameManager.instance.connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
+            GameObject chosenPlayerPrefab = playerId == connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
             lobby.AddPlayer(playerId, playerName, playerPosition, chosenPlayerPrefab);
         }
 
@@ -90,14 +90,14 @@ namespace AmongUsClone.Client.Game
             StartCoroutine(ProcessGameSnapshotPacketWithLagCoroutine(packet));
         }
 
-        private IEnumerator ProcessGameSnapshotPacketWithLagCoroutine(Packet packet)
+        private static IEnumerator ProcessGameSnapshotPacketWithLagCoroutine(Packet packet)
         {
             // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.SecondsLag;
             yield return new WaitForSeconds(secondsToWait);
 
             int snapshotId = packet.ReadInt();
-            int lastControlsRequestId = packet.ReadInt();
+            int lastProcessedInputId = packet.ReadInt();
 
             List<SnapshotPlayerInfo> snapshotPlayerInfos = new List<SnapshotPlayerInfo>();
             int snapshotPlayersAmount = packet.ReadInt();
@@ -109,7 +109,7 @@ namespace AmongUsClone.Client.Game
                 snapshotPlayerInfos.Add(new SnapshotPlayerInfo(playerId, playerPosition));
             }
 
-            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, lastControlsRequestId, snapshotPlayerInfos);
+            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
             GameSnapshots.ProcessSnapshot(gameSnapshot);
         }
 

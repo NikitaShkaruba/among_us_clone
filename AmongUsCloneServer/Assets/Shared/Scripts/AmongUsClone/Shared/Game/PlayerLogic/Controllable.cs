@@ -6,14 +6,14 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 {
     public class Controllable : MonoBehaviour
     {
-        public readonly PlayerControls playerControls = new PlayerControls();
+        public readonly PlayerInput playerInput = new PlayerInput();
 
-        public void UpdateControls(PlayerControls playerControls)
+        public void UpdateInput(PlayerInput playerInput)
         {
-            this.playerControls.moveTop = playerControls.moveTop;
-            this.playerControls.moveLeft = playerControls.moveLeft;
-            this.playerControls.moveRight = playerControls.moveRight;
-            this.playerControls.moveBottom = playerControls.moveBottom;
+            this.playerInput.moveTop = playerInput.moveTop;
+            this.playerInput.moveLeft = playerInput.moveLeft;
+            this.playerInput.moveRight = playerInput.moveRight;
+            this.playerInput.moveBottom = playerInput.moveBottom;
         }
     }
 }

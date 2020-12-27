@@ -8,9 +8,9 @@ namespace AmongUsClone.Shared.Snapshots
     {
         private static string previousPlayerInformation = "";
 
-        public static void Log(GameSnapshot lastGameSnapshot, [CanBeNull] Player playerToDebug)
+        public static void Log(GameSnapshot lastGameSnapshot, Player localPlayer)
         {
-            string playerInformation = playerToDebug != null ? $" player: {{ position: {playerToDebug.movable.rigidbody.position}, controls: {playerToDebug.controllable.playerControls} }}" : "";
+            string playerInformation = lastGameSnapshot.playersInfo.Count != 0 ? $"Snapshot player: {{ position: {lastGameSnapshot.playersInfo[0].position} }}. Local player: {{ position: {localPlayer.movable.rigidbody.position}, input: {localPlayer.controllable.playerInput} }}" : "";
 
             if (previousPlayerInformation.Equals(playerInformation))
             {
@@ -18,7 +18,7 @@ namespace AmongUsClone.Shared.Snapshots
             }
 
             previousPlayerInformation = playerInformation;
-            Logger.LogDebug($"Snapshot #{lastGameSnapshot.id}{playerInformation}");
+            Logger.LogDebug($"Snapshot #{lastGameSnapshot.id}. YourLastProcessedInputId: {lastGameSnapshot.yourLastProcessedInputId}. {playerInformation}");
         }
     }
 }

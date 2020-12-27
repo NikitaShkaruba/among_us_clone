@@ -8,40 +8,40 @@ namespace AmongUsClone.Shared.Snapshots
 {
     /**
      * Snapshot with an information about every object for each player
-     * Todo: consider migrating lastControlsRequestId to separate class
+     * Todo: consider migrating yourLastProcessedInputId to separate class
      */
-    public struct GameSnapshot
+    public class GameSnapshot
     {
         public readonly int id;
-        public readonly int lastControlsRequestId;
+        public readonly int yourLastProcessedInputId;
 
         public readonly List<SnapshotPlayerInfo> playersInfo;
 
         public GameSnapshot(int id, List<SnapshotPlayerInfo> snapshotPlayersInfoInfo)
         {
             this.id = id;
-            lastControlsRequestId = 0;
+            yourLastProcessedInputId = 0;
             playersInfo = snapshotPlayersInfoInfo;
         }
 
-        public GameSnapshot(GameSnapshot prototype, int lastControlsRequestId)
+        public GameSnapshot(GameSnapshot prototype, int yourLastProcessedInputId)
         {
             id = prototype.id;
             playersInfo = prototype.playersInfo;
-            this.lastControlsRequestId = lastControlsRequestId;
+            this.yourLastProcessedInputId = yourLastProcessedInputId;
         }
 
-        public GameSnapshot(int id, int lastControlsRequestId, List<SnapshotPlayerInfo> snapshotPlayersInfoInfo)
+        public GameSnapshot(int id, int yourLastProcessedInputId, List<SnapshotPlayerInfo> snapshotPlayersInfoInfo)
         {
             this.id = id;
-            this.lastControlsRequestId = lastControlsRequestId;
+            this.yourLastProcessedInputId = yourLastProcessedInputId;
             playersInfo = snapshotPlayersInfoInfo;
         }
 
         public GameSnapshot(int id, IEnumerable<Player> players)
         {
             this.id = id;
-            lastControlsRequestId = 0;
+            yourLastProcessedInputId = 0;
             playersInfo = players.Select(player => new SnapshotPlayerInfo(player.id, player.Position)).ToList();
         }
     }

@@ -16,9 +16,9 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        public void MoveByPlayerControls(PlayerControls playerControls)
+        public void MoveByPlayerInput(PlayerInput playerInput)
         {
-            Vector2 relativePosition = GetMoveDirection(playerControls) * moveSpeed * Time.fixedDeltaTime;
+            Vector2 relativePosition = GetMoveDirection(playerInput) * moveSpeed * Time.fixedDeltaTime;
             MoveRelative(relativePosition);
         }
 
@@ -34,26 +34,26 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             transform.position = newPosition;
         }
 
-        private static Vector2 GetMoveDirection(PlayerControls playerControls)
+        private static Vector2 GetMoveDirection(PlayerInput playerInput)
         {
             Vector2 moveDirection = new Vector2(0f, 0f);
 
-            if (playerControls.moveTop)
+            if (playerInput.moveTop)
             {
                 moveDirection.y++;
             }
 
-            if (playerControls.moveLeft)
+            if (playerInput.moveLeft)
             {
                 moveDirection.x--;
             }
 
-            if (playerControls.moveBottom)
+            if (playerInput.moveBottom)
             {
                 moveDirection.y--;
             }
 
-            if (playerControls.moveRight)
+            if (playerInput.moveRight)
             {
                 moveDirection.x++;
             }

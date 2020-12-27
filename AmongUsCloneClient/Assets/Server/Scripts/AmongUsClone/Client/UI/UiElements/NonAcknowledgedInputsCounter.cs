@@ -22,13 +22,13 @@ namespace AmongUsClone.Client.UI.UiElements
 
         private void UpdateInfo()
         {
-            if (!GameManager.instance.lobby.players.ContainsKey(1))
+            if (!GameManager.instance.lobby.players.ContainsKey(0))
             {
                 return;
             }
 
-            ClientControllable clientControllable = GameManager.instance.lobby.players[1].GetComponent<ClientControllable>();
-            int nonAcknowledgedInputsAmount = clientControllable.cachedSentToServerControls.Count;
+            ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
+            int nonAcknowledgedInputsAmount = clientControllable.snapshotsInputs.Count;
             textMeshPro.text = $"Non-acknowledged inputs: {nonAcknowledgedInputsAmount}";
         }
     }

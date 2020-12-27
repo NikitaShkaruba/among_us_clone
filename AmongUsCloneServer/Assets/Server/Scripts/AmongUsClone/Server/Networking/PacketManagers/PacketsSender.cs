@@ -54,12 +54,12 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             foreach (Client client in Server.clients.Values)
             {
-                GameSnapshot clientGameSnapshot = new GameSnapshot(gameSnapshot, LastClientRequestIds.Get(client.playerId));
+                GameSnapshot clientGameSnapshot = new GameSnapshot(gameSnapshot, ProcessedPlayerInputs.Get(client.playerId));
 
                 using (Packet packet = new Packet((int) packetType))
                 {
                     packet.Write(clientGameSnapshot.id);
-                    packet.Write(clientGameSnapshot.lastControlsRequestId);
+                    packet.Write(clientGameSnapshot.yourLastProcessedInputId);
                     packet.Write(clientGameSnapshot.playersInfo.Count);
 
                     foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo)

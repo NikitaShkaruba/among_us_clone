@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 812965391}
   - component: {fileID: 812965390}
   m_Layer: 0
-  m_Name: LastAcknowledgedControlsInfo
+  m_Name: LastProcessedInputsInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -451,7 +451,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Last acknowledged controls:'
+  m_text: 'Last procesed inputs:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1106,6 +1106,10 @@ PrefabInstance:
     - target: {fileID: 1538534067119019902, guid: 31ea82c829750184aa1c2303e3eb5bd2, type: 3}
       propertyPath: m_Name
       value: Lobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 5495210613474395785, guid: 31ea82c829750184aa1c2303e3eb5bd2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31ea82c829750184aa1c2303e3eb5bd2, type: 3}

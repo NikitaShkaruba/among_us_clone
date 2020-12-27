@@ -1,5 +1,4 @@
 ﻿using AmongUsClone.Client.Game;
-using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
@@ -22,20 +21,20 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             }
         }
 
-        public static void SendPlayerControlsPacket(int controlsRequestId, PlayerControls playerControls)
+        public static void SendPlayerInputPacket(int inputId, PlayerInput playerInput)
         {
-            const ClientPacketType clientPacketType = ClientPacketType.PlayerControls;
+            const ClientPacketType clientPacketType = ClientPacketType.PlayerInput;
 
             using (Packet packet = new Packet((int) clientPacketType))
             {
-                packet.Write(controlsRequestId);
+                packet.Write(inputId);
 
-                bool[] serializedPlayerControls = playerControls.Serialize();
-                packet.Write(serializedPlayerControls.Length);
+                bool[] serializedPlayerInput = playerInput.Serialize();
+                packet.Write(serializedPlayerInput.Length);
 
-                foreach (bool control in serializedPlayerControls)
+                foreach (bool inputValue in serializedPlayerInput)
                 {
-                    packet.Write(control);
+                    packet.Write(inputValue);
                 }
 
                 GameManager.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);

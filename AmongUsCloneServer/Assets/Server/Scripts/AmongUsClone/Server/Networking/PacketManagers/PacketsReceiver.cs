@@ -15,7 +15,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> packetHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
         {
             {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
-            {(int) ClientPacketType.PlayerControls, ProcessPlayerControlsPacket},
+            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
         };
 
         public static void ProcessPacket(int playerId, int packetTypeId, Packet packet, bool isTcp)
@@ -42,27 +42,25 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             GameManager.instance.ConnectPlayer(playerId, userName);
         }
 
-        private static void ProcessPlayerControlsPacket(int playerId, Packet packet)
+        private static void ProcessPlayerInputPacket(int playerId, Packet packet)
         {
-            int lastRequestId = packet.ReadInt();
-            LastClientRequestIds.Update(playerId, lastRequestId);
-
-            int playerControlsAmount = packet.ReadInt();
-
-            // Because of multi threading we might not have this client
+            // Because of multi threading we might not have this client yet
             if (!Server.clients.ContainsKey(playerId))
             {
                 return;
             }
 
-            bool[] serializedPlayerControls = new bool[playerControlsAmount];
-            for (int playerControlIndex = 0; playerControlIndex < serializedPlayerControls.Length; playerControlIndex++)
-            {
-                serializedPlayerControls[playerControlIndex] = packet.ReadBool();
-            }
-            PlayerControls playerControls = PlayerControls.Deserialize(serializedPlayerControls);
+            int inputId = packet.ReadInt();
+            int playerInputSize = packet.ReadInt();
 
-            GameManager.instance.UpdatePlayerControls(playerId, playerControls);
+            bool[] serializedPlayerInput = new bool[playerInputSize];
+            for (int playerInputValueIndex = 0; playerInputValueIndex < serializedPlayerInput.Length; playerInputValueIndex++)
+            {
+                serializedPlayerInput[playerInputValueIndex] = packet.ReadBool();
+            }
+            PlayerInput playerInput = PlayerInput.Deserialize(serializedPlayerInput);
+
+            GameManager.instance.SavePlayerInput(playerId, inputId, playerInput);
         }
     }
 }

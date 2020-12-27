@@ -3,18 +3,18 @@
 
 namespace AmongUsClone.Shared.Game.PlayerLogic
 {
-    public class PlayerControls
+    public class PlayerInput
     {
         public bool moveTop;
         public bool moveLeft;
         public bool moveRight;
         public bool moveBottom;
 
-        public PlayerControls()
+        public PlayerInput()
         {
         }
 
-        private PlayerControls(bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
+        private PlayerInput(bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
         {
             this.moveTop = moveTop;
             this.moveLeft = moveLeft;
@@ -22,13 +22,13 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             this.moveRight = moveRight;
         }
 
-        public static PlayerControls Deserialize(bool[] serializedPlayerControls)
+        public static PlayerInput Deserialize(bool[] serializedPlayerInput)
         {
-            return new PlayerControls(
-                serializedPlayerControls[0],
-                serializedPlayerControls[1],
-                serializedPlayerControls[2],
-                serializedPlayerControls[3]
+            return new PlayerInput(
+                serializedPlayerInput[0],
+                serializedPlayerInput[1],
+                serializedPlayerInput[2],
+                serializedPlayerInput[3]
             );
         }
 
@@ -43,9 +43,9 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             };
         }
 
-        public PlayerControls Clone()
+        public PlayerInput Clone()
         {
-            return new PlayerControls
+            return new PlayerInput
             {
                 moveTop = moveTop,
                 moveBottom = moveBottom,
@@ -57,16 +57,16 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         public override string ToString()
         {
             return "(" +
-                   $"w: {SerializeControlValue(moveTop)}, " +
-                   $"a: {SerializeControlValue(moveLeft)}, " +
-                   $"s: {SerializeControlValue(moveBottom)}, " +
-                   $"d: {SerializeControlValue(moveRight)}" +
+                   $"w: {SerializeInputValue(moveTop)}, " +
+                   $"a: {SerializeInputValue(moveLeft)}, " +
+                   $"s: {SerializeInputValue(moveBottom)}, " +
+                   $"d: {SerializeInputValue(moveRight)}" +
                    ")";
         }
 
-        private static int SerializeControlValue(bool controlValue)
+        private static int SerializeInputValue(bool inputValue)
         {
-            return controlValue ? 1 : 0;
+            return inputValue ? 1 : 0;
         }
     }
 }

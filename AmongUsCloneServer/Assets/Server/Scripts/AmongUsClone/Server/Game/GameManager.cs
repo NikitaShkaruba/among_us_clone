@@ -1,10 +1,10 @@
 // I want a class to have either static or non static methods
 // ReSharper disable MemberCanBeMadeStatic.Global
 
+using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Server.Snapshots;
-using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
@@ -34,7 +34,7 @@ namespace AmongUsClone.Server.Game
         public void ConnectPlayer(int playerId, string playerName)
         {
             Server.clients[playerId].player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab);
-            LastClientRequestIds.Initialize(playerId);
+            ProcessedPlayerInputs.Initialize(playerId);
 
             foreach (Client client in Server.clients.Values)
             {
@@ -63,9 +63,10 @@ namespace AmongUsClone.Server.Game
             PacketsSender.SendPlayerDisconnectedPacket(playerId);
         }
 
-        public void UpdatePlayerControls(int playerId, PlayerControls playerControls)
+        public void SavePlayerInput(int playerId, int inputId, PlayerInput playerInput)
         {
-            Server.clients[playerId].player.controllable.UpdateControls(playerControls);
+            ProcessedPlayerInputs.Update(playerId, inputId); // Todo: move into actual usage
+            Server.clients[playerId].player.GetComponent<ServerPlayer>().EnqueueInput(playerInput);
         }
     }
 }

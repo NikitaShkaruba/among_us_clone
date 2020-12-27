@@ -14,8 +14,10 @@ namespace AmongUsClone.Client.PlayerLogic
     {
         private Player player;
 
-        private int controlsRequestId;
-        public readonly Dictionary<int, PlayerControls> cachedSentToServerControls = new Dictionary<int, PlayerControls>();
+        // Todo: merge into one structure
+        private int inputId;
+        public readonly Dictionary<int, PlayerInput> snapshotsInputs = new Dictionary<int, PlayerInput>();
+        public readonly Dictionary<int, Vector2> snapshotsPositions = new Dictionary<int, Vector2>();
 
         private void Awake()
         {
@@ -24,22 +26,20 @@ namespace AmongUsClone.Client.PlayerLogic
 
         private void FixedUpdate()
         {
-            UpdatePlayerControls();
+            UpdatePlayerInput();
 
-            if (HasNewInputsForServer())
-            {
-                StartCoroutine(SendControlsToServer(player.controllable.playerControls.Clone()));
-            }
+            inputId++;
+            StartCoroutine(SendInputToServer(inputId, player.controllable.playerInput.Clone()));
 
             if (NetworkingOptimizationTests.isPredictionEnabled)
             {
-                player.movable.MoveByPlayerControls(player.controllable.playerControls);
+                player.movable.MoveByPlayerInput(player.controllable.playerInput);
             }
         }
 
-        private void UpdatePlayerControls()
+        private void UpdatePlayerInput()
         {
-            PlayerControls newPlayerControls = new PlayerControls()
+            PlayerInput newPlayerInput = new PlayerInput
             {
                 moveTop = Input.GetKey(KeyCode.W),
                 moveLeft = Input.GetKey(KeyCode.A),
@@ -47,46 +47,33 @@ namespace AmongUsClone.Client.PlayerLogic
                 moveRight = Input.GetKey(KeyCode.D),
             };
 
-            player.controllable.UpdateControls(newPlayerControls);
+            player.controllable.UpdateInput(newPlayerInput);
         }
 
-        private bool HasNewInputsForServer()
+        private IEnumerator SendInputToServer(int inputId, PlayerInput playerInput)
         {
-            return player.controllable.playerControls.moveTop ||
-                   player.controllable.playerControls.moveLeft ||
-                   player.controllable.playerControls.moveRight ||
-                   player.controllable.playerControls.moveBottom;
-        }
-
-        private IEnumerator SendControlsToServer(PlayerControls playerControls)
-        {
-            controlsRequestId++;
-            cachedSentToServerControls[controlsRequestId] = playerControls;
+            snapshotsInputs[inputId] = playerInput;
+            snapshotsPositions[inputId] = player.movable.rigidbody.position;
 
             // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.millisecondsLag * 0.001f;
             yield return new WaitForSeconds(secondsToWait);
 
-            PacketsSender.SendPlayerControlsPacket(controlsRequestId, playerControls);
+            PacketsSender.SendPlayerInputPacket(inputId, playerInput);
         }
 
-        public void RemoveObsoleteRequests(GameSnapshot gameSnapshot)
+        public void RemoveObsoleteStates(GameSnapshot gameSnapshot)
         {
             // No snapshots to remove
-            if (cachedSentToServerControls.Keys.Count == 0)
+            if (snapshotsInputs.Count == 0)
             {
                 return;
             }
 
-            int minRequestId = cachedSentToServerControls.Keys.Min();
-            int maxRequestId = cachedSentToServerControls.Keys.Max();
-
-            for (int requestId = minRequestId; requestId <= maxRequestId; requestId++)
+            for (int inputId = snapshotsInputs.Keys.Min(); inputId <= gameSnapshot.yourLastProcessedInputId; inputId++)
             {
-                if (requestId <= gameSnapshot.lastControlsRequestId)
-                {
-                    cachedSentToServerControls.Remove(requestId);
-                }
+                snapshotsInputs.Remove(inputId);
+                snapshotsPositions.Remove(inputId);
             }
         }
     }
