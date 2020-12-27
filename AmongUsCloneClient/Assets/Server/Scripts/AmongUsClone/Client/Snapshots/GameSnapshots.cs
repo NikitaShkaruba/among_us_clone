@@ -24,7 +24,7 @@ namespace AmongUsClone.Client.Snapshots
                 {
                     if (IsReconciliationNeeded(gameSnapshot))
                     {
-                        Reconciliate(gameSnapshot);
+                        Reconcile(gameSnapshot);
                     }
                 }
                 else
@@ -39,51 +39,34 @@ namespace AmongUsClone.Client.Snapshots
 
         private static bool IsReconciliationNeeded(GameSnapshot gameSnapshot)
         {
-            return false;
-
             const float acceptablePositionError = 0.0000001f;
             ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
 
             Vector2 serverPosition = gameSnapshot.playersInfo[0].position;
-            Vector2 clientPosition = clientControllable.snapshotsPositions[gameSnapshot.yourLastProcessedInputId + 1];
-
-            if (!Mathf.Approximately(serverPosition.x, 0) || !Mathf.Approximately(serverPosition.y, 0))
-            {
-                // Logger.LogDebug($"Reconciliation case. Should have all the information to reconcile");
-            }
-
+            Vector2 clientPosition = clientControllable.snapshotsPositions[gameSnapshot.yourLastProcessedInputId];
             Vector2 positionDifference = serverPosition - clientPosition;
-            bool isReconciliationNeeded = positionDifference.sqrMagnitude > acceptablePositionError;
-            if (isReconciliationNeeded)
-            {
-                // Logger.LogDebug($"Reconciliation happened. Snapshot: {gameSnapshot.id}. LastControlsId: {gameSnapshot.lastControlsRequestId}.");
-            }
 
-            return isReconciliationNeeded;
+            return positionDifference.sqrMagnitude > acceptablePositionError;
         }
 
-        private static void Reconciliate(GameSnapshot gameSnapshot)
+        private static void Reconcile(GameSnapshot gameSnapshot)
         {
-            return;
-
             Player player = GameManager.instance.lobby.players[0];
             ClientControllable clientControllable = player.GetComponent<ClientControllable>();
-            Vector2 serverPosition = gameSnapshot.playersInfo[0].position;
 
-            // Physics.autoSimulation = false;
+            Logger.LogDebug($"Reconciling with the server. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {gameSnapshot.playersInfo[0].position}. Client position: {clientControllable.snapshotsPositions[gameSnapshot.yourLastProcessedInputId]}.");
 
-            player.movable.Move(serverPosition);
-            // Physics.Simulate(Time.fixedDeltaTime);
+            // Teleport to server location
+            player.movable.Move(gameSnapshot.playersInfo[0].position);
+            clientControllable.UpdatePositionHistory(gameSnapshot.yourLastProcessedInputId, gameSnapshot.playersInfo[0].position);
+            Logger.LogDebug($"Teleported player by reconciliation. To {gameSnapshot.playersInfo[0].position}");
 
-            for (int controlsRequestId = gameSnapshot.yourLastProcessedInputId + 1; controlsRequestId < clientControllable.snapshotsPositions.Keys.Max(); controlsRequestId++)
+            // Apply not yet processed by server inputs
+            for (int inputId = gameSnapshot.yourLastProcessedInputId + 1; inputId <= clientControllable.snapshotsPositions.Keys.Max(); inputId++)
             {
-                // Vector2 clientPosition = clientControllable.snapshotsPositions[];
-                player.movable.MoveByPlayerInput(clientControllable.snapshotsInputs[controlsRequestId]);
-                Logger.LogDebug($"Reconciled controls request {controlsRequestId}. Player position: {player.movable.rigidbody.position}.");
-                // Physics.Simulate(Time.fixedDeltaTime);
+                Vector2 newPosition = player.movable.MoveByPlayerInput(clientControllable.snapshotsInputs[inputId]);
+                clientControllable.UpdatePositionHistory(inputId, newPosition);
             }
-
-            // Physics.autoSimulation = true;
         }
     }
 }

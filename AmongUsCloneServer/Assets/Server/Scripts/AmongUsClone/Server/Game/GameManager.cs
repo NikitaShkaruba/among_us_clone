@@ -65,8 +65,7 @@ namespace AmongUsClone.Server.Game
 
         public void SavePlayerInput(int playerId, int inputId, PlayerInput playerInput)
         {
-            ProcessedPlayerInputs.Update(playerId, inputId); // Todo: move into actual usage
-            Server.clients[playerId].player.GetComponent<ServerPlayer>().EnqueueInput(playerInput);
+            Server.clients[playerId].player.GetComponent<ServerPlayer>().EnqueueInput(inputId, playerInput);
         }
     }
 }

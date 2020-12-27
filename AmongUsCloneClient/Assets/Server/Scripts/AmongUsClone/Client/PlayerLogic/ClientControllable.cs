@@ -28,13 +28,13 @@ namespace AmongUsClone.Client.PlayerLogic
         {
             UpdatePlayerInput();
 
-            inputId++;
-            StartCoroutine(SendInputToServer(inputId, player.controllable.playerInput.Clone()));
-
             if (NetworkingOptimizationTests.isPredictionEnabled)
             {
                 player.movable.MoveByPlayerInput(player.controllable.playerInput);
             }
+
+            inputId++;
+            StartCoroutine(SendInputToServer(inputId, player.movable.transform.position, player.controllable.playerInput.Clone()));
         }
 
         private void UpdatePlayerInput()
@@ -50,10 +50,10 @@ namespace AmongUsClone.Client.PlayerLogic
             player.controllable.UpdateInput(newPlayerInput);
         }
 
-        private IEnumerator SendInputToServer(int inputId, PlayerInput playerInput)
+        private IEnumerator SendInputToServer(int inputId, Vector2 playerPosition, PlayerInput playerInput)
         {
             snapshotsInputs[inputId] = playerInput;
-            snapshotsPositions[inputId] = player.movable.rigidbody.position;
+            snapshotsPositions[inputId] = playerPosition;
 
             // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.millisecondsLag * 0.001f;
@@ -70,11 +70,16 @@ namespace AmongUsClone.Client.PlayerLogic
                 return;
             }
 
-            for (int inputId = snapshotsInputs.Keys.Min(); inputId <= gameSnapshot.yourLastProcessedInputId; inputId++)
+            for (int inputId = snapshotsInputs.Keys.Min(); inputId < gameSnapshot.yourLastProcessedInputId; inputId++)
             {
                 snapshotsInputs.Remove(inputId);
                 snapshotsPositions.Remove(inputId);
             }
+        }
+
+        public void UpdatePositionHistory(int inputId, Vector2 newPosition)
+        {
+            snapshotsPositions[inputId] = newPosition;
         }
     }
 }

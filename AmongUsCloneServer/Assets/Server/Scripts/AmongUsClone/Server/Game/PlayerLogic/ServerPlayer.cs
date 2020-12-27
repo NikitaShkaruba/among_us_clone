@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
@@ -8,7 +10,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     public class ServerPlayer : MonoBehaviour
     {
         private Player player;
-        private readonly Queue<PlayerInput> queuedInputs = new Queue<PlayerInput>();
+        private readonly Queue<Tuple<int, PlayerInput>> queuedInputs = new Queue<Tuple<int, PlayerInput>>();
 
         private void Start()
         {
@@ -19,15 +21,17 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         {
             if (queuedInputs.Count != 0)
             {
-                player.controllable.UpdateInput(queuedInputs.Dequeue());
+                (int inputId, PlayerInput playerInput) = queuedInputs.Dequeue();
+                player.controllable.UpdateInput(playerInput);
+                ProcessedPlayerInputs.Update(player.id, inputId);
             }
 
             player.movable.MoveByPlayerInput(player.controllable.playerInput);
         }
 
-        public void EnqueueInput(PlayerInput playerInput)
+        public void EnqueueInput(int inputId, PlayerInput playerInput)
         {
-            queuedInputs.Enqueue(playerInput);
+            queuedInputs.Enqueue(new Tuple<int, PlayerInput>(inputId, playerInput));
         }
     }
 }
