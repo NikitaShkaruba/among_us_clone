@@ -34,7 +34,6 @@ namespace AmongUsClone.Server.Game
         public void ConnectPlayer(int playerId, string playerName)
         {
             Server.clients[playerId].player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab);
-            ProcessedPlayerInputs.Initialize(playerId);
 
             foreach (Client client in Server.clients.Values)
             {

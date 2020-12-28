@@ -1,3 +1,4 @@
+using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
@@ -54,7 +55,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             foreach (Client client in Server.clients.Values)
             {
-                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, ProcessedPlayerInputs.Get(client.playerId));
+                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.GetComponent<ServerPlayer>().lastProcessedInputId);
 
                 using (Packet packet = new Packet((int) packetType))
                 {

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using AmongUsClone.Server.Game.PlayerLogic;
+using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Snapshots;
 using TMPro;
 using UnityEngine;
@@ -23,10 +26,10 @@ namespace AmongUsClone.Server.Game.UI.Debug
         {
             string labelText = "Last processed inputs:\n";
 
-            foreach (int playerId in ProcessedPlayerInputs.lastPlayersProcessedInputIds.Keys)
+            foreach (Client client in Server.clients.Values)
             {
-                int lastInputId = ProcessedPlayerInputs.lastPlayersProcessedInputIds[playerId];
-                labelText += $"Player {playerId}: {lastInputId} \n";
+                int lastInputId = client.player.GetComponent<ServerPlayer>().lastProcessedInputId;
+                labelText += $"Player {client.playerId}: {lastInputId} \n";
             }
 
             textMeshPro.text = labelText;

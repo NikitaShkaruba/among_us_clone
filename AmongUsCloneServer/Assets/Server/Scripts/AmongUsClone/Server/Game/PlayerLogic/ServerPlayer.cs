@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared.Game.PlayerLogic;
+using AmongUsClone.Shared.Logging;
 using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game.PlayerLogic
 {
@@ -10,7 +12,9 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     public class ServerPlayer : MonoBehaviour
     {
         private Player player;
+
         private readonly Queue<PlayerInput> queuedInputs = new Queue<PlayerInput>();
+        public int lastProcessedInputId;
 
         private void Start()
         {
@@ -19,15 +23,33 @@ namespace AmongUsClone.Server.Game.PlayerLogic
 
         public void FixedUpdate()
         {
-            if (queuedInputs.Count != 0)
+            player.controllable.UpdateInput(GetPlayerInput());
+            player.movable.MoveByPlayerInput(player.controllable.playerInput);
+        }
+
+        private PlayerInput GetPlayerInput()
+        {
+            // Sometimes packets may be lost, then we think that player was standing still
+            if (queuedInputs.Count == 0)
             {
-                // Todo: fix a case when nothing can be dequeued
-                PlayerInput playerInput = queuedInputs.Dequeue();
-                player.controllable.UpdateInput(playerInput);
-                ProcessedPlayerInputs.Update(player.id, playerInput.id);
+                return new PlayerInput();
             }
 
-            player.movable.MoveByPlayerInput(player.controllable.playerInput);
+            PlayerInput playerInput = queuedInputs.Dequeue();
+            UpdateLastProcessedInputId(playerInput);
+
+            return playerInput;
+        }
+
+        private void UpdateLastProcessedInputId(PlayerInput playerInput)
+        {
+            if (lastProcessedInputId >= playerInput.id)
+            {
+                Logger.LogError(LoggerSection.GameSnapshots, $"Got less or equal last inputId. Last remembered: {lastProcessedInputId}, new: {playerInput.id}");
+                return;
+            }
+
+            lastProcessedInputId = playerInput.id;
         }
 
         public void EnqueueInput(PlayerInput playerInput)
