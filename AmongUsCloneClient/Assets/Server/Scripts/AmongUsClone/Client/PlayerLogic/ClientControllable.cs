@@ -56,7 +56,7 @@ namespace AmongUsClone.Client.PlayerLogic
             snapshotsPositions[inputId] = playerPosition;
 
             // Simulate network lag
-            float secondsToWait = NetworkingOptimizationTests.millisecondsLag * 0.001f;
+            float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
             yield return new WaitForSeconds(secondsToWait);
 
             PacketsSender.SendPlayerInputPacket(inputId, playerInput);

@@ -1,6 +1,5 @@
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
@@ -8,21 +7,21 @@ namespace AmongUsClone.Client.UI.UiElements
 {
     public class NetworkingOptimizationTests : MonoBehaviour
     {
-        [SerializeField] private InputField lagInput;
+        [SerializeField] private InputField pingInput;
         [SerializeField] private Toggle predictionToggle;
         [SerializeField] private Toggle reconciliationToggle;
 
         public static bool isPredictionEnabled;
         public static bool isReconciliationEnabled;
-        public static bool isInterpolationEnabled;
-        public static int millisecondsLag = 100;
+        private static bool isInterpolationEnabled;
+        private static int ping = 100;
 
-        public static float SecondsLag => millisecondsLag * 0.001f;
+        public static float NetworkDelayInSeconds => ping * 0.001f / 2f;
 
         private void Awake()
         {
-            lagInput.onValueChanged.AddListener(delegate { UpdateLag(); });
-            lagInput.text = millisecondsLag.ToString();
+            pingInput.onValueChanged.AddListener(delegate { UpdatePing(); });
+            pingInput.text = ping.ToString();
             isPredictionEnabled = predictionToggle.isOn;
             isReconciliationEnabled = reconciliationToggle.isOn;
 
@@ -61,9 +60,9 @@ namespace AmongUsClone.Client.UI.UiElements
             Logger.LogEvent(LoggerSection.Initialization, $"Toggled server interpolation: {isInterpolationEnabled}");
         }
 
-        private void UpdateLag()
+        public void UpdatePing()
         {
-            millisecondsLag = int.Parse(lagInput.text);
+            ping = int.Parse(pingInput.text);
         }
     }
 }

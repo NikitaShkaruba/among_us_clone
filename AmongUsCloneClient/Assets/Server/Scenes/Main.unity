@@ -1321,6 +1321,10 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1960786903, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_Name
+      value: NetworkLagSimulation
+      objectReference: {fileID: 0}
     - target: {fileID: 1353335452106418285, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000030517578

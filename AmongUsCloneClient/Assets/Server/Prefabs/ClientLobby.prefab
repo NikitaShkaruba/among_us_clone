@@ -380,7 +380,7 @@ GameObject:
   - component: {fileID: 329767808}
   - component: {fileID: 329767807}
   m_Layer: 0
-  m_Name: LagLabel
+  m_Name: PingLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -446,7 +446,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Lag:            ms'
+  m_Text: 'Ping:            ms'
 --- !u!1 &335749979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,7 +1629,7 @@ GameObject:
   - component: {fileID: 1400512903}
   - component: {fileID: 1400512902}
   m_Layer: 0
-  m_Name: LagInput
+  m_Name: PingInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1653,7 +1653,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -28, y: 6}
+  m_AnchoredPosition: {x: -24.2, y: 6}
   m_SizeDelta: {x: 44, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1400512904
@@ -1753,7 +1753,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1912735253}
         m_TargetAssemblyTypeName: AmongUsClone.Client.UI.UiElements.NetworkingOptimizationTests,
           Assembly-CSharp
-        m_MethodName: UpdateLag
+        m_MethodName: UpdatePing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1980,7 +1980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02129fe294ce4023bce630fb1b1d1bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lagInput: {fileID: 1400512902}
+  pingInput: {fileID: 1400512902}
   predictionToggle: {fileID: 1976094651}
   reconciliationToggle: {fileID: 1346115607}
 --- !u!1 &1960786903
@@ -1993,7 +1993,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1960786904}
   m_Layer: 0
-  m_Name: LagSimulation
+  m_Name: NetworkLagSimulation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2125,6 +2125,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1056292634, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6002086026236504489, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
       propertyPath: m_Name
       value: ClientLobby

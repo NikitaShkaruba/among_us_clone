@@ -93,7 +93,7 @@ namespace AmongUsClone.Client.Game
         private static IEnumerator ProcessGameSnapshotPacketWithLagCoroutine(Packet packet)
         {
             // Simulate network lag
-            float secondsToWait = NetworkingOptimizationTests.SecondsLag;
+            float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
             yield return new WaitForSeconds(secondsToWait);
 
             int snapshotId = packet.ReadInt();
