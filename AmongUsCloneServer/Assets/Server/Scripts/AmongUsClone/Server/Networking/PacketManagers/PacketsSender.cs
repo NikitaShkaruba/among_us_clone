@@ -55,6 +55,12 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             foreach (Client client in Server.clients.Values)
             {
+                // Because of multithreading we might not still have player
+                if (!client.IsPlayerInitialized())
+                {
+                    continue;
+                }
+
                 ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.GetComponent<ServerPlayer>().lastProcessedInputId);
 
                 using (Packet packet = new Packet((int) packetType))

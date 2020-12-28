@@ -28,6 +28,12 @@ namespace AmongUsClone.Server.Game.UI.Debug
 
             foreach (Client client in Server.clients.Values)
             {
+                // Because of multithreading we might not still have player
+                if (!client.IsPlayerInitialized())
+                {
+                    continue;
+                }
+
                 int lastInputId = client.player.GetComponent<ServerPlayer>().lastProcessedInputId;
                 labelText += $"Player {client.playerId}: {lastInputId} \n";
             }

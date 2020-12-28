@@ -8,7 +8,6 @@ namespace AmongUsClone.Shared.Snapshots
 {
     /**
      * Snapshot with an information about every object for each player
-     * Todo: consider migrating yourLastProcessedInputId to separate class
      */
     public class GameSnapshot
     {

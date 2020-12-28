@@ -12,6 +12,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server
 {
+    // Todo: consider removing all the 'because of multithreading' comments, because we should execute this logic only after everything has updated
     public class Server : MonoBehaviour
     {
         public const int MinPlayerId = 0;
