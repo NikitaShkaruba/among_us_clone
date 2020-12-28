@@ -58,7 +58,7 @@ namespace AmongUsClone.Client.PlayerLogic
             PacketsSender.SendPlayerInputPacket(playerInput);
         }
 
-        public void RemoveObsoleteStates(ClientGameSnapshot gameSnapshot)
+        public void RemoveObsoleteSnapshotStates(ClientGameSnapshot gameSnapshot)
         {
             // No snapshots to remove
             if (stateSnapshots.Count == 0)
@@ -72,7 +72,7 @@ namespace AmongUsClone.Client.PlayerLogic
             }
         }
 
-        public void UpdatePositionHistory(int inputId, Vector2 newPosition)
+        public void UpdateSnapshotState(int inputId, Vector2 newPosition)
         {
             stateSnapshots[inputId].position = newPosition;
         }

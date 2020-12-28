@@ -15,8 +15,9 @@ namespace AmongUsClone.Client.Snapshots
         public static void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
             // Todo: fix always playerId being always 1
+            // Todo: remove lobby call
             ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
-            clientControllable.RemoveObsoleteStates(gameSnapshot);
+            clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
 
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo)
             {
@@ -33,12 +34,14 @@ namespace AmongUsClone.Client.Snapshots
                 }
             }
 
+            // Todo: remove debug
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot.id}");
             GameSnapshotsDebug.Log(gameSnapshot, GameManager.instance.lobby.players[0]);
         }
 
         private static bool IsReconciliationNeeded(ClientGameSnapshot gameSnapshot)
         {
+            // Todo: support multiple players
             const float acceptablePositionError = 0.0000001f;
             ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
 
@@ -51,6 +54,7 @@ namespace AmongUsClone.Client.Snapshots
 
         private static void Reconcile(ClientGameSnapshot gameSnapshot)
         {
+            // Todo: support multiple players
             Player player = GameManager.instance.lobby.players[0];
             ClientControllable clientControllable = player.GetComponent<ClientControllable>();
 
@@ -58,14 +62,14 @@ namespace AmongUsClone.Client.Snapshots
 
             // Teleport to server location
             player.movable.Move(gameSnapshot.playersInfo[0].position);
-            clientControllable.UpdatePositionHistory(gameSnapshot.yourLastProcessedInputId, gameSnapshot.playersInfo[0].position);
+            clientControllable.UpdateSnapshotState(gameSnapshot.yourLastProcessedInputId, gameSnapshot.playersInfo[0].position);
             Logger.LogDebug($"Teleported player by reconciliation. To {gameSnapshot.playersInfo[0].position}");
 
             // Apply not yet processed by server inputs
             for (int inputId = gameSnapshot.yourLastProcessedInputId + 1; inputId <= clientControllable.stateSnapshots.Keys.Max(); inputId++)
             {
                 Vector2 newPosition = player.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
-                clientControllable.UpdatePositionHistory(inputId, newPosition);
+                clientControllable.UpdateSnapshotState(inputId, newPosition);
             }
         }
     }

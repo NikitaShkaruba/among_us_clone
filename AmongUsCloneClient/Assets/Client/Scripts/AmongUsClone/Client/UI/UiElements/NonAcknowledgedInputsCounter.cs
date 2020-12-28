@@ -22,6 +22,7 @@ namespace AmongUsClone.Client.UI.UiElements
 
         private void UpdateInfo()
         {
+            // Todo: support multiple players
             if (!GameManager.instance.lobby.players.ContainsKey(0))
             {
                 return;

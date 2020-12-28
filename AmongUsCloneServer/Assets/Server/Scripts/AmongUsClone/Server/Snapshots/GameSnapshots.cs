@@ -18,6 +18,7 @@ namespace AmongUsClone.Server.Snapshots
         {
             GameSnapshot lastGameSnapshot = CaptureSnapshot();
 
+            // Todo: remove debug
             if (GameManager.instance.lobby.players.ContainsKey(0))
             {
                 GameSnapshotsDebug.Log(new ClientGameSnapshot(lastGameSnapshot.id, -1, lastGameSnapshot.playersInfo), GameManager.instance.lobby.players[0]);

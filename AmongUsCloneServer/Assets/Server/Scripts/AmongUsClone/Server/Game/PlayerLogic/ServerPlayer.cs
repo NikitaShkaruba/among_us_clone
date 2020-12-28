@@ -21,6 +21,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         {
             if (queuedInputs.Count != 0)
             {
+                // Todo: fix a case when nothing can be dequeued
                 PlayerInput playerInput = queuedInputs.Dequeue();
                 player.controllable.UpdateInput(playerInput);
                 ProcessedPlayerInputs.Update(player.id, playerInput.id);
