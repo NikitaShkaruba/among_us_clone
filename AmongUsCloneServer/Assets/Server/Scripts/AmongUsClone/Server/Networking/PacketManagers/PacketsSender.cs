@@ -61,7 +61,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                     continue;
                 }
 
-                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.GetComponent<ServerPlayer>().lastProcessedInputId);
+                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.GetComponent<RemoteControllable>().lastProcessedInputId);
 
                 using (Packet packet = new Packet((int) packetType))
                 {

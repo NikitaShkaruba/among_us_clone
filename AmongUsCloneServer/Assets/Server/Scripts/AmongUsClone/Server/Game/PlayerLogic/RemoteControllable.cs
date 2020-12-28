@@ -9,7 +9,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Server.Game.PlayerLogic
 {
     [RequireComponent(typeof(Player))]
-    public class ServerPlayer : MonoBehaviour
+    public class RemoteControllable : MonoBehaviour
     {
         private Player player;
 

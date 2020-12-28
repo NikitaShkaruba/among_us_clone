@@ -65,7 +65,7 @@ namespace AmongUsClone.Server.Game
         public void SavePlayerInput(int playerId, PlayerInput playerInput)
         {
             // Todo: remove GetComponent<ServerPlayer>
-            Server.clients[playerId].player.GetComponent<ServerPlayer>().EnqueueInput(playerInput);
+            Server.clients[playerId].player.GetComponent<RemoteControllable>().EnqueueInput(playerInput);
         }
     }
 }

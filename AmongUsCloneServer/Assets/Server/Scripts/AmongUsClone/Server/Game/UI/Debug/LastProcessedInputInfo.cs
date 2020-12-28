@@ -34,7 +34,7 @@ namespace AmongUsClone.Server.Game.UI.Debug
                     continue;
                 }
 
-                int lastInputId = client.player.GetComponent<ServerPlayer>().lastProcessedInputId;
+                int lastInputId = client.player.GetComponent<RemoteControllable>().lastProcessedInputId;
                 labelText += $"Player {client.playerId}: {lastInputId} \n";
             }
 
