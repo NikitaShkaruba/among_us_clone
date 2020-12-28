@@ -34,8 +34,8 @@ namespace AmongUsClone.Client.Snapshots
                 }
             }
 
+            Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
             // Todo: remove debug
-            Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot.id}");
             GameSnapshotsDebug.Log(gameSnapshot, GameManager.instance.lobby.players[0]);
         }
 

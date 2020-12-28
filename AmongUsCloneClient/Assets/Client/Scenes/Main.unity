@@ -1325,6 +1325,10 @@ PrefabInstance:
       propertyPath: m_Text
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 1714538524, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_Text
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1720298988, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
       propertyPath: m_Color.r
       value: 1
@@ -1395,7 +1399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1353335452106418286, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}

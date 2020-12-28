@@ -41,8 +41,7 @@ namespace AmongUsClone.Server.Snapshots
                 gameSnapshots.Remove(gameSnapshots.Keys.Min());
             }
 
-            // Todo: add more descriptive logs
-            Logger.LogEvent(LoggerSection.GameSnapshots, $"Game snapshot #{gameSnapshot.id} captured");
+            Logger.LogEvent(LoggerSection.GameSnapshots, $"Game snapshot captured {gameSnapshot}");
         }
 
         private static GameSnapshot CaptureSnapshot()

@@ -14,7 +14,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         private Player player;
 
         private readonly Queue<PlayerInput> queuedInputs = new Queue<PlayerInput>();
-        public int lastProcessedInputId;
+        public int lastProcessedInputId = -1;
 
         private void Start()
         {
