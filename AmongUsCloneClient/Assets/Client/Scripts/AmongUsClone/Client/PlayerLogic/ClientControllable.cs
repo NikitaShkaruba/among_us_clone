@@ -14,7 +14,6 @@ namespace AmongUsClone.Client.PlayerLogic
     {
         private Player player;
 
-        private int inputId;
         public readonly Dictionary<int, ClientControllableStateSnapshot> stateSnapshots = new Dictionary<int, ClientControllableStateSnapshot>();
 
         private void Awake()
@@ -36,11 +35,9 @@ namespace AmongUsClone.Client.PlayerLogic
 
         private void UpdatePlayerInput()
         {
-            inputId++;
-
             PlayerInput newPlayerInput = new PlayerInput
             {
-                id = inputId,
+                id = GenerateNextPlayerInputId(),
                 moveTop = Input.GetKey(KeyCode.W),
                 moveLeft = Input.GetKey(KeyCode.A),
                 moveBottom = Input.GetKey(KeyCode.S),
@@ -78,6 +75,16 @@ namespace AmongUsClone.Client.PlayerLogic
         public void UpdatePositionHistory(int inputId, Vector2 newPosition)
         {
             stateSnapshots[inputId].position = newPosition;
+        }
+
+        private int GenerateNextPlayerInputId()
+        {
+            if (stateSnapshots.Count == 0)
+            {
+                return 0;
+            }
+
+            return stateSnapshots.Keys.Max() + 1;
         }
     }
 }
