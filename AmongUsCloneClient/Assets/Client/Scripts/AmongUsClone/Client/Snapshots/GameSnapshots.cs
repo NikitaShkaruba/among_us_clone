@@ -43,7 +43,7 @@ namespace AmongUsClone.Client.Snapshots
             ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
 
             Vector2 serverPosition = gameSnapshot.playersInfo[0].position;
-            Vector2 clientPosition = clientControllable.snapshotsPositions[gameSnapshot.yourLastProcessedInputId];
+            Vector2 clientPosition = clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
             Vector2 positionDifference = serverPosition - clientPosition;
 
             return positionDifference.sqrMagnitude > acceptablePositionError;
@@ -54,7 +54,7 @@ namespace AmongUsClone.Client.Snapshots
             Player player = GameManager.instance.lobby.players[0];
             ClientControllable clientControllable = player.GetComponent<ClientControllable>();
 
-            Logger.LogDebug($"Reconciling with the server. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {gameSnapshot.playersInfo[0].position}. Client position: {clientControllable.snapshotsPositions[gameSnapshot.yourLastProcessedInputId]}.");
+            Logger.LogDebug($"Reconciling with the server. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {gameSnapshot.playersInfo[0].position}. Client position: {clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId]}.");
 
             // Teleport to server location
             player.movable.Move(gameSnapshot.playersInfo[0].position);
@@ -62,9 +62,9 @@ namespace AmongUsClone.Client.Snapshots
             Logger.LogDebug($"Teleported player by reconciliation. To {gameSnapshot.playersInfo[0].position}");
 
             // Apply not yet processed by server inputs
-            for (int inputId = gameSnapshot.yourLastProcessedInputId + 1; inputId <= clientControllable.snapshotsPositions.Keys.Max(); inputId++)
+            for (int inputId = gameSnapshot.yourLastProcessedInputId + 1; inputId <= clientControllable.stateSnapshots.Keys.Max(); inputId++)
             {
-                Vector2 newPosition = player.movable.MoveByPlayerInput(clientControllable.snapshotsInputs[inputId]);
+                Vector2 newPosition = player.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
                 clientControllable.UpdatePositionHistory(inputId, newPosition);
             }
         }

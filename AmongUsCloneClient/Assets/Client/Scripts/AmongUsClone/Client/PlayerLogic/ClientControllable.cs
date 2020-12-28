@@ -14,10 +14,8 @@ namespace AmongUsClone.Client.PlayerLogic
     {
         private Player player;
 
-        // Todo: merge into one structure
         private int inputId;
-        public readonly Dictionary<int, PlayerInput> snapshotsInputs = new Dictionary<int, PlayerInput>();
-        public readonly Dictionary<int, Vector2> snapshotsPositions = new Dictionary<int, Vector2>();
+        public readonly Dictionary<int, ClientControllableStateSnapshot> stateSnapshots = new Dictionary<int, ClientControllableStateSnapshot>();
 
         private void Awake()
         {
@@ -54,8 +52,7 @@ namespace AmongUsClone.Client.PlayerLogic
 
         private IEnumerator SendInputToServer(Vector2 playerPosition, PlayerInput playerInput)
         {
-            snapshotsInputs[playerInput.id] = playerInput;
-            snapshotsPositions[playerInput.id] = playerPosition;
+            stateSnapshots[playerInput.id] = new ClientControllableStateSnapshot(playerInput, playerPosition);
 
             // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
@@ -67,21 +64,20 @@ namespace AmongUsClone.Client.PlayerLogic
         public void RemoveObsoleteStates(GameSnapshot gameSnapshot)
         {
             // No snapshots to remove
-            if (snapshotsInputs.Count == 0)
+            if (stateSnapshots.Count == 0)
             {
                 return;
             }
 
-            for (int inputId = snapshotsInputs.Keys.Min(); inputId < gameSnapshot.yourLastProcessedInputId; inputId++)
+            for (int inputId = stateSnapshots.Keys.Min(); inputId < gameSnapshot.yourLastProcessedInputId; inputId++)
             {
-                snapshotsInputs.Remove(inputId);
-                snapshotsPositions.Remove(inputId);
+                stateSnapshots.Remove(inputId);
             }
         }
 
         public void UpdatePositionHistory(int inputId, Vector2 newPosition)
         {
-            snapshotsPositions[inputId] = newPosition;
+            stateSnapshots[inputId].position = newPosition;
         }
     }
 }
