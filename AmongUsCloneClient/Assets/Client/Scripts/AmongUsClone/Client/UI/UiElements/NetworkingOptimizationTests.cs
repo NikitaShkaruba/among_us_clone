@@ -11,17 +11,18 @@ namespace AmongUsClone.Client.UI.UiElements
         [SerializeField] private Toggle predictionToggle;
         [SerializeField] private Toggle reconciliationToggle;
 
+        private static int ping;
         public static bool isPredictionEnabled;
         public static bool isReconciliationEnabled;
         private static bool isInterpolationEnabled;
-        private static int ping = 100;
 
         public static float NetworkDelayInSeconds => ping * 0.001f / 2f;
 
         private void Awake()
         {
             pingInput.onValueChanged.AddListener(delegate { UpdatePing(); });
-            pingInput.text = ping.ToString();
+
+            UpdatePing();
             isPredictionEnabled = predictionToggle.isOn;
             isReconciliationEnabled = reconciliationToggle.isOn;
 
