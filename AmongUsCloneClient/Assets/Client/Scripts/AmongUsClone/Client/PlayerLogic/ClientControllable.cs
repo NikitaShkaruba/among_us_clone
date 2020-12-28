@@ -58,7 +58,7 @@ namespace AmongUsClone.Client.PlayerLogic
             PacketsSender.SendPlayerInputPacket(playerInput);
         }
 
-        public void RemoveObsoleteStates(GameSnapshot gameSnapshot)
+        public void RemoveObsoleteStates(ClientGameSnapshot gameSnapshot)
         {
             // No snapshots to remove
             if (stateSnapshots.Count == 0)

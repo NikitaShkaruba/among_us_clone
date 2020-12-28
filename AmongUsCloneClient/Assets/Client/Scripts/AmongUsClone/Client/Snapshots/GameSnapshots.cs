@@ -12,7 +12,7 @@ namespace AmongUsClone.Client.Snapshots
 {
     public static class GameSnapshots
     {
-        public static void ProcessSnapshot(GameSnapshot gameSnapshot)
+        public static void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
             // Todo: fix always playerId being always 1
             ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
@@ -37,7 +37,7 @@ namespace AmongUsClone.Client.Snapshots
             GameSnapshotsDebug.Log(gameSnapshot, GameManager.instance.lobby.players[0]);
         }
 
-        private static bool IsReconciliationNeeded(GameSnapshot gameSnapshot)
+        private static bool IsReconciliationNeeded(ClientGameSnapshot gameSnapshot)
         {
             const float acceptablePositionError = 0.0000001f;
             ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
@@ -49,7 +49,7 @@ namespace AmongUsClone.Client.Snapshots
             return positionDifference.sqrMagnitude > acceptablePositionError;
         }
 
-        private static void Reconcile(GameSnapshot gameSnapshot)
+        private static void Reconcile(ClientGameSnapshot gameSnapshot)
         {
             Player player = GameManager.instance.lobby.players[0];
             ClientControllable clientControllable = player.GetComponent<ClientControllable>();

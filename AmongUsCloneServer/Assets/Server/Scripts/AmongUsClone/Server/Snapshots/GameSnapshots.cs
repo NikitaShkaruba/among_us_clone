@@ -20,7 +20,7 @@ namespace AmongUsClone.Server.Snapshots
 
             if (GameManager.instance.lobby.players.ContainsKey(0))
             {
-                GameSnapshotsDebug.Log(lastGameSnapshot, GameManager.instance.lobby.players[0]);
+                GameSnapshotsDebug.Log(new ClientGameSnapshot(lastGameSnapshot.id, -1, lastGameSnapshot.playersInfo), GameManager.instance.lobby.players[0]);
             }
 
             SaveSnapshot(lastGameSnapshot);

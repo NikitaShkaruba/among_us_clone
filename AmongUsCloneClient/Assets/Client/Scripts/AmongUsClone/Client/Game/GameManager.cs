@@ -109,7 +109,7 @@ namespace AmongUsClone.Client.Game
                 snapshotPlayerInfos.Add(new SnapshotPlayerInfo(playerId, playerPosition));
             }
 
-            GameSnapshot gameSnapshot = new GameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
+            ClientGameSnapshot gameSnapshot = new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
             GameSnapshots.ProcessSnapshot(gameSnapshot);
         }
 

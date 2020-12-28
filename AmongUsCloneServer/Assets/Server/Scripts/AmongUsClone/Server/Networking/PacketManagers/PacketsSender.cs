@@ -54,7 +54,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             foreach (Client client in Server.clients.Values)
             {
-                GameSnapshot clientGameSnapshot = new GameSnapshot(gameSnapshot, ProcessedPlayerInputs.Get(client.playerId));
+                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, ProcessedPlayerInputs.Get(client.playerId));
 
                 using (Packet packet = new Packet((int) packetType))
                 {

@@ -8,7 +8,7 @@ namespace AmongUsClone.Shared.Snapshots
     {
         private static string previousPlayerInformation = "";
 
-        public static void Log(GameSnapshot lastGameSnapshot, Player localPlayer)
+        public static void Log(ClientGameSnapshot lastGameSnapshot, Player localPlayer)
         {
             string playerInformation = lastGameSnapshot.playersInfo.Count != 0 ? $"Snapshot player: {{ position: {lastGameSnapshot.playersInfo[0].position} }}. Local player: {{ position: {localPlayer.movable.rigidbody.position}, input: {localPlayer.controllable.playerInput} }}" : "";
 
