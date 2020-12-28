@@ -5,6 +5,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 {
     public class PlayerInput
     {
+        public int id;
+
         public bool moveTop;
         public bool moveLeft;
         public bool moveRight;
@@ -14,17 +16,20 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         {
         }
 
-        private PlayerInput(bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
+        private PlayerInput(int id, bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
         {
+            this.id = id;
+
             this.moveTop = moveTop;
             this.moveLeft = moveLeft;
             this.moveBottom = moveBottom;
             this.moveRight = moveRight;
         }
 
-        public static PlayerInput Deserialize(bool[] serializedPlayerInput)
+        public static PlayerInput Deserialize(int id, bool[] serializedPlayerInput)
         {
             return new PlayerInput(
+                id,
                 serializedPlayerInput[0],
                 serializedPlayerInput[1],
                 serializedPlayerInput[2],
@@ -47,6 +52,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         {
             return new PlayerInput
             {
+                id = id,
                 moveTop = moveTop,
                 moveBottom = moveBottom,
                 moveLeft = moveLeft,

@@ -33,14 +33,16 @@ namespace AmongUsClone.Client.PlayerLogic
                 player.movable.MoveByPlayerInput(player.controllable.playerInput);
             }
 
-            inputId++;
-            StartCoroutine(SendInputToServer(inputId, player.movable.transform.position, player.controllable.playerInput.Clone()));
+            StartCoroutine(SendInputToServer(player.movable.transform.position, player.controllable.playerInput.Clone()));
         }
 
         private void UpdatePlayerInput()
         {
+            inputId++;
+
             PlayerInput newPlayerInput = new PlayerInput
             {
+                id = inputId,
                 moveTop = Input.GetKey(KeyCode.W),
                 moveLeft = Input.GetKey(KeyCode.A),
                 moveBottom = Input.GetKey(KeyCode.S),
@@ -50,16 +52,16 @@ namespace AmongUsClone.Client.PlayerLogic
             player.controllable.UpdateInput(newPlayerInput);
         }
 
-        private IEnumerator SendInputToServer(int inputId, Vector2 playerPosition, PlayerInput playerInput)
+        private IEnumerator SendInputToServer(Vector2 playerPosition, PlayerInput playerInput)
         {
-            snapshotsInputs[inputId] = playerInput;
-            snapshotsPositions[inputId] = playerPosition;
+            snapshotsInputs[playerInput.id] = playerInput;
+            snapshotsPositions[playerInput.id] = playerPosition;
 
             // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
             yield return new WaitForSeconds(secondsToWait);
 
-            PacketsSender.SendPlayerInputPacket(inputId, playerInput);
+            PacketsSender.SendPlayerInputPacket(playerInput);
         }
 
         public void RemoveObsoleteStates(GameSnapshot gameSnapshot)

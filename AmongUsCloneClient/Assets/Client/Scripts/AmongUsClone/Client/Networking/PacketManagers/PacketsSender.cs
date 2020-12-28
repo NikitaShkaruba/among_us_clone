@@ -21,13 +21,13 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             }
         }
 
-        public static void SendPlayerInputPacket(int inputId, PlayerInput playerInput)
+        public static void SendPlayerInputPacket(PlayerInput playerInput)
         {
             const ClientPacketType clientPacketType = ClientPacketType.PlayerInput;
 
             using (Packet packet = new Packet((int) clientPacketType))
             {
-                packet.Write(inputId);
+                packet.Write(playerInput.id);
 
                 bool[] serializedPlayerInput = playerInput.Serialize();
                 packet.Write(serializedPlayerInput.Length);

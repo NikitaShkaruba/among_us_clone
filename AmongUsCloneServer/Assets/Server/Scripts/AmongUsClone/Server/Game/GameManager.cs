@@ -63,9 +63,9 @@ namespace AmongUsClone.Server.Game
             PacketsSender.SendPlayerDisconnectedPacket(playerId);
         }
 
-        public void SavePlayerInput(int playerId, int inputId, PlayerInput playerInput)
+        public void SavePlayerInput(int playerId, PlayerInput playerInput)
         {
-            Server.clients[playerId].player.GetComponent<ServerPlayer>().EnqueueInput(inputId, playerInput);
+            Server.clients[playerId].player.GetComponent<ServerPlayer>().EnqueueInput(playerInput);
         }
     }
 }

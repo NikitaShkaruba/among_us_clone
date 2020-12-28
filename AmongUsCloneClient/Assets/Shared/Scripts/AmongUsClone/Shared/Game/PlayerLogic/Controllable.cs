@@ -10,6 +10,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 
         public void UpdateInput(PlayerInput playerInput)
         {
+            this.playerInput.id = playerInput.id;
+
             this.playerInput.moveTop = playerInput.moveTop;
             this.playerInput.moveLeft = playerInput.moveLeft;
             this.playerInput.moveRight = playerInput.moveRight;

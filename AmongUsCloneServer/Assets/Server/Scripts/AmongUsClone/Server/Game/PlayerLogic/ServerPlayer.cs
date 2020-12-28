@@ -10,7 +10,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     public class ServerPlayer : MonoBehaviour
     {
         private Player player;
-        private readonly Queue<Tuple<int, PlayerInput>> queuedInputs = new Queue<Tuple<int, PlayerInput>>();
+        private readonly Queue<PlayerInput> queuedInputs = new Queue<PlayerInput>();
 
         private void Start()
         {
@@ -21,17 +21,17 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         {
             if (queuedInputs.Count != 0)
             {
-                (int inputId, PlayerInput playerInput) = queuedInputs.Dequeue();
+                PlayerInput playerInput = queuedInputs.Dequeue();
                 player.controllable.UpdateInput(playerInput);
-                ProcessedPlayerInputs.Update(player.id, inputId);
+                ProcessedPlayerInputs.Update(player.id, playerInput.id);
             }
 
             player.movable.MoveByPlayerInput(player.controllable.playerInput);
         }
 
-        public void EnqueueInput(int inputId, PlayerInput playerInput)
+        public void EnqueueInput(PlayerInput playerInput)
         {
-            queuedInputs.Enqueue(new Tuple<int, PlayerInput>(inputId, playerInput));
+            queuedInputs.Enqueue(playerInput);
         }
     }
 }

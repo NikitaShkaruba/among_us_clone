@@ -58,9 +58,9 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             {
                 serializedPlayerInput[playerInputValueIndex] = packet.ReadBool();
             }
-            PlayerInput playerInput = PlayerInput.Deserialize(serializedPlayerInput);
+            PlayerInput playerInput = PlayerInput.Deserialize(inputId, serializedPlayerInput);
 
-            GameManager.instance.SavePlayerInput(playerId, inputId, playerInput);
+            GameManager.instance.SavePlayerInput(playerId, playerInput);
         }
     }
 }
