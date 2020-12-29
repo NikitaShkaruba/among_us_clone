@@ -86,7 +86,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             Server.clients[playerId].SendTcpPacket(packet);
 
-            Logger.LogEvent(LoggerSection.Debug, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to the client {playerId}");
+            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to the client {playerId}");
         }
 
         // ReSharper disable once UnusedMember.Local

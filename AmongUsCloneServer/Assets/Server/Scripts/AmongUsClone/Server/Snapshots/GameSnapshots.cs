@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;

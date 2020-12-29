@@ -55,7 +55,7 @@ namespace AmongUsClone.Client.PlayerLogic
             };
         }
 
-        private IEnumerator SendInputToServer(PlayerInput playerInput)
+        private static IEnumerator SendInputToServer(PlayerInput playerInput)
         {
             // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
