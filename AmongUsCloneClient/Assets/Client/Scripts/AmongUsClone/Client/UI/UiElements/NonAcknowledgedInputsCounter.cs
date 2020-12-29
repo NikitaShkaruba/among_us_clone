@@ -22,13 +22,12 @@ namespace AmongUsClone.Client.UI.UiElements
 
         private void UpdateInfo()
         {
-            // Todo: support multiple players
-            if (!GameManager.instance.lobby.players.ContainsKey(0))
+            if (GameManager.instance.controlledPlayer == null)
             {
                 return;
             }
 
-            ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
+            ClientControllable clientControllable = GameManager.instance.controlledPlayer.GetComponent<ClientControllable>();
             int nonAcknowledgedInputsAmount = clientControllable.stateSnapshots.Count;
             textMeshPro.text = $"Non-acknowledged inputs: {nonAcknowledgedInputsAmount}";
         }

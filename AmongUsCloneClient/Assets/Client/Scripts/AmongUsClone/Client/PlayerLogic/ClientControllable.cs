@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Game.PlayerLogic;
@@ -19,6 +20,7 @@ namespace AmongUsClone.Client.PlayerLogic
         private void Awake()
         {
             player = GetComponent<Player>();
+            GameManager.instance.controlledPlayer = player;
         }
 
         private void FixedUpdate()

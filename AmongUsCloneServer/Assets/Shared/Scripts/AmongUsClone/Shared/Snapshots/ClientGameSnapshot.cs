@@ -13,7 +13,7 @@ namespace AmongUsClone.Shared.Snapshots
             this.yourLastProcessedInputId = yourLastProcessedInputId;
         }
 
-        public ClientGameSnapshot(int id, int yourLastProcessedInputId, List<SnapshotPlayerInfo> snapshotPlayersInfoInfo) : base(id, snapshotPlayersInfoInfo)
+        public ClientGameSnapshot(int id, int yourLastProcessedInputId, Dictionary<int, SnapshotPlayerInfo> snapshotPlayersInfoInfo) : base(id, snapshotPlayersInfoInfo)
         {
             this.yourLastProcessedInputId = yourLastProcessedInputId;
         }

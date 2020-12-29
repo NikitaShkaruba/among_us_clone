@@ -1,6 +1,5 @@
 // ReSharper disable UnusedMember.Global
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Shared.Game.PlayerLogic;
@@ -13,9 +12,9 @@ namespace AmongUsClone.Shared.Snapshots
     public class GameSnapshot
     {
         public readonly int id;
-        public readonly List<SnapshotPlayerInfo> playersInfo;
+        public readonly Dictionary<int, SnapshotPlayerInfo> playersInfo;
 
-        public GameSnapshot(int id, List<SnapshotPlayerInfo> snapshotPlayersInfoInfo)
+        public GameSnapshot(int id, Dictionary<int, SnapshotPlayerInfo> snapshotPlayersInfoInfo)
         {
             this.id = id;
             playersInfo = snapshotPlayersInfoInfo;
@@ -24,13 +23,13 @@ namespace AmongUsClone.Shared.Snapshots
         public GameSnapshot(int id, IEnumerable<Player> players)
         {
             this.id = id;
-            playersInfo = players.Select(player => new SnapshotPlayerInfo(player.id, player.Position)).ToList();
+            playersInfo = players.Select(player => new SnapshotPlayerInfo(player.id, player.Position)).ToDictionary(snapshotPlayerInfo => snapshotPlayerInfo.id);
         }
 
         public override string ToString()
         {
             List<string> playersInfoDescriptionPieces = new List<string>(playersInfo.Count);
-            foreach (SnapshotPlayerInfo playerInfo in playersInfo)
+            foreach (SnapshotPlayerInfo playerInfo in playersInfo.Values)
             {
                 playersInfoDescriptionPieces.Add($"{{ id: {playerInfo.id}, position: {playerInfo.position} }}");
             }

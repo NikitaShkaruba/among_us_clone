@@ -69,7 +69,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                     packet.Write(clientGameSnapshot.yourLastProcessedInputId);
                     packet.Write(clientGameSnapshot.playersInfo.Count);
 
-                    foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo)
+                    foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo.Values)
                     {
                         packet.Write(snapshotPlayerInfo.id);
                         packet.Write(snapshotPlayerInfo.position);

@@ -14,62 +14,80 @@ namespace AmongUsClone.Client.Snapshots
     {
         public static void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
-            // Todo: fix always playerId being always 1
-            // Todo: remove lobby call
-            ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
-            clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
-
-            foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo)
-            {
-                if (NetworkingOptimizationTests.isReconciliationEnabled)
-                {
-                    if (IsReconciliationNeeded(gameSnapshot))
-                    {
-                        Reconcile(gameSnapshot);
-                    }
-                }
-                else
-                {
-                    GameManager.instance.UpdatePlayerPosition(snapshotPlayerInfo.id, snapshotPlayerInfo.position);
-                }
-            }
+            UpdatePlayers(gameSnapshot);
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
             // Todo: remove debug
-            GameSnapshotsDebug.Log(gameSnapshot, GameManager.instance.lobby.players[0]);
+            GameSnapshotsDebug.Log(gameSnapshot, GameManager.instance.controlledPlayer);
         }
 
-        private static bool IsReconciliationNeeded(ClientGameSnapshot gameSnapshot)
+        private static void UpdatePlayers(ClientGameSnapshot gameSnapshot)
         {
-            // Todo: support multiple players
-            const float acceptablePositionError = 0.0000001f;
-            ClientControllable clientControllable = GameManager.instance.lobby.players[0].GetComponent<ClientControllable>();
+            Player controlledPlayer = GameManager.instance.controlledPlayer;
 
-            Vector2 serverPosition = gameSnapshot.playersInfo[0].position;
-            Vector2 clientPosition = clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
+            foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
+            {
+                if (snapshotPlayerInfo.id == controlledPlayer.id)
+                {
+                    UpdateControlledPlayer(gameSnapshot, controlledPlayer);
+                }
+                else
+                {
+                    UpdateNotControlledPlayer(snapshotPlayerInfo);
+                }
+            }
+        }
+
+        private static void UpdateNotControlledPlayer(SnapshotPlayerInfo snapshotPlayerInfo)
+        {
+            GameManager.instance.UpdatePlayerPosition(snapshotPlayerInfo.id, snapshotPlayerInfo.position);
+        }
+
+        private static void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, Player controlledPlayer)
+        {
+            controlledPlayer.GetComponent<ClientControllable>().RemoveObsoleteSnapshotStates(gameSnapshot);
+
+            if (NetworkingOptimizationTests.isReconciliationEnabled)
+            {
+                if (IsReconciliationNeeded(controlledPlayer, gameSnapshot))
+                {
+                    Reconcile(controlledPlayer, gameSnapshot);
+                }
+            }
+            else
+            {
+                GameManager.instance.UpdatePlayerPosition(controlledPlayer.id, gameSnapshot.playersInfo[controlledPlayer.id].position);
+            }
+        }
+
+        private static bool IsReconciliationNeeded(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
+        {
+            const float acceptablePositionError = 0.0000001f;
+
+            Vector2 serverPosition = gameSnapshot.playersInfo[controlledPlayer.id].position;
+            Vector2 clientPosition = controlledPlayer.GetComponent<ClientControllable>().stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
             Vector2 positionDifference = serverPosition - clientPosition;
 
             return positionDifference.sqrMagnitude > acceptablePositionError;
         }
 
-        private static void Reconcile(ClientGameSnapshot gameSnapshot)
+        private static void Reconcile(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
         {
-            // Todo: support multiple players
-            Player player = GameManager.instance.lobby.players[0];
-            ClientControllable clientControllable = player.GetComponent<ClientControllable>();
+            ClientControllable clientControllable = controlledPlayer.GetComponent<ClientControllable>();
+            Vector2 correctServerPosition = gameSnapshot.playersInfo[controlledPlayer.id].position;
 
-            Logger.LogDebug($"Reconciling with the server. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {gameSnapshot.playersInfo[0].position}. Client position: {clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId]}.");
+            // Todo: add proper logs for this section
+            Logger.LogDebug($"Reconciling with the server. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId]}.");
 
             // Teleport to server location
-            player.movable.Move(gameSnapshot.playersInfo[0].position);
-            clientControllable.UpdateSnapshotState(gameSnapshot.yourLastProcessedInputId, gameSnapshot.playersInfo[0].position);
-            Logger.LogDebug($"Teleported player by reconciliation. To {gameSnapshot.playersInfo[0].position}");
+            controlledPlayer.movable.Move(correctServerPosition);
+            clientControllable.UpdateSnapshotState(gameSnapshot.yourLastProcessedInputId, correctServerPosition);
 
             // Apply not yet processed by server inputs
             for (int inputId = gameSnapshot.yourLastProcessedInputId + 1; inputId <= clientControllable.stateSnapshots.Keys.Max(); inputId++)
             {
-                Vector2 newPosition = player.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
-                clientControllable.UpdateSnapshotState(inputId, newPosition);
+                Vector2 correctlyPredictedPosition = controlledPlayer.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
+                clientControllable.UpdateSnapshotState(inputId, correctlyPredictedPosition);
             }
         }
     }

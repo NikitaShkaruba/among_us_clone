@@ -10,7 +10,7 @@ namespace AmongUsClone.Shared.Snapshots
 
         public static void Log(ClientGameSnapshot lastGameSnapshot, Player localPlayer)
         {
-            string playerInformation = lastGameSnapshot.playersInfo.Count != 0 ? $"Snapshot player: {{ position: {lastGameSnapshot.playersInfo[0].position} }}. Local player: {{ position: {localPlayer.movable.rigidbody.position}, input: {localPlayer.controllable.playerInput} }}" : "";
+            string playerInformation = lastGameSnapshot.playersInfo.Count != 0 ? $"Snapshot player: {{ position: {lastGameSnapshot.playersInfo[localPlayer.id].position} }}. Local player: {{ position: {localPlayer.movable.rigidbody.position}, input: {localPlayer.controllable.playerInput} }}" : "";
 
             if (previousPlayerInformation.Equals(playerInformation))
             {

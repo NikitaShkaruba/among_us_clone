@@ -6,6 +6,7 @@ using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Snapshots;
@@ -23,6 +24,7 @@ namespace AmongUsClone.Client.Game
         public UserInterface userInterface;
         public MainMenu mainMenu;
         public Lobby lobby;
+        public Player controlledPlayer;
 
         [SerializeField] public GameObject clientControllablePlayerPrefab;
         [SerializeField] public GameObject playerPrefab;
@@ -99,14 +101,14 @@ namespace AmongUsClone.Client.Game
             int snapshotId = packet.ReadInt();
             int lastProcessedInputId = packet.ReadInt();
 
-            List<SnapshotPlayerInfo> snapshotPlayerInfos = new List<SnapshotPlayerInfo>();
+            Dictionary<int, SnapshotPlayerInfo> snapshotPlayerInfos = new Dictionary<int, SnapshotPlayerInfo>();
             int snapshotPlayersAmount = packet.ReadInt();
             for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
             {
                 int playerId = packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
 
-                snapshotPlayerInfos.Add(new SnapshotPlayerInfo(playerId, playerPosition));
+                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition);
             }
 
             ClientGameSnapshot gameSnapshot = new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
