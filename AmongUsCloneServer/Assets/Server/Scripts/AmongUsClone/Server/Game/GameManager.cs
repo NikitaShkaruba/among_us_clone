@@ -2,12 +2,11 @@
 // ReSharper disable MemberCanBeMadeStatic.Global
 
 using AmongUsClone.Server.Game.PlayerLogic;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
-using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
-using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 

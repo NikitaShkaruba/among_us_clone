@@ -1,9 +1,9 @@
 using System.Linq;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.PlayerLogic;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Game.PlayerLogic;
-using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;

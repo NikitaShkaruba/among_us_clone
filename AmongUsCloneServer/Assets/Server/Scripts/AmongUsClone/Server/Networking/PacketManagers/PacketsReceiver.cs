@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AmongUsClone.Server.Game;
-using AmongUsClone.Server.Snapshots;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;

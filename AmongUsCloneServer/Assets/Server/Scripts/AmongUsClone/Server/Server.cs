@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.Tcp;
 using AmongUsClone.Server.Networking.Udp;
 using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared;
-using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
@@ -22,6 +22,7 @@ namespace AmongUsClone.Server
 
         public void Start()
         {
+            Logger.Initialize(new[] {LoggerSection.Network, LoggerSection.GameSnapshots}, true);
             Logger.LogEvent(LoggerSection.Initialization, "Starting the server...");
 
             Console.Title = "Among Us Server";

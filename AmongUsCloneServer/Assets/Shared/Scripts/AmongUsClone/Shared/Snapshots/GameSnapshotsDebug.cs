@@ -1,6 +1,5 @@
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
-using JetBrains.Annotations;
 
 namespace AmongUsClone.Shared.Snapshots
 {

@@ -1,5 +1,5 @@
 using AmongUsClone.Server.Game.PlayerLogic;
-using AmongUsClone.Server.Snapshots;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
@@ -86,7 +86,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             Server.clients[playerId].SendTcpPacket(packet);
 
-            Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to the client {playerId}");
+            Logger.LogEvent(LoggerSection.Debug, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to the client {playerId}");
         }
 
         // ReSharper disable once UnusedMember.Local

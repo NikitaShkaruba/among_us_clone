@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
-using AmongUsClone.Server.Snapshots;
 using TMPro;
 using UnityEngine;
 

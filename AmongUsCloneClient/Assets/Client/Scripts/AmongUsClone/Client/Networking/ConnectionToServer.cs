@@ -1,7 +1,7 @@
 ﻿using System.Net;
+using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared;
-using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using Logger = AmongUsClone.Shared.Logging.Logger;

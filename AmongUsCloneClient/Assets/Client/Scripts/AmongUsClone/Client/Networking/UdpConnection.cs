@@ -2,9 +2,9 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared;
-using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 

@@ -1,4 +1,4 @@
-using AmongUsClone.Shared.Logging;
+using AmongUsClone.Client.Logging;
 using UnityEngine;
 using UnityEngine.UI;
 using Logger = AmongUsClone.Shared.Logging.Logger;

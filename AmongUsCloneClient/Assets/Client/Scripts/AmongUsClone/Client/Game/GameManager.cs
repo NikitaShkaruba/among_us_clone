@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Client.UI;
@@ -7,7 +8,6 @@ using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
-using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
@@ -30,6 +30,12 @@ namespace AmongUsClone.Client.Game
         [SerializeField] public GameObject playerPrefab;
 
         private void Awake()
+        {
+            Logger.Initialize(new[] {LoggerSection.Network, LoggerSection.GameSnapshots}, true);
+            InitializeSingleton();
+        }
+
+        private void InitializeSingleton()
         {
             if (instance == null)
             {

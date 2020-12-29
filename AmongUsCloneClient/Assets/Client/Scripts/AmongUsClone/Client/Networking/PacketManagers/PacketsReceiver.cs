@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Logging;
 using AmongUsClone.Shared;
-using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
-using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 

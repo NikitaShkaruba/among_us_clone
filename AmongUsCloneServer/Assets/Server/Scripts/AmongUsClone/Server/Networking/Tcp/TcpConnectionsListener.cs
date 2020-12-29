@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared.Logging;
 
 namespace AmongUsClone.Server.Networking.Tcp

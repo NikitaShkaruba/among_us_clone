@@ -1,6 +1,7 @@
 using System;
 using System.Net.Sockets;
 using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;

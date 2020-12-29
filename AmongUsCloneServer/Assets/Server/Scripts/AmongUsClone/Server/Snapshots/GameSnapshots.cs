@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.PlayerLogic;
-using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Snapshots;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
