@@ -8,8 +8,6 @@ namespace AmongUsClone.Shared.Logging
 {
     public static class Logger
     {
-        private static readonly DateTime startupDateTime = DateTime.Now;
-
         private const string LogTypeEvent = "event";
         private const string LogTypeNotice = "notice";
         private const string LogTypeError = "error";

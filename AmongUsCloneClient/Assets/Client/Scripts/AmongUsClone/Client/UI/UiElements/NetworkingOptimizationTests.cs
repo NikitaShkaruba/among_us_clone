@@ -25,8 +25,6 @@ namespace AmongUsClone.Client.UI.UiElements
             UpdatePing();
             isPredictionEnabled = predictionToggle.isOn;
             isReconciliationEnabled = reconciliationToggle.isOn;
-
-            Logger.LogDebug($"pred: {isPredictionEnabled}, rec: {isReconciliationEnabled}");
         }
 
         public void ToggleServerPrediction(Toggle toggle)
