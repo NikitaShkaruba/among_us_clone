@@ -17,8 +17,6 @@ namespace AmongUsClone.Client.Snapshots
             UpdatePlayers(gameSnapshot);
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
-            // Todo: remove debug
-            GameSnapshotsDebug.Log(gameSnapshot, GameManager.instance.controlledPlayer);
         }
 
         private static void UpdatePlayers(ClientGameSnapshot gameSnapshot)
