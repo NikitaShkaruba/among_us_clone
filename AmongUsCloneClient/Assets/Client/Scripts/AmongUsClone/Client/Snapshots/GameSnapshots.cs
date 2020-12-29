@@ -60,13 +60,13 @@ namespace AmongUsClone.Client.Snapshots
 
         private static bool IsReconciliationNeeded(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
         {
-            const float acceptablePositionError = 0.0000001f;
+            const float acceptablePositionError = 0.01f;
 
             Vector2 serverPosition = gameSnapshot.playersInfo[controlledPlayer.id].position;
             Vector2 clientPosition = controlledPlayer.GetComponent<ClientControllable>().stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
             Vector2 positionDifference = serverPosition - clientPosition;
 
-            return positionDifference.sqrMagnitude > acceptablePositionError;
+            return positionDifference.magnitude > acceptablePositionError;
         }
 
         private static void Reconcile(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
