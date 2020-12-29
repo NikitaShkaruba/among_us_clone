@@ -76,8 +76,7 @@ namespace AmongUsClone.Client.Snapshots
             ClientControllable clientControllable = controlledPlayer.GetComponent<ClientControllable>();
             Vector2 correctServerPosition = gameSnapshot.playersInfo[controlledPlayer.id].position;
 
-            // Todo: add proper logs for this section
-            Logger.LogDebug($"Reconciling with the server. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId]}.");
+            Logger.LogEvent(LoggerSection.ServerReconciliation, $"Reconciling with the server position. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId]}.");
 
             // Teleport to server location
             controlledPlayer.movable.Move(correctServerPosition);

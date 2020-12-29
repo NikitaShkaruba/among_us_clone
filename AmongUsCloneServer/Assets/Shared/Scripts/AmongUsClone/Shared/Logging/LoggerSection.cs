@@ -2,6 +2,7 @@
 
 namespace AmongUsClone.Shared.Logging
 {
+    // Todo: split this enum into multiple for client and the server
     public enum LoggerSection
     {
         Debug,
@@ -9,5 +10,6 @@ namespace AmongUsClone.Shared.Logging
         Network,
         Connection,
         GameSnapshots,
+        ServerReconciliation
     }
 }
