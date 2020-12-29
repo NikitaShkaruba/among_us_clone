@@ -72,20 +72,27 @@ namespace AmongUsClone.Client.Snapshots
         private static void Reconcile(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
         {
             ClientControllable clientControllable = controlledPlayer.GetComponent<ClientControllable>();
+            Vector2 incorrectClientPosition = clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
             Vector2 correctServerPosition = gameSnapshot.playersInfo[controlledPlayer.id].position;
 
-            Logger.LogEvent(LoggerSection.ServerReconciliation, $"Reconciling with the server position. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId]}.");
+            Physics2D.simulationMode = SimulationMode2D.Script;
 
             // Teleport to server location
-            controlledPlayer.movable.Move(correctServerPosition);
-            clientControllable.UpdateSnapshotState(gameSnapshot.yourLastProcessedInputId, correctServerPosition);
+            controlledPlayer.movable.Teleport(correctServerPosition);
+            Physics2D.Simulate(Time.fixedDeltaTime);
+            clientControllable.UpdateSnapshotStatePosition(gameSnapshot.yourLastProcessedInputId, controlledPlayer.transform.position);
 
             // Apply not yet processed by server inputs
             for (int inputId = gameSnapshot.yourLastProcessedInputId + 1; inputId <= clientControllable.stateSnapshots.Keys.Max(); inputId++)
             {
-                Vector2 correctlyPredictedPosition = controlledPlayer.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
-                clientControllable.UpdateSnapshotState(inputId, correctlyPredictedPosition);
+                controlledPlayer.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
+                Physics2D.Simulate(Time.fixedDeltaTime);
+                clientControllable.UpdateSnapshotStatePosition(inputId, controlledPlayer.transform.position);
             }
+
+            Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
+
+            Logger.LogEvent(LoggerSection.ServerReconciliation, $"Reconciled position with the server position. SnapshotId: {gameSnapshot.id}. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {incorrectClientPosition}.");
         }
     }
 }

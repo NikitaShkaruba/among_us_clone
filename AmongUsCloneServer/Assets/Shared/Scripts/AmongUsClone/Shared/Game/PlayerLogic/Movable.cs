@@ -16,24 +16,25 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        public Vector2 MoveByPlayerInput(PlayerInput playerInput)
+        public void MoveByPlayerInput(PlayerInput playerInput)
         {
             Vector2 relativePosition = GetMoveDirection(playerInput) * moveSpeed * Time.fixedDeltaTime;
-            return MoveRelative(relativePosition);
+            MoveRelative(relativePosition);
         }
 
-        public Vector2 MoveRelative(Vector2 relativePosition)
+        private void MoveRelative(Vector2 relativePosition)
         {
-            Vector2 newPosition = (Vector2)transform.position + relativePosition;
+            Vector2 newPosition = (Vector2) transform.position + relativePosition;
             Move(newPosition);
-
-            return newPosition;
         }
 
         public void Move(Vector2 newPosition)
         {
-            // Todo: replace with MovePosition
-            // rigidbody.MovePosition(newPosition);
+            rigidbody.MovePosition(newPosition);
+        }
+
+        public void Teleport(Vector2 newPosition)
+        {
             transform.position = newPosition;
         }
 

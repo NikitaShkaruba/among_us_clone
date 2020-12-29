@@ -32,12 +32,20 @@ namespace AmongUsClone.Client.PlayerLogic
                 player.movable.MoveByPlayerInput(player.controllable.playerInput);
             }
 
-            StartCoroutine(SendInputToServer(player.movable.transform.position, player.controllable.playerInput.Clone()));
+            StartCoroutine(SaveStateSnapshot());
+            StartCoroutine(SendInputToServer(player.controllable.playerInput.Clone()));
+        }
+
+        private IEnumerator SaveStateSnapshot()
+        {
+            yield return new WaitForFixedUpdate();
+
+            stateSnapshots[player.controllable.playerInput.id] = new ClientControllableStateSnapshot(player.controllable.playerInput, player.movable.transform.position);
         }
 
         private void UpdatePlayerInput()
         {
-            PlayerInput newPlayerInput = new PlayerInput
+            player.controllable.playerInput = new PlayerInput
             {
                 id = GenerateNextPlayerInputId(),
                 moveTop = Input.GetKey(KeyCode.W),
@@ -45,14 +53,10 @@ namespace AmongUsClone.Client.PlayerLogic
                 moveBottom = Input.GetKey(KeyCode.S),
                 moveRight = Input.GetKey(KeyCode.D),
             };
-
-            player.controllable.UpdateInput(newPlayerInput);
         }
 
-        private IEnumerator SendInputToServer(Vector2 playerPosition, PlayerInput playerInput)
+        private IEnumerator SendInputToServer(PlayerInput playerInput)
         {
-            stateSnapshots[playerInput.id] = new ClientControllableStateSnapshot(playerInput, playerPosition);
-
             // Simulate network lag
             float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
             yield return new WaitForSeconds(secondsToWait);
@@ -74,7 +78,7 @@ namespace AmongUsClone.Client.PlayerLogic
             }
         }
 
-        public void UpdateSnapshotState(int inputId, Vector2 newPosition)
+        public void UpdateSnapshotStatePosition(int inputId, Vector2 newPosition)
         {
             stateSnapshots[inputId].position = newPosition;
         }

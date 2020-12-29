@@ -21,7 +21,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
 
         public void FixedUpdate()
         {
-            player.controllable.UpdateInput(GetPlayerInput());
+            player.controllable.playerInput = GetPlayerInput();
             player.movable.MoveByPlayerInput(player.controllable.playerInput);
         }
 
