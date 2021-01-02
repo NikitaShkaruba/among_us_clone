@@ -20,10 +20,10 @@ namespace AmongUsClone.Shared.Snapshots
             playersInfo = snapshotPlayersInfoInfo;
         }
 
-        public GameSnapshot(int id, IEnumerable<Player> players)
+        public GameSnapshot(int id, IEnumerable<PlayerInformation> players)
         {
             this.id = id;
-            playersInfo = players.Select(player => new SnapshotPlayerInfo(player.id, player.Position)).ToDictionary(snapshotPlayerInfo => snapshotPlayerInfo.id);
+            playersInfo = players.Select(playerInformation => new SnapshotPlayerInfo(playerInformation.id, playerInformation.transform.position)).ToDictionary(snapshotPlayerInfo => snapshotPlayerInfo.id);
         }
 
         public override string ToString()

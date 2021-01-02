@@ -27,7 +27,7 @@ namespace AmongUsClone.Client.UI.UiElements
                 return;
             }
 
-            ClientControllable clientControllable = GameManager.instance.controlledPlayer.GetComponent<ClientControllable>();
+            ClientControllable clientControllable = GameManager.instance.controlledPlayer.clientControllable;
             int nonAcknowledgedInputsAmount = clientControllable.stateSnapshots.Count;
             textMeshPro.text = $"Non-acknowledged inputs: {nonAcknowledgedInputsAmount}";
         }

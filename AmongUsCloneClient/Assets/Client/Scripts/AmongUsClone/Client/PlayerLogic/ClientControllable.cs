@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Game.PlayerLogic;

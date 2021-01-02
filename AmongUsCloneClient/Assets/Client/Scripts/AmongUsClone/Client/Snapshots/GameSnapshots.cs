@@ -1,9 +1,9 @@
 using System.Linq;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.PlayerLogic;
 using AmongUsClone.Client.UI.UiElements;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -25,7 +25,7 @@ namespace AmongUsClone.Client.Snapshots
 
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
             {
-                if (snapshotPlayerInfo.id == controlledPlayer.id)
+                if (snapshotPlayerInfo.id == controlledPlayer.information.id)
                 {
                     UpdateControlledPlayer(gameSnapshot, controlledPlayer);
                 }
@@ -43,7 +43,7 @@ namespace AmongUsClone.Client.Snapshots
 
         private static void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, Player controlledPlayer)
         {
-            controlledPlayer.GetComponent<ClientControllable>().RemoveObsoleteSnapshotStates(gameSnapshot);
+            controlledPlayer.clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
 
             if (NetworkingOptimizationTests.isReconciliationEnabled)
             {
@@ -54,7 +54,7 @@ namespace AmongUsClone.Client.Snapshots
             }
             else
             {
-                GameManager.instance.UpdatePlayerPosition(controlledPlayer.id, gameSnapshot.playersInfo[controlledPlayer.id].position);
+                GameManager.instance.UpdatePlayerPosition(controlledPlayer.information.id, gameSnapshot.playersInfo[controlledPlayer.information.id].position);
             }
         }
 
@@ -62,8 +62,8 @@ namespace AmongUsClone.Client.Snapshots
         {
             const float acceptablePositionError = 0.01f;
 
-            Vector2 serverPosition = gameSnapshot.playersInfo[controlledPlayer.id].position;
-            Vector2 clientPosition = controlledPlayer.GetComponent<ClientControllable>().stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
+            Vector2 serverPosition = gameSnapshot.playersInfo[controlledPlayer.information.id].position;
+            Vector2 clientPosition = controlledPlayer.clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
             Vector2 positionDifference = serverPosition - clientPosition;
 
             return positionDifference.magnitude > acceptablePositionError;
@@ -71,9 +71,9 @@ namespace AmongUsClone.Client.Snapshots
 
         private static void Reconcile(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
         {
-            ClientControllable clientControllable = controlledPlayer.GetComponent<ClientControllable>();
+            ClientControllable clientControllable = controlledPlayer.clientControllable;
             Vector2 incorrectClientPosition = clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
-            Vector2 correctServerPosition = gameSnapshot.playersInfo[controlledPlayer.id].position;
+            Vector2 correctServerPosition = gameSnapshot.playersInfo[controlledPlayer.information.id].position;
 
             Physics2D.simulationMode = SimulationMode2D.Script;
 

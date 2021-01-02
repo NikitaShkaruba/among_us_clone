@@ -8,6 +8,7 @@ using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
+using GameObject = UnityEngine.GameObject;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game
@@ -32,7 +33,7 @@ namespace AmongUsClone.Server.Game
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Player player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab);
+            Player player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab).GetComponent<Player>();
             Server.clients[playerId].FinishInitialization(player);
 
             foreach (Client client in Server.clients.Values)
@@ -57,15 +58,13 @@ namespace AmongUsClone.Server.Game
         {
             Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
 
-            lobby.RemovePlayer(playerId);
             Server.clients.Remove(playerId);
             PacketsSender.SendPlayerDisconnectedPacket(playerId);
         }
 
         public void SavePlayerInput(int playerId, PlayerInput playerInput)
         {
-            // Todo: remove GetComponent<ServerPlayer>
-            Server.clients[playerId].player.GetComponent<RemoteControllable>().EnqueueInput(playerInput);
+            Server.clients[playerId].player.remoteControllable.EnqueueInput(playerInput);
         }
     }
 }

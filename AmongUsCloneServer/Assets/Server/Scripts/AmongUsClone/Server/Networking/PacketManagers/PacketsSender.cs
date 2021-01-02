@@ -1,7 +1,6 @@
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
@@ -23,15 +22,15 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
         }
 
-        public static void SendPlayerConnectedPacket(int playerId, Player connectedPlayer)
+        public static void SendPlayerConnectedPacket(int playerId, Player player)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerConnected;
 
             using (Packet packet = new Packet((int) packetType))
             {
-                packet.Write(connectedPlayer.id);
-                packet.Write(connectedPlayer.name);
-                packet.Write(connectedPlayer.transform.position);
+                packet.Write(player.information.id);
+                packet.Write(player.information.name);
+                packet.Write(player.information.transform.position);
 
                 SendTcpPacket(playerId, packetType, packet);
             }
@@ -60,7 +59,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                     continue;
                 }
 
-                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.GetComponent<RemoteControllable>().lastProcessedInputId);
+                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.remoteControllable.lastProcessedInputId);
 
                 using (Packet packet = new Packet((int) packetType))
                 {

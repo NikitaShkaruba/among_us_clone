@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.Snapshots;
@@ -7,7 +9,6 @@ using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace AmongUsClone.Client.Game
         public static GameManager instance;
 
         public readonly ConnectionToServer connectionToServer = new ConnectionToServer();
+
+        public Dictionary<int, Player> players = new Dictionary<int, Player>();
 
         public UserInterface userInterface;
         public MainMenu mainMenu;
@@ -72,7 +75,13 @@ namespace AmongUsClone.Client.Game
             userInterface.RemovePauseMenu();
             mainMenu.gameObject.SetActive(true);
             lobby.gameObject.SetActive(false);
-            lobby.Reset();
+
+            foreach (Player player in players.Values)
+            {
+                Destroy(player.gameObject);
+            }
+
+            players.Clear();
 
             connectionToServer.Disconnect();
         }
@@ -80,17 +89,23 @@ namespace AmongUsClone.Client.Game
         public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)
         {
             GameObject chosenPlayerPrefab = playerId == connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
-            lobby.AddPlayer(playerId, playerName, playerPosition, chosenPlayerPrefab);
+            players[playerId] = lobby.AddPlayer(playerId, playerName, playerPosition, chosenPlayerPrefab).GetComponent<Player>();
         }
 
         public void RemovePlayerFromLobby(int playerId)
         {
-            lobby.RemovePlayer(playerId);
+            if (!players.ContainsKey(playerId))
+            {
+                throw new Exception("Unable to remove non existent player");
+            }
+
+            Destroy(players[playerId].gameObject);
+            players.Remove(playerId);
         }
 
         public void UpdatePlayerPosition(int playerId, Vector2 playerPosition)
         {
-            lobby.UpdatePlayerPosition(playerId, playerPosition);
+            players[playerId].movable.Teleport(playerPosition);
         }
 
         public void ProcessGameSnapshotPacketWithLag(Packet packet)
@@ -120,6 +135,5 @@ namespace AmongUsClone.Client.Game
             ClientGameSnapshot gameSnapshot = new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
             GameSnapshots.ProcessSnapshot(gameSnapshot);
         }
-
     }
 }

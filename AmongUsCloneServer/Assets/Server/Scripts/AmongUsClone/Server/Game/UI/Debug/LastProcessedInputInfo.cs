@@ -1,4 +1,3 @@
-using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using TMPro;
 using UnityEngine;
@@ -31,7 +30,7 @@ namespace AmongUsClone.Server.Game.UI.Debug
                     continue;
                 }
 
-                int lastInputId = client.player.GetComponent<RemoteControllable>().lastProcessedInputId;
+                int lastInputId = client.player.remoteControllable.lastProcessedInputId;
                 labelText += $"Player {client.playerId}: {lastInputId} \n";
             }
 
