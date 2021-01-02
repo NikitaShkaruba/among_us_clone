@@ -10,6 +10,7 @@ namespace AmongUsClone.Shared.Networking
 {
     /**
      * Network packet which holds data to exchange between a client and a server
+     * Todo (not important): consider creating a class for every packet type, which can serialize, deserialize itself
      */
     public class Packet : IDisposable
     {

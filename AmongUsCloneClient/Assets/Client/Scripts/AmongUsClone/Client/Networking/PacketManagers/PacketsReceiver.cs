@@ -9,7 +9,6 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking.PacketManagers
 {
-    // Todo: consider creating a class for every packet type, which can serialize, deserialize itself
     public class PacketsReceiver : MonoBehaviour
     {
         private delegate void OnPacketReceivedCallback(Packet packet);
