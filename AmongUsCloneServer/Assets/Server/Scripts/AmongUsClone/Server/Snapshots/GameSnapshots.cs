@@ -56,7 +56,7 @@ namespace AmongUsClone.Server.Snapshots
 
             foreach (Client client in Server.clients.Values)
             {
-                if (!client.IsPlayerInitialized())
+                if (!client.IsFullyInitialized())
                 {
                     continue;
                 }

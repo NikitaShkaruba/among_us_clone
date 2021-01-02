@@ -27,6 +27,19 @@ namespace AmongUsClone.Server.Networking
             udpIpEndPoint = null;
         }
 
+        /**
+         * Client may be connected with tcp, udp, but he is still not spawned at the game
+         */
+        public bool IsFullyInitialized()
+        {
+            return player != null;
+        }
+
+        public void FinishInitialization(Player player)
+        {
+            this.player = player;
+        }
+
         public void ConnectTcp(TcpClient tcpClient)
         {
             tcpConnection = new Tcp.TcpConnection(playerId, tcpClient);
@@ -67,11 +80,6 @@ namespace AmongUsClone.Server.Networking
         public bool IsCorrectUdpIpEndPoint(IPEndPoint clientIpEndPoint)
         {
             return udpIpEndPoint.ToString() == clientIpEndPoint.ToString();
-        }
-
-        public bool IsPlayerInitialized()
-        {
-            return player != null;
         }
     }
 }

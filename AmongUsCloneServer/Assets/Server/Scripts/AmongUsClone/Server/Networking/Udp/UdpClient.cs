@@ -71,7 +71,6 @@ namespace AmongUsClone.Server.Networking.Udp
             }
             catch (SocketException socketException)
             {
-                // Todo: handle randomly occured exception on OnConnection. Replace with warning when found
                 Logger.LogError(LoggerSection.Network, $"[FOUND IT] Error receiving UDP data: {socketException}, {socketException.ErrorCode}");
             }
             catch (Exception exception)

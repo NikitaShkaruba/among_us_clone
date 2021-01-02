@@ -32,11 +32,12 @@ namespace AmongUsClone.Server.Game
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Server.clients[playerId].player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab);
+            Player player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab);
+            Server.clients[playerId].FinishInitialization(player);
 
             foreach (Client client in Server.clients.Values)
             {
-                if (!client.IsPlayerInitialized())
+                if (!client.IsFullyInitialized())
                 {
                     continue;
                 }
