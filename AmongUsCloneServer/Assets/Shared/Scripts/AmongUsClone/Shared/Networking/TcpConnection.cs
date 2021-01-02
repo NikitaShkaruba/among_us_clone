@@ -20,7 +20,6 @@ namespace AmongUsClone.Shared.Networking
         protected Packet receivePacket;
         protected byte[] receiveBuffer;
 
-        // Todo (not important): move packetTypeId computation into Packet
         public delegate void OnPacketReceivedCallback(int packetTypeId, Packet packet);
 
         /**

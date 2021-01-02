@@ -85,6 +85,8 @@ namespace AmongUsClone.Client.Networking
 
             MainThread.ScheduleExecution(() =>
             {
+                // Todo: restore using directive
+                // It is not there because packet processing occurs at a different thread, and packet variable will be destroyed after using directive
                 Packet packet = new Packet(data);
                 int packetTypeId = packet.ReadInt();
                 PacketsReceiver.ProcessPacket(packetTypeId, packet, false);
