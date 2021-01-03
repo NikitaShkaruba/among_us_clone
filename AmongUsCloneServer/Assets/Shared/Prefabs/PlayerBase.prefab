@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3671125453707160520}
   - component: {fileID: 1245664330969266704}
   - component: {fileID: 6140159922534816239}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 6196941555256028704}
   - component: {fileID: 7819642408614097577}
   - component: {fileID: 205960661744032705}
-  m_Layer: 0
-  m_Name: Player
+  m_Layer: 8
+  m_Name: PlayerBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,8 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   name: 
-  movable: {fileID: 0}
-  controllable: {fileID: 0}
 --- !u!114 &7819642408614097577
 MonoBehaviour:
   m_ObjectHideFlags: 0
