@@ -60,6 +60,12 @@ namespace AmongUsClone.Client.Snapshots
 
         private static bool IsReconciliationNeeded(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
         {
+            // If player has just spawned, he might not have gameSnapshots with which he may reconcile
+            if (!controlledPlayer.clientControllable.stateSnapshots.ContainsKey(gameSnapshot.yourLastProcessedInputId))
+            {
+                return false;
+            }
+
             const float acceptablePositionError = 0.01f;
 
             Vector2 serverPosition = gameSnapshot.playersInfo[controlledPlayer.information.id].position;
