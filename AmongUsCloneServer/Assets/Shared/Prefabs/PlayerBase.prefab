@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1059369b4aff447bba09e64d02592dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 1518571814465363439}
   moveSpeed: 10
-  rigidbody: {fileID: 0}
 --- !u!114 &205960661744032705
 MonoBehaviour:
   m_ObjectHideFlags: 0

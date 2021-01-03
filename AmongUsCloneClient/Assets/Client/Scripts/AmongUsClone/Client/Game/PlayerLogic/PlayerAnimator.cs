@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.Game.PlayerLogic
 {
+    [RequireComponent(typeof(Player))]
+    [RequireComponent(typeof(Animator))]
     public class PlayerAnimator : MonoBehaviour
     {
         private static readonly int animatorPropertyIsMoving = Animator.StringToHash("IsMoving");

@@ -7,14 +7,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
     [RequireComponent(typeof(Rigidbody2D))]
     public class Movable : MonoBehaviour
     {
+        public new Rigidbody2D rigidbody2D;
         public float moveSpeed;
-
-        [HideInInspector] public new Rigidbody2D rigidbody;
-
-        public void Start()
-        {
-            rigidbody = GetComponent<Rigidbody2D>();
-        }
 
         public void MoveByPlayerInput(PlayerInput playerInput)
         {
@@ -30,7 +24,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 
         public void Move(Vector2 newPosition)
         {
-            rigidbody.MovePosition(newPosition);
+            rigidbody2D.MovePosition(newPosition);
         }
 
         public void Teleport(Vector2 newPosition)

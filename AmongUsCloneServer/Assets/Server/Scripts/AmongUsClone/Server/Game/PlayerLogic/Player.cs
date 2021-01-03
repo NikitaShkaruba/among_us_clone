@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace AmongUsClone.Server.Game.PlayerLogic
 {
+    [RequireComponent(typeof(PlayerInformation))]
+    [RequireComponent(typeof(Movable))]
+    [RequireComponent(typeof(Controllable))]
+    [RequireComponent(typeof(RemoteControllable))]
     public class Player : MonoBehaviour
     {
         public PlayerInformation information;

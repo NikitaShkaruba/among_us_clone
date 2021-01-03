@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.Game.PlayerLogic
 {
+    [RequireComponent(typeof(PlayerInformation))]
+    [RequireComponent(typeof(Movable))]
+    [RequireComponent(typeof(Controllable))]
+    [RequireComponent(typeof(ClientControllable))]
+    [RequireComponent(typeof(PlayerAnimator))]
     public class Player : MonoBehaviour
     {
         public PlayerInformation information;

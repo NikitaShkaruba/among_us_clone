@@ -6,6 +6,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game.PlayerLogic
 {
+    [RequireComponent(typeof(Player))]
     public class RemoteControllable : MonoBehaviour
     {
         [SerializeField] private Player player;
