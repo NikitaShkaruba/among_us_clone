@@ -58,6 +58,7 @@ namespace AmongUsClone.Server.Game
         {
             Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
 
+            Destroy(Server.clients[playerId].player.gameObject);
             Server.clients.Remove(playerId);
             PacketsSender.SendPlayerDisconnectedPacket(playerId);
         }
