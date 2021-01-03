@@ -38,7 +38,6 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             transform.position = newPosition;
         }
 
-        // Todo: fix faster diagonal move
         private static Vector2 GetMoveDirection(PlayerInput playerInput)
         {
             Vector2 moveDirection = new Vector2(0f, 0f);
@@ -62,6 +61,9 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             {
                 moveDirection.x++;
             }
+
+            // Prevent fast diagonal movement
+            moveDirection = Vector2.ClampMagnitude(moveDirection, 1f);
 
             return moveDirection;
         }

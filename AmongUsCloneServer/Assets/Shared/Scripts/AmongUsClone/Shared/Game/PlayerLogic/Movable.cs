@@ -62,6 +62,9 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 moveDirection.x++;
             }
 
+            // Prevent fast diagonal movement
+            moveDirection = Vector2.ClampMagnitude(moveDirection, 1f);
+
             return moveDirection;
         }
     }
