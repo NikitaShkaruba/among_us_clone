@@ -10,5 +10,6 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public Movable movable;
         public Controllable controllable;
         public ClientControllable clientControllable;
+        public PlayerAnimator playerAnimator;
     }
 }

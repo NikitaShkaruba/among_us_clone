@@ -413,8 +413,9 @@ MonoBehaviour:
   userInterface: {fileID: 1056292638}
   mainMenu: {fileID: 1325644888}
   lobby: {fileID: 1791852072}
-  clientControllablePlayerPrefab: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
-  playerPrefab: {fileID: 8167787386373783868, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
+  controlledPlayer: {fileID: 0}
+  clientControllablePlayerPrefab: {fileID: 5116485933257911524, guid: 61bff4315b12e264fa0f9baaabeb0c09, type: 3}
+  playerPrefab: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
 --- !u!1 &1033211341
 GameObject:
   m_ObjectHideFlags: 0
