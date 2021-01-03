@@ -27,7 +27,7 @@ namespace AmongUsClone.Client.Game
         public UserInterface userInterface;
         public MainMenu mainMenu;
         public Lobby lobby;
-        public Player controlledPlayer;
+        [HideInInspector] public Player controlledPlayer;
 
         [SerializeField] public GameObject clientControllablePlayerPrefab;
         [SerializeField] public GameObject playerPrefab;
