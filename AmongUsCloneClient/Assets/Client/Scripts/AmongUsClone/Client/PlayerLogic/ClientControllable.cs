@@ -21,7 +21,7 @@ namespace AmongUsClone.Client.PlayerLogic
         private void Awake()
         {
             player = GetComponent<Player>();
-            GameManager.instance.controlledPlayer = player;
+            GameManager.instance.RegisterControlledPlayer(player);
         }
 
         private void FixedUpdate()

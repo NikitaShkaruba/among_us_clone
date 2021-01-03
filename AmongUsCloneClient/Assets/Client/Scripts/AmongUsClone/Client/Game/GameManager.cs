@@ -27,7 +27,7 @@ namespace AmongUsClone.Client.Game
         public UserInterface userInterface;
         public MainMenu mainMenu;
         public Lobby lobby;
-        [HideInInspector] public Player controlledPlayer;
+        public Player controlledPlayer;
 
         [SerializeField] public GameObject clientControllablePlayerPrefab;
         [SerializeField] public GameObject playerPrefab;
@@ -111,6 +111,14 @@ namespace AmongUsClone.Client.Game
         public void ProcessGameSnapshotPacketWithLag(Packet packet)
         {
             StartCoroutine(ProcessGameSnapshotPacketWithLagCoroutine(packet));
+        }
+
+        public void RegisterControlledPlayer(Player player)
+        {
+            controlledPlayer = player;
+
+            PlayerCamera playerCamera = lobby.GetComponentInChildren<PlayerCamera>();
+            playerCamera.target = controlledPlayer.gameObject;
         }
 
         private static IEnumerator ProcessGameSnapshotPacketWithLagCoroutine(Packet packet)
