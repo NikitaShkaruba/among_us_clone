@@ -30,6 +30,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             {
                 packet.Write(player.information.id);
                 packet.Write(player.information.name);
+                packet.Write((int)player.colorable.color);
                 packet.Write(player.information.transform.position);
 
                 SendTcpPacket(playerId, packetType, packet);
@@ -71,6 +72,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                     {
                         packet.Write(snapshotPlayerInfo.id);
                         packet.Write(snapshotPlayerInfo.position);
+                        packet.Write(snapshotPlayerInfo.input);
                     }
 
                     SendUdpPacket(client.playerId, packetType, packet);

@@ -7,7 +7,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
     [RequireComponent(typeof(Rigidbody2D))]
     public class Movable : MonoBehaviour
     {
-        public new Rigidbody2D rigidbody2D;
+        public Rigidbody2D rigidbody2D;
         public float moveSpeed;
 
         public void MoveByPlayerInput(PlayerInput playerInput)

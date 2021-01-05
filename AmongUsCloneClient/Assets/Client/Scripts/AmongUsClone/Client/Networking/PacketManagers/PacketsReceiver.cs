@@ -2,6 +2,7 @@
 using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using UnityEngine;
@@ -42,9 +43,10 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         {
             int playerId = packet.ReadInt();
             string playerName = packet.ReadString();
+            PlayerColor playerColor = (PlayerColor)packet.ReadInt();
             Vector2 playerPosition = packet.ReadVector2();
 
-            GameManager.instance.AddPlayerToLobby(playerId, playerName, playerPosition);
+            GameManager.instance.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition);
 
             Logger.LogEvent(LoggerSection.Connection, $"Added player {playerId} to lobby");
         }

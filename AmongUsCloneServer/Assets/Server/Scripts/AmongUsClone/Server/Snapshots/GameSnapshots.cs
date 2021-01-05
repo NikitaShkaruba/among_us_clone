@@ -40,14 +40,14 @@ namespace AmongUsClone.Server.Snapshots
         private static GameSnapshot CaptureSnapshot()
         {
             int snapshotId = gameSnapshots.Count != 0 ? gameSnapshots.Keys.Max() + 1 : 0;
-            List<PlayerInformation> players = CaptureSnapshotPlayers().ToList();
+            Dictionary<int, SnapshotPlayerInfo> players = CaptureSnapshotPlayers();
 
             return new GameSnapshot(snapshotId, players);
         }
 
-        private static IEnumerable<PlayerInformation> CaptureSnapshotPlayers()
+        private static Dictionary<int, SnapshotPlayerInfo> CaptureSnapshotPlayers()
         {
-            List<PlayerInformation> snapshotPlayers = new List<PlayerInformation>();
+            Dictionary<int, SnapshotPlayerInfo> snapshotPlayers = new Dictionary<int, SnapshotPlayerInfo>();
 
             if (Server.clients.Count == 0)
             {
@@ -61,7 +61,11 @@ namespace AmongUsClone.Server.Snapshots
                     continue;
                 }
 
-                snapshotPlayers.Add(client.player.information);
+                snapshotPlayers[client.player.information.id] = new SnapshotPlayerInfo(
+                    client.player.information.id,
+                    client.player.transform.position,
+                    client.player.controllable.playerInput
+                );
             }
 
             return snapshotPlayers;

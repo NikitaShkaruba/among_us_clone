@@ -9,6 +9,7 @@ using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
@@ -40,15 +41,12 @@ namespace AmongUsClone.Client.Game
 
         private void InitializeSingleton()
         {
-            if (instance == null)
+            if (instance != null)
             {
-                instance = this;
+                Logger.LogCritical(LoggerSection.Initialization, "Attempt to instantiate singleton second time");
             }
-            else if (instance != this)
-            {
-                Logger.LogError(LoggerSection.Initialization, "Instance already exists, destroying the object!");
-                Destroy(this);
-            }
+
+            instance = this;
         }
 
         private void Update()
@@ -86,10 +84,11 @@ namespace AmongUsClone.Client.Game
             connectionToServer.Disconnect();
         }
 
-        public void AddPlayerToLobby(int playerId, string playerName, Vector2 playerPosition)
+        public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition)
         {
             GameObject chosenPlayerPrefab = playerId == connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
-            players[playerId] = lobby.AddPlayer(playerId, playerName, playerPosition, chosenPlayerPrefab).GetComponent<Player>();
+            players[playerId] = lobby.AddPlayer(playerPosition, chosenPlayerPrefab).GetComponent<Player>();
+            players[playerId].Initialize(playerId, playerName, playerColor);
         }
 
         public void RemovePlayerFromLobby(int playerId)
@@ -106,6 +105,12 @@ namespace AmongUsClone.Client.Game
         public void UpdatePlayerPosition(int playerId, Vector2 playerPosition)
         {
             players[playerId].movable.Teleport(playerPosition);
+        }
+
+        public void UpdatePlayerWithServerState(int playerId, Vector2 playerPosition, PlayerInput playerInput)
+        {
+            players[playerId].controllable.playerInput = playerInput;
+            UpdatePlayerPosition(playerId, playerPosition);
         }
 
         public void ProcessGameSnapshotPacketWithLag(Packet packet)
@@ -136,8 +141,9 @@ namespace AmongUsClone.Client.Game
             {
                 int playerId = packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
+                PlayerInput playerInput = packet.ReadPlayerInput();
 
-                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition);
+                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput);
             }
 
             ClientGameSnapshot gameSnapshot = new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);

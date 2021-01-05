@@ -16,7 +16,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         {
         }
 
-        private PlayerInput(int id, bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
+        public PlayerInput(int id, bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
         {
             this.id = id;
 
@@ -26,18 +26,18 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             this.moveRight = moveRight;
         }
 
-        public static PlayerInput Deserialize(int id, bool[] serializedPlayerInput)
+        public static PlayerInput Deserialize(int id, bool[] serializedInputValues)
         {
             return new PlayerInput(
                 id,
-                serializedPlayerInput[0],
-                serializedPlayerInput[1],
-                serializedPlayerInput[2],
-                serializedPlayerInput[3]
+                serializedInputValues[0],
+                serializedInputValues[1],
+                serializedInputValues[2],
+                serializedInputValues[3]
             );
         }
 
-        public bool[] Serialize()
+        public bool[] SerializeValues()
         {
             return new[]
             {

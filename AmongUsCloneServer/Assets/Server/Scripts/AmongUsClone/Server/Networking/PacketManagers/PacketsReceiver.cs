@@ -50,15 +50,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 return;
             }
 
-            int inputId = packet.ReadInt();
-            int playerInputSize = packet.ReadInt();
-
-            bool[] serializedPlayerInput = new bool[playerInputSize];
-            for (int playerInputValueIndex = 0; playerInputValueIndex < serializedPlayerInput.Length; playerInputValueIndex++)
-            {
-                serializedPlayerInput[playerInputValueIndex] = packet.ReadBool();
-            }
-            PlayerInput playerInput = PlayerInput.Deserialize(inputId, serializedPlayerInput);
+            PlayerInput playerInput = packet.ReadPlayerInput();
 
             GameManager.instance.SavePlayerInput(playerId, playerInput);
         }

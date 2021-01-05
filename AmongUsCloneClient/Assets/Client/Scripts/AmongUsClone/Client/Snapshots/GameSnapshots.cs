@@ -38,7 +38,7 @@ namespace AmongUsClone.Client.Snapshots
 
         private static void UpdateNotControlledPlayer(SnapshotPlayerInfo snapshotPlayerInfo)
         {
-            GameManager.instance.UpdatePlayerPosition(snapshotPlayerInfo.id, snapshotPlayerInfo.position);
+            GameManager.instance.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
         }
 
         private static void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, Player controlledPlayer)

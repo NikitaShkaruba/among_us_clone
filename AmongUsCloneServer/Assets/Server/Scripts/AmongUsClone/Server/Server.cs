@@ -26,7 +26,7 @@ namespace AmongUsClone.Server
 
             Console.Title = "Among Us Server";
             const int port = 26950;
-            MaxPlayerId = 10;
+            MaxPlayerId = 10; // Todo: fix case where no more players can connect
             Logger.LogEvent(LoggerSection.Initialization, $"Global variables initialized. Running at {Application.targetFrameRate} ticks per second.");
 
             TcpConnectionsListener.Initialize(port);

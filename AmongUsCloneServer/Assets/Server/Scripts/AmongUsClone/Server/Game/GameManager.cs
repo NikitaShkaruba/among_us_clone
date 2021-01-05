@@ -13,6 +13,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game
 {
+    // Todo: migrate all singletons to Scriptable Objects
     public class GameManager : MonoBehaviour
     {
         public static GameManager instance; // Instance is needed in order to have inspector variables and call MonoBehaviour methods
@@ -33,7 +34,10 @@ namespace AmongUsClone.Server.Game
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Player player = lobby.AddPlayer(playerId, playerName, Vector2.zero, serverMovablePrefab).GetComponent<Player>();
+            Player player = lobby.AddPlayer(Vector3.zero, serverMovablePrefab).GetComponent<Player>();
+
+            PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
+            player.Initialize(playerId, playerName, playerColor);
             Server.clients[playerId].FinishInitialization(player);
 
             foreach (Client client in Server.clients.Values)
@@ -58,6 +62,7 @@ namespace AmongUsClone.Server.Game
         {
             Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
 
+            PlayerColors.ReleasePlayerColor(playerId);
             Destroy(Server.clients[playerId].player.gameObject);
             Server.clients.Remove(playerId);
             PacketsSender.SendPlayerDisconnectedPacket(playerId);

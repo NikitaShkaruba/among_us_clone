@@ -36,6 +36,7 @@ MonoBehaviour:
   controllable: {fileID: 2506714475783035418}
   clientControllable: {fileID: 0}
   playerAnimator: {fileID: 5827258688513702030}
+  colorable: {fileID: 4194513011835888611}
 --- !u!114 &5827258688513702030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +138,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fe3275aaeef44fdb882e96fada5cbbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4194513011835888611 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1884753102413685304, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
+  m_PrefabInstance: {fileID: 2310939974319833563}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5858009883943387367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a129136ce74daeb57cc0ef90f4d99d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5518854573400290162 stripped

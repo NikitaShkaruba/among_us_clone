@@ -1,3 +1,5 @@
+using System;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
@@ -7,11 +9,19 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     [RequireComponent(typeof(Movable))]
     [RequireComponent(typeof(Controllable))]
     [RequireComponent(typeof(RemoteControllable))]
+    [RequireComponent(typeof(Colorable))]
     public class Player : MonoBehaviour
     {
         public PlayerInformation information;
         public Movable movable;
         public Controllable controllable;
         public RemoteControllable remoteControllable;
+        public Colorable colorable;
+
+        public void Initialize(int playerId, string playerName, PlayerColor playerColor)
+        {
+            information.Initialize(playerId, playerName);
+            colorable.Initialize(playerColor);
+        }
     }
 }

@@ -27,16 +27,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
             using (Packet packet = new Packet((int) clientPacketType))
             {
-                packet.Write(playerInput.id);
-
-                bool[] serializedPlayerInput = playerInput.Serialize();
-                packet.Write(serializedPlayerInput.Length);
-
-                foreach (bool inputValue in serializedPlayerInput)
-                {
-                    packet.Write(inputValue);
-                }
-
+                packet.Write(playerInput);
                 GameManager.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);
             }
         }

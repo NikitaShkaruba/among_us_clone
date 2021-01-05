@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
 namespace AmongUsClone.Shared.Networking
@@ -115,6 +116,16 @@ namespace AmongUsClone.Shared.Networking
         {
             Write(value.x);
             Write(value.y);
+        }
+
+        public void Write(PlayerInput playerInput)
+        {
+            Write(playerInput.id);
+
+            foreach (bool inputValue in playerInput.SerializeValues())
+            {
+                Write(inputValue);
+            }
         }
 
         #endregion
@@ -282,6 +293,17 @@ namespace AmongUsClone.Shared.Networking
         public Vector2 ReadVector2(bool updateReadPosition = true)
         {
             return new Vector2(ReadFloat(updateReadPosition), ReadFloat(updateReadPosition));
+        }
+
+        public PlayerInput ReadPlayerInput(bool updateReadPosition = true)
+        {
+            return new PlayerInput(
+                ReadInt(updateReadPosition),
+                ReadBool(updateReadPosition),
+                ReadBool(updateReadPosition),
+                ReadBool(updateReadPosition),
+                ReadBool(updateReadPosition)
+            );
         }
 
         #endregion

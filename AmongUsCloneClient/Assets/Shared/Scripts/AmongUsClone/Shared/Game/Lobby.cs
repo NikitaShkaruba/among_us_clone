@@ -10,13 +10,10 @@ namespace AmongUsClone.Shared.Game
     {
         [SerializeField] private GameObject playersParentGameObject;
 
-        public GameObject AddPlayer(int playerId, string playerName, Vector2 playerPosition, GameObject playerPrefab)
+        public GameObject AddPlayer(Vector2 position, GameObject playerPrefab)
         {
-            GameObject playerGameObject = Instantiate(playerPrefab, new Vector3(playerPosition.x, playerPosition.y, 0), Quaternion.identity);
+            GameObject playerGameObject = Instantiate(playerPrefab, position, Quaternion.identity);
             playerGameObject.transform.parent = playersParentGameObject.transform;
-
-            PlayerInformation playerInformation = playerGameObject.GetComponent<PlayerInformation>();
-            playerInformation.Initialize(playerId, playerName);
 
             return playerGameObject;
         }

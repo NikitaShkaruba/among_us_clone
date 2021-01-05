@@ -7,5 +7,6 @@ namespace AmongUsClone.Server.Logging
         public const string Network = "Network";
         public const string Connection = "Connection";
         public const string GameSnapshots = "GameSnapshots";
+        public const string PlayerColors = "PlayerColors";
     }
 }
