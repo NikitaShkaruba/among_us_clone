@@ -38,6 +38,12 @@ namespace AmongUsClone.Client.Snapshots
 
         private static void UpdateNotControlledPlayer(SnapshotPlayerInfo snapshotPlayerInfo)
         {
+            // If we don't have disconnected player anymore
+            if (!GameManager.instance.players.ContainsKey(snapshotPlayerInfo.id))
+            {
+                return;
+            }
+
             GameManager.instance.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
         }
 
