@@ -1429,6 +1429,10 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1056292634, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1056292637, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25

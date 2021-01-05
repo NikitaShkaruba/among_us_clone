@@ -69,9 +69,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1492021681
-  m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a5a03d44b8d1eb349af4ec90acf47d56, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!68 &1794181751406874698
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -99,11 +99,11 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 1.493462, y: -1.2125101}
-  - {x: -0.4842012, y: -1.7151752}
-  - {x: -1.5360968, y: -0.64658093}
-  - {x: 0.13215113, y: -0.18495858}
-  - {x: 1.4684471, y: -1.1973686}
+  - {x: 1.4583873, y: -0.21871895}
+  - {x: -0.49589285, y: -0.72138417}
+  - {x: -1.48933, y: 0.26536864}
+  - {x: 0.23737586, y: 0.7152995}
+  - {x: 1.4567555, y: -0.21526897}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
