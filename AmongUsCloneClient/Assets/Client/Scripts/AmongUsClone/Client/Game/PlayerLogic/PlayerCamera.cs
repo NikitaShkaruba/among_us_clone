@@ -24,7 +24,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
             transform.position = offset;
         }
 
-        public void FixedUpdate()
+        public void LateUpdate()
         {
             if (target == null)
             {
