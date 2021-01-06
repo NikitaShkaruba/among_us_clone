@@ -84,22 +84,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         {
             Action action = () =>
             {
-                int snapshotId = packet.ReadInt();
-                int lastProcessedInputId = packet.ReadInt();
-
-                // Todo: create packet.Write(GameSnapshot), packet.ReadGameSnapshot
-                Dictionary<int, SnapshotPlayerInfo> snapshotPlayerInfos = new Dictionary<int, SnapshotPlayerInfo>();
-                int snapshotPlayersAmount = packet.ReadInt();
-                for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
-                {
-                    int playerId = packet.ReadInt();
-                    Vector2 playerPosition = packet.ReadVector2();
-                    PlayerInput playerInput = packet.ReadPlayerInput();
-
-                    snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput);
-                }
-
-                ClientGameSnapshot gameSnapshot = new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
+                ClientGameSnapshot gameSnapshot = packet.ReadClientGameSnapshot();
                 GameSnapshots.ProcessSnapshot(gameSnapshot);
             };
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AmongUsClone.Shared.Game.PlayerLogic;
+using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 
 namespace AmongUsClone.Shared.Networking
@@ -125,6 +126,20 @@ namespace AmongUsClone.Shared.Networking
             foreach (bool inputValue in playerInput.SerializeValues())
             {
                 Write(inputValue);
+            }
+        }
+
+        public void Write(ClientGameSnapshot clientGameSnapshot)
+        {
+            Write(clientGameSnapshot.id);
+            Write(clientGameSnapshot.yourLastProcessedInputId);
+            Write(clientGameSnapshot.playersInfo.Count);
+
+            foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo.Values)
+            {
+                Write(snapshotPlayerInfo.id);
+                Write(snapshotPlayerInfo.position);
+                Write(snapshotPlayerInfo.input);
             }
         }
 
@@ -304,6 +319,25 @@ namespace AmongUsClone.Shared.Networking
                 ReadBool(updateReadPosition),
                 ReadBool(updateReadPosition)
             );
+        }
+
+        public ClientGameSnapshot ReadClientGameSnapshot(bool updateReadPosition = true)
+        {
+            int snapshotId = ReadInt(updateReadPosition);
+            int lastProcessedInputId = ReadInt(updateReadPosition);
+
+            Dictionary<int, SnapshotPlayerInfo> snapshotPlayerInfos = new Dictionary<int, SnapshotPlayerInfo>();
+            int snapshotPlayersAmount = ReadInt(updateReadPosition);
+            for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
+            {
+                int playerId = ReadInt(updateReadPosition);
+                Vector2 playerPosition = ReadVector2(updateReadPosition);
+                PlayerInput playerInput = ReadPlayerInput(updateReadPosition);
+
+                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput);
+            }
+
+            return new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
         }
 
         #endregion

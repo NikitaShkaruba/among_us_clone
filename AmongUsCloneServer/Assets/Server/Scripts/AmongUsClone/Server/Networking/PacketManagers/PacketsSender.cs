@@ -61,21 +61,10 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                     continue;
                 }
 
-                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.remoteControllable.lastProcessedInputId);
-
                 using (Packet packet = new Packet((int) packetType))
                 {
-                    packet.Write(clientGameSnapshot.id);
-                    packet.Write(clientGameSnapshot.yourLastProcessedInputId);
-                    packet.Write(clientGameSnapshot.playersInfo.Count);
-
-                    foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo.Values)
-                    {
-                        packet.Write(snapshotPlayerInfo.id);
-                        packet.Write(snapshotPlayerInfo.position);
-                        packet.Write(snapshotPlayerInfo.input);
-                    }
-
+                    ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.remoteControllable.lastProcessedInputId);
+                    packet.Write(clientGameSnapshot);
                     SendUdpPacket(client.playerId, packetType, packet);
                 }
             }
