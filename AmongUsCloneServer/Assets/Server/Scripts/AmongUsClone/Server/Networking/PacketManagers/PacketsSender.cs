@@ -15,7 +15,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetTypeId = ServerPacketType.Welcome;
 
-            using Packet packet = new Packet((int) packetTypeId);
+            Packet packet = new Packet((int) packetTypeId);
             packet.Write(playerId);
 
             SendTcpPacket(playerId, packetTypeId, packet);
@@ -25,7 +25,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetType = ServerPacketType.PlayerConnected;
 
-            using Packet packet = new Packet((int) packetType);
+            Packet packet = new Packet((int) packetType);
             packet.Write(player.information.id);
             packet.Write(player.information.name);
             packet.Write((int) player.colorable.color);
@@ -38,7 +38,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetType = ServerPacketType.PlayerDisconnected;
 
-            using Packet packet = new Packet((int) packetType);
+            Packet packet = new Packet((int) packetType);
             packet.Write(playerId);
 
             SendTcpPacketToAll(packetType, packet);
@@ -57,7 +57,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
                 ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.remoteControllable.lastProcessedInputId);
 
-                using Packet packet = new Packet((int) packetType);
+                Packet packet = new Packet((int) packetType);
                 packet.Write(clientGameSnapshot);
 
                 SendUdpPacket(client.playerId, packetType, packet);
@@ -68,7 +68,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetType = ServerPacketType.ColorChanged;
 
-            using Packet packet = new Packet((int) packetType);
+            Packet packet = new Packet((int) packetType);
             packet.Write(playerId);
             packet.Write((int)newPlayerColor);
 

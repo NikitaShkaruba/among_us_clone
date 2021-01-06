@@ -46,7 +46,7 @@ namespace AmongUsClone.Server.Networking.Udp
                     return;
                 }
 
-                using Packet packet = new Packet(data);
+                Packet packet = new Packet(data);
                 int playerId = packet.ReadInt();
 
                 if (!Server.clients[playerId].IsConnectedViaUdp())
@@ -84,7 +84,7 @@ namespace AmongUsClone.Server.Networking.Udp
 
             MainThread.ScheduleExecution(() =>
             {
-                using Packet newPacket = new Packet(packetBytes);
+                Packet newPacket = new Packet(packetBytes);
                 int packetTypeId = newPacket.ReadInt();
 
                 PacketsReceiver.ProcessPacket(playerId, packetTypeId, newPacket, false);

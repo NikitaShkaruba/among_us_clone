@@ -15,7 +15,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {
                 const ClientPacketType clientPacketType = ClientPacketType.WelcomeReceived;
 
-                using Packet packet = new Packet((int) clientPacketType);
+                Packet packet = new Packet((int) clientPacketType);
                 packet.Write(GameManager.instance.connectionToServer.myPlayerId);
                 packet.Write(GameManager.instance.mainMenu.userNameField.text);
 
@@ -31,7 +31,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {
                 const ClientPacketType clientPacketType = ClientPacketType.PlayerInput;
 
-                using Packet packet = new Packet((int) clientPacketType);
+                Packet packet = new Packet((int) clientPacketType);
                 packet.Write(playerInput);
 
                 GameManager.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);
@@ -46,7 +46,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {
                 const ClientPacketType clientPacketType = ClientPacketType.ColorChangeRequest;
 
-                using Packet packet = new Packet((int) clientPacketType);
+                Packet packet = new Packet((int) clientPacketType);
                 GameManager.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
             };
 

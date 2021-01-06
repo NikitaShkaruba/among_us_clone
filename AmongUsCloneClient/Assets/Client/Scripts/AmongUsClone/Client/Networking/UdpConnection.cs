@@ -23,7 +23,7 @@ namespace AmongUsClone.Client.Networking
             udpClient.Connect(ipEndPoint);
             udpClient.BeginReceive(OnConnection, null);
 
-            using Packet packet = new Packet();
+            Packet packet = new Packet();
             SendPacket(packet);
         }
 
@@ -75,14 +75,13 @@ namespace AmongUsClone.Client.Networking
 
         private static void HandlePacketData(byte[] data)
         {
-            using Packet initialPacket = new Packet(data);
+            Packet initialPacket = new Packet(data);
 
             int packetLength = initialPacket.ReadInt();
             data = initialPacket.ReadBytes(packetLength);
 
             MainThread.ScheduleExecution(() =>
             {
-                // There is no using directive, because packet processing occurs at a different thread, and packet variable will be destroyed after using directive
                 Packet packet = new Packet(data);
                 int packetTypeId = packet.ReadInt();
                 PacketsReceiver.ProcessPacket(packetTypeId, packet, false);
