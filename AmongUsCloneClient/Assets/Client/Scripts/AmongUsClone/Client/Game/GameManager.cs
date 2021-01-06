@@ -122,8 +122,9 @@ namespace AmongUsClone.Client.Game
         {
             controlledPlayer = player;
 
-            PlayerCamera playerCamera = lobby.GetComponentInChildren<PlayerCamera>();
+            PlayerCamera playerCamera = FindObjectOfType<PlayerCamera>();
             playerCamera.target = controlledPlayer.gameObject;
+            playerCamera.transform.position = Vector3.zero;
         }
 
         private static IEnumerator ProcessGameSnapshotPacketWithLagCoroutine(Packet packet)
