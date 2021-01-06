@@ -21,6 +21,12 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public void Start()
         {
             UpdateAnimatorController();
+            player.colorable.colorChanged += UpdateAnimatorController;
+        }
+
+        public void OnDestroy()
+        {
+            player.colorable.colorChanged -= UpdateAnimatorController;
         }
 
         public void UpdateAnimatorController()

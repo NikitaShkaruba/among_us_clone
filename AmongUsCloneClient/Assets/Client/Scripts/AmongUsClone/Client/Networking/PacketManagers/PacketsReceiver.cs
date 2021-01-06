@@ -71,7 +71,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             int playerId = packet.ReadInt();
             PlayerColor playerColor = (PlayerColor)packet.ReadInt();
 
-            GameManager.instance.ChangeColor(playerId, playerColor);
+            GameManager.instance.ChangePlayerColor(playerId, playerColor);
         }
     }
 }

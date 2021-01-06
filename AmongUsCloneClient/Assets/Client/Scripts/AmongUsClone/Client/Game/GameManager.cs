@@ -114,11 +114,9 @@ namespace AmongUsClone.Client.Game
             UpdatePlayerPosition(playerId, playerPosition);
         }
 
-        public void ChangeColor(int playerId, PlayerColor playerColor)
+        public void ChangePlayerColor(int playerId, PlayerColor playerColor)
         {
             players[playerId].colorable.ChangeColor(playerColor);
-            // Todo: migrate to c# events
-            players[playerId].animator.UpdateAnimatorController();
             Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(playerColor)}");
         }
 
