@@ -75,14 +75,11 @@ namespace AmongUsClone.Client.Networking
 
         private static void HandlePacketData(byte[] data)
         {
-            Packet initialPacket = new Packet(data);
-
-            int packetLength = initialPacket.ReadInt();
-            data = initialPacket.ReadBytes(packetLength);
+            Packet packet = new Packet(data);
+            packet.ReadInt(); // Read not needed 'packet length' in order to update read position
 
             MainThread.ScheduleExecution(() =>
             {
-                Packet packet = new Packet(data);
                 int packetTypeId = packet.ReadInt();
                 PacketsReceiver.ProcessPacket(packetTypeId, packet, false);
             });
