@@ -72,11 +72,10 @@ namespace AmongUsClone.Shared.Networking
 
                 MainThread.ScheduleExecution(() =>
                 {
-                    using (Packet packet = new Packet(packetBytes))
-                    {
-                        int packetTypeId = packet.ReadInt();
-                        onPacketReceivedCallback(packetTypeId, packet);
-                    }
+                    // There is no using directive, because packet processing occurs at a different thread, and packet variable will be destroyed after using directive
+                    Packet packet = new Packet(packetBytes);
+                    int packetTypeId = packet.ReadInt();
+                    onPacketReceivedCallback(packetTypeId, packet);
                 });
 
                 packetLength = 0;

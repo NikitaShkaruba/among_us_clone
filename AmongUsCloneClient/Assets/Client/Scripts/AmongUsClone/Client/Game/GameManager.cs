@@ -17,7 +17,6 @@ using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 /**
- * Todo: add network delay to other network requests (not only PlayerInput ones)
  * Todo: Fix camera shaking the player
  */
 namespace AmongUsClone.Client.Game
@@ -124,11 +123,6 @@ namespace AmongUsClone.Client.Game
             Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(playerColor)}");
         }
 
-        public void ProcessGameSnapshotPacketWithLag(Packet packet)
-        {
-            StartCoroutine(ProcessGameSnapshotPacketWithLagCoroutine(packet));
-        }
-
         public void RegisterControlledPlayer(Player player)
         {
             controlledPlayer = player;
@@ -136,30 +130,6 @@ namespace AmongUsClone.Client.Game
             PlayerCamera playerCamera = FindObjectOfType<PlayerCamera>();
             playerCamera.target = controlledPlayer.gameObject;
             playerCamera.transform.position = Vector3.zero;
-        }
-
-        private static IEnumerator ProcessGameSnapshotPacketWithLagCoroutine(Packet packet)
-        {
-            // Simulate network lag
-            float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
-            yield return new WaitForSeconds(secondsToWait);
-
-            int snapshotId = packet.ReadInt();
-            int lastProcessedInputId = packet.ReadInt();
-
-            Dictionary<int, SnapshotPlayerInfo> snapshotPlayerInfos = new Dictionary<int, SnapshotPlayerInfo>();
-            int snapshotPlayersAmount = packet.ReadInt();
-            for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
-            {
-                int playerId = packet.ReadInt();
-                Vector2 playerPosition = packet.ReadVector2();
-                PlayerInput playerInput = packet.ReadPlayerInput();
-
-                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput);
-            }
-
-            ClientGameSnapshot gameSnapshot = new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
-            GameSnapshots.ProcessSnapshot(gameSnapshot);
         }
     }
 }

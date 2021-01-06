@@ -1,3 +1,4 @@
+using System;
 using AmongUsClone.Shared.Game.Meta;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
     {
         public SpriteRenderer spriteRenderer;
         public PlayerColor color;
+
+        public Action colorChanged;
 
         public void Start()
         {
@@ -71,6 +74,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         {
             this.color = color;
             spriteRenderer.sprite = GetSprite();
+
+            colorChanged?.Invoke();
         }
     }
 }

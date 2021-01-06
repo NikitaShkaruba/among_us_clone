@@ -34,7 +34,7 @@ namespace AmongUsClone.Client.PlayerLogic
             }
 
             StartCoroutine(SaveStateSnapshot());
-            StartCoroutine(SendInputToServer(player.controllable.playerInput.Clone()));
+            PacketsSender.SendPlayerInputPacket(player.controllable.playerInput.Clone());
         }
 
         private IEnumerator SaveStateSnapshot()
@@ -54,15 +54,6 @@ namespace AmongUsClone.Client.PlayerLogic
                 moveBottom = Input.GetKey(KeyCode.S),
                 moveRight = Input.GetKey(KeyCode.D),
             };
-        }
-
-        private static IEnumerator SendInputToServer(PlayerInput playerInput)
-        {
-            // Simulate network lag
-            float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
-            yield return new WaitForSeconds(secondsToWait);
-
-            PacketsSender.SendPlayerInputPacket(playerInput);
         }
 
         public void RemoveObsoleteSnapshotStates(ClientGameSnapshot gameSnapshot)

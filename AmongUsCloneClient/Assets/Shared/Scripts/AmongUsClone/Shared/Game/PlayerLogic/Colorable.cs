@@ -75,7 +75,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             this.color = color;
             spriteRenderer.sprite = GetSprite();
 
-            colorChanged.Invoke();
+            colorChanged?.Invoke();
         }
     }
 }
