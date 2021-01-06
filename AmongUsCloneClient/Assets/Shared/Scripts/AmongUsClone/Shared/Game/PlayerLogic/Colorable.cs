@@ -66,5 +66,11 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                     return AstronautSpritesRepository.instance.redSprite;
             }
         }
+
+        public void ChangeColor(PlayerColor color)
+        {
+            this.color = color;
+            spriteRenderer.sprite = GetSprite();
+        }
     }
 }

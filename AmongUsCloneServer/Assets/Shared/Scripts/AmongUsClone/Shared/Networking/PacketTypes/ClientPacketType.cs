@@ -6,5 +6,6 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
     {
         WelcomeReceived,
         PlayerInput,
+        ColorChangeRequest,
     }
 }

@@ -7,6 +7,7 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
         Welcome,
         PlayerConnected,
         PlayerDisconnected,
-        GameSnapshot
+        GameSnapshot,
+        ColorChanged,
     }
 }

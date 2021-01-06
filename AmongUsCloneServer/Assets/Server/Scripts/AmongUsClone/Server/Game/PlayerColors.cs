@@ -14,49 +14,31 @@ namespace AmongUsClone.Server.Game
 
         public static PlayerColor TakeFreeColor(int playerId)
         {
-            IEnumerable<PlayerColor> availablePlayerColors = Enum.GetValues(typeof(PlayerColor)).Cast<PlayerColor>();
+            PlayerColor color = GetFreeColor();
+            TakeColor(color, playerId);
 
-            foreach (PlayerColor color in availablePlayerColors)
-            {
-                if (occupiedColors.ContainsKey(color))
-                {
-                    continue;
-                }
-
-                TakeColor(color, playerId);
-                return color;
-            }
-
-            Logger.LogError(LoggerSection.PlayerColors, $"Unable to take a free color for player {playerId}");
-            return PlayerColor.Red;
+            return color;
         }
 
-        // Todo: support color switching
-        public static void SwitchColor(PlayerColor wantedColor, int playerId)
+        public static PlayerColor SwitchToRandomColor(int playerId)
         {
             if (!occupiedColors.ContainsValue(playerId))
             {
-                Logger.LogError(LoggerSection.PlayerColors, "Not able to switch color if not have one");
-                return;
+                throw new Exception("Unable to switch color if not having one");
             }
 
-            PlayerColor playerColor = occupiedColors.FirstOrDefault(x => x.Value == playerId).Key;
-            if (playerColor == wantedColor)
-            {
-                Logger.LogError(LoggerSection.PlayerColors, "Not able to switch color to the same one");
-                return;
-            }
-
+            PlayerColor color = GetFreeColor();
             ReleasePlayerColor(playerId);
-            TakeColor(wantedColor, playerId);
+            TakeColor(color, playerId);
+
+            return color;
         }
 
         public static void ReleasePlayerColor(int playerId)
         {
             if (!occupiedColors.ContainsValue(playerId))
             {
-                Logger.LogError(LoggerSection.PlayerColors, "Attempt to release not occupied color");
-                return;
+                throw new Exception("Attempt to release not occupied color");
             }
 
             PlayerColor playerColor = occupiedColors.FirstOrDefault(x => x.Value == playerId).Key;
@@ -69,12 +51,41 @@ namespace AmongUsClone.Server.Game
         {
             if (occupiedColors.ContainsValue(playerId))
             {
-                Logger.LogError(LoggerSection.PlayerColors, "Attempt to take already occupied color");
-                return;
+                throw new Exception("Attempt to take already occupied color");
             }
 
             occupiedColors[color] = playerId;
             Logger.LogEvent(LoggerSection.PlayerColors, $"Took {Helpers.GetEnumName(color)} color for player {playerId}");
+        }
+
+        private static PlayerColor GetFreeColor()
+        {
+            IEnumerable<PlayerColor> availablePlayerColors = GetShuffledAvailablePlayerColors();
+
+            foreach (PlayerColor color in availablePlayerColors)
+            {
+                if (occupiedColors.ContainsKey(color))
+                {
+                    continue;
+                }
+
+                return color;
+            }
+
+            throw new Exception("Attempt to take already occupied color");
+        }
+
+        private static IEnumerable<PlayerColor> GetShuffledAvailablePlayerColors()
+        {
+            IEnumerable<PlayerColor> availablePlayerColors = Enum.GetValues(typeof(PlayerColor)).Cast<PlayerColor>();
+
+            Random random = new Random();
+            IEnumerable<PlayerColor> shuffledList = availablePlayerColors
+                .Select(x => new {Number = random.Next(), Item = x})
+                .OrderBy(x => x.Number)
+                .Select(x => x.Item);
+
+            return shuffledList.ToList();
         }
     }
 }

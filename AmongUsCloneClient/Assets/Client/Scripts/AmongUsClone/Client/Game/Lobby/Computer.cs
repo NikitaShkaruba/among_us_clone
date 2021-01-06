@@ -1,4 +1,7 @@
 using AmongUsClone.Client.Game.Interactions;
+using AmongUsClone.Client.Logging;
+using AmongUsClone.Client.Networking.PacketManagers;
+using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
@@ -12,7 +15,8 @@ namespace AmongUsClone.Client.Game.Lobby
 
         public override void Interact()
         {
-            Logger.LogDebug("Interaction happened");
+            PacketsSender.SendColorChangeRequestPacket();
+            Logger.LogEvent(SharedLoggerSection.PlayerColors, "Sent request to change the color");
         }
 
         protected override void SetHighlighting()

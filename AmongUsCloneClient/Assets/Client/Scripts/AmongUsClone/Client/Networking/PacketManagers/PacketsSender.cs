@@ -31,5 +31,15 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 GameManager.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);
             }
         }
+
+        public static void SendColorChangeRequestPacket()
+        {
+            const ClientPacketType clientPacketType = ClientPacketType.ColorChangeRequest;
+
+            using (Packet packet = new Packet((int) clientPacketType))
+            {
+                GameManager.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
+            }
+        }
     }
 }

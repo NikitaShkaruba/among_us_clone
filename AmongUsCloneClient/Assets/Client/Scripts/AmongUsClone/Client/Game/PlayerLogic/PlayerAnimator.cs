@@ -20,10 +20,10 @@ namespace AmongUsClone.Client.Game.PlayerLogic
 
         public void Start()
         {
-            InitializeAnimatorController();
+            UpdateAnimatorController();
         }
 
-        private void InitializeAnimatorController()
+        public void UpdateAnimatorController()
         {
             RuntimeAnimatorController animatorController;
 

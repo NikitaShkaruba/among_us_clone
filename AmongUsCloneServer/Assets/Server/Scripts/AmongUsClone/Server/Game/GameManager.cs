@@ -5,8 +5,10 @@ using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
+using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
+using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using GameObject = UnityEngine.GameObject;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -71,6 +73,16 @@ namespace AmongUsClone.Server.Game
         public void SavePlayerInput(int playerId, PlayerInput playerInput)
         {
             Server.clients[playerId].player.remoteControllable.EnqueueInput(playerInput);
+        }
+
+        public void ChangePlayerColor(int playerId)
+        {
+            PlayerColor newPlayerColor = PlayerColors.SwitchToRandomColor(playerId);
+
+            Server.clients[playerId].player.colorable.ChangeColor(newPlayerColor);
+            PacketsSender.SendColorChanged(playerId, newPlayerColor);
+
+            Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(newPlayerColor)}");
         }
     }
 }

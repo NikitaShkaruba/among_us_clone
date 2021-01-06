@@ -16,6 +16,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
             {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
+            {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket}
         };
 
         public static void ProcessPacket(int playerId, int packetTypeId, Packet packet, bool isTcp)
@@ -53,6 +54,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             PlayerInput playerInput = packet.ReadPlayerInput();
 
             GameManager.instance.SavePlayerInput(playerId, playerInput);
+        }
+
+        private static void ProcessColorChangeRequestPacket(int playerId, Packet packet)
+        {
+            GameManager.instance.ChangePlayerColor(playerId);
         }
     }
 }

@@ -10,6 +10,7 @@ using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
+using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
@@ -111,6 +112,14 @@ namespace AmongUsClone.Client.Game
         {
             players[playerId].controllable.playerInput = playerInput;
             UpdatePlayerPosition(playerId, playerPosition);
+        }
+
+        public void ChangeColor(int playerId, PlayerColor playerColor)
+        {
+            players[playerId].colorable.ChangeColor(playerColor);
+            // Todo: migrate to c# events
+            players[playerId].animator.UpdateAnimatorController();
+            Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(playerColor)}");
         }
 
         public void ProcessGameSnapshotPacketWithLag(Packet packet)

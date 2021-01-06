@@ -1,6 +1,7 @@
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
@@ -30,7 +31,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             {
                 packet.Write(player.information.id);
                 packet.Write(player.information.name);
-                packet.Write((int)player.colorable.color);
+                packet.Write((int) player.colorable.color);
                 packet.Write(player.information.transform.position);
 
                 SendTcpPacket(playerId, packetType, packet);
@@ -77,6 +78,19 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
                     SendUdpPacket(client.playerId, packetType, packet);
                 }
+            }
+        }
+
+        public static void SendColorChanged(int playerId, PlayerColor newPlayerColor)
+        {
+            const ServerPacketType packetType = ServerPacketType.ColorChanged;
+
+            using (Packet packet = new Packet((int) packetType))
+            {
+                packet.Write(playerId);
+                packet.Write((int)newPlayerColor);
+
+                SendTcpPacketToAll(packetType, packet);
             }
         }
 

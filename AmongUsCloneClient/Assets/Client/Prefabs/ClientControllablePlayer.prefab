@@ -37,6 +37,10 @@ PrefabInstance:
       propertyPath: clientControllable
       value: 
       objectReference: {fileID: 6565230547845059123}
+    - target: {fileID: 5533755165803020274, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 5085734744270328973}
     - target: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
       propertyPath: m_Name
       value: ClientControllablePlayer
@@ -92,3 +96,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
   m_PrefabInstance: {fileID: 1606303109329628163}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5085734744270328973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5827258688513702030, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+  m_PrefabInstance: {fileID: 1606303109329628163}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5116485933257911524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1581bb8b8046ea83d92cdbdfe0e8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

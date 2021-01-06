@@ -20,6 +20,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
             {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
             {(int) ServerPacketType.GameSnapshot, ProcessGameSnapshotPacket},
+            {(int) ServerPacketType.ColorChanged, ProcessPlayerColorChangedPacket}
         };
 
         public static void ProcessPacket(int packetTypeId, Packet packet, bool isTcp)
@@ -43,7 +44,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         {
             int playerId = packet.ReadInt();
             string playerName = packet.ReadString();
-            PlayerColor playerColor = (PlayerColor)packet.ReadInt();
+            PlayerColor playerColor = (PlayerColor) packet.ReadInt();
             Vector2 playerPosition = packet.ReadVector2();
 
             GameManager.instance.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition);
@@ -63,6 +64,14 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         private static void ProcessGameSnapshotPacket(Packet packet)
         {
             GameManager.instance.ProcessGameSnapshotPacketWithLag(packet);
+        }
+
+        private static void ProcessPlayerColorChangedPacket(Packet packet)
+        {
+            int playerId = packet.ReadInt();
+            PlayerColor playerColor = (PlayerColor)packet.ReadInt();
+
+            GameManager.instance.ChangeColor(playerId, playerColor);
         }
     }
 }
