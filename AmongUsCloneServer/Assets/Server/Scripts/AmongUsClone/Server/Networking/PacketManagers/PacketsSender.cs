@@ -15,39 +15,33 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetTypeId = ServerPacketType.Welcome;
 
-            using (Packet packet = new Packet((int) packetTypeId))
-            {
-                packet.Write(playerId);
+            using Packet packet = new Packet((int) packetTypeId);
+            packet.Write(playerId);
 
-                SendTcpPacket(playerId, packetTypeId, packet);
-            }
+            SendTcpPacket(playerId, packetTypeId, packet);
         }
 
         public static void SendPlayerConnectedPacket(int playerId, Player player)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerConnected;
 
-            using (Packet packet = new Packet((int) packetType))
-            {
-                packet.Write(player.information.id);
-                packet.Write(player.information.name);
-                packet.Write((int) player.colorable.color);
-                packet.Write(player.information.transform.position);
+            using Packet packet = new Packet((int) packetType);
+            packet.Write(player.information.id);
+            packet.Write(player.information.name);
+            packet.Write((int) player.colorable.color);
+            packet.Write(player.information.transform.position);
 
-                SendTcpPacket(playerId, packetType, packet);
-            }
+            SendTcpPacket(playerId, packetType, packet);
         }
 
         public static void SendPlayerDisconnectedPacket(int playerId)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerDisconnected;
 
-            using (Packet packet = new Packet((int) packetType))
-            {
-                packet.Write(playerId);
+            using Packet packet = new Packet((int) packetType);
+            packet.Write(playerId);
 
-                SendTcpPacketToAll(packetType, packet);
-            }
+            SendTcpPacketToAll(packetType, packet);
         }
 
         public static void SendGameSnapshotPackets(GameSnapshot gameSnapshot)
@@ -61,12 +55,12 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                     continue;
                 }
 
-                using (Packet packet = new Packet((int) packetType))
-                {
-                    ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.remoteControllable.lastProcessedInputId);
-                    packet.Write(clientGameSnapshot);
-                    SendUdpPacket(client.playerId, packetType, packet);
-                }
+                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.remoteControllable.lastProcessedInputId);
+
+                using Packet packet = new Packet((int) packetType);
+                packet.Write(clientGameSnapshot);
+
+                SendUdpPacket(client.playerId, packetType, packet);
             }
         }
 
@@ -74,13 +68,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetType = ServerPacketType.ColorChanged;
 
-            using (Packet packet = new Packet((int) packetType))
-            {
-                packet.Write(playerId);
-                packet.Write((int)newPlayerColor);
+            using Packet packet = new Packet((int) packetType);
+            packet.Write(playerId);
+            packet.Write((int)newPlayerColor);
 
-                SendTcpPacketToAll(packetType, packet);
-            }
+            SendTcpPacketToAll(packetType, packet);
         }
 
         private static void SendTcpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)

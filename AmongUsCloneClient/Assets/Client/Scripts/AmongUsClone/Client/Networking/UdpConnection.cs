@@ -23,10 +23,8 @@ namespace AmongUsClone.Client.Networking
             udpClient.Connect(ipEndPoint);
             udpClient.BeginReceive(OnConnection, null);
 
-            using (Packet packet = new Packet())
-            {
-                SendPacket(packet);
-            }
+            using Packet packet = new Packet();
+            SendPacket(packet);
         }
 
         public void SendPacket(Packet packet)
@@ -77,11 +75,10 @@ namespace AmongUsClone.Client.Networking
 
         private static void HandlePacketData(byte[] data)
         {
-            using (Packet packet = new Packet(data))
-            {
-                int packetLength = packet.ReadInt();
-                data = packet.ReadBytes(packetLength);
-            }
+            using Packet initialPacket = new Packet(data);
+
+            int packetLength = initialPacket.ReadInt();
+            data = initialPacket.ReadBytes(packetLength);
 
             MainThread.ScheduleExecution(() =>
             {

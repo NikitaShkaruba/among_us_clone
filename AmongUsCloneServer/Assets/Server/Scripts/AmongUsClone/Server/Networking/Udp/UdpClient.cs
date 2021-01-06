@@ -46,24 +46,22 @@ namespace AmongUsClone.Server.Networking.Udp
                     return;
                 }
 
-                using (Packet packet = new Packet(data))
+                using Packet packet = new Packet(data);
+                int playerId = packet.ReadInt();
+
+                if (!Server.clients[playerId].IsConnectedViaUdp())
                 {
-                    int playerId = packet.ReadInt();
-
-                    if (!Server.clients[playerId].IsConnectedViaUdp())
-                    {
-                        Server.clients[playerId].ConnectUdp(clientIpEndPoint);
-                        return;
-                    }
-
-                    if (!Server.clients[playerId].IsCorrectUdpIpEndPoint(clientIpEndPoint))
-                    {
-                        Logger.LogError(LoggerSection.Network, "Hacking attempt, client ids doesn't match");
-                        return;
-                    }
-
-                    HandlePacketData(playerId, packet);
+                    Server.clients[playerId].ConnectUdp(clientIpEndPoint);
+                    return;
                 }
+
+                if (!Server.clients[playerId].IsCorrectUdpIpEndPoint(clientIpEndPoint))
+                {
+                    Logger.LogError(LoggerSection.Network, "Hacking attempt, client ids doesn't match");
+                    return;
+                }
+
+                HandlePacketData(playerId, packet);
             }
             catch (ObjectDisposedException objectDisposedException)
             {
@@ -86,11 +84,10 @@ namespace AmongUsClone.Server.Networking.Udp
 
             MainThread.ScheduleExecution(() =>
             {
-                using (Packet newPacket = new Packet(packetBytes))
-                {
-                    int packetTypeId = newPacket.ReadInt();
-                    PacketsReceiver.ProcessPacket(playerId, packetTypeId, newPacket, false);
-                }
+                using Packet newPacket = new Packet(packetBytes);
+                int packetTypeId = newPacket.ReadInt();
+
+                PacketsReceiver.ProcessPacket(playerId, packetTypeId, newPacket, false);
             });
         }
 
