@@ -16,6 +16,10 @@ using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
+/**
+ * Todo: add network delay to other network requests (not only PlayerInput ones)
+ * Todo: Fix camera shaking the player
+ */
 namespace AmongUsClone.Client.Game
 {
     public class GameManager : MonoBehaviour
