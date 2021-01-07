@@ -20,6 +20,8 @@ namespace AmongUsClone.Client.UI.UiElements
 
         private void Start()
         {
+            // Todo: remove debug
+            Logger.LogDebug("Start was called");
             pingInput.onValueChanged.AddListener(delegate { UpdatePing(); });
 
             UpdatePing();
