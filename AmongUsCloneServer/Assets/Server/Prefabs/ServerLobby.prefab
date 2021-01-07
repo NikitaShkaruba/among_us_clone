@@ -83,6 +83,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
+--- !u!114 &6088940188251556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538534067119019902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc396b7163844d19a36673735a184bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playersContainable: {fileID: 981827045624693897}
 --- !u!1001 &5049179383896407767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,7 +105,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6002086026236504489, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
       propertyPath: m_Name
-      value: Lobby
+      value: ServerLobby
       objectReference: {fileID: 0}
     - target: {fileID: 6002086026236504490, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -140,8 +153,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
+--- !u!1 &1538534067119019902 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6002086026236504489, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
+  m_PrefabInstance: {fileID: 5049179383896407767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1538534067119019901 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6002086026236504490, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
   m_PrefabInstance: {fileID: 5049179383896407767}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &981827045624693897 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5454544810696915550, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
+  m_PrefabInstance: {fileID: 5049179383896407767}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538534067119019902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1ba442f8004f12a097c6d7f4a40bd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -15,7 +15,7 @@ namespace AmongUsClone.Client.UI.UiElements
 
         public void HighlightUserNameField()
         {
-            userNameField.image.color = Color.red;
+            userNameField.image.color = new Color(1f, 0.4858491f, 0.4858491f);
             StartCoroutine(WhitenUserNameField());
         }
 

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking;
-using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Client.UI;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
-using AmongUsClone.Shared.Networking;
-using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
@@ -31,7 +27,7 @@ namespace AmongUsClone.Client.Game
 
         public UserInterface userInterface;
         public MainMenu mainMenu;
-        public Shared.Game.Lobby lobby;
+        public Lobby.Lobby lobby;
         public Player controlledPlayer;
 
         [SerializeField] public GameObject clientControllablePlayerPrefab;
@@ -97,8 +93,10 @@ namespace AmongUsClone.Client.Game
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition)
         {
             GameObject chosenPlayerPrefab = playerId == connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
-            players[playerId] = lobby.AddPlayer(playerPosition, chosenPlayerPrefab).GetComponent<Player>();
+            players[playerId] = lobby.playersContainable.AddPlayer(playerPosition, chosenPlayerPrefab).GetComponent<Player>();
             players[playerId].Initialize(playerId, playerName, playerColor);
+
+            lobby.playersCounter.UpdatePlayerCounter(players.Count);
         }
 
         public void RemovePlayerFromLobby(int playerId)
@@ -110,6 +108,8 @@ namespace AmongUsClone.Client.Game
 
             Destroy(players[playerId].gameObject);
             players.Remove(playerId);
+
+            lobby.playersCounter.UpdatePlayerCounter(players.Count);
         }
 
         public void UpdatePlayerPosition(int playerId, Vector2 playerPosition)

@@ -36,7 +36,7 @@ namespace AmongUsClone.Server.Game
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Player player = lobby.AddPlayer(Vector3.zero, serverMovablePrefab).GetComponent<Player>();
+            Player player = lobby.playersContainable.AddPlayer(Vector3.zero, serverMovablePrefab).GetComponent<Player>();
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
             player.Initialize(playerId, playerName, playerColor);

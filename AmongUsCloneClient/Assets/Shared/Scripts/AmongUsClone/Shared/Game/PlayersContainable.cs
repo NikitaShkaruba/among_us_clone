@@ -1,12 +1,11 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMethodReturnValue.Global
 
-using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
 namespace AmongUsClone.Shared.Game
 {
-    public class Lobby : MonoBehaviour
+    public class PlayersContainable : MonoBehaviour
     {
         [SerializeField] private GameObject playersParentGameObject;
 
