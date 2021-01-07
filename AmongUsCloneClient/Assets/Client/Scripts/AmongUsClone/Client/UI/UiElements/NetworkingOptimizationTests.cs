@@ -11,7 +11,7 @@ namespace AmongUsClone.Client.UI.UiElements
         [SerializeField] private Toggle predictionToggle;
         [SerializeField] private Toggle reconciliationToggle;
 
-        private static int ping = 1000;
+        public static int ping = 1000;
         public static bool isPredictionEnabled = true;
         public static bool isReconciliationEnabled = true;
         private static bool isInterpolationEnabled;
