@@ -10,6 +10,12 @@ namespace AmongUsClone.Client.UI.UiElements
         public InputField userNameField;
         public bool isUserNameFieldHighlighted;
 
+        public void Reset()
+        {
+            userNameField.image.color = Color.white;
+            isUserNameFieldHighlighted = false;
+        }
+
         public bool IsUserNameFieldValid()
         {
             return !userNameField.text.Trim().Equals("");
@@ -33,7 +39,7 @@ namespace AmongUsClone.Client.UI.UiElements
             {
                 isUserNameFieldHighlighted = false;
             }
-            else
+            else if (isUserNameFieldHighlighted)
             {
                 StartCoroutine(WhitenUserNameField());
             }
