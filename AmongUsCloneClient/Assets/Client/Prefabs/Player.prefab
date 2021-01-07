@@ -35,7 +35,7 @@ MonoBehaviour:
   movable: {fileID: 5518854573400290162}
   controllable: {fileID: 2506714475783035418}
   clientControllable: {fileID: 0}
-  playerAnimator: {fileID: 5827258688513702030}
+  animator: {fileID: 0}
   colorable: {fileID: 4194513011835888611}
 --- !u!114 &5827258688513702030
 MonoBehaviour:
@@ -118,6 +118,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8f746c81c6624cc4998b619c7f3feee9, type: 2}
+    - target: {fileID: 7830046557350688026, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8167787386373783868, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
       propertyPath: m_Name
       value: Player

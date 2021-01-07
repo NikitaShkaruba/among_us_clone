@@ -1670,9 +1670,25 @@ PrefabInstance:
       propertyPath: shaking
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5560052837701630801, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5560052837701630801, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 6770735387578143667, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7243832296275257177, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7243832296275257177, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7501447490907886312, guid: 123f7822ccf5a1e42a9505524adf8d94, type: 3}
       propertyPath: m_RootOrder
