@@ -64,8 +64,15 @@ namespace AmongUsClone.Client.Game
         {
             if (!mainMenu.IsUserNameFieldValid())
             {
-                mainMenu.HighlightUserNameField();
-                return;
+                if (mainMenu.isUserNameFieldHighlighted)
+                {
+                    mainMenu.userNameField.text = MainMenu.GenerateRandomName();
+                }
+                else
+                {
+                    mainMenu.HighlightUserNameField();
+                    return;
+                }
             }
 
             mainMenu.gameObject.SetActive(false);
