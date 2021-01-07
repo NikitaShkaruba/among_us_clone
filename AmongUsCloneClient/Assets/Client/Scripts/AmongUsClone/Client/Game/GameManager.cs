@@ -66,6 +66,12 @@ namespace AmongUsClone.Client.Game
 
         public void ConnectToLobby()
         {
+            if (!mainMenu.IsUserNameFieldValid())
+            {
+                mainMenu.HighlightUserNameField();
+                return;
+            }
+
             mainMenu.gameObject.SetActive(false);
             lobby.gameObject.SetActive(true);
 

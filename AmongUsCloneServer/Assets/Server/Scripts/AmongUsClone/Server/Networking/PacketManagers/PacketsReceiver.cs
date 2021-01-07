@@ -38,6 +38,12 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 throw new Exception($"Bad playerId {playerId} received");
             }
 
+            if (userName.Equals(""))
+            {
+                Logger.LogError(LoggerSection.Connection, $"Bad user name passed from player {playerId}");
+                return;
+            }
+
             Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} connected successfully and is now a player {playerId}");
 
             GameManager.instance.ConnectPlayer(playerId, userName);
