@@ -10,6 +10,7 @@ using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
+using Helpers = AmongUsClone.Shared.Helpers;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking.PacketManagers
@@ -40,8 +41,11 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             Action action = () =>
             {
                 int myPlayerId = packet.ReadInt();
+                int maxPlayersAmount = packet.ReadInt();
+                int minRequiredPlayersAmountForGame = packet.ReadInt();
 
                 GameManager.instance.connectionToServer.FinishConnection(myPlayerId);
+                GameManager.instance.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
             };
@@ -55,10 +59,11 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {
                 int playerId = packet.ReadInt();
                 string playerName = packet.ReadString();
+                bool isPlayerLobbyHost = packet.ReadBool();
                 PlayerColor playerColor = (PlayerColor) packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
 
-                GameManager.instance.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition);
+                GameManager.instance.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Added player {playerId} to lobby");
             };

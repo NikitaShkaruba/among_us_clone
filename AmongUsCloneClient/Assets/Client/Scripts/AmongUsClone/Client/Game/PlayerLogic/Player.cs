@@ -23,9 +23,9 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public Colorable colorable;
         public Interactor interactor;
 
-        public void Initialize(int playerId, string playerName, PlayerColor playerColor)
+        public void Initialize(int playerId, string playerName, PlayerColor playerColor, bool isPlayerHost)
         {
-            information.Initialize(playerId, playerName);
+            information.Initialize(playerId, playerName, isPlayerHost);
             colorable.Initialize(playerColor);
         }
     }

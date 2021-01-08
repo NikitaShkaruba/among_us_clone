@@ -18,9 +18,9 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         public RemoteControllable remoteControllable;
         public Colorable colorable;
 
-        public void Initialize(int playerId, string playerName, PlayerColor playerColor)
+        public void Initialize(int playerId, string playerName, PlayerColor playerColor, bool isLobbyHost)
         {
-            information.Initialize(playerId, playerName);
+            information.Initialize(playerId, playerName, isLobbyHost);
             colorable.Initialize(playerColor);
         }
     }

@@ -39,7 +39,9 @@ namespace AmongUsClone.Server.Game
             Player player = lobby.playersContainable.AddPlayer(Vector3.zero, serverMovablePrefab).GetComponent<Player>();
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
-            player.Initialize(playerId, playerName, playerColor);
+            bool isLobbyHost = playerId == Server.MinPlayerId;
+            player.Initialize(playerId, playerName, playerColor, isLobbyHost); // Todo: add disconnect of everyone after player 0 leaves
+
             Server.clients[playerId].FinishInitialization(player);
 
             foreach (Client client in Server.clients.Values)

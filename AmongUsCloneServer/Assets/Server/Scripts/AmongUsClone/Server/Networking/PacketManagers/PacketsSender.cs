@@ -17,6 +17,8 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             Packet packet = new Packet((int) packetTypeId);
             packet.Write(playerId);
+            packet.Write(Server.MaxPlayerId + 1);
+            packet.Write(Server.MinRequiredPlayersAmountForGame);
 
             SendTcpPacket(playerId, packetTypeId, packet);
         }
@@ -28,6 +30,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             Packet packet = new Packet((int) packetType);
             packet.Write(player.information.id);
             packet.Write(player.information.name);
+            packet.Write(player.information.isLobbyHost);
             packet.Write((int) player.colorable.color);
             packet.Write(player.information.transform.position);
 

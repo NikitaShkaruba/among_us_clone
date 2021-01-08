@@ -9,11 +9,13 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
     {
         public int id;
         public new string name;
+        public bool isLobbyHost;
 
-        public void Initialize(int id, string name)
+        public void Initialize(int id, string name, bool isLobbyHost)
         {
             this.id = id;
             this.name = name;
+            this.isLobbyHost = isLobbyHost;
         }
     }
 }

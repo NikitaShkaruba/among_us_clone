@@ -7,10 +7,20 @@ namespace AmongUsClone.Client.Game.Lobby.UI
     {
         public Text textLabel;
 
-        public void UpdatePlayerCounter(int playersAmount)
+        private void Start()
         {
-            textLabel.text = $"{playersAmount} / 10";
-            textLabel.color = playersAmount >= 4 ? Color.white : Color.red;
+            GameManager.instance.playersAmountChanged += UpdateLabel;
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.instance.playersAmountChanged -= UpdateLabel;
+        }
+
+        private void UpdateLabel()
+        {
+            textLabel.text = $"{GameManager.instance.players.Count} / {GameManager.instance.maxPlayersAmount}";
+            textLabel.color = GameManager.instance.HasEnoughPlayersForGame() ? Color.white : Color.red;
         }
     }
 }

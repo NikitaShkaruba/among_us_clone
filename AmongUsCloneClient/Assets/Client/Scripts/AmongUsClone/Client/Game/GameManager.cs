@@ -25,6 +25,9 @@ namespace AmongUsClone.Client.Game
 
         public Dictionary<int, Player> players = new Dictionary<int, Player>();
 
+        public int maxPlayersAmount;
+        public int minRequiredPlayersAmountForGame;
+
         public UserInterface userInterface;
         public MainMenu mainMenu;
         public Lobby.Lobby lobby;
@@ -32,6 +35,8 @@ namespace AmongUsClone.Client.Game
 
         [SerializeField] public GameObject clientControllablePlayerPrefab;
         [SerializeField] public GameObject playerPrefab;
+
+        public Action playersAmountChanged;
 
         private void Awake()
         {
@@ -47,6 +52,12 @@ namespace AmongUsClone.Client.Game
             }
 
             instance = this;
+        }
+
+        public void InitializeGameSettings(int maxPlayersAmount, int minRequiredPlayersAmountForGame)
+        {
+            this.maxPlayersAmount = maxPlayersAmount;
+            this.minRequiredPlayersAmountForGame = minRequiredPlayersAmountForGame;
         }
 
         private void Update()
@@ -94,22 +105,22 @@ namespace AmongUsClone.Client.Game
             }
 
             players.Clear();
+            playersAmountChanged?.Invoke();
 
             connectionToServer.Disconnect();
         }
 
-        public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition)
+        public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
         {
             GameObject chosenPlayerPrefab = playerId == connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
             players[playerId] = lobby.playersContainable.AddPlayer(playerPosition, chosenPlayerPrefab).GetComponent<Player>();
-            players[playerId].Initialize(playerId, playerName, playerColor);
+            players[playerId].Initialize(playerId, playerName, playerColor, isPlayerHost);
+            playersAmountChanged?.Invoke();
 
             if (playerId == connectionToServer.myPlayerId)
             {
-                lobby.interactButton.SetInteractor(players[playerId].interactor);
+                InitializeControlledPlayer(players[playerId]);
             }
-
-            lobby.playersCounter.UpdatePlayerCounter(players.Count);
         }
 
         public void RemovePlayerFromLobby(int playerId)
@@ -121,8 +132,7 @@ namespace AmongUsClone.Client.Game
 
             Destroy(players[playerId].gameObject);
             players.Remove(playerId);
-
-            lobby.playersCounter.UpdatePlayerCounter(players.Count);
+            playersAmountChanged?.Invoke();
         }
 
         public void UpdatePlayerPosition(int playerId, Vector2 playerPosition)
@@ -139,16 +149,28 @@ namespace AmongUsClone.Client.Game
         public void ChangePlayerColor(int playerId, PlayerColor playerColor)
         {
             players[playerId].colorable.ChangeColor(playerColor);
-            Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(playerColor)}");
+            Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Shared.Helpers.GetEnumName(playerColor)}");
         }
 
-        public void RegisterControlledPlayer(Player player)
+        private void InitializeControlledPlayer(Player player)
         {
             controlledPlayer = player;
 
             PlayerCamera playerCamera = FindObjectOfType<PlayerCamera>();
             playerCamera.target = controlledPlayer.gameObject;
             playerCamera.transform.position = Vector3.zero;
+
+            lobby.interactButton.SetInteractor(player.interactor);
+
+            if (controlledPlayer.information.isLobbyHost)
+            {
+                lobby.gameStartable.ShowStartButtonForHost();
+            }
+        }
+
+        public bool HasEnoughPlayersForGame()
+        {
+            return players.Count >= instance.minRequiredPlayersAmountForGame;
         }
     }
 }

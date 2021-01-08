@@ -16,6 +16,7 @@ namespace AmongUsClone.Server
     {
         public const int MinPlayerId = 0;
         public static int MaxPlayerId { get; private set; }
+        public const int MinRequiredPlayersAmountForGame = 4;
 
         public static readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
 
