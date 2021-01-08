@@ -12,6 +12,15 @@ namespace AmongUsClone.Client.UI.UiElements
         private float timer;
         public float secondsBeforeUpdate;
 
+        private const string TextLabelOneDot = ".";
+        private const string TextLabelTwoDots = "..";
+        private const string TextLabelThreeDots = "...";
+
+        private void Awake()
+        {
+            textLabel.text = TextLabelOneDot;
+        }
+
         public void Update()
         {
             timer += Time.deltaTime;
@@ -27,17 +36,17 @@ namespace AmongUsClone.Client.UI.UiElements
         {
             switch (textLabel.text)
             {
-                case ".":
-                    return "..";
+                case TextLabelOneDot:
+                    return TextLabelTwoDots;
 
-                case "..":
-                    return "...";
+                case TextLabelTwoDots:
+                    return TextLabelThreeDots;
 
-                case "...":
-                    return ".";
+                case TextLabelThreeDots:
+                    return TextLabelOneDot;
 
                 default:
-                    Logger.LogError(LoggerSection.MainMenu, "Undefined textLabel.text state");
+                    Logger.LogError(LoggerSection.MainMenu, "Undefined textLabel text");
                     return "";
             }
         }
