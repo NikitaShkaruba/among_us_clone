@@ -23,6 +23,14 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacket(playerId, packetTypeId, packet);
         }
 
+        public static void SendKickedPacket(int playerId)
+        {
+            const ServerPacketType packetTypeId = ServerPacketType.Kicked;
+            Packet packet = new Packet((int) packetTypeId);
+
+            SendTcpPacketToAllExceptOne(playerId, packetTypeId, packet);
+        }
+
         public static void SendPlayerConnectedPacket(int playerId, Player player)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerConnected;

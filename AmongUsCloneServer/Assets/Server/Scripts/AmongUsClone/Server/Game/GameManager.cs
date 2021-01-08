@@ -1,6 +1,8 @@
 // I want a class to have either static or non static methods
 // ReSharper disable MemberCanBeMadeStatic.Global
 
+using System.Collections.Generic;
+using System.Linq;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
@@ -39,7 +41,7 @@ namespace AmongUsClone.Server.Game
             Player player = lobby.playersContainable.AddPlayer(Vector3.zero, serverMovablePrefab).GetComponent<Player>();
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
-            bool isLobbyHost = playerId == Server.MinPlayerId;
+            bool isLobbyHost = IsLobbyHost(playerId);
             player.Initialize(playerId, playerName, playerColor, isLobbyHost); // Todo: add disconnect of everyone after player 0 leaves
 
             Server.clients[playerId].FinishInitialization(player);
@@ -62,14 +64,28 @@ namespace AmongUsClone.Server.Game
             }
         }
 
+        private static bool IsLobbyHost(int playerId)
+        {
+            return playerId == Server.MinPlayerId;
+        }
+
         public void DisconnectPlayer(int playerId)
         {
             Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
 
-            PlayerColors.ReleasePlayerColor(playerId);
-            Destroy(Server.clients[playerId].player.gameObject);
-            Server.clients.Remove(playerId);
-            PacketsSender.SendPlayerDisconnectedPacket(playerId);
+            if (Server.clients[playerId].player.information.isLobbyHost)
+            {
+                PacketsSender.SendKickedPacket(playerId);
+                foreach (int playerIdToRemove in Server.clients.Keys.ToList())
+                {
+                    RemovePlayerFromGame(playerIdToRemove);
+                }
+            }
+            else
+            {
+                PacketsSender.SendPlayerDisconnectedPacket(playerId);
+                RemovePlayerFromGame(playerId);
+            }
         }
 
         public void SavePlayerInput(int playerId, PlayerInput playerInput)
@@ -85,6 +101,13 @@ namespace AmongUsClone.Server.Game
             PacketsSender.SendColorChanged(playerId, newPlayerColor);
 
             Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(newPlayerColor)}");
+        }
+
+        private static void RemovePlayerFromGame(int playerId)
+        {
+            PlayerColors.ReleasePlayerColor(playerId);
+            Destroy(Server.clients[playerId].player.gameObject);
+            Server.clients.Remove(playerId);
         }
     }
 }

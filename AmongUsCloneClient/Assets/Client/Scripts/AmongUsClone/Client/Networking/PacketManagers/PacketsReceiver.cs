@@ -22,6 +22,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         private static readonly Dictionary<int, OnPacketReceivedCallback> packetHandlers = new Dictionary<int, OnPacketReceivedCallback>
         {
             {(int) ServerPacketType.Welcome, ProcessWelcomePacket},
+            {(int) ServerPacketType.Kicked, ProcessKickedPacket},
             {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
             {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
             {(int) ServerPacketType.GameSnapshot, ProcessGameSnapshotPacket},
@@ -48,6 +49,17 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 GameManager.instance.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
+            };
+
+            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+        }
+
+        private static void ProcessKickedPacket(Packet packet)
+        {
+            Action action = () =>
+            {
+                GameManager.instance.DisconnectFromLobby();
+                Logger.LogEvent(LoggerSection.Connection, "Received a kick from server");
             };
 
             NetworkSimulation.instance.ReceiveThroughNetwork(action);
