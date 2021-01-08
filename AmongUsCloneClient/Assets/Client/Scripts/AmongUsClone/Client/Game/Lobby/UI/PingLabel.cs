@@ -1,4 +1,4 @@
-using AmongUsClone.Client.UI.UiElements;
+using AmongUsClone.Client.Networking;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +11,7 @@ namespace AmongUsClone.Client.Game.Lobby.UI
 
         public void Awake()
         {
-            text.text = $"Ping: {NetworkingOptimizationTests.ping} ms";
+            text.text = $"Ping: {NetworkSimulation.ping} ms";
         }
     }
 }

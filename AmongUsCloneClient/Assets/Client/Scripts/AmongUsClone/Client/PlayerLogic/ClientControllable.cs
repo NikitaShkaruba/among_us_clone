@@ -4,7 +4,6 @@ using System.Linq;
 using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking.PacketManagers;
-using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
@@ -27,11 +26,7 @@ namespace AmongUsClone.Client.PlayerLogic
         private void FixedUpdate()
         {
             UpdatePlayerInput();
-
-            if (NetworkingOptimizationTests.isPredictionEnabled)
-            {
-                player.movable.MoveByPlayerInput(player.controllable.playerInput);
-            }
+            player.movable.MoveByPlayerInput(player.controllable.playerInput);
 
             StartCoroutine(SaveStateSnapshot());
             PacketsSender.SendPlayerInputPacket(player.controllable.playerInput.Clone());

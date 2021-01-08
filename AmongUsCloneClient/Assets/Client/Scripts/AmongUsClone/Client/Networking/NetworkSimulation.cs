@@ -14,6 +14,8 @@ namespace AmongUsClone.Client.Networking
     {
         public static NetworkSimulation instance;
 
+        public const int ping = 1000;
+
         public void Awake()
         {
             if (instance != null)
@@ -37,7 +39,7 @@ namespace AmongUsClone.Client.Networking
         private static IEnumerator ExecuteAfterNetworkDelay(Action action)
         {
             // Simulate network lag
-            float secondsToWait = NetworkingOptimizationTests.NetworkDelayInSeconds;
+            const float secondsToWait = ping * 0.001f / 2f;
             yield return new WaitForSeconds(secondsToWait);
 
             action();

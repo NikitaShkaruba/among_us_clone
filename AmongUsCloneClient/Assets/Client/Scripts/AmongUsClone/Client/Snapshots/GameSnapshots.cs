@@ -3,7 +3,6 @@ using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.PlayerLogic;
-using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -51,16 +50,9 @@ namespace AmongUsClone.Client.Snapshots
         {
             controlledPlayer.clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
 
-            if (NetworkingOptimizationTests.isReconciliationEnabled)
+            if (IsReconciliationNeeded(controlledPlayer, gameSnapshot))
             {
-                if (IsReconciliationNeeded(controlledPlayer, gameSnapshot))
-                {
-                    Reconcile(controlledPlayer, gameSnapshot);
-                }
-            }
-            else
-            {
-                GameManager.instance.UpdatePlayerPosition(controlledPlayer.information.id, gameSnapshot.playersInfo[controlledPlayer.information.id].position);
+                Reconcile(controlledPlayer, gameSnapshot);
             }
         }
 
