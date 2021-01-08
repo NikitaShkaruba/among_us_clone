@@ -52,5 +52,18 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
             NetworkSimulation.instance.SendThroughNetwork(action);
         }
+
+        public static void SendStartGamePacket()
+        {
+            Action action = () =>
+            {
+                const ClientPacketType clientPacketType = ClientPacketType.StartGame;
+
+                Packet packet = new Packet((int) clientPacketType);
+                GameManager.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
+            };
+
+            NetworkSimulation.instance.SendThroughNetwork(action);
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         public int id;
         public new string name;
         public bool isLobbyHost;
+        public bool isImposter;
 
         public void Initialize(int id, string name, bool isLobbyHost)
         {

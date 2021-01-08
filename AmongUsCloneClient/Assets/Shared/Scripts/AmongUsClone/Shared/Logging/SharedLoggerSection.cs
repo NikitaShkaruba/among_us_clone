@@ -6,5 +6,6 @@ namespace AmongUsClone.Shared.Logging
     {
         public const string Initialization = "Initialization";
         public const string PlayerColors = "Colorable";
+        public const string GameStart = "GameStart";
     }
 }

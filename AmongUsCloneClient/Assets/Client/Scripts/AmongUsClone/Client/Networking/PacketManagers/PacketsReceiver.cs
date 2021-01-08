@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Snapshots;
-using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using AmongUsClone.Shared.Snapshots;
@@ -26,7 +24,9 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
             {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
             {(int) ServerPacketType.GameSnapshot, ProcessGameSnapshotPacket},
-            {(int) ServerPacketType.ColorChanged, ProcessPlayerColorChangedPacket}
+            {(int) ServerPacketType.ColorChanged, ProcessPlayerColorChangedPacket},
+            {(int) ServerPacketType.GameStarts, ProcessGameStartsPacket},
+            {(int) ServerPacketType.GameStarted, ProcessGameStartedPacket},
         };
 
         public static void ProcessPacket(int packetTypeId, Packet packet, bool isTcp)
@@ -44,9 +44,10 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 int myPlayerId = packet.ReadInt();
                 int maxPlayersAmount = packet.ReadInt();
                 int minRequiredPlayersAmountForGame = packet.ReadInt();
+                int secondsForGameLaunch = packet.ReadInt();
 
                 GameManager.instance.connectionToServer.FinishConnection(myPlayerId);
-                GameManager.instance.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame);
+                GameManager.instance.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame, secondsForGameLaunch);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
             };
@@ -116,6 +117,37 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 PlayerColor playerColor = (PlayerColor) packet.ReadInt();
 
                 GameManager.instance.ChangePlayerColor(playerId, playerColor);
+            };
+
+            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+        }
+
+        private static void ProcessGameStartsPacket(Packet packet)
+        {
+            Action action = () => GameManager.instance.lobby.gameStartable.LaunchGameStart();
+
+            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+        }
+
+        private static void ProcessGameStartedPacket(Packet packet)
+        {
+            Action action = () =>
+            {
+                List<int> impostorPlayerIds = new List<int>();
+
+                bool isPlayingAsImpostor = packet.ReadBool();
+                int impostorsAmount = packet.ReadInt();
+
+                if (isPlayingAsImpostor)
+                {
+                    for (int impostorIndex = 0; impostorIndex < impostorsAmount; impostorIndex++)
+                    {
+                        int impostorPlayerId = packet.ReadInt();
+                        impostorPlayerIds.Add(impostorPlayerId);
+                    }
+                }
+
+                GameManager.instance.StartGame(isPlayingAsImpostor, impostorsAmount, impostorPlayerIds.ToArray());
             };
 
             NetworkSimulation.instance.ReceiveThroughNetwork(action);

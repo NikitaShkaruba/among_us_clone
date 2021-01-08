@@ -1,3 +1,6 @@
+using System.Collections;
+using AmongUsClone.Client.Networking.PacketManagers;
+using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +11,9 @@ namespace AmongUsClone.Client.Game.Lobby
     public class GameStartable : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private Image startGameButton;
+        public Text gameStartsInLabel;
+
+        private int secondsBeforeGameStartsLeft;
 
         private void Awake()
         {
@@ -26,22 +32,52 @@ namespace AmongUsClone.Client.Game.Lobby
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            StartGame();
+            RequestGameStart();
         }
 
-        private static void StartGame()
+        private static void RequestGameStart()
         {
             if (!GameManager.instance.HasEnoughPlayersForGame())
             {
                 return;
             }
 
-            Logger.LogDebug("Starting the game");
+            PacketsSender.SendStartGamePacket();
+        }
+
+        public void LaunchGameStart()
+        {
+            secondsBeforeGameStartsLeft = GameManager.instance.secondsForGameLaunch;
+            gameStartsInLabel.text = GetGameStartsInLabelText();
+            gameStartsInLabel.gameObject.SetActive(true);
+            StartCoroutine(ProcessGameStartTick());
+
+            Logger.LogEvent(SharedLoggerSection.GameStart, "Starting the game");
         }
 
         private void UpdateStartButtonOpacity()
         {
             startGameButton.color = GameManager.instance.HasEnoughPlayersForGame() ? Color.white : Helpers.halfVisibleColor;
+        }
+
+        private string GetGameStartsInLabelText()
+        {
+            return $"Game starts in {secondsBeforeGameStartsLeft}...";
+        }
+
+        private IEnumerator ProcessGameStartTick()
+        {
+            yield return new WaitForSeconds(1);
+
+            secondsBeforeGameStartsLeft--;
+
+            if (secondsBeforeGameStartsLeft == 0)
+            {
+                yield break;
+            }
+
+            gameStartsInLabel.text = GetGameStartsInLabelText();
+            StartCoroutine(ProcessGameStartTick());
         }
     }
 }

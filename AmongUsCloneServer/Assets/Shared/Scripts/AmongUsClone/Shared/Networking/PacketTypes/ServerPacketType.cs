@@ -10,5 +10,7 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
         PlayerDisconnected,
         GameSnapshot,
         ColorChanged,
+        GameStarts,
+        GameStarted,
     }
 }

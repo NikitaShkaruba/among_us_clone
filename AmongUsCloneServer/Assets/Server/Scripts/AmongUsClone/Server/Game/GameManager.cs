@@ -1,6 +1,8 @@
 // I want a class to have either static or non static methods
 // ReSharper disable MemberCanBeMadeStatic.Global
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Server.Game.PlayerLogic;
@@ -14,6 +16,7 @@ using AmongUsClone.Shared.Logging;
 using UnityEngine;
 using GameObject = UnityEngine.GameObject;
 using Logger = AmongUsClone.Shared.Logging.Logger;
+using Random = System.Random;
 
 namespace AmongUsClone.Server.Game
 {
@@ -23,8 +26,10 @@ namespace AmongUsClone.Server.Game
         public static GameManager instance; // Instance is needed in order to have inspector variables and call MonoBehaviour methods
 
         public Lobby lobby;
-
         public GameObject serverMovablePrefab;
+
+        public const int MinRequiredPlayersAmountForGame = 4;
+        public const int SecondsForGameLaunch = 5;
 
         private void Awake()
         {
@@ -86,6 +91,7 @@ namespace AmongUsClone.Server.Game
                 {
                     RemovePlayerFromGame(playerIdToRemove);
                 }
+
                 Logger.LogEvent(LoggerSection.Connection, $"Removed every player, because the host player {playerId} has disconnected");
             }
             else
@@ -115,6 +121,37 @@ namespace AmongUsClone.Server.Game
             PlayerColors.ReleasePlayerColor(playerId);
             Destroy(Server.clients[playerId].player.gameObject);
             Server.clients.Remove(playerId);
+        }
+
+        public void ScheduleGameStart()
+        {
+            StartCoroutine(StartGame());
+        }
+
+        private static IEnumerator StartGame()
+        {
+            yield return new WaitForSeconds(SecondsForGameLaunch);
+
+            int[] impostorPlayerIds = GetImpostorPlayerIds();
+            foreach (int impostorPlayerId in impostorPlayerIds)
+            {
+                Server.clients[impostorPlayerId].player.information.isImposter = true;
+            }
+
+            PacketsSender.SendGameStartedPacket(impostorPlayerIds);
+
+            Logger.LogEvent(SharedLoggerSection.GameStart, $"Game has started. Impostors: {string.Join(", ", impostorPlayerIds)}");
+        }
+
+        private static int[] GetImpostorPlayerIds()
+        {
+            int impostorsAmount = Server.clients.Count > 7 ? 2 : 1;
+
+            Random random = new Random();
+            int[] playerIds = Server.clients.Keys.ToArray();
+            int[] shuffledPlayerIds = playerIds.OrderBy(playerId => random.Next()).ToArray();
+
+            return shuffledPlayerIds.Take(impostorsAmount).ToArray();
         }
     }
 }

@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
@@ -18,7 +21,8 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             Packet packet = new Packet((int) packetTypeId);
             packet.Write(playerId);
             packet.Write(Server.MaxPlayerId + 1);
-            packet.Write(Server.MinRequiredPlayersAmountForGame);
+            packet.Write(GameManager.MinRequiredPlayersAmountForGame);
+            packet.Write(GameManager.SecondsForGameLaunch);
 
             SendTcpPacket(playerId, packetTypeId, packet);
         }
@@ -81,9 +85,42 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             Packet packet = new Packet((int) packetType);
             packet.Write(playerId);
-            packet.Write((int)newPlayerColor);
+            packet.Write((int) newPlayerColor);
 
             SendTcpPacketToAll(packetType, packet);
+        }
+
+        public static void SendGameStartsPacket()
+        {
+            const ServerPacketType packetType = ServerPacketType.GameStarts;
+
+            Packet packet = new Packet((int) packetType);
+            SendTcpPacketToAll(packetType, packet);
+        }
+
+        public static void SendGameStartedPacket(int[] impostorPlayerIds)
+        {
+            const ServerPacketType packetType = ServerPacketType.GameStarted;
+
+            foreach (int playerId in Server.clients.Keys)
+            {
+                bool isPlayerImposter = Array.Exists(impostorPlayerIds, imposterPlayerId => imposterPlayerId == playerId);
+
+                Packet packet = new Packet((int) packetType);
+
+                packet.Write(isPlayerImposter);
+                packet.Write(impostorPlayerIds.Length);
+
+                if (isPlayerImposter)
+                {
+                    foreach (int impostorPlayerId in impostorPlayerIds)
+                    {
+                        packet.Write(impostorPlayerId);
+                    }
+                }
+
+                SendTcpPacket(playerId, packetType, packet);
+            }
         }
 
         private static void SendTcpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)

@@ -16,7 +16,8 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
             {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
-            {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket}
+            {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket},
+            {(int) ClientPacketType.StartGame, ProcessStartGamePacket}
         };
 
         public static void ProcessPacket(int playerId, int packetTypeId, Packet packet, bool isTcp)
@@ -66,5 +67,19 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             GameManager.instance.ChangePlayerColor(playerId);
         }
+
+        private static void ProcessStartGamePacket(int playerId, Packet packet)
+        {
+            if (playerId != Server.MinPlayerId)
+            {
+                Logger.LogNotice(SharedLoggerSection.GameStart, "Not host trying to start the game");
+                return;
+            }
+
+            Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
+            PacketsSender.SendGameStartsPacket();
+            GameManager.instance.ScheduleGameStart();
+        }
+
     }
 }

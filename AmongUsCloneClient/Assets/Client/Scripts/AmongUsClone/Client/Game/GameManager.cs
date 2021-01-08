@@ -27,11 +27,16 @@ namespace AmongUsClone.Client.Game
 
         public int maxPlayersAmount;
         public int minRequiredPlayersAmountForGame;
+        public int secondsForGameLaunch;
 
-        public UserInterface userInterface;
         public MainMenu mainMenu;
         public Lobby.Lobby lobby;
+        public GameRoleDescription gameRoleDescription;
+
+        public UserInterface userInterface;
         public Player controlledPlayer;
+        public int[] impostorPlayerIds;
+        public int impostorsAmount;
 
         [SerializeField] public GameObject clientControllablePlayerPrefab;
         [SerializeField] public GameObject playerPrefab;
@@ -54,10 +59,11 @@ namespace AmongUsClone.Client.Game
             instance = this;
         }
 
-        public void InitializeGameSettings(int maxPlayersAmount, int minRequiredPlayersAmountForGame)
+        public void InitializeGameSettings(int maxPlayersAmount, int minRequiredPlayersAmountForGame, int secondsForGameLaunch)
         {
             this.maxPlayersAmount = maxPlayersAmount;
             this.minRequiredPlayersAmountForGame = minRequiredPlayersAmountForGame;
+            this.secondsForGameLaunch = secondsForGameLaunch;
         }
 
         private void Update()
@@ -80,6 +86,7 @@ namespace AmongUsClone.Client.Game
         {
             userInterface.RemovePauseMenu();
             lobby.gameObject.SetActive(false);
+            gameRoleDescription.gameObject.SetActive(false);
             mainMenu.gameObject.SetActive(true);
             mainMenu.Reset();
 
@@ -163,6 +170,26 @@ namespace AmongUsClone.Client.Game
         public bool HasEnoughPlayersForGame()
         {
             return players.Count >= instance.minRequiredPlayersAmountForGame;
+        }
+
+        public void StartGame(bool isPlayingImpostor, int impostorsAmount, int[] impostorPlayerIds)
+        {
+            this.impostorPlayerIds = impostorPlayerIds;
+            this.impostorsAmount = impostorsAmount;
+
+            if (isPlayingImpostor)
+            {
+                foreach (int impostorPlayerId in impostorPlayerIds)
+                {
+                    players[impostorPlayerId].information.isImposter = true;
+                }
+            }
+
+            lobby.gameObject.SetActive(false);
+            mainMenu.gameObject.SetActive(false);
+            gameRoleDescription.gameObject.SetActive(true);
+
+            Logger.LogDebug($"Game has started. Impostors: {this.impostorsAmount}");
         }
     }
 }
