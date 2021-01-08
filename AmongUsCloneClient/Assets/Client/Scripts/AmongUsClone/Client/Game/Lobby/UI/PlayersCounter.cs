@@ -9,6 +9,7 @@ namespace AmongUsClone.Client.Game.Lobby.UI
 
         private void Start()
         {
+            UpdateLabel();
             GameManager.instance.playersAmountChanged += UpdateLabel;
         }
 
