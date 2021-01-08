@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using AmongUsClone.Client.Game;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -8,20 +9,42 @@ namespace AmongUsClone.Client.UI.UiElements
     public class MainMenu : MonoBehaviour
     {
         public InputField userNameField;
-        public bool isUserNameFieldHighlighted;
+        public LoadingLabel loadingLabel;
+        [HideInInspector] public bool isUserNameFieldHighlighted;
+
+        public void ConnectToServer()
+        {
+            if (!IsUserNameFieldValid())
+            {
+                if (isUserNameFieldHighlighted)
+                {
+                    userNameField.text = GenerateRandomName();
+                    Reset();
+                }
+                else
+                {
+                    HighlightUserNameField();
+                    return;
+                }
+            }
+
+            loadingLabel.gameObject.SetActive(true);
+            GameManager.instance.ConnectToLobby();
+        }
 
         public void Reset()
         {
             userNameField.image.color = Color.white;
             isUserNameFieldHighlighted = false;
+            loadingLabel.gameObject.SetActive(false);
         }
 
-        public bool IsUserNameFieldValid()
+        private bool IsUserNameFieldValid()
         {
             return !userNameField.text.Trim().Equals("");
         }
 
-        public void HighlightUserNameField()
+        private void HighlightUserNameField()
         {
             isUserNameFieldHighlighted = true;
             userNameField.image.color = new Color(1f, 0.4858491f, 0.4858491f);
@@ -45,7 +68,7 @@ namespace AmongUsClone.Client.UI.UiElements
             }
         }
 
-        public static string GenerateRandomName()
+        private static string GenerateRandomName()
         {
             // Names of all the people we played original Among Us with during covid-19 2020 quarantine C:
             string[] randomNames =
@@ -63,7 +86,7 @@ namespace AmongUsClone.Client.UI.UiElements
                 "Shuryak"
             };
 
-            int randomIndex = new Random((int)System.DateTime.Now.Ticks).Next(1, randomNames.Length - 1);
+            int randomIndex = new Random((int) System.DateTime.Now.Ticks).Next(1, randomNames.Length - 1);
             return randomNames[randomIndex];
         }
     }

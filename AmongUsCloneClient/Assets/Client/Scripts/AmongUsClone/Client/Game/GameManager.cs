@@ -73,31 +73,15 @@ namespace AmongUsClone.Client.Game
 
         public void ConnectToLobby()
         {
-            if (!mainMenu.IsUserNameFieldValid())
-            {
-                if (mainMenu.isUserNameFieldHighlighted)
-                {
-                    mainMenu.userNameField.text = MainMenu.GenerateRandomName();
-                    mainMenu.Reset();
-                }
-                else
-                {
-                    mainMenu.HighlightUserNameField();
-                    return;
-                }
-            }
-
-            mainMenu.gameObject.SetActive(false);
-            lobby.gameObject.SetActive(true);
-
             connectionToServer.Connect();
         }
 
         public void DisconnectFromLobby()
         {
             userInterface.RemovePauseMenu();
-            mainMenu.gameObject.SetActive(true);
             lobby.gameObject.SetActive(false);
+            mainMenu.gameObject.SetActive(true);
+            mainMenu.Reset();
 
             foreach (Player player in players.Values)
             {
@@ -112,12 +96,20 @@ namespace AmongUsClone.Client.Game
 
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
         {
-            GameObject chosenPlayerPrefab = playerId == connectionToServer.myPlayerId ? clientControllablePlayerPrefab : playerPrefab;
+            bool isControlledPlayerConnecting = playerId == connectionToServer.myPlayerId;
+
+            if (mainMenu.gameObject.activeSelf && isControlledPlayerConnecting)
+            {
+                mainMenu.gameObject.SetActive(false);
+                lobby.gameObject.SetActive(true);
+            }
+
+            GameObject chosenPlayerPrefab = isControlledPlayerConnecting ? clientControllablePlayerPrefab : playerPrefab;
             players[playerId] = lobby.playersContainable.AddPlayer(playerPosition, chosenPlayerPrefab).GetComponent<Player>();
             players[playerId].Initialize(playerId, playerName, playerColor, isPlayerHost);
             playersAmountChanged?.Invoke();
 
-            if (playerId == connectionToServer.myPlayerId)
+            if (isControlledPlayerConnecting)
             {
                 InitializeControlledPlayer(players[playerId]);
             }

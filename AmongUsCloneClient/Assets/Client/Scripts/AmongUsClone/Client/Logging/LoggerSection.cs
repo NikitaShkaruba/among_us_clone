@@ -9,5 +9,6 @@ namespace AmongUsClone.Client.Logging
         public const string GameSnapshots = "GameSnapshots";
         public const string ServerReconciliation = "ServerReconciliation";
         public const string PlayerCamera = "PlayerCamera";
+        public const string MainMenu = "MainMenu";
     }
 }
