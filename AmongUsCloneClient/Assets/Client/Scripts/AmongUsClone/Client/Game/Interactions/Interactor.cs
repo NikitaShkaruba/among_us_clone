@@ -15,6 +15,7 @@ namespace AmongUsClone.Client.Game.Interactions
         public KeyCode interactionKey = KeyCode.E;
 
         private List<Interactable> interactables;
+        [CanBeNull] public Interactable chosenInteractable;
         private Interactable chosenInteractableLastFrame;
 
         public Action<Interactable> newInteractableChosen;
@@ -26,17 +27,16 @@ namespace AmongUsClone.Client.Game.Interactions
 
         public void Update()
         {
-            Interactable closestInteractable = FindClosestInteractableInRange();
+            chosenInteractableLastFrame = chosenInteractable;
+            chosenInteractable = FindClosestInteractableInRange();
 
-            BroadcastToInteractablesTheirStates(closestInteractable);
-            CallInteractableChangedIfNeeded(closestInteractable);
+            BroadcastToInteractablesTheirStates(chosenInteractable);
+            CallInteractableChangedIfNeeded(chosenInteractable);
 
-            if (closestInteractable != null && Input.GetKeyDown(interactionKey))
+            if (chosenInteractable != null && Input.GetKeyDown(interactionKey))
             {
-                closestInteractable.Interact();
+                chosenInteractable.Interact();
             }
-
-            chosenInteractableLastFrame = closestInteractable;
         }
 
         private void CallInteractableChangedIfNeeded(Interactable interactable)

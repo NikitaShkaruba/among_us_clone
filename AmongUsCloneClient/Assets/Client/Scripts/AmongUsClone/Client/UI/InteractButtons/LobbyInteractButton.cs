@@ -1,11 +1,12 @@
 using AmongUsClone.Client.Game.Interactions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace AmongUsClone.Client.UI.InteractButtons
 {
     [RequireComponent(typeof(Image))]
-    public class LobbyInteractButton : MonoBehaviour
+    public class LobbyInteractButton : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private Interactor interactor;
         [SerializeField] private Image buttonImage;
@@ -43,6 +44,16 @@ namespace AmongUsClone.Client.UI.InteractButtons
                 buttonImage.overrideSprite = customizeButtonSprite;
                 buttonImage.color = new Color(1f, 1f, 1f, 1f);
             }
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (interactor.chosenInteractable == null)
+            {
+                return;
+            }
+
+            interactor.chosenInteractable.Interact();
         }
     }
 }
