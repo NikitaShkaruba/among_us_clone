@@ -63,6 +63,11 @@ namespace AmongUsClone.Client.Networking
 
         public void SendUdpPacket(ClientPacketType clientPacketType, Packet packet)
         {
+            if (udpConnection == null) {
+                Logger.LogNotice(LoggerSection.Network, "Unable to send udp packet, because udp connection is down");
+                return;
+            }
+
             packet.WriteLength();
             udpConnection.SendPacket(packet);
 
