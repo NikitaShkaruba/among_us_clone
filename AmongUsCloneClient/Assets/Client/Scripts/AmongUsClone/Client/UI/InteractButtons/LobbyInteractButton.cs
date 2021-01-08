@@ -12,6 +12,14 @@ namespace AmongUsClone.Client.UI.InteractButtons
         [SerializeField] private Sprite customizeButtonSprite;
         [SerializeField] private Sprite useButtonSprite;
 
+        private const float DisabledButtonOpacity = 0.5f;
+
+        private void Start()
+        {
+            buttonImage.overrideSprite = useButtonSprite;
+            buttonImage.color = new Color(1f, 1f, 1f, DisabledButtonOpacity);
+        }
+
         private void OnDestroy()
         {
             interactor.newInteractableChosen -= UpdateImage;
@@ -28,10 +36,12 @@ namespace AmongUsClone.Client.UI.InteractButtons
             if (interactable == null || interactable.type != InteractableType.Customize)
             {
                 buttonImage.overrideSprite = useButtonSprite;
+                buttonImage.color = new Color(1f, 1f, 1f, DisabledButtonOpacity);
             }
             else
             {
                 buttonImage.overrideSprite = customizeButtonSprite;
+                buttonImage.color = new Color(1f, 1f, 1f, 1f);
             }
         }
     }
