@@ -71,6 +71,12 @@ namespace AmongUsClone.Server.Game
 
         public void DisconnectPlayer(int playerId)
         {
+            if (!Server.clients.ContainsKey(playerId))
+            {
+                Logger.LogNotice(LoggerSection.Connection, $"Skipping player {playerId} disconnect, because it is already disconnected");
+                return;
+            }
+
             Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
 
             if (Server.clients[playerId].player.information.isLobbyHost)
@@ -80,6 +86,7 @@ namespace AmongUsClone.Server.Game
                 {
                     RemovePlayerFromGame(playerIdToRemove);
                 }
+                Logger.LogEvent(LoggerSection.Connection, $"Removed every player, because the host player {playerId} has disconnected");
             }
             else
             {

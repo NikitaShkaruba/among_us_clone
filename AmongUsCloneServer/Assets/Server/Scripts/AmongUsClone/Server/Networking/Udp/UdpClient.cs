@@ -49,6 +49,12 @@ namespace AmongUsClone.Server.Networking.Udp
                 Packet packet = new Packet(data);
                 int playerId = packet.ReadInt();
 
+                if (!Server.clients.ContainsKey(playerId))
+                {
+                    Logger.LogNotice(LoggerSection.Network, $"Skipping tcp packed from player {playerId}, because it is already disconnected");
+                    return;
+                }
+
                 if (!Server.clients[playerId].IsConnectedViaUdp())
                 {
                     Server.clients[playerId].ConnectUdp(clientIpEndPoint);
@@ -66,10 +72,6 @@ namespace AmongUsClone.Server.Networking.Udp
             catch (ObjectDisposedException objectDisposedException)
             {
                 Logger.LogNotice(LoggerSection.Network, $"Error receiving UDP data because udpClient is already disposed: {objectDisposedException}");
-            }
-            catch (SocketException socketException)
-            {
-                Logger.LogError(LoggerSection.Network, $"[FOUND IT] Error receiving UDP data: {socketException}, {socketException.ErrorCode}");
             }
             catch (Exception exception)
             {
