@@ -41,6 +41,10 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 5085734744270328973}
+    - target: {fileID: 5533755165803020274, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+      propertyPath: interactor
+      value: 
+      objectReference: {fileID: 254043031835720268}
     - target: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
       propertyPath: m_Name
       value: ClientControllablePlayer

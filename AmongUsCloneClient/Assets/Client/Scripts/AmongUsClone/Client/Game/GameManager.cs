@@ -104,6 +104,11 @@ namespace AmongUsClone.Client.Game
             players[playerId] = lobby.playersContainable.AddPlayer(playerPosition, chosenPlayerPrefab).GetComponent<Player>();
             players[playerId].Initialize(playerId, playerName, playerColor);
 
+            if (playerId == connectionToServer.myPlayerId)
+            {
+                lobby.interactButton.SetInteractor(players[playerId].interactor);
+            }
+
             lobby.playersCounter.UpdatePlayerCounter(players.Count);
         }
 

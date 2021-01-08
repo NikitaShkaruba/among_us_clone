@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -14,6 +15,9 @@ namespace AmongUsClone.Client.Game.Interactions
         public KeyCode interactionKey = KeyCode.E;
 
         private List<Interactable> interactables;
+        private Interactable chosenInteractableLastFrame;
+
+        public Action<Interactable> newInteractableChosen;
 
         public void Start()
         {
@@ -22,12 +26,28 @@ namespace AmongUsClone.Client.Game.Interactions
 
         public void Update()
         {
-            Interactable interactable = FindClosestInteractableInRange();
-            BroadcastToInteractablesTheirStates(interactable);
+            Interactable closestInteractable = FindClosestInteractableInRange();
 
-            if (interactable != null && Input.GetKeyDown(interactionKey))
+            BroadcastToInteractablesTheirStates(closestInteractable);
+            CallInteractableChangedIfNeeded(closestInteractable);
+
+            if (closestInteractable != null && Input.GetKeyDown(interactionKey))
             {
-                interactable.Interact();
+                closestInteractable.Interact();
+            }
+
+            chosenInteractableLastFrame = closestInteractable;
+        }
+
+        private void CallInteractableChangedIfNeeded(Interactable interactable)
+        {
+            bool wasNullAndNowNot = chosenInteractableLastFrame == null && interactable != null;
+            bool wasNotNullButNowIs = chosenInteractableLastFrame != null && interactable == null;
+            bool notNullAndChangedType = chosenInteractableLastFrame != null && interactable != null && interactable.type != chosenInteractableLastFrame.type;
+
+            if (wasNullAndNowNot || wasNotNullButNowIs || notNullAndChangedType)
+            {
+                newInteractableChosen?.Invoke(interactable);
             }
         }
 

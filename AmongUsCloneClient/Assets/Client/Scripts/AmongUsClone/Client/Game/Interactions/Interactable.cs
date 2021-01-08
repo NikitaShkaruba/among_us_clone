@@ -7,6 +7,7 @@ namespace AmongUsClone.Client.Game.Interactions
      */
     public abstract class Interactable : MonoBehaviour
     {
+        public InteractableType type;
         private bool wasInteractableFrameBefore;
 
         public void NoteThatInteractionMayBeSelected()

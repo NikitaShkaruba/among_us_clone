@@ -1,3 +1,4 @@
+using AmongUsClone.Client.Game.Interactions;
 using AmongUsClone.Client.PlayerLogic;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
@@ -11,6 +12,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
     [RequireComponent(typeof(ClientControllable))]
     [RequireComponent(typeof(PlayerAnimator))]
     [RequireComponent(typeof(Colorable))]
+    [RequireComponent(typeof(Interactor))]
     public class Player : MonoBehaviour
     {
         public PlayerInformation information;
@@ -19,6 +21,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public ClientControllable clientControllable;
         public PlayerAnimator animator;
         public Colorable colorable;
+        public Interactor interactor;
 
         public void Initialize(int playerId, string playerName, PlayerColor playerColor)
         {
