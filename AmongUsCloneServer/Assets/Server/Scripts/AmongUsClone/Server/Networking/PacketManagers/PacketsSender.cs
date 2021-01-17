@@ -1,33 +1,37 @@
 using System;
-using System.Linq;
 using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
-using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using AmongUsClone.Shared.Snapshots;
+using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Networking.PacketManagers
 {
-    public static class PacketsSender
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    // [CreateAssetMenu(fileName = "PacketsSender", menuName = "ScriptableObjects/PacketsSender")]
+    public class PacketsSender : ScriptableObject
     {
-        public static void SendWelcomePacket(int playerId)
+        [SerializeField] private PlayersManager playersManager;
+
+        public void SendWelcomePacket(int playerId)
         {
             const ServerPacketType packetTypeId = ServerPacketType.Welcome;
 
             Packet packet = new Packet((int) packetTypeId);
             packet.Write(playerId);
-            packet.Write(Server.MaxPlayerId + 1);
-            packet.Write(GameManager.MinRequiredPlayersAmountForGame);
-            packet.Write(GameManager.SecondsForGameLaunch);
+            packet.Write(PlayersManager.MaxPlayerId + 1);
+            packet.Write(PlayersManager.MinRequiredPlayersAmountForGame);
+            packet.Write(PlayersManager.SecondsForGameLaunch);
 
             SendTcpPacket(playerId, packetTypeId, packet);
         }
 
-        public static void SendKickedPacket(int playerId)
+        public void SendKickedPacket(int playerId)
         {
             const ServerPacketType packetTypeId = ServerPacketType.Kicked;
             Packet packet = new Packet((int) packetTypeId);
@@ -35,7 +39,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacketToAllExceptOne(playerId, packetTypeId, packet);
         }
 
-        public static void SendPlayerConnectedPacket(int playerId, Player player)
+        public void SendPlayerConnectedPacket(int playerId, Player player)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerConnected;
 
@@ -49,7 +53,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacket(playerId, packetType, packet);
         }
 
-        public static void SendPlayerDisconnectedPacket(int playerId)
+        public void SendPlayerDisconnectedPacket(int playerId)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerDisconnected;
 
@@ -59,11 +63,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacketToAll(packetType, packet);
         }
 
-        public static void SendGameSnapshotPackets(GameSnapshot gameSnapshot)
+        public void SendGameSnapshotPackets(GameSnapshot gameSnapshot)
         {
             const ServerPacketType packetType = ServerPacketType.GameSnapshot;
 
-            foreach (Client client in Server.clients.Values)
+            foreach (Client client in playersManager.clients.Values)
             {
                 if (!client.IsFullyInitialized())
                 {
@@ -79,7 +83,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
         }
 
-        public static void SendColorChanged(int playerId, PlayerColor newPlayerColor)
+        public void SendColorChanged(int playerId, PlayerColor newPlayerColor)
         {
             const ServerPacketType packetType = ServerPacketType.ColorChanged;
 
@@ -90,7 +94,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacketToAll(packetType, packet);
         }
 
-        public static void SendGameStartsPacket()
+        public void SendGameStartsPacket()
         {
             const ServerPacketType packetType = ServerPacketType.GameStarts;
 
@@ -98,11 +102,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacketToAll(packetType, packet);
         }
 
-        public static void SendGameStartedPacket(int[] impostorPlayerIds)
+        public void SendGameStartedPacket(int[] impostorPlayerIds)
         {
             const ServerPacketType packetType = ServerPacketType.GameStarted;
 
-            foreach (int playerId in Server.clients.Keys)
+            foreach (int playerId in playersManager.clients.Keys)
             {
                 bool isPlayerImposter = Array.Exists(impostorPlayerIds, imposterPlayerId => imposterPlayerId == playerId);
 
@@ -123,21 +127,21 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
         }
 
-        private static void SendTcpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)
+        private void SendTcpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
-            Server.clients[playerId].SendTcpPacket(packet);
+            playersManager.clients[playerId].SendTcpPacket(packet);
 
             Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» TCP packet to the client {playerId}");
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendTcpPacketToAll(ServerPacketType serverPacketType, Packet packet)
+        private void SendTcpPacketToAll(ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
-            foreach (Client client in Server.clients.Values)
+            foreach (Client client in playersManager.clients.Values)
             {
                 client.SendTcpPacket(packet);
             }
@@ -146,11 +150,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendTcpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType serverPacketType, Packet packet)
+        private void SendTcpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
-            foreach (Client client in Server.clients.Values)
+            foreach (Client client in playersManager.clients.Values)
             {
                 if (client.playerId == ignoredPlayerId)
                 {
@@ -164,19 +168,19 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendUdpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)
+        private void SendUdpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
-            Server.clients[playerId].SendUdpPacket(packet);
+            playersManager.clients[playerId].SendUdpPacket(packet);
 
             Logger.LogEvent(LoggerSection.Network, $"Sent «{Helpers.GetEnumName(serverPacketType)}» UDP packet to the client {playerId}");
         }
 
-        private static void SendUdpPacketToAll(ServerPacketType serverPacketType, Packet packet)
+        private void SendUdpPacketToAll(ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
-            foreach (Client client in Server.clients.Values)
+            foreach (Client client in playersManager.clients.Values)
             {
                 client.SendUdpPacket(packet);
             }
@@ -185,11 +189,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void SendUdpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType serverPacketType, Packet packet)
+        private void SendUdpPacketToAllExceptOne(int ignoredPlayerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();
 
-            foreach (Client client in Server.clients.Values)
+            foreach (Client client in playersManager.clients.Values)
             {
                 if (client.playerId == ignoredPlayerId)
                 {

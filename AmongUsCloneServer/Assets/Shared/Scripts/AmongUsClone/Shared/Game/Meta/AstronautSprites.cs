@@ -1,10 +1,10 @@
-using AmongUsClone.Shared.Logging;
 using UnityEngine;
-using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Shared.Game.Meta
 {
-    public class AstronautSpritesRepository : MonoBehaviour
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    // [CreateAssetMenu(fileName = "AstronautSprites", menuName = "ScriptableObjects/AstronautSprites")]
+    public class AstronautSprites : ScriptableObject
     {
         public Sprite redSprite;
         public Sprite blueSprite;
@@ -18,17 +18,5 @@ namespace AmongUsClone.Shared.Game.Meta
         public Sprite cyanSprite;
         public Sprite limeSprite;
         public Sprite whiteSprite;
-
-        public static AstronautSpritesRepository instance;
-
-        private void Awake()
-        {
-            if (instance != null)
-            {
-                Logger.LogCritical(SharedLoggerSection.PlayerColors, "Attempt to instantiate singleton second time");
-            }
-
-            instance = this;
-        }
     }
 }

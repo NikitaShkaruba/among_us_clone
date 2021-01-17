@@ -4,6 +4,7 @@
 
 using System;
 using System.Net.Sockets;
+using AmongUsClone.Shared.Meta;
 
 namespace AmongUsClone.Shared.Networking
 {

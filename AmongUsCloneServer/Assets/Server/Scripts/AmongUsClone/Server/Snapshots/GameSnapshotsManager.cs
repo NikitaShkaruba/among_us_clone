@@ -3,25 +3,30 @@ using System.Linq;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Snapshots;
+using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Snapshots
 {
-    public static class GameSnapshots
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    // [CreateAssetMenu(fileName = "GameSnapshotsManager", menuName = "ScriptableObjects/GameSnapshotsManager")]
+    public class GameSnapshotsManager : ScriptableObject
     {
+        [SerializeField] private Game.PlayersManager playersManager;
+        [SerializeField] private PacketsSender packetsSender;
+
         private static readonly Dictionary<int, GameSnapshot> gameSnapshots = new Dictionary<int, GameSnapshot>();
 
-        public static void ProcessSnapshot()
+        public void ProcessSnapshot()
         {
             GameSnapshot lastGameSnapshot = CaptureSnapshot();
 
             SaveSnapshot(lastGameSnapshot);
 
-            if (Server.clients.Count != 0)
+            if (playersManager.clients.Count != 0)
             {
-                PacketsSender.SendGameSnapshotPackets(lastGameSnapshot);
+                packetsSender.SendGameSnapshotPackets(lastGameSnapshot);
             }
         }
 
@@ -37,7 +42,7 @@ namespace AmongUsClone.Server.Snapshots
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Game snapshot captured {gameSnapshot}");
         }
 
-        private static GameSnapshot CaptureSnapshot()
+        private GameSnapshot CaptureSnapshot()
         {
             int snapshotId = gameSnapshots.Count != 0 ? gameSnapshots.Keys.Max() + 1 : 0;
             Dictionary<int, SnapshotPlayerInfo> players = CaptureSnapshotPlayers();
@@ -45,16 +50,16 @@ namespace AmongUsClone.Server.Snapshots
             return new GameSnapshot(snapshotId, players);
         }
 
-        private static Dictionary<int, SnapshotPlayerInfo> CaptureSnapshotPlayers()
+        private Dictionary<int, SnapshotPlayerInfo> CaptureSnapshotPlayers()
         {
             Dictionary<int, SnapshotPlayerInfo> snapshotPlayers = new Dictionary<int, SnapshotPlayerInfo>();
 
-            if (Server.clients.Count == 0)
+            if (playersManager.clients.Count == 0)
             {
                 return snapshotPlayers;
             }
 
-            foreach (Client client in Server.clients.Values)
+            foreach (Client client in playersManager.clients.Values)
             {
                 if (!client.IsFullyInitialized())
                 {
