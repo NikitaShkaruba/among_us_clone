@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking.PacketManagers;
+using AmongUsClone.Shared.Meta;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 using UdpClient = AmongUsClone.Server.Networking.Udp.UdpClient;
@@ -14,6 +15,7 @@ namespace AmongUsClone.Server.Networking.Tcp
     // [CreateAssetMenu(fileName = "TcpConnectionsListener", menuName = "ScriptableObjects/TcpConnectionsListener")]
     public class TcpConnectionsListener : ScriptableObject
     {
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private Game.PlayersManager playersManager;
         [SerializeField] private UdpClient udpClient;
         [SerializeField] private PacketsReceiver packetsReceiver;
@@ -45,7 +47,7 @@ namespace AmongUsClone.Server.Networking.Tcp
                     continue;
                 }
 
-                playersManager.clients[playerId] = new Client(playerId, udpClient, packetsReceiver, packetsSender, lobbyGamePhase);
+                playersManager.clients[playerId] = new Client(playerId, udpClient, packetsReceiver, packetsSender, lobbyGamePhase, metaMonoBehaviours);
                 playersManager.clients[playerId].ConnectTcp(tcpClient);
                 return;
             }

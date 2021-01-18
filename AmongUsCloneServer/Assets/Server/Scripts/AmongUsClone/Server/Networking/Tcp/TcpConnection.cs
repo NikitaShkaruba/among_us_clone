@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking.PacketManagers;
-using AmongUsClone.Shared;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Networking;
@@ -12,12 +11,13 @@ namespace AmongUsClone.Server.Networking.Tcp
 {
     public class TcpConnection : Shared.Networking.TcpConnection
     {
+        private MetaMonoBehaviours metaMonoBehaviours;
         private PacketsReceiver packetsReceiver;
         private PacketsSender packetsSender;
         private LobbyGamePhase lobbyGamePhase;
         private readonly int playerId;
 
-        public TcpConnection(int playerId, TcpClient tcpClient, PacketsReceiver packetsReceiver, PacketsSender packetsSender, LobbyGamePhase lobbyGamePhase)
+        public TcpConnection(int playerId, TcpClient tcpClient, PacketsReceiver packetsReceiver, PacketsSender packetsSender, LobbyGamePhase lobbyGamePhase, MetaMonoBehaviours metaMonoBehaviours) : base(metaMonoBehaviours)
         {
             this.playerId = playerId;
             receivePacket = new Packet();
@@ -26,6 +26,7 @@ namespace AmongUsClone.Server.Networking.Tcp
             this.packetsReceiver = packetsReceiver;
             this.packetsSender = packetsSender;
             this.lobbyGamePhase = lobbyGamePhase;
+            this.metaMonoBehaviours = metaMonoBehaviours;
 
             this.tcpClient = tcpClient;
             this.tcpClient.ReceiveBufferSize = DataBufferSize;
@@ -47,7 +48,7 @@ namespace AmongUsClone.Server.Networking.Tcp
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    MainThread.ScheduleExecution(() => lobbyGamePhase.DisconnectPlayer(playerId));
+                    metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() => lobbyGamePhase.DisconnectPlayer(playerId));
                     return;
                 }
 
@@ -62,7 +63,7 @@ namespace AmongUsClone.Server.Networking.Tcp
             catch (Exception exception)
             {
                 Logger.LogError(LoggerSection.Network, $"Error receiving TCP data: {exception}");
-                MainThread.ScheduleExecution(() => lobbyGamePhase.DisconnectPlayer(playerId));
+                metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() => lobbyGamePhase.DisconnectPlayer(playerId));
             }
         }
     }

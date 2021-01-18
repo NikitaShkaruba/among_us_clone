@@ -23,6 +23,13 @@ namespace AmongUsClone.Shared.Networking
 
         public delegate void OnPacketReceivedCallback(int packetTypeId, Packet packet);
 
+        private readonly MetaMonoBehaviours metaMonoBehaviours;
+
+        public TcpConnection(MetaMonoBehaviours metaMonoBehaviours)
+        {
+            this.metaMonoBehaviours = metaMonoBehaviours;
+        }
+
         /**
          * Send data to a connected TcpClient
          */
@@ -71,7 +78,7 @@ namespace AmongUsClone.Shared.Networking
             {
                 byte[] packetBytes = receivePacket.ReadBytes(packetLength);
 
-                MainThread.ScheduleExecution(() =>
+                metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() =>
                 {
                     Packet packet = new Packet(packetBytes);
                     int packetTypeId = packet.ReadInt();

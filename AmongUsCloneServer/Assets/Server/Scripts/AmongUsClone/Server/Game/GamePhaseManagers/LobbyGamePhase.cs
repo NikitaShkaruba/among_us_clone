@@ -107,7 +107,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         {
             packetsSender.SendGameStartsPacket();
             // Todo: move finding meta-objects to scriptable objects
-            FindObjectOfType<CoroutinesStartable>().StartCoroutine(StartGame());
+            FindObjectOfType<Coroutines>().StartCoroutine(StartGame());
             Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
         }
 

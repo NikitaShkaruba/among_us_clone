@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -8,6 +8,8 @@ namespace AmongUsClone.Client.UI.UiElements
 {
     public class MainMenu : MonoBehaviour
     {
+        [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
+
         public InputField userNameField;
         public LoadingLabel loadingLabel;
         [HideInInspector] public bool isUserNameFieldHighlighted;
@@ -29,7 +31,7 @@ namespace AmongUsClone.Client.UI.UiElements
             }
 
             loadingLabel.gameObject.SetActive(true);
-            GameManager.instance.ConnectToLobby();
+            mainMenuGamePhase.ConnectToLobby();
         }
 
         public void Reset()

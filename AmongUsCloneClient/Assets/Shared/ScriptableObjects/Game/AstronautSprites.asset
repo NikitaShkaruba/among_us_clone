@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0a67d26bf34ae69f0f30cc671f3e8b, type: 3}
+  m_Name: AstronautSprites
+  m_EditorClassIdentifier: 
+  redSprite: {fileID: -6506688896013658553, guid: 58146de291dade94f8a73e377870c105, type: 3}
+  blueSprite: {fileID: 6239076996135480859, guid: 362f6f406e5830e4793665fe1109dfaf, type: 3}
+  greenSprite: {fileID: -5991973016672810547, guid: d6d29401c25c74e44be53ab01f9bfcca, type: 3}
+  yellowSprite: {fileID: -3313529421142796141, guid: fbc530418d0418348832349ba58ef23c, type: 3}
+  pinkSprite: {fileID: 4982250695875232434, guid: 6bafc517e3b0c0b4da90250d96143c64, type: 3}
+  orangeSprite: {fileID: 973335717595009410, guid: 1fcb44ad23f88364098258113a35bfd6, type: 3}
+  purpleSprite: {fileID: 2469942355264136154, guid: 13fe3f661729bb84d901356e871d3ed5, type: 3}
+  blackSprite: {fileID: 4771800421340681368, guid: 979a6fa60dd2dbe468cc8fd6768b780b, type: 3}
+  brownSprite: {fileID: -8347548381037737070, guid: eef3409aede60fc40a5e06c9de872058, type: 3}
+  cyanSprite: {fileID: -4705283487198635123, guid: 9954fd9bfefd8904abad28508b30022b, type: 3}
+  limeSprite: {fileID: 1245196399224492246, guid: 03b3056f4e4dbdb4a9b700e3f994cf03, type: 3}
+  whiteSprite: {fileID: 1538521946839368408, guid: 4dcbe365356400e4894dcda0d361b644, type: 3}

@@ -3,6 +3,7 @@ using System.Linq;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
+using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -11,14 +12,20 @@ namespace AmongUsClone.Server.Snapshots
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
     // [CreateAssetMenu(fileName = "GameSnapshotsManager", menuName = "ScriptableObjects/GameSnapshotsManager")]
-    public class GameSnapshotsManager : ScriptableObject
+    public class GameSnapshotsManager : MonoBehaviour
     {
         [SerializeField] private Game.PlayersManager playersManager;
         [SerializeField] private PacketsSender packetsSender;
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
 
         private static readonly Dictionary<int, GameSnapshot> gameSnapshots = new Dictionary<int, GameSnapshot>();
 
-        public void ProcessSnapshot()
+        private void FixedUpdate()
+        {
+            metaMonoBehaviours.applicationCallbacks.SchedulePostFixedUpdateAction(ProcessSnapshot);
+        }
+
+        private void ProcessSnapshot()
         {
             GameSnapshot lastGameSnapshot = CaptureSnapshot();
 

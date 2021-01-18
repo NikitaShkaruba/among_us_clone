@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.PlayerLogic;
@@ -13,6 +12,8 @@ namespace AmongUsClone.Client.PlayerLogic
     [RequireComponent(typeof(Player))]
     public class ClientControllable : MonoBehaviour
     {
+        [SerializeField] private PacketsSender packetsSender;
+
         private Player player;
 
         public readonly Dictionary<int, ClientControllableStateSnapshot> stateSnapshots = new Dictionary<int, ClientControllableStateSnapshot>();
@@ -28,7 +29,7 @@ namespace AmongUsClone.Client.PlayerLogic
             player.movable.MoveByPlayerInput(player.controllable.playerInput);
 
             StartCoroutine(SaveStateSnapshot());
-            PacketsSender.SendPlayerInputPacket(player.controllable.playerInput.Clone());
+            packetsSender.SendPlayerInputPacket(player.controllable.playerInput.Clone());
         }
 
         private IEnumerator SaveStateSnapshot()

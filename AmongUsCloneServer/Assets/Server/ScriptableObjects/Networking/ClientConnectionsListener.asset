@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   udpClient: {fileID: 11400000, guid: b103952c43cb59744a6e6df22d3be1b6, type: 2}
   tcpConnectionsListener: {fileID: 11400000, guid: 950eedd5495bc9d4b9e126777783904b, type: 2}
+  metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}

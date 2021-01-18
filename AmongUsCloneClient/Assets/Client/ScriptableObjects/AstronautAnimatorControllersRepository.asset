@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca7803a94f724c09b7b0a0c259352773, type: 3}
+  m_Name: AstronautAnimatorControllersRepository
+  m_EditorClassIdentifier: 
+  redAnimatorController: {fileID: 9100000, guid: 9bd55cef5d8c4974d981adf514469359, type: 2}
+  blueAnimatorController: {fileID: 22100000, guid: a149a3c9af1fbf246b280e1ead698338, type: 2}
+  greenAnimatorController: {fileID: 22100000, guid: e8d0aa3f2aaf1454dbbb3d87901265f4, type: 2}
+  yellowAnimatorController: {fileID: 22100000, guid: 51a22165a0f1d2247b2894cc80e94271, type: 2}
+  pinkAnimatorController: {fileID: 22100000, guid: 44e81d3fd035adf408bf0c9b2f739f5e, type: 2}
+  orangeAnimatorController: {fileID: 22100000, guid: fd8e86812f8293a43bc8abd123f25dbb, type: 2}
+  purpleAnimatorController: {fileID: 22100000, guid: 121a8648a32699444b465340054fbdf6, type: 2}
+  blackAnimatorController: {fileID: 22100000, guid: 26e4df1dbbb82fb49b4d4cf0f9a68441, type: 2}
+  brownAnimatorController: {fileID: 22100000, guid: 06b56ccfa5a8c304ba2ed202d87735e3, type: 2}
+  cyanAnimatorController: {fileID: 22100000, guid: 237c627a724cd9244a48d8b7f8dcf5b8, type: 2}
+  limeAnimatorController: {fileID: 22100000, guid: 99ccef2627e554043af92b97798a3cc4, type: 2}
+  whiteAnimatorController: {fileID: 22100000, guid: 32b8cac65106dd34b90c95f2cc182091, type: 2}

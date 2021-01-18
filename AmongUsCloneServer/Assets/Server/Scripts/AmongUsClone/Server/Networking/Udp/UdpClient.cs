@@ -13,6 +13,7 @@ namespace AmongUsClone.Server.Networking.Udp
     // [CreateAssetMenu(fileName = "UdpClient", menuName = "ScriptableObjects/UdpClient")]
     public class UdpClient : ScriptableObject
     {
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private Game.PlayersManager playersManager;
         [SerializeField] private PacketsReceiver packetsReceiver;
 
@@ -89,7 +90,7 @@ namespace AmongUsClone.Server.Networking.Udp
             int packetLength = packet.ReadInt();
             byte[] packetBytes = packet.ReadBytes(packetLength);
 
-            MainThread.ScheduleExecution(() =>
+            metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() =>
             {
                 Packet newPacket = new Packet(packetBytes);
                 int packetTypeId = newPacket.ReadInt();

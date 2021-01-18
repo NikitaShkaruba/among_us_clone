@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43edc9b31b3441584135d8fb71d85dc, type: 3}
   m_Name: TcpConnectionsListener
   m_EditorClassIdentifier: 
+  metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
   udpClient: {fileID: 11400000, guid: b103952c43cb59744a6e6df22d3be1b6, type: 2}
   packetsReceiver: {fileID: 11400000, guid: b5c424b913f57db40848a1466d869c80, type: 2}

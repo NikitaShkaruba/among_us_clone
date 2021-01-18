@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22edb6d5b6bf4ac8a66dccf7f9f4176e, type: 3}
   m_Name: UdpClient
   m_EditorClassIdentifier: 
+  metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
   packetsReceiver: {fileID: 11400000, guid: b5c424b913f57db40848a1466d869c80, type: 2}

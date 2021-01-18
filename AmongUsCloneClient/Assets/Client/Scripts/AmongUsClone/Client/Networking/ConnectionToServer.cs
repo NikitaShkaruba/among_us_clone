@@ -1,27 +1,36 @@
 ﻿using System.Net;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
+using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
+using UnityEngine;
 using Helpers = AmongUsClone.Shared.Helpers;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking
 {
-    public class ConnectionToServer
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    [CreateAssetMenu(fileName = "ConnectionToServer", menuName = "ConnectionToServer")]
+    public class ConnectionToServer : ScriptableObject
     {
         public const string ServerIP = "127.0.0.1";
         public const int ServerPort = 26950;
 
         public int myPlayerId;
 
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private PacketsSender packetsSender;
+        [SerializeField] private PacketsReceiver packetsReceiver;
         private TcpConnection tcpConnection;
         private UdpConnection udpConnection;
         private bool isConnected;
 
         public void Connect()
         {
-            tcpConnection = new TcpConnection();
+            tcpConnection = new TcpConnection(packetsReceiver, lobbyGamePhase, metaMonoBehaviours);
             udpConnection = null;
 
             isConnected = true;
@@ -30,9 +39,9 @@ namespace AmongUsClone.Client.Networking
         public void FinishConnection(int myPlayerId)
         {
             this.myPlayerId = myPlayerId;
-            PacketsSender.SendWelcomeReceivedPacket();
+            packetsSender.SendWelcomeReceivedPacket();
 
-            udpConnection = new UdpConnection(GetTcpLocalEndpoint().Port);
+            udpConnection = new UdpConnection(this, lobbyGamePhase, metaMonoBehaviours, packetsReceiver, GetTcpLocalEndpoint().Port);
         }
 
         public void Disconnect()
@@ -63,7 +72,8 @@ namespace AmongUsClone.Client.Networking
 
         public void SendUdpPacket(ClientPacketType clientPacketType, Packet packet)
         {
-            if (udpConnection == null) {
+            if (udpConnection == null)
+            {
                 Logger.LogNotice(LoggerSection.Network, "Unable to send udp packet, because udp connection is down");
                 return;
             }

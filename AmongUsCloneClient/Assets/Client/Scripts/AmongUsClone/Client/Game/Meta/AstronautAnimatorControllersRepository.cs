@@ -4,10 +4,10 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.Meta
 {
-    public class AstronautAnimatorControllersRepository : MonoBehaviour
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    [CreateAssetMenu(fileName = "AstronautAnimatorControllersRepository", menuName = "AstronautAnimatorControllersRepository")]
+    public class AstronautAnimatorControllersRepository : ScriptableObject
     {
-        public static AstronautAnimatorControllersRepository instance;
-
         public RuntimeAnimatorController redAnimatorController;
         public RuntimeAnimatorController blueAnimatorController;
         public RuntimeAnimatorController greenAnimatorController;
@@ -20,15 +20,5 @@ namespace AmongUsClone.Client.Game.Meta
         public RuntimeAnimatorController cyanAnimatorController;
         public RuntimeAnimatorController limeAnimatorController;
         public RuntimeAnimatorController whiteAnimatorController;
-
-        private void Awake()
-        {
-            if (instance != null)
-            {
-                Logger.LogCritical(SharedLoggerSection.PlayerColors, "Attempt to instantiate singleton second time");
-            }
-
-            instance = this;
-        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
@@ -10,6 +11,9 @@ namespace AmongUsClone.Client.Game.Lobby
 {
     public class GameStartable : MonoBehaviour, IPointerClickHandler
     {
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PacketsSender packetsSender;
+
         [SerializeField] private Image startGameButton;
         public Text gameStartsInLabel;
 
@@ -17,12 +21,12 @@ namespace AmongUsClone.Client.Game.Lobby
 
         private void Awake()
         {
-            GameManager.instance.playersAmountChanged += UpdateStartButtonOpacity;
+            lobbyGamePhase.playersAmountChanged += UpdateStartButtonOpacity;
         }
 
         private void OnDestroy()
         {
-            GameManager.instance.playersAmountChanged -= UpdateStartButtonOpacity;
+            lobbyGamePhase.playersAmountChanged -= UpdateStartButtonOpacity;
         }
 
         public void ShowStartButtonForHost()
@@ -35,19 +39,19 @@ namespace AmongUsClone.Client.Game.Lobby
             RequestGameStart();
         }
 
-        private static void RequestGameStart()
+        private void RequestGameStart()
         {
-            if (!GameManager.instance.HasEnoughPlayersForGame())
+            if (!lobbyGamePhase.HasEnoughPlayersForGame())
             {
                 return;
             }
 
-            PacketsSender.SendStartGamePacket();
+            packetsSender.SendStartGamePacket();
         }
 
         public void LaunchGameStart()
         {
-            secondsBeforeGameStartsLeft = GameManager.instance.secondsForGameLaunch;
+            secondsBeforeGameStartsLeft = lobbyGamePhase.secondsForGameLaunch;
             gameStartsInLabel.text = GetGameStartsInLabelText();
             gameStartsInLabel.gameObject.SetActive(true);
             StartCoroutine(ProcessGameStartTick());
@@ -57,7 +61,7 @@ namespace AmongUsClone.Client.Game.Lobby
 
         private void UpdateStartButtonOpacity()
         {
-            startGameButton.color = GameManager.instance.HasEnoughPlayersForGame() ? Color.white : Helpers.halfVisibleColor;
+            startGameButton.color = lobbyGamePhase.HasEnoughPlayersForGame() ? Color.white : Helpers.halfVisibleColor;
         }
 
         private string GetGameStartsInLabelText()

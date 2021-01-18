@@ -1,31 +1,43 @@
 ﻿using System;
-using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.GamePhaseManagers;
+using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
 using UnityEngine;
+using UnityEngine.UI;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking.PacketManagers
 {
-    public class PacketsSender : MonoBehaviour
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    [CreateAssetMenu(fileName = "PacketsSender", menuName = "PacketsSender")]
+    public class PacketsSender : ScriptableObject
     {
-        public static void SendWelcomeReceivedPacket()
+        [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private NetworkSimulation networkSimulation;
+
+        public void SendWelcomeReceivedPacket()
         {
             Action action = () =>
             {
                 const ClientPacketType clientPacketType = ClientPacketType.WelcomeReceived;
 
                 Packet packet = new Packet((int) clientPacketType);
-                packet.Write(GameManager.instance.connectionToServer.myPlayerId);
-                packet.Write(GameManager.instance.mainMenu.userNameField.text);
+                packet.Write(mainMenuGamePhase.connectionToServer.myPlayerId);
+                MainMenu mainMenu = mainMenuGamePhase.mainMenu;
+                Logger.LogDebug($"mainMenu is null: {mainMenuGamePhase == null}");
+                InputField mainMenuUserNameField = mainMenu.userNameField;
+                packet.Write(mainMenuUserNameField.text);
 
-                GameManager.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
+                mainMenuGamePhase.connectionToServer.SendTcpPacket(clientPacketType, packet);
             };
 
-            NetworkSimulation.instance.SendThroughNetwork(action);
+            networkSimulation.SendThroughNetwork(action);
         }
 
-        public static void SendPlayerInputPacket(PlayerInput playerInput)
+        public void SendPlayerInputPacket(PlayerInput playerInput)
         {
             Action action = () =>
             {
@@ -34,36 +46,36 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 Packet packet = new Packet((int) clientPacketType);
                 packet.Write(playerInput);
 
-                GameManager.instance.connectionToServer.SendUdpPacket(clientPacketType, packet);
+                lobbyGamePhase.connectionToServer.SendUdpPacket(clientPacketType, packet);
             };
 
-            NetworkSimulation.instance.SendThroughNetwork(action);
+            networkSimulation.SendThroughNetwork(action);
         }
 
-        public static void SendColorChangeRequestPacket()
+        public void SendColorChangeRequestPacket()
         {
             Action action = () =>
             {
                 const ClientPacketType clientPacketType = ClientPacketType.ColorChangeRequest;
 
                 Packet packet = new Packet((int) clientPacketType);
-                GameManager.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
+                lobbyGamePhase.connectionToServer.SendTcpPacket(clientPacketType, packet);
             };
 
-            NetworkSimulation.instance.SendThroughNetwork(action);
+            networkSimulation.SendThroughNetwork(action);
         }
 
-        public static void SendStartGamePacket()
+        public void SendStartGamePacket()
         {
             Action action = () =>
             {
                 const ClientPacketType clientPacketType = ClientPacketType.StartGame;
 
                 Packet packet = new Packet((int) clientPacketType);
-                GameManager.instance.connectionToServer.SendTcpPacket(clientPacketType, packet);
+                lobbyGamePhase.connectionToServer.SendTcpPacket(clientPacketType, packet);
             };
 
-            NetworkSimulation.instance.SendThroughNetwork(action);
+            networkSimulation.SendThroughNetwork(action);
         }
     }
 }

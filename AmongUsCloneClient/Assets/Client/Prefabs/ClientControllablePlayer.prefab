@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionDistance: 2
   interactionKey: 101
+  chosenInteractable: {fileID: 0}
 --- !u!114 &6565230547845059123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26,6 +27,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91084c5032678b641aa739dfe3d17911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  packetsSender: {fileID: 0}
 --- !u!1001 &1606303109329628163
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45,6 +47,10 @@ PrefabInstance:
       propertyPath: interactor
       value: 
       objectReference: {fileID: 254043031835720268}
+    - target: {fileID: 5827258688513702030, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+      propertyPath: astronautAnimatorControllersRepository
+      value: 
+      objectReference: {fileID: 11400000, guid: 566c208ff80e4974cb9b0bfc7190d8af, type: 2}
     - target: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
       propertyPath: m_Name
       value: ClientControllablePlayer

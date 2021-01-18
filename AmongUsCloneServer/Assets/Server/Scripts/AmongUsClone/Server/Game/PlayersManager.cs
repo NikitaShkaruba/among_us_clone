@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using UnityEngine;
-using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game
 {
@@ -16,10 +14,5 @@ namespace AmongUsClone.Server.Game
         public const int SecondsForGameLaunch = 5;
 
         public readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
-
-        public void OnEnable()
-        {
-            Logger.Initialize(new[] {LoggerSection.Network, LoggerSection.GameSnapshots}, true);
-        }
     }
 }
