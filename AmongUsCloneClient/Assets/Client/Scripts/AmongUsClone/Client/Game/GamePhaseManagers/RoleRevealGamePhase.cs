@@ -2,11 +2,8 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.Game.GamePhaseManagers
 {
-    public class RoleShowcaseGamePhase : MonoBehaviour
+    public class RoleRevealGamePhase : MonoBehaviour
     {
         public GameRoleDescription gameRoleDescription;
-
-        public int[] impostorPlayerIds;
-        public int impostorsAmount;
     }
 }

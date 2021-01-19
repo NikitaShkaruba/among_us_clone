@@ -8,21 +8,22 @@ namespace AmongUsClone.Client.Game.Lobby.UI
     {
         public Text textLabel;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayersManager playersManager;
 
         private void Start()
         {
             UpdateLabel();
-            lobbyGamePhase.playersAmountChanged += UpdateLabel;
+            playersManager.playersAmountChanged += UpdateLabel;
         }
 
         private void OnDestroy()
         {
-            lobbyGamePhase.playersAmountChanged -= UpdateLabel;
+            playersManager.playersAmountChanged -= UpdateLabel;
         }
 
         private void UpdateLabel()
         {
-            textLabel.text = $"{lobbyGamePhase.players.Count} / {lobbyGamePhase.maxPlayersAmount}";
+            textLabel.text = $"{playersManager.players.Count} / {lobbyGamePhase.maxPlayersAmount}";
             textLabel.color = lobbyGamePhase.HasEnoughPlayersForGame() ? Color.white : Color.red;
         }
     }

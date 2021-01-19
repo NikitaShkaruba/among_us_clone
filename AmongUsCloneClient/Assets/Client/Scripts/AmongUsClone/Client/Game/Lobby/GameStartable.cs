@@ -12,7 +12,7 @@ namespace AmongUsClone.Client.Game.Lobby
     public class GameStartable : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
-        [SerializeField] private PacketsSender packetsSender;
+        [SerializeField] private PlayersManager playersManager;
 
         [SerializeField] private Image startGameButton;
         public Text gameStartsInLabel;
@@ -21,12 +21,12 @@ namespace AmongUsClone.Client.Game.Lobby
 
         private void Awake()
         {
-            lobbyGamePhase.playersAmountChanged += UpdateStartButtonOpacity;
+            playersManager.playersAmountChanged += UpdateStartButtonOpacity;
         }
 
         private void OnDestroy()
         {
-            lobbyGamePhase.playersAmountChanged -= UpdateStartButtonOpacity;
+            playersManager.playersAmountChanged -= UpdateStartButtonOpacity;
         }
 
         public void ShowStartButtonForHost()
@@ -36,20 +36,10 @@ namespace AmongUsClone.Client.Game.Lobby
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            RequestGameStart();
+            lobbyGamePhase.RequestGameStart();
         }
 
-        private void RequestGameStart()
-        {
-            if (!lobbyGamePhase.HasEnoughPlayersForGame())
-            {
-                return;
-            }
-
-            packetsSender.SendStartGamePacket();
-        }
-
-        public void LaunchGameStart()
+        public void InitiateGameStart()
         {
             secondsBeforeGameStartsLeft = lobbyGamePhase.secondsForGameLaunch;
             gameStartsInLabel.text = GetGameStartsInLabelText();

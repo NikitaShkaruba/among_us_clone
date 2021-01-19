@@ -1,11 +1,15 @@
 using System.Linq;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.PlayerLogic;
+using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Logger = AmongUsClone.Shared.Logging.Logger;
+using Scene = AmongUsClone.Client.Game.Scene;
 
 namespace AmongUsClone.Client.Snapshots
 {
@@ -14,9 +18,15 @@ namespace AmongUsClone.Client.Snapshots
     public class GameSnapshots : ScriptableObject
     {
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayersManager playersManager;
 
         public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
+            if (ScenesManager.GetActiveScene() != Scene.Lobby)
+            {
+                return;
+            }
+
             UpdatePlayers(gameSnapshot);
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
@@ -24,7 +34,7 @@ namespace AmongUsClone.Client.Snapshots
 
         private void UpdatePlayers(ClientGameSnapshot gameSnapshot)
         {
-            Player controlledPlayer = lobbyGamePhase.controlledPlayer;
+            Player controlledPlayer = playersManager.controlledPlayer;
 
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
             {
@@ -42,12 +52,12 @@ namespace AmongUsClone.Client.Snapshots
         private void UpdateNotControlledPlayer(SnapshotPlayerInfo snapshotPlayerInfo)
         {
             // If we don't have disconnected player anymore
-            if (!lobbyGamePhase.players.ContainsKey(snapshotPlayerInfo.id))
+            if (!playersManager.players.ContainsKey(snapshotPlayerInfo.id))
             {
                 return;
             }
 
-            lobbyGamePhase.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
+            playersManager.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
         }
 
         private void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, Player controlledPlayer)

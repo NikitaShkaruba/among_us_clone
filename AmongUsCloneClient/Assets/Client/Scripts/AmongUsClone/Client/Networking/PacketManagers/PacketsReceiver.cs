@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
+using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Helpers = AmongUsClone.Shared.Helpers;
@@ -20,6 +22,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private NetworkSimulation networkSimulation;
         [SerializeField] private GameSnapshots gameSnapshots;
+        [SerializeField] private ConnectionToServer connectionToServer;
 
         private delegate void OnPacketReceivedCallback(Packet packet);
 
@@ -57,7 +60,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 int minRequiredPlayersAmountForGame = packet.ReadInt();
                 int secondsForGameLaunch = packet.ReadInt();
 
-                lobbyGamePhase.connectionToServer.FinishConnection(myPlayerId);
+                connectionToServer.FinishConnection(myPlayerId);
                 lobbyGamePhase.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame, secondsForGameLaunch);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
@@ -70,7 +73,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         {
             Action action = () =>
             {
-                lobbyGamePhase.DisconnectFromLobby();
+                connectionToServer.Disconnect();
                 Logger.LogEvent(LoggerSection.Connection, "Received a kick from server");
             };
 
@@ -135,10 +138,9 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
         private void ProcessGameStartsPacket(Packet packet)
         {
-            throw new NotImplementedException();
-            // Action action = () => GameManager.instance.lobby.gameStartable.LaunchGameStart();
+            Action action = () => lobbyGamePhase.InitiateGameStart();
 
-            // networkSimulation.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
         private void ProcessGameStartedPacket(Packet packet)

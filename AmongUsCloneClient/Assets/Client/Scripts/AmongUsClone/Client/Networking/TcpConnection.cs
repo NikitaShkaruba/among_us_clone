@@ -1,6 +1,5 @@
 using System;
 using System.Net.Sockets;
-using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Logging;
@@ -11,13 +10,13 @@ namespace AmongUsClone.Client.Networking
 {
     public class TcpConnection : Shared.Networking.TcpConnection
     {
-        private LobbyGamePhase lobbyGamePhase;
-        private PacketsReceiver packetsReceiver;
+        private readonly PacketsReceiver packetsReceiver;
+        private readonly ConnectionToServer connectionToServer;
 
-        public TcpConnection(PacketsReceiver packetsReceiver, LobbyGamePhase lobbyGamePhase, MetaMonoBehaviours metaMonoBehaviours) : base(metaMonoBehaviours)
+        public TcpConnection(ConnectionToServer connectionToServer, PacketsReceiver packetsReceiver, MetaMonoBehaviours metaMonoBehaviours) : base(metaMonoBehaviours)
         {
+            this.connectionToServer = connectionToServer;
             this.packetsReceiver = packetsReceiver;
-            this.lobbyGamePhase = lobbyGamePhase;
 
             tcpClient = new TcpClient
             {
@@ -53,7 +52,7 @@ namespace AmongUsClone.Client.Networking
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    lobbyGamePhase.DisconnectFromLobby(); // Todo: move disconnection to a different scriptableObject
+                    connectionToServer.Disconnect();
                     return;
                 }
 
@@ -67,7 +66,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                lobbyGamePhase.DisconnectFromLobby();
+                connectionToServer.Disconnect();
             }
         }
     }

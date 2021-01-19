@@ -1,5 +1,4 @@
 using AmongUsClone.Client.Game.Interactions;
-using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;

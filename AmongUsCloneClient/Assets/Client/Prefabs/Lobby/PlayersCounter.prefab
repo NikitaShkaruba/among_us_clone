@@ -205,3 +205,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textLabel: {fileID: 5836203749866004604}
+  lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}

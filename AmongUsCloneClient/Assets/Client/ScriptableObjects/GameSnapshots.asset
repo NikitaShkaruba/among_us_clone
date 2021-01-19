@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameSnapshots
   m_EditorClassIdentifier: 
   lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
+  playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}

@@ -643,9 +643,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AmongUsClone.Client.GameManager, Assembly-CSharp
-        m_MethodName: DisconnectFromLobby
+      - m_Target: {fileID: 11400000, guid: 7b4f52cd3260d664d80972118dea3c64, type: 2}
+        m_TargetAssemblyTypeName: AmongUsClone.Client.Networking.ConnectionToServer,
+          Assembly-CSharp
+        m_MethodName: Disconnect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5641,7 +5642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c73c8d4ae24c65867abb12c7d8f7fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playersContainable: {fileID: 734611789225753497}
+  playersContainer: {fileID: 5218089884205914742}
   gameStartable: {fileID: 4854677358935293093}
   playersCounter: {fileID: 4857097299387856822}
   interactButton: {fileID: 1686978539753072759}
@@ -5657,6 +5658,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e69fa9918104725bc810a123baf5760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
+  packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
+  playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
   startGameButton: {fileID: 7980784022512096626}
   gameStartsInLabel: {fileID: 7926053658157560757}
 --- !u!114 &502130875676973077
@@ -5672,6 +5676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
   materialWithOutline: {fileID: 2100000, guid: a6bc3567c91bc954d89f6b7153892031, type: 2}
   materialWithOutlineAndHighlight: {fileID: 2100000, guid: 626712340f851fd4da441b6ce845330a, type: 2}
   renderer: {fileID: 921479695008271295}
@@ -6156,6 +6161,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayersCounter
       objectReference: {fileID: 0}
+    - target: {fileID: 7032648996078652369, guid: 3ef12a9ec3759954cb5d8cd60009c309, type: 3}
+      propertyPath: lobbyGamePhase
+      value: 
+      objectReference: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
+    - target: {fileID: 7032648996078652369, guid: 3ef12a9ec3759954cb5d8cd60009c309, type: 3}
+      propertyPath: playersManager
+      value: 
+      objectReference: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ef12a9ec3759954cb5d8cd60009c309, type: 3}
 --- !u!114 &4857097299387856822 stripped
@@ -6414,15 +6427,15 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5797441423354726933, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
   m_PrefabInstance: {fileID: 4720812670521393607}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &734611789225753497 stripped
+--- !u!114 &5218089884205914742 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5454544810696915550, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
+  m_CorrespondingSourceObject: {fileID: 714334041988422577, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
   m_PrefabInstance: {fileID: 4720812670521393607}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1353335452106418286}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e1ba442f8004f12a097c6d7f4a40bd2, type: 3}
+  m_Script: {fileID: 11500000, guid: dc396b7163844d19a36673735a184bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1353335452106418285 stripped

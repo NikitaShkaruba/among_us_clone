@@ -2,6 +2,7 @@ using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Meta;
+using AmongUsClone.Shared.Scenes;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
@@ -25,7 +26,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                 Logger.LogEvent(LoggerSection.MainMenu, "Unable to find MainMenu object in a scene");
             }
 
-            Logger.LogDebug($"Initialized main menu. Is equal to null {mainMenu == null}");
+            Logger.LogDebug("Initialized main menu game phase");
         }
 
         public void ConnectToLobby()
@@ -33,6 +34,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             Logger.LogEvent(LoggerSection.Connection, "Connecting to a server");
             connectionToServer.Connect();
             metaMonoBehaviours.applicationCallbacks.ScheduleOnApplicationQuitActions(OnApplicationQuit);
+            ScenesManager.LoadScene(Scene.Lobby);
         }
 
         // Unity holds some data between running game instances, so we need to cleanup by hand

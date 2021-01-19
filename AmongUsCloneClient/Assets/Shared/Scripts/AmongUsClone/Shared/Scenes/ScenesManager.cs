@@ -19,5 +19,24 @@ namespace AmongUsClone.Shared.Scenes
             SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
             Logger.LogEvent(SharedLoggerSection.ScenesManager, $"Loaded scene {sceneName}");
         }
+
+        public static void UnloadScene(string sceneName)
+        {
+            SceneManager.UnloadSceneAsync(sceneName);
+            Logger.LogEvent(SharedLoggerSection.ScenesManager, $"Unloaded scene {sceneName}");
+        }
+
+        public static void SwitchScene(string sceneName)
+        {
+            Scene sceneToUnload = SceneManager.GetActiveScene();
+
+            LoadScene(sceneName);
+            UnloadScene(sceneToUnload.name);
+        }
+
+        public static string GetActiveScene()
+        {
+            return SceneManager.GetActiveScene().name;
+        }
     }
 }

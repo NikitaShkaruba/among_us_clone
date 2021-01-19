@@ -18,14 +18,12 @@ namespace AmongUsClone.Client.Networking
         private IPEndPoint ipEndPoint;
 
         private ConnectionToServer connectionToServer;
-        private LobbyGamePhase lobbyGamePhase;
         private MetaMonoBehaviours metaMonoBehaviours;
         private PacketsReceiver packetsReceiver;
 
-        public UdpConnection(ConnectionToServer connectionToServer, LobbyGamePhase lobbyGamePhase, MetaMonoBehaviours metaMonoBehaviours, PacketsReceiver packetsReceiver, int localPort)
+        public UdpConnection(ConnectionToServer connectionToServer, MetaMonoBehaviours metaMonoBehaviours, PacketsReceiver packetsReceiver, int localPort)
         {
             this.connectionToServer = connectionToServer;
-            this.lobbyGamePhase = lobbyGamePhase;
             this.metaMonoBehaviours = metaMonoBehaviours;
             this.packetsReceiver = packetsReceiver;
 
@@ -38,7 +36,7 @@ namespace AmongUsClone.Client.Networking
 
             Packet packet = new Packet();
             SendPacket(packet);
-            Logger.LogEvent(LoggerSection.Connection, "Sent an empty udp packet");
+            Logger.LogEvent(LoggerSection.Connection, "Sent first empty udp packet to connect with server's udp");
         }
 
         public void SendPacket(Packet packet)
@@ -75,7 +73,7 @@ namespace AmongUsClone.Client.Networking
 
                 if (data.Length < sizeof(int))
                 {
-                    lobbyGamePhase.DisconnectFromLobby();
+                    connectionToServer.Disconnect();
                     return;
                 }
 
@@ -83,7 +81,7 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                lobbyGamePhase.DisconnectFromLobby();
+                connectionToServer.Disconnect();
             }
         }
 

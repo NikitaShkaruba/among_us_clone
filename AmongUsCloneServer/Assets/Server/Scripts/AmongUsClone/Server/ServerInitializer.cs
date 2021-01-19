@@ -13,8 +13,7 @@ namespace AmongUsClone.Server
 
         private void Start()
         {
-            // Todo: restore after debug
-            Logger.Initialize(new[] {LoggerSection.GameSnapshots}, true);
+            Logger.Initialize(new[] {LoggerSection.GameSnapshots, LoggerSection.Network}, true);
             Logger.LogEvent(LoggerSection.Initialization, "Started server initialization");
 
             metaMonoBehaviours.Initialize();

@@ -62,6 +62,8 @@ namespace AmongUsClone.Shared.Meta
                 {
                     action();
                 }
+
+                postFixedUpdateActions.Clear();
             }
         }
 

@@ -1,10 +1,9 @@
 namespace AmongUsClone.Client.Game
 {
-    public static class Scenes
+    public static class Scene
     {
-        public const string Initial = "Initial";
         public const string MainMenu = "MainMenu";
         public const string Lobby = "Lobby";
-        public const string RoleShowcase = "RoleShowcase";
+        public const string RoleReveal = "RoleReveal";
     }
 }

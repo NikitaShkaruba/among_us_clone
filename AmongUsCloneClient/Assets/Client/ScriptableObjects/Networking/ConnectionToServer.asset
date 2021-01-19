@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConnectionToServer
   m_EditorClassIdentifier: 
   myPlayerId: 0
-  lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
   metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
   packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
   packetsReceiver: {fileID: 11400000, guid: 6c88e060fa90752418310623d44ac706, type: 2}
+  playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}

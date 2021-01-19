@@ -1,10 +1,12 @@
 ﻿using System.Net;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
+using AmongUsClone.Shared.Scenes;
 using UnityEngine;
 using Helpers = AmongUsClone.Shared.Helpers;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -20,17 +22,18 @@ namespace AmongUsClone.Client.Networking
 
         public int myPlayerId;
 
-        [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private PacketsReceiver packetsReceiver;
+        [SerializeField] private PlayersManager playersManager;
+
         private TcpConnection tcpConnection;
         private UdpConnection udpConnection;
         private bool isConnected;
 
         public void Connect()
         {
-            tcpConnection = new TcpConnection(packetsReceiver, lobbyGamePhase, metaMonoBehaviours);
+            tcpConnection = new TcpConnection(this, packetsReceiver, metaMonoBehaviours);
             udpConnection = null;
 
             isConnected = true;
@@ -41,7 +44,7 @@ namespace AmongUsClone.Client.Networking
             this.myPlayerId = myPlayerId;
             packetsSender.SendWelcomeReceivedPacket();
 
-            udpConnection = new UdpConnection(this, lobbyGamePhase, metaMonoBehaviours, packetsReceiver, GetTcpLocalEndpoint().Port);
+            udpConnection = new UdpConnection(this, metaMonoBehaviours, packetsReceiver, GetTcpLocalEndpoint().Port);
         }
 
         public void Disconnect()
@@ -58,6 +61,9 @@ namespace AmongUsClone.Client.Networking
             tcpConnection = null;
             udpConnection.CloseConnection();
             udpConnection = null;
+
+            ScenesManager.SwitchScene(Scene.MainMenu);
+            playersManager.ClearPlayers();
 
             Logger.LogEvent(LoggerSection.Connection, "Disconnected from the server");
         }

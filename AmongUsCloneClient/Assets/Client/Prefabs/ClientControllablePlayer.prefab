@@ -27,7 +27,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91084c5032678b641aa739dfe3d17911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  packetsSender: {fileID: 0}
+  packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
 --- !u!1001 &1606303109329628163
 PrefabInstance:
   m_ObjectHideFlags: 0

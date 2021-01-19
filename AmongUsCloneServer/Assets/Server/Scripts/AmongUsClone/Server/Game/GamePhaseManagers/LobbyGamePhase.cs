@@ -22,6 +22,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
 
         public void ConnectPlayer(int playerId, string playerName)
         {
@@ -106,8 +107,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         public void ScheduleGameStart()
         {
             packetsSender.SendGameStartsPacket();
-            // Todo: move finding meta-objects to scriptable objects
-            FindObjectOfType<Coroutines>().StartCoroutine(StartGame());
+            metaMonoBehaviours.coroutines.StartCoroutine(StartGame());
             Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
         }
 
