@@ -13,7 +13,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Server.Networking.PacketManagers
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    // [CreateAssetMenu(fileName = "PacketsSender", menuName = "ScriptableObjects/PacketsSender")]
+    // [CreateAssetMenu(fileName = "PacketsSender", menuName = "PacketsSender")]
     public class PacketsSender : ScriptableObject
     {
         [SerializeField] private PlayersManager playersManager;

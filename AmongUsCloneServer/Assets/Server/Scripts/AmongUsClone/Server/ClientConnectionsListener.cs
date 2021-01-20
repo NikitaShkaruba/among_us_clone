@@ -8,7 +8,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Server
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    // [CreateAssetMenu(fileName = "ClientConnectionsListener", menuName = "ScriptableObjects/ClientConnectionsListener")]
+    // [CreateAssetMenu(fileName = "ClientConnectionsListener", menuName = "ClientConnectionsListener")]
     public class ClientConnectionsListener : ScriptableObject
     {
         [SerializeField] private UdpClient udpClient;

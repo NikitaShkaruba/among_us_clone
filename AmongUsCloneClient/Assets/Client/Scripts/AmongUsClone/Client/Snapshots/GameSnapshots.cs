@@ -13,7 +13,7 @@ using Scene = AmongUsClone.Client.Game.Scene;
 namespace AmongUsClone.Client.Snapshots
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    [CreateAssetMenu(fileName = "GameSnapshots", menuName = "GameSnapshots")]
+    // [CreateAssetMenu(fileName = "GameSnapshots", menuName = "GameSnapshots")]
     public class GameSnapshots : ScriptableObject
     {
         [SerializeField] private LobbyGamePhase lobbyGamePhase;

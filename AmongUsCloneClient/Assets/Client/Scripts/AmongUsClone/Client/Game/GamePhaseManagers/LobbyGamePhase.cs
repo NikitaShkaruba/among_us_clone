@@ -11,7 +11,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Client.Game.GamePhaseManagers
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
+    // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
     public class LobbyGamePhase : ScriptableObject
     {
         [SerializeField] private GameObject clientControllablePlayerPrefab;

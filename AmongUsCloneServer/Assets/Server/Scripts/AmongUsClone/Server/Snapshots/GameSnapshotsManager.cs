@@ -11,7 +11,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Server.Snapshots
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    // [CreateAssetMenu(fileName = "GameSnapshotsManager", menuName = "ScriptableObjects/GameSnapshotsManager")]
+    // [CreateAssetMenu(fileName = "GameSnapshotsManager", menuName = "GameSnapshotsManager")]
     public class GameSnapshotsManager : MonoBehaviour
     {
         [SerializeField] private Game.PlayersManager playersManager;

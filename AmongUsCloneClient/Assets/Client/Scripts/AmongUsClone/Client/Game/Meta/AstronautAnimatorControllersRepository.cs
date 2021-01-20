@@ -3,7 +3,7 @@ using UnityEngine;
 namespace AmongUsClone.Client.Game.Meta
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    [CreateAssetMenu(fileName = "AstronautAnimatorControllersRepository", menuName = "AstronautAnimatorControllersRepository")]
+    // [CreateAssetMenu(fileName = "AstronautAnimatorControllersRepository", menuName = "AstronautAnimatorControllersRepository")]
     public class AstronautAnimatorControllersRepository : ScriptableObject
     {
         public RuntimeAnimatorController redAnimatorController;

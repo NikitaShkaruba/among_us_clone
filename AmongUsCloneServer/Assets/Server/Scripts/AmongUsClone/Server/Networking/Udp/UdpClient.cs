@@ -10,7 +10,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Server.Networking.Udp
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    // [CreateAssetMenu(fileName = "UdpClient", menuName = "ScriptableObjects/UdpClient")]
+    // [CreateAssetMenu(fileName = "UdpClient", menuName = "UdpClient")]
     public class UdpClient : ScriptableObject
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;

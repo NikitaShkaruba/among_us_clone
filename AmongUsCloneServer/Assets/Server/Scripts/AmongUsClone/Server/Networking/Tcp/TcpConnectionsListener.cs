@@ -12,7 +12,7 @@ using UdpClient = AmongUsClone.Server.Networking.Udp.UdpClient;
 namespace AmongUsClone.Server.Networking.Tcp
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    // [CreateAssetMenu(fileName = "TcpConnectionsListener", menuName = "ScriptableObjects/TcpConnectionsListener")]
+    // [CreateAssetMenu(fileName = "TcpConnectionsListener", menuName = "TcpConnectionsListener")]
     public class TcpConnectionsListener : ScriptableObject
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;

@@ -16,7 +16,7 @@ using Random = System.Random;
 namespace AmongUsClone.Server.Game.GamePhaseManagers
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "ScriptableObjects/LobbyGamePhase")]
+    // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
     public class LobbyGamePhase : ScriptableObject
     {
         [SerializeField] private PlayersManager playersManager;

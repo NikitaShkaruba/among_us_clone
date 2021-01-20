@@ -13,7 +13,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Client.Networking
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    [CreateAssetMenu(fileName = "ConnectionToServer", menuName = "ConnectionToServer")]
+    // [CreateAssetMenu(fileName = "ConnectionToServer", menuName = "ConnectionToServer")]
     public class ConnectionToServer : ScriptableObject
     {
         public const string ServerIP = "127.0.0.1";

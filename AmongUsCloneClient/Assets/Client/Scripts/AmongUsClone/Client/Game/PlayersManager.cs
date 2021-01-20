@@ -7,7 +7,7 @@ using UnityEngine;
 namespace AmongUsClone.Client.Game
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    [CreateAssetMenu(fileName = "PlayersManager", menuName = "PlayersManager")]
+    // [CreateAssetMenu(fileName = "PlayersManager", menuName = "PlayersManager")]
     public class PlayersManager : ScriptableObject
     {
         public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();

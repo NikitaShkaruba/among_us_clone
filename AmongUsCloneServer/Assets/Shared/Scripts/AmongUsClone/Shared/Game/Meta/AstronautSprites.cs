@@ -3,7 +3,7 @@ using UnityEngine;
 namespace AmongUsClone.Shared.Game.Meta
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    // [CreateAssetMenu(fileName = "AstronautSprites", menuName = "ScriptableObjects/AstronautSprites")]
+    // [CreateAssetMenu(fileName = "AstronautSprites", menuName = "AstronautSprites")]
     public class AstronautSprites : ScriptableObject
     {
         public Sprite redSprite;

@@ -9,7 +9,7 @@ namespace AmongUsClone.Client.Networking
      * Class that simulates requests through network with lag. Because I'm testing on a local machine
      */
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    [CreateAssetMenu(fileName = "NetworkSimulation", menuName = "NetworkSimulation")]
+    // [CreateAssetMenu(fileName = "NetworkSimulation", menuName = "NetworkSimulation")]
     public class NetworkSimulation : ScriptableObject
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;

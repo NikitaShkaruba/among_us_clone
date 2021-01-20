@@ -9,7 +9,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 namespace AmongUsClone.Client.Game.GamePhaseManagers
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
-    [CreateAssetMenu(fileName = "MainMenuGamePhase", menuName = "MainMenuGamePhase")]
+    // [CreateAssetMenu(fileName = "MainMenuGamePhase", menuName = "MainMenuGamePhase")]
     public class MainMenuGamePhase : ScriptableObject
     {
         public MetaMonoBehaviours metaMonoBehaviours;
