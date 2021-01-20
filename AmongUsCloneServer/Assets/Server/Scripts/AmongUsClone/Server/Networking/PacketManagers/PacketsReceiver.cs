@@ -1,26 +1,39 @@
 using System;
 using System.Collections.Generic;
 using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
+using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Networking.PacketManagers
 {
-    public static class PacketsReceiver
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    // [CreateAssetMenu(fileName = "PacketsReceiver", menuName = "ScriptableObjects/PacketsReceiver")]
+    public class PacketsReceiver : ScriptableObject
     {
-        private static readonly Dictionary<int, TcpConnection.OnPacketReceivedCallback> packetHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
-        {
-            {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
-            {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
-            {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket},
-            {(int) ClientPacketType.StartGame, ProcessStartGamePacket}
-        };
+        [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
 
-        public static void ProcessPacket(int playerId, int packetTypeId, Packet packet, bool isTcp)
+        private Dictionary<int, TcpConnection.OnPacketReceivedCallback> packetHandlers;
+
+        public void OnEnable()
+        {
+            packetHandlers = new Dictionary<int, TcpConnection.OnPacketReceivedCallback>
+            {
+                {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
+                {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
+                {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket},
+                {(int) ClientPacketType.StartGame, ProcessStartGamePacket}
+            };
+        }
+
+        public void ProcessPacket(int playerId, int packetTypeId, Packet packet, bool isTcp)
         {
             string packetTypeName = Helpers.GetEnumName((ClientPacketType) packetTypeId);
             string protocolName = isTcp ? "TCP" : "UDP";
@@ -29,7 +42,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             packetHandlers[packetTypeId](playerId, packet);
         }
 
-        private static void ProcessWelcomeReceivedPacket(int playerId, Packet packet)
+        private void ProcessWelcomeReceivedPacket(int playerId, Packet packet)
         {
             int packetPlayerId = packet.ReadInt();
             string userName = packet.ReadString();
@@ -45,41 +58,38 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 return;
             }
 
-            Logger.LogEvent(LoggerSection.Connection, $"{Server.clients[playerId].GetTcpEndPoint()} connected successfully and is now a player {playerId}");
+            Logger.LogEvent(LoggerSection.Connection, $"{playersManager.clients[playerId].GetTcpEndPoint()} connected successfully and is now a player {playerId}");
 
-            GameManager.instance.ConnectPlayer(playerId, userName);
+            lobbyGamePhase.ConnectPlayer(playerId, userName);
         }
 
-        private static void ProcessPlayerInputPacket(int playerId, Packet packet)
+        private void ProcessPlayerInputPacket(int playerId, Packet packet)
         {
             // Because of multi threading we might not have this client yet
-            if (!Server.clients.ContainsKey(playerId))
+            if (!playersManager.clients.ContainsKey(playerId))
             {
                 return;
             }
 
             PlayerInput playerInput = packet.ReadPlayerInput();
 
-            GameManager.instance.SavePlayerInput(playerId, playerInput);
+            lobbyGamePhase.SavePlayerInput(playerId, playerInput);
         }
 
-        private static void ProcessColorChangeRequestPacket(int playerId, Packet packet)
+        private void ProcessColorChangeRequestPacket(int playerId, Packet packet)
         {
-            GameManager.instance.ChangePlayerColor(playerId);
+            lobbyGamePhase.ChangePlayerColor(playerId);
         }
 
-        private static void ProcessStartGamePacket(int playerId, Packet packet)
+        private void ProcessStartGamePacket(int playerId, Packet packet)
         {
-            if (playerId != Server.MinPlayerId)
+            if (playerId != PlayersManager.MinPlayerId)
             {
                 Logger.LogNotice(SharedLoggerSection.GameStart, "Not host trying to start the game");
                 return;
             }
 
-            Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
-            PacketsSender.SendGameStartsPacket();
-            GameManager.instance.ScheduleGameStart();
+            lobbyGamePhase.ScheduleGameStart();
         }
-
     }
 }

@@ -1,26 +1,39 @@
 using System.Linq;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.PlayerLogic;
+using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
+using Scene = AmongUsClone.Client.Game.Scene;
 
 namespace AmongUsClone.Client.Snapshots
 {
-    public static class GameSnapshots
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    [CreateAssetMenu(fileName = "GameSnapshots", menuName = "GameSnapshots")]
+    public class GameSnapshots : ScriptableObject
     {
-        public static void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayersManager playersManager;
+
+        public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
+            if (ScenesManager.GetActiveScene() != Scene.Lobby)
+            {
+                return;
+            }
+
             UpdatePlayers(gameSnapshot);
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
         }
 
-        private static void UpdatePlayers(ClientGameSnapshot gameSnapshot)
+        private void UpdatePlayers(ClientGameSnapshot gameSnapshot)
         {
-            Player controlledPlayer = GameManager.instance.controlledPlayer;
+            Player controlledPlayer = playersManager.controlledPlayer;
 
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
             {
@@ -35,18 +48,18 @@ namespace AmongUsClone.Client.Snapshots
             }
         }
 
-        private static void UpdateNotControlledPlayer(SnapshotPlayerInfo snapshotPlayerInfo)
+        private void UpdateNotControlledPlayer(SnapshotPlayerInfo snapshotPlayerInfo)
         {
             // If we don't have disconnected player anymore
-            if (!GameManager.instance.players.ContainsKey(snapshotPlayerInfo.id))
+            if (!playersManager.players.ContainsKey(snapshotPlayerInfo.id))
             {
                 return;
             }
 
-            GameManager.instance.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
+            playersManager.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
         }
 
-        private static void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, Player controlledPlayer)
+        private void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, Player controlledPlayer)
         {
             controlledPlayer.clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
 
@@ -56,7 +69,7 @@ namespace AmongUsClone.Client.Snapshots
             }
         }
 
-        private static bool IsReconciliationNeeded(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
+        private bool IsReconciliationNeeded(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
         {
             // If player has just spawned, he might not have gameSnapshots with which he may reconcile
             if (!controlledPlayer.clientControllable.stateSnapshots.ContainsKey(gameSnapshot.yourLastProcessedInputId))
@@ -73,7 +86,7 @@ namespace AmongUsClone.Client.Snapshots
             return positionDifference.magnitude > acceptablePositionError;
         }
 
-        private static void Reconcile(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
+        private void Reconcile(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
         {
             ClientControllable clientControllable = controlledPlayer.clientControllable;
             Vector2 incorrectClientPosition = clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;

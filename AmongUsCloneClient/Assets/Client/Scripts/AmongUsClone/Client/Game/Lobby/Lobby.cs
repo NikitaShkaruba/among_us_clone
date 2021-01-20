@@ -5,11 +5,10 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.Game.Lobby
 {
-    [RequireComponent(typeof(PlayersContainable))]
     [RequireComponent(typeof(GameStartable))]
     public class Lobby : MonoBehaviour
     {
-        public PlayersContainable playersContainable;
+        public PlayersContainer playersContainer;
         public GameStartable gameStartable;
 
         public PlayersCounter playersCounter;

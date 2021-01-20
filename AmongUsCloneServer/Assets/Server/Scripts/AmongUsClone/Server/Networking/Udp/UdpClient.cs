@@ -1,25 +1,31 @@
 using System;
 using System.Net;
-using System.Net.Sockets;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking.PacketManagers;
-using AmongUsClone.Shared;
-using AmongUsClone.Shared.Logging;
+using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Networking;
+using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Networking.Udp
 {
-    public static class UdpClient
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    // [CreateAssetMenu(fileName = "UdpClient", menuName = "ScriptableObjects/UdpClient")]
+    public class UdpClient : ScriptableObject
     {
-        private static System.Net.Sockets.UdpClient udpClient;
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private Game.PlayersManager playersManager;
+        [SerializeField] private PacketsReceiver packetsReceiver;
 
-        public static void Initialize(int port)
+        System.Net.Sockets.UdpClient udpClient;
+
+        public void Initialize(int port)
         {
             udpClient = new System.Net.Sockets.UdpClient(port);
             udpClient.BeginReceive(OnConnection, null);
         }
 
-        public static void SendPacket(Packet packet, IPEndPoint ipEndPoint)
+        public void SendPacket(Packet packet, IPEndPoint ipEndPoint)
         {
             try
             {
@@ -31,7 +37,7 @@ namespace AmongUsClone.Server.Networking.Udp
             }
         }
 
-        private static void OnConnection(IAsyncResult result)
+        private void OnConnection(IAsyncResult result)
         {
             try
             {
@@ -49,19 +55,19 @@ namespace AmongUsClone.Server.Networking.Udp
                 Packet packet = new Packet(data);
                 int playerId = packet.ReadInt();
 
-                if (!Server.clients.ContainsKey(playerId))
+                if (!playersManager.clients.ContainsKey(playerId))
                 {
                     Logger.LogNotice(LoggerSection.Network, $"Skipping tcp packed from player {playerId}, because it is already disconnected");
                     return;
                 }
 
-                if (!Server.clients[playerId].IsConnectedViaUdp())
+                if (!playersManager.clients[playerId].IsConnectedViaUdp())
                 {
-                    Server.clients[playerId].ConnectUdp(clientIpEndPoint);
+                    playersManager.clients[playerId].ConnectUdp(clientIpEndPoint);
                     return;
                 }
 
-                if (!Server.clients[playerId].IsCorrectUdpIpEndPoint(clientIpEndPoint))
+                if (!playersManager.clients[playerId].IsCorrectUdpIpEndPoint(clientIpEndPoint))
                 {
                     Logger.LogError(LoggerSection.Network, "Hacking attempt, client ids doesn't match");
                     return;
@@ -79,21 +85,21 @@ namespace AmongUsClone.Server.Networking.Udp
             }
         }
 
-        private static void HandlePacketData(int playerId, Packet packet)
+        private void HandlePacketData(int playerId, Packet packet)
         {
             int packetLength = packet.ReadInt();
             byte[] packetBytes = packet.ReadBytes(packetLength);
 
-            MainThread.ScheduleExecution(() =>
+            metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() =>
             {
                 Packet newPacket = new Packet(packetBytes);
                 int packetTypeId = newPacket.ReadInt();
 
-                PacketsReceiver.ProcessPacket(playerId, packetTypeId, newPacket, false);
+                packetsReceiver.ProcessPacket(playerId, packetTypeId, newPacket, false);
             });
         }
 
-        public static void StopListening()
+        public void StopListening()
         {
             udpClient.Close();
         }

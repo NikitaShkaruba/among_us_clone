@@ -1,5 +1,4 @@
 using AmongUsClone.Client.Game.Interactions;
-using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
@@ -9,13 +8,15 @@ namespace AmongUsClone.Client.Game.Lobby
 {
     public class Computer : Interactable
     {
+        public PacketsSender packetsSender;
+
         public Material materialWithOutline;
         public Material materialWithOutlineAndHighlight;
         public new Renderer renderer;
 
         public override void Interact()
         {
-            PacketsSender.SendColorChangeRequestPacket();
+            packetsSender.SendColorChangeRequestPacket();
             Logger.LogEvent(SharedLoggerSection.PlayerColors, "Sent request to change the color");
         }
 

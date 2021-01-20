@@ -1,45 +1,35 @@
 using System;
 using System.Collections;
-using AmongUsClone.Client.Logging;
-using AmongUsClone.Client.UI.UiElements;
+using AmongUsClone.Shared.Meta;
 using UnityEngine;
-using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking
 {
     /**
      * Class that simulates requests through network with lag. Because I'm testing on a local machine
      */
-    public class NetworkSimulation : MonoBehaviour
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    [CreateAssetMenu(fileName = "NetworkSimulation", menuName = "NetworkSimulation")]
+    public class NetworkSimulation : ScriptableObject
     {
-        public static NetworkSimulation instance;
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
 
-        public const int ping = 1000;
-
-        public void Awake()
-        {
-            if (instance != null)
-            {
-                Logger.LogCritical(LoggerSection.Initialization, "Attempt to instantiate singleton second time");
-            }
-
-            instance = this;
-        }
+        public const int Ping = 1000;
 
         public void SendThroughNetwork(Action action)
         {
-            StartCoroutine(ExecuteAfterNetworkDelay(action));
+            metaMonoBehaviours.coroutines.StartCoroutine(ExecuteAfterNetworkDelay(action));
         }
 
         public void ReceiveThroughNetwork(Action action)
         {
-            StartCoroutine(ExecuteAfterNetworkDelay(action));
+            metaMonoBehaviours.coroutines.StartCoroutine(ExecuteAfterNetworkDelay(action));
         }
 
         private static IEnumerator ExecuteAfterNetworkDelay(Action action)
         {
             // Simulate network lag
-            const float secondsToWait = ping * 0.001f / 2f;
+            const float secondsToWait = Ping * 0.001f / 2f;
             yield return new WaitForSeconds(secondsToWait);
 
             action();

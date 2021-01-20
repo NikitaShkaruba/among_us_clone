@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0db826728c04c60b2e7cc430560866e, type: 3}
+  m_Name: LobbyGamePhase
+  m_EditorClassIdentifier: 
+  clientControllablePlayerPrefab: {fileID: 5116485933257911524, guid: 61bff4315b12e264fa0f9baaabeb0c09, type: 3}
+  playerPrefab: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+  connectionToServer: {fileID: 11400000, guid: 7b4f52cd3260d664d80972118dea3c64, type: 2}
+  playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
+  packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
+  lobby: {fileID: 0}
+  maxPlayersAmount: 0
+  minRequiredPlayersAmountForGame: 0
+  secondsForGameLaunch: 0

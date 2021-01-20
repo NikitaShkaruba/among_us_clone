@@ -11,7 +11,7 @@ namespace AmongUsClone.Client.Game.Lobby.UI
 
         public void Awake()
         {
-            text.text = $"Ping: {NetworkSimulation.ping} ms";
+            text.text = $"Ping: {NetworkSimulation.Ping} ms";
         }
     }
 }

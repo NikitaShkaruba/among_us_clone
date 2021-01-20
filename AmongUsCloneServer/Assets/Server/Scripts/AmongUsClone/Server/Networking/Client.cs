@@ -1,8 +1,12 @@
 using System.Net;
+using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
+using AmongUsClone.Server.Networking.PacketManagers;
+using AmongUsClone.Server.Networking.Tcp;
 using AmongUsClone.Server.Networking.Udp;
 using AmongUsClone.Shared.Logging;
+using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Networking;
 using TcpClient = System.Net.Sockets.TcpClient;
 
@@ -19,12 +23,25 @@ namespace AmongUsClone.Server.Networking
         private Tcp.TcpConnection tcpConnection;
         private IPEndPoint udpIpEndPoint;
 
-        public Client(int playerId)
+        private readonly MetaMonoBehaviours metaMonoBehaviours;
+        private readonly TcpConnectionsListener tcpConnectionsListener;
+        private readonly UdpClient udpClient;
+        private readonly PacketsReceiver packetsReceiver;
+        private readonly PacketsSender packetsSender;
+        private readonly LobbyGamePhase lobbyGamePhase;
+
+        public Client(int playerId, UdpClient udpClient, PacketsReceiver packetsReceiver, PacketsSender packetsSender, LobbyGamePhase lobbyGamePhase, MetaMonoBehaviours metaMonoBehaviours)
         {
             this.playerId = playerId;
 
             tcpConnection = null;
             udpIpEndPoint = null;
+
+            this.metaMonoBehaviours = metaMonoBehaviours;
+            this.udpClient = udpClient;
+            this.packetsReceiver = packetsReceiver;
+            this.packetsSender = packetsSender;
+            this.lobbyGamePhase = lobbyGamePhase;
         }
 
         /**
@@ -42,7 +59,7 @@ namespace AmongUsClone.Server.Networking
 
         public void ConnectTcp(TcpClient tcpClient)
         {
-            tcpConnection = new Tcp.TcpConnection(playerId, tcpClient);
+            tcpConnection = new Tcp.TcpConnection(playerId, tcpClient, packetsReceiver, packetsSender, lobbyGamePhase, metaMonoBehaviours);
             tcpConnection.InitializeCommunication();
         }
 
@@ -64,7 +81,7 @@ namespace AmongUsClone.Server.Networking
                 return;
             }
 
-            UdpClient.SendPacket(packet, udpIpEndPoint);
+            udpClient.SendPacket(packet, udpIpEndPoint);
         }
 
         public EndPoint GetTcpEndPoint()

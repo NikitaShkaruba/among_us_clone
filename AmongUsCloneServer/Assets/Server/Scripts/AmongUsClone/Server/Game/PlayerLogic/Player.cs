@@ -1,4 +1,3 @@
-using System;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;

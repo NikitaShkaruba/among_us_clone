@@ -13,6 +13,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         private static readonly int animatorPropertyIsMoving = Animator.StringToHash("IsMoving");
         private static readonly int animatorPropertyIsLookingRight = Animator.StringToHash("IsLookingRight");
 
+        [SerializeField] private AstronautAnimatorControllersRepository astronautAnimatorControllersRepository;
         [SerializeField] private Player player;
         [SerializeField] private Animator animator;
 
@@ -29,58 +30,58 @@ namespace AmongUsClone.Client.Game.PlayerLogic
             player.colorable.colorChanged -= UpdateAnimatorController;
         }
 
-        public void UpdateAnimatorController()
+        private void UpdateAnimatorController()
         {
             RuntimeAnimatorController animatorController;
 
             switch (player.colorable.color)
             {
                 case PlayerColor.Red:
-                    animatorController = AstronautAnimatorControllersRepository.instance.redAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.redAnimatorController;
                     break;
 
                 case PlayerColor.Blue:
-                    animatorController = AstronautAnimatorControllersRepository.instance.blueAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.blueAnimatorController;
                     break;
 
                 case PlayerColor.Green:
-                    animatorController = AstronautAnimatorControllersRepository.instance.greenAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.greenAnimatorController;
                     break;
 
                 case PlayerColor.Yellow:
-                    animatorController = AstronautAnimatorControllersRepository.instance.yellowAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.yellowAnimatorController;
                     break;
 
                 case PlayerColor.Pink:
-                    animatorController = AstronautAnimatorControllersRepository.instance.pinkAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.pinkAnimatorController;
                     break;
 
                 case PlayerColor.Orange:
-                    animatorController = AstronautAnimatorControllersRepository.instance.orangeAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.orangeAnimatorController;
                     break;
 
                 case PlayerColor.Purple:
-                    animatorController = AstronautAnimatorControllersRepository.instance.purpleAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.purpleAnimatorController;
                     break;
 
                 case PlayerColor.Black:
-                    animatorController = AstronautAnimatorControllersRepository.instance.blackAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.blackAnimatorController;
                     break;
 
                 case PlayerColor.Brown:
-                    animatorController = AstronautAnimatorControllersRepository.instance.brownAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.brownAnimatorController;
                     break;
 
                 case PlayerColor.Cyan:
-                    animatorController = AstronautAnimatorControllersRepository.instance.cyanAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.cyanAnimatorController;
                     break;
 
                 case PlayerColor.Lime:
-                    animatorController = AstronautAnimatorControllersRepository.instance.limeAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.limeAnimatorController;
                     break;
 
                 case PlayerColor.White:
-                    animatorController = AstronautAnimatorControllersRepository.instance.whiteAnimatorController;
+                    animatorController = astronautAnimatorControllersRepository.whiteAnimatorController;
                     break;
 
                 default:

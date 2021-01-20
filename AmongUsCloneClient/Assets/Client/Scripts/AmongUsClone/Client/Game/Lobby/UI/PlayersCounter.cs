@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AmongUsClone.Client.Game.GamePhaseManagers;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace AmongUsClone.Client.Game.Lobby.UI
@@ -6,22 +7,24 @@ namespace AmongUsClone.Client.Game.Lobby.UI
     public class PlayersCounter : MonoBehaviour
     {
         public Text textLabel;
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayersManager playersManager;
 
         private void Start()
         {
             UpdateLabel();
-            GameManager.instance.playersAmountChanged += UpdateLabel;
+            playersManager.playersAmountChanged += UpdateLabel;
         }
 
         private void OnDestroy()
         {
-            GameManager.instance.playersAmountChanged -= UpdateLabel;
+            playersManager.playersAmountChanged -= UpdateLabel;
         }
 
         private void UpdateLabel()
         {
-            textLabel.text = $"{GameManager.instance.players.Count} / {GameManager.instance.maxPlayersAmount}";
-            textLabel.color = GameManager.instance.HasEnoughPlayersForGame() ? Color.white : Color.red;
+            textLabel.text = $"{playersManager.players.Count} / {lobbyGamePhase.maxPlayersAmount}";
+            textLabel.color = lobbyGamePhase.HasEnoughPlayersForGame() ? Color.white : Color.red;
         }
     }
 }

@@ -1,10 +1,9 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
-using AmongUsClone.Shared;
+using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Networking;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
@@ -15,16 +14,26 @@ namespace AmongUsClone.Client.Networking
         private readonly UdpClient udpClient;
         private IPEndPoint ipEndPoint;
 
-        public UdpConnection(int localPort)
+        private ConnectionToServer connectionToServer;
+        private MetaMonoBehaviours metaMonoBehaviours;
+        private PacketsReceiver packetsReceiver;
+
+        public UdpConnection(ConnectionToServer connectionToServer, MetaMonoBehaviours metaMonoBehaviours, PacketsReceiver packetsReceiver, int localPort)
         {
+            this.connectionToServer = connectionToServer;
+            this.metaMonoBehaviours = metaMonoBehaviours;
+            this.packetsReceiver = packetsReceiver;
+
             ipEndPoint = new IPEndPoint(IPAddress.Parse(ConnectionToServer.ServerIP), ConnectionToServer.ServerPort);
 
             udpClient = new UdpClient(localPort);
             udpClient.Connect(ipEndPoint);
             udpClient.BeginReceive(OnConnection, null);
+            Logger.LogEvent(LoggerSection.Connection, "Started listening for udp connections");
 
             Packet packet = new Packet();
             SendPacket(packet);
+            Logger.LogEvent(LoggerSection.Connection, "Sent first empty udp packet to connect with server's udp");
         }
 
         public void SendPacket(Packet packet)
@@ -36,7 +45,7 @@ namespace AmongUsClone.Client.Networking
 
             try
             {
-                packet.InsertInt(GameManager.instance.connectionToServer.myPlayerId);
+                packet.InsertInt(connectionToServer.myPlayerId);
                 udpClient.BeginSend(packet.ToArray(), packet.GetLength(), null, null);
             }
             catch (Exception exception)
@@ -61,7 +70,7 @@ namespace AmongUsClone.Client.Networking
 
                 if (data.Length < sizeof(int))
                 {
-                    GameManager.instance.DisconnectFromLobby();
+                    connectionToServer.Disconnect();
                     return;
                 }
 
@@ -69,19 +78,19 @@ namespace AmongUsClone.Client.Networking
             }
             catch
             {
-                GameManager.instance.DisconnectFromLobby();
+                connectionToServer.Disconnect();
             }
         }
 
-        private static void HandlePacketData(byte[] data)
+        private void HandlePacketData(byte[] data)
         {
             Packet packet = new Packet(data);
             packet.ReadInt(); // Read not needed 'packet length' in order to update read position
 
-            MainThread.ScheduleExecution(() =>
+            metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() =>
             {
                 int packetTypeId = packet.ReadInt();
-                PacketsReceiver.ProcessPacket(packetTypeId, packet, false);
+                packetsReceiver.ProcessPacket(packetTypeId, packet, false);
             });
         }
     }

@@ -1,8 +1,6 @@
 // ReSharper disable UnusedMember.Global
 
 using System.Collections.Generic;
-using System.Linq;
-using AmongUsClone.Shared.Game.PlayerLogic;
 
 namespace AmongUsClone.Shared.Snapshots
 {

@@ -7,23 +7,24 @@ namespace AmongUsClone.Client.Game
     public class GameRoleDescription : MonoBehaviour
     {
         [SerializeField] private Text roleDescriptionLabel;
+        [SerializeField] private PlayersManager playersManager;
 
         public void Start()
         {
             roleDescriptionLabel.text = GetLabelText();
         }
 
-        private static string GetLabelText()
+        private string GetLabelText()
         {
-            if (!GameManager.instance.controlledPlayer.information.isImposter)
+            if (!playersManager.controlledPlayer.information.isImposter)
             {
-                return GameManager.instance.impostorsAmount == 1 ? "There is an impostor among us" : $"There are {GameManager.instance.impostorsAmount} impostors among us";
+                return playersManager.impostorsAmount == 1 ? "There is an impostor among us" : $"There are {playersManager.impostorsAmount} impostors among us";
             }
 
             List<int> otherImpostorPlayerIds = new List<int>();
-            foreach (int impostorPlayerId in GameManager.instance.impostorPlayerIds)
+            foreach (int impostorPlayerId in playersManager.knownImpostorPlayerIds)
             {
-                if (impostorPlayerId != GameManager.instance.controlledPlayer.information.id)
+                if (impostorPlayerId != playersManager.controlledPlayer.information.id)
                 {
                     otherImpostorPlayerIds.Add(impostorPlayerId);
                 }

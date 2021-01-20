@@ -9,6 +9,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
     [RequireComponent(typeof(SpriteRenderer))]
     public class Colorable : MonoBehaviour
     {
+        public AstronautSprites astronautSprites;
+
         public SpriteRenderer spriteRenderer;
         public PlayerColor color;
 
@@ -29,44 +31,44 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             switch (color)
             {
                 case PlayerColor.Red:
-                    return AstronautSpritesRepository.instance.redSprite;
+                    return astronautSprites.redSprite;
 
                 case PlayerColor.Blue:
-                    return AstronautSpritesRepository.instance.blueSprite;
+                    return astronautSprites.blueSprite;
 
                 case PlayerColor.Green:
-                    return AstronautSpritesRepository.instance.greenSprite;
+                    return astronautSprites.greenSprite;
 
                 case PlayerColor.Yellow:
-                    return AstronautSpritesRepository.instance.yellowSprite;
+                    return astronautSprites.yellowSprite;
 
                 case PlayerColor.Pink:
-                    return AstronautSpritesRepository.instance.pinkSprite;
+                    return astronautSprites.pinkSprite;
 
                 case PlayerColor.Orange:
-                    return AstronautSpritesRepository.instance.orangeSprite;
+                    return astronautSprites.orangeSprite;
 
                 case PlayerColor.Purple:
-                    return AstronautSpritesRepository.instance.purpleSprite;
+                    return astronautSprites.purpleSprite;
 
                 case PlayerColor.Black:
-                    return AstronautSpritesRepository.instance.blackSprite;
+                    return astronautSprites.blackSprite;
 
                 case PlayerColor.Brown:
-                    return AstronautSpritesRepository.instance.brownSprite;
+                    return astronautSprites.brownSprite;
 
                 case PlayerColor.Cyan:
-                    return AstronautSpritesRepository.instance.cyanSprite;
+                    return astronautSprites.cyanSprite;
 
                 case PlayerColor.Lime:
-                    return AstronautSpritesRepository.instance.limeSprite;
+                    return astronautSprites.limeSprite;
 
                 case PlayerColor.White:
-                    return AstronautSpritesRepository.instance.whiteSprite;
+                    return astronautSprites.whiteSprite;
 
                 default:
                     Logger.LogError(SharedLoggerSection.PlayerColors, $"Undefined sprite for color {Helpers.GetEnumName(color)}");
-                    return AstronautSpritesRepository.instance.redSprite;
+                    return astronautSprites.redSprite;
             }
         }
 

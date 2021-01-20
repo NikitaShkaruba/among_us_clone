@@ -329,6 +329,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   name: 
+  isLobbyHost: 0
+  isImposter: 0
 --- !u!114 &1884753102413685304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a129136ce74daeb57cc0ef90f4d99d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  astronautSprites: {fileID: 11400000, guid: bf9e6762e55605247989008c4254b28b, type: 2}
   spriteRenderer: {fileID: 7198662478761133116}
   color: 0
 --- !u!114 &7819642408614097577

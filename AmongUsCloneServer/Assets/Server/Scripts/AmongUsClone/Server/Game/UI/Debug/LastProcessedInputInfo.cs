@@ -7,6 +7,7 @@ namespace AmongUsClone.Server.Game.UI.Debug
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class LastProcessedInputInfo : MonoBehaviour
     {
+        [SerializeField] private PlayersManager playersManager;
         private TextMeshProUGUI textMeshPro;
 
         private void Awake()
@@ -23,7 +24,7 @@ namespace AmongUsClone.Server.Game.UI.Debug
         {
             string labelText = "Last processed inputs:\n";
 
-            foreach (Client client in Server.clients.Values)
+            foreach (Client client in playersManager.clients.Values)
             {
                 if (!client.IsFullyInitialized())
                 {

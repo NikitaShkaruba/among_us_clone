@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Shared.Game;
@@ -13,23 +13,35 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Networking.PacketManagers
 {
-    public class PacketsReceiver : MonoBehaviour
+    // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
+    [CreateAssetMenu(fileName = "PacketsReceiver", menuName = "PacketsReceiver")]
+    public class PacketsReceiver : ScriptableObject
     {
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private NetworkSimulation networkSimulation;
+        [SerializeField] private GameSnapshots gameSnapshots;
+        [SerializeField] private ConnectionToServer connectionToServer;
+
         private delegate void OnPacketReceivedCallback(Packet packet);
 
-        private static readonly Dictionary<int, OnPacketReceivedCallback> packetHandlers = new Dictionary<int, OnPacketReceivedCallback>
-        {
-            {(int) ServerPacketType.Welcome, ProcessWelcomePacket},
-            {(int) ServerPacketType.Kicked, ProcessKickedPacket},
-            {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
-            {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
-            {(int) ServerPacketType.GameSnapshot, ProcessGameSnapshotPacket},
-            {(int) ServerPacketType.ColorChanged, ProcessPlayerColorChangedPacket},
-            {(int) ServerPacketType.GameStarts, ProcessGameStartsPacket},
-            {(int) ServerPacketType.GameStarted, ProcessGameStartedPacket},
-        };
+        private Dictionary<int, OnPacketReceivedCallback> packetHandlers;
 
-        public static void ProcessPacket(int packetTypeId, Packet packet, bool isTcp)
+        public void OnEnable()
+        {
+            packetHandlers = new Dictionary<int, OnPacketReceivedCallback>
+            {
+                {(int) ServerPacketType.Welcome, ProcessWelcomePacket},
+                {(int) ServerPacketType.Kicked, ProcessKickedPacket},
+                {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
+                {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
+                {(int) ServerPacketType.GameSnapshot, ProcessGameSnapshotPacket},
+                {(int) ServerPacketType.ColorChanged, ProcessPlayerColorChangedPacket},
+                {(int) ServerPacketType.GameStarts, ProcessGameStartsPacket},
+                {(int) ServerPacketType.GameStarted, ProcessGameStartedPacket},
+            };
+        }
+
+        public void ProcessPacket(int packetTypeId, Packet packet, bool isTcp)
         {
             string protocolName = isTcp ? "TCP" : "UDP";
             Logger.LogEvent(LoggerSection.Network, $"Received «{Helpers.GetEnumName((ServerPacketType) packetTypeId)}» {protocolName} packet from server");
@@ -37,7 +49,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             packetHandlers[packetTypeId](packet);
         }
 
-        private static void ProcessWelcomePacket(Packet packet)
+        private void ProcessWelcomePacket(Packet packet)
         {
             Action action = () =>
             {
@@ -46,27 +58,27 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 int minRequiredPlayersAmountForGame = packet.ReadInt();
                 int secondsForGameLaunch = packet.ReadInt();
 
-                GameManager.instance.connectionToServer.FinishConnection(myPlayerId);
-                GameManager.instance.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame, secondsForGameLaunch);
+                connectionToServer.FinishConnection(myPlayerId);
+                lobbyGamePhase.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame, secondsForGameLaunch);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
             };
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private static void ProcessKickedPacket(Packet packet)
+        private void ProcessKickedPacket(Packet packet)
         {
             Action action = () =>
             {
-                GameManager.instance.DisconnectFromLobby();
+                connectionToServer.Disconnect();
                 Logger.LogEvent(LoggerSection.Connection, "Received a kick from server");
             };
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private static void ProcessPlayerConnectedPacket(Packet packet)
+        private void ProcessPlayerConnectedPacket(Packet packet)
         {
             Action action = () =>
             {
@@ -76,60 +88,60 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 PlayerColor playerColor = (PlayerColor) packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
 
-                GameManager.instance.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
+                lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Added player {playerId} to lobby");
             };
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private static void ProcessPlayerDisconnectedPacket(Packet packet)
+        private void ProcessPlayerDisconnectedPacket(Packet packet)
         {
             Action action = () =>
             {
                 int playerId = packet.ReadInt();
 
-                GameManager.instance.RemovePlayerFromLobby(playerId);
+                lobbyGamePhase.RemovePlayerFromLobby(playerId);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Player {playerId} has disconnected");
             };
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private static void ProcessGameSnapshotPacket(Packet packet)
+        private void ProcessGameSnapshotPacket(Packet packet)
         {
             Action action = () =>
             {
                 ClientGameSnapshot gameSnapshot = packet.ReadClientGameSnapshot();
-                GameSnapshots.ProcessSnapshot(gameSnapshot);
+                gameSnapshots.ProcessSnapshot(gameSnapshot);
             };
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private static void ProcessPlayerColorChangedPacket(Packet packet)
+        private void ProcessPlayerColorChangedPacket(Packet packet)
         {
             Action action = () =>
             {
                 int playerId = packet.ReadInt();
                 PlayerColor playerColor = (PlayerColor) packet.ReadInt();
 
-                GameManager.instance.ChangePlayerColor(playerId, playerColor);
+                lobbyGamePhase.ChangePlayerColor(playerId, playerColor);
             };
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private static void ProcessGameStartsPacket(Packet packet)
+        private void ProcessGameStartsPacket(Packet packet)
         {
-            Action action = () => GameManager.instance.lobby.gameStartable.LaunchGameStart();
+            Action action = () => lobbyGamePhase.InitiateGameStart();
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private static void ProcessGameStartedPacket(Packet packet)
+        private void ProcessGameStartedPacket(Packet packet)
         {
             Action action = () =>
             {
@@ -147,10 +159,10 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                     }
                 }
 
-                GameManager.instance.StartGame(isPlayingAsImpostor, impostorsAmount, impostorPlayerIds.ToArray());
+                lobbyGamePhase.StartGame(isPlayingAsImpostor, impostorsAmount, impostorPlayerIds.ToArray());
             };
 
-            NetworkSimulation.instance.ReceiveThroughNetwork(action);
+            networkSimulation.ReceiveThroughNetwork(action);
         }
     }
 }

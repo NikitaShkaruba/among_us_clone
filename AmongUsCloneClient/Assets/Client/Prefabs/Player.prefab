@@ -37,6 +37,7 @@ MonoBehaviour:
   clientControllable: {fileID: 0}
   animator: {fileID: 0}
   colorable: {fileID: 4194513011835888611}
+  interactor: {fileID: 0}
 --- !u!114 &5827258688513702030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1581bb8b8046ea83d92cdbdfe0e8ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  astronautAnimatorControllersRepository: {fileID: 11400000, guid: 566c208ff80e4974cb9b0bfc7190d8af, type: 2}
   player: {fileID: 5533755165803020274}
   animator: {fileID: -3807439675510471058}
 --- !u!1001 &2310939974319833563
