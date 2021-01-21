@@ -85,7 +85,8 @@ namespace AmongUsClone.Client.UI.UiElements
                 "sENjOY",
                 "Pasha",
                 "Lana",
-                "Shuryak"
+                "Shuryak",
+                "shvetsme"
             };
 
             int randomIndex = new Random((int) System.DateTime.Now.Ticks).Next(1, randomNames.Length - 1);
