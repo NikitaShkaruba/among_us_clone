@@ -15,3 +15,5 @@ MonoBehaviour:
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
   packetsSender: {fileID: 11400000, guid: 01e5ca764c91ea547a70c58b861cd0c5, type: 2}
   playerPrefab: {fileID: 4489031036040563366, guid: 30874e6d32314eb4c8d642674a296f6f, type: 3}
+  metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
+  lobby: {fileID: 0}

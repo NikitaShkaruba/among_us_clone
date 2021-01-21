@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7919225120034550726}
-  lobbyManager: {fileID: 11400000, guid: 1b6423200ac2837428679aa22764623f, type: 2}
   lastProcessedInputId: -1
 --- !u!114 &7919225120034550726
 MonoBehaviour:
@@ -32,6 +31,7 @@ MonoBehaviour:
   controllable: {fileID: 5606500545199738971}
   remoteControllable: {fileID: 151776526704875330}
   colorable: {fileID: 6138985039283743138}
+  spriteRenderer: {fileID: 3238998293717618598}
 --- !u!1001 &5698727723608771482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,6 +92,11 @@ PrefabInstance:
 --- !u!1 &4489031036040563366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8167787386373783868, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
+  m_PrefabInstance: {fileID: 5698727723608771482}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3238998293717618598 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7198662478761133116, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
   m_PrefabInstance: {fileID: 5698727723608771482}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1939370462676739514 stripped

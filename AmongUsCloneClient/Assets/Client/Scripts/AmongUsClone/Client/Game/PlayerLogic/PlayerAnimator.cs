@@ -92,7 +92,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
             animator.runtimeAnimatorController = animatorController;
         }
 
-        public void Update()
+        private void Update()
         {
             UpdateIsLookingRight();
 

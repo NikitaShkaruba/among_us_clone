@@ -23,10 +23,21 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private Lobby lobby;
+
+        public void Initialize()
+        {
+            lobby = FindObjectOfType<Lobby>();
+        }
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Player player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
+            // Dummy with appropriate position, spriteRenderer.flipX from scene
+            Player lobbyPlayerDummy = lobby.playerDummies[playerId];
+
+            Vector2 playerPosition = lobbyPlayerDummy.transform.position;
+            Player player = Instantiate(playerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
+            player.spriteRenderer.flipX = lobbyPlayerDummy.spriteRenderer.flipX;
 
             PlayersContainer playersContainer = FindObjectOfType<PlayersContainer>();
             if (playersContainer == null)
