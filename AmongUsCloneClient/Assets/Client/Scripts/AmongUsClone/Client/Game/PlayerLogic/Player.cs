@@ -3,6 +3,7 @@ using AmongUsClone.Client.PlayerLogic;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AmongUsClone.Client.Game.PlayerLogic
 {
@@ -22,6 +23,9 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public PlayerAnimator animator;
         public Colorable colorable;
         public Interactor interactor;
+
+        public SpriteRenderer spriteRenderer;
+        public Text nameLabel;
 
         public void Initialize(int playerId, string playerName, PlayerColor playerColor, bool isPlayerHost)
         {

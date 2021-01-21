@@ -17,6 +17,7 @@ namespace AmongUsClone.Client.PlayerLogic
         private Player player;
 
         public readonly Dictionary<int, ClientControllableStateSnapshot> stateSnapshots = new Dictionary<int, ClientControllableStateSnapshot>();
+        public bool isDisabled;
 
         private void Awake()
         {
@@ -25,6 +26,11 @@ namespace AmongUsClone.Client.PlayerLogic
 
         private void FixedUpdate()
         {
+            if (isDisabled)
+            {
+                return;
+            }
+
             UpdatePlayerInput();
             player.movable.MoveByPlayerInput(player.controllable.playerInput);
 

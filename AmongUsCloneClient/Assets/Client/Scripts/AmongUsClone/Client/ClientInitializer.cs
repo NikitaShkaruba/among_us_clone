@@ -14,6 +14,7 @@ namespace AmongUsClone.Client
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private RoleRevealGamePhase roleRevealGamePhase;
 
         public void Start()
         {
@@ -38,6 +39,9 @@ namespace AmongUsClone.Client
                     break;
                 case Scene.Lobby:
                     lobbyGamePhase.Initialize();
+                    break;
+                case Scene.RoleReveal:
+                    roleRevealGamePhase.Initialize();
                     break;
             }
         }

@@ -135,13 +135,28 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         private int[] GetImpostorPlayerIds()
         {
-            int impostorsAmount = playersManager.clients.Count > 7 ? 2 : 1;
+            int impostorsAmount = ComputePreferredImpostorsAmount();
 
             Random random = new Random();
             int[] playerIds = playersManager.clients.Keys.ToArray();
             int[] shuffledPlayerIds = playerIds.OrderBy(playerId => random.Next()).ToArray();
 
             return shuffledPlayerIds.Take(impostorsAmount).ToArray();
+        }
+
+        private int ComputePreferredImpostorsAmount()
+        {
+            if (playersManager.clients.Count >= 9)
+            {
+                return 3;
+            }
+
+            if (playersManager.clients.Count >= 6)
+            {
+                return 2;
+            }
+
+            return 1;
         }
     }
 }

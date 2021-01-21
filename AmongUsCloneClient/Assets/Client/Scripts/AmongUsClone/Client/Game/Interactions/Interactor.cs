@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUsClone.Shared.Scenes;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -54,6 +55,11 @@ namespace AmongUsClone.Client.Game.Interactions
         [CanBeNull]
         private Interactable FindClosestInteractableInRange()
         {
+            if (ScenesManager.GetActiveScene() == Scene.RoleReveal)
+            {
+                return null;
+            }
+
             float distanceToClosesInteractable = float.PositiveInfinity;
             Interactable closestInteractable = null;
 
@@ -76,6 +82,11 @@ namespace AmongUsClone.Client.Game.Interactions
         {
             foreach (Interactable interactable in interactables)
             {
+                if (interactable == null)
+                {
+                    continue;
+                }
+
                 if (interactable == possibleInteractable)
                 {
                     interactable.NoteThatInteractionMayBeSelected();

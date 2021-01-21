@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 223bcf52010547ab9b95d61f0c7b5d41, type: 3}
+  m_Name: RoleRevealGamePhase
+  m_EditorClassIdentifier: 
+  metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
+  lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
+  roleRevealScreen: {fileID: 0}
+  playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}

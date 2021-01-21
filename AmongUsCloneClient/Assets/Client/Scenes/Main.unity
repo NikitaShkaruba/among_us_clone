@@ -244,6 +244,7 @@ MonoBehaviour:
   metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
   mainMenuGamePhase: {fileID: 11400000, guid: 35986724e249bf048b03654746391693, type: 2}
   lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
+  roleRevealGamePhase: {fileID: 11400000, guid: 272a1c736ea29b846a24e84c0a0ae7ec, type: 2}
 --- !u!1 &1977709968
 GameObject:
   m_ObjectHideFlags: 0

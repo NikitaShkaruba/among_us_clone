@@ -16,5 +16,5 @@ EditorBuildSettings:
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Client/Scenes/RoleReveal.unity
-    guid: e1f31935209b67b408729910cf6b4108
+    guid: 20b06de15fcb73d4bbffe71de1547687
   m_configObjects: {}

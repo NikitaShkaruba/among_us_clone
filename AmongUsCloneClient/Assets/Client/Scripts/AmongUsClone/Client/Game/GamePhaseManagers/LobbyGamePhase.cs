@@ -105,7 +105,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                 }
             }
 
-            ScenesManager.SwitchScene(Scene.RoleReveal);
+            ScenesManager.LoadScene(Scene.RoleReveal);
 
             Logger.LogDebug($"Game has started. Impostors amount: {impostorsAmount}");
         }
