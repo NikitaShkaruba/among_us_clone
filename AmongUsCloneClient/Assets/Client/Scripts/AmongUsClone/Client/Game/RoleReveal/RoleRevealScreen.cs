@@ -46,6 +46,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
             }
 
             PlacePlayersIntoSlots(playersManager.controlledPlayer.information.isImposter);
+            playersManager.controlledPlayer.movable.isDisabled = true;
             playersContainer.SetActive(true);
 
             curtains.SetActive(true);
@@ -88,10 +89,6 @@ namespace AmongUsClone.Client.Game.RoleReveal
                 ReplaceDummyWithPlayer(playerDummyIndex, player);
 
                 player.nameLabel.gameObject.SetActive(false);
-                if (player.clientControllable != null)
-                {
-                    player.clientControllable.isDisabled = true;
-                }
 
                 playerDummyIndex++;
             }
@@ -103,7 +100,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
 
             player.transform.localPosition = dummy.transform.localPosition;
             player.transform.localScale = dummy.transform.localScale;
-            player.spriteRenderer.flipX = dummy.spriteRenderer.flipX;
+            player.spriteRenderer.flipX = dummy.spriteRenderer.flipX; // Todo: fix a bug with player flipX locking
             Logger.LogDebug($"Player {playerDummyIndex} sprite renderer's flip: {dummy.spriteRenderer.flipX}");
         }
 

@@ -201,6 +201,7 @@ MonoBehaviour:
   metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
   clientConnectionsListener: {fileID: 11400000, guid: fd5e10dbe18c1334182e7caddccc2ca8, type: 2}
   lobbyGamePhase: {fileID: 11400000, guid: 1b6423200ac2837428679aa22764623f, type: 2}
+  playGamePhase: {fileID: 11400000, guid: b0cf25932624c6b49ba943ae169eb140, type: 2}
 --- !u!4 &420639774
 Transform:
   m_ObjectHideFlags: 0

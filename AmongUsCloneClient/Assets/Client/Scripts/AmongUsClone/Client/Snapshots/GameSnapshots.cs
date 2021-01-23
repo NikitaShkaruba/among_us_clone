@@ -21,7 +21,7 @@ namespace AmongUsClone.Client.Snapshots
 
         public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
-            if (ScenesManager.GetActiveScene() != Scene.Lobby)
+            if (ScenesManager.GetActiveScene() == Scene.RoleReveal)
             {
                 return;
             }

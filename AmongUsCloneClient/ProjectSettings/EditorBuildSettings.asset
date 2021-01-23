@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Client/Scenes/RoleReveal.unity
     guid: 20b06de15fcb73d4bbffe71de1547687
+  - enabled: 1
+    path: Assets/Client/Scenes/Skeld.unity
+    guid: 4f7b685026da4a44da1f682ae23150cb
   m_configObjects: {}

@@ -1,5 +1,6 @@
 using System.Collections;
 using AmongUsClone.Client.Game.RoleReveal;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
 using UnityEngine;
@@ -11,9 +12,10 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     public class RoleRevealGamePhase : ScriptableObject
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
-        [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private RoleRevealScreen roleRevealScreen;
-        [SerializeField] private PlayersManager playersManager;
+
+        private const int SecondsForRoleExploration = GameConfiguration.SecondsForRoleExploration;
+        private const int SecondsBeforeRoleRevealing = GameConfiguration.SecondsForRoleExploration / 2;
 
         public void Initialize()
         {
@@ -22,14 +24,23 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             metaMonoBehaviours.coroutines.StartCoroutine(RevealRole());
             roleRevealScreen.ShelterPlayerGameObjects();
             roleRevealScreen.UpdateCamera();
+
             ScenesManager.UnloadScene(Scene.Lobby);
         }
 
         private IEnumerator RevealRole()
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(SecondsBeforeRoleRevealing);
 
             roleRevealScreen.ShowRole();
+            metaMonoBehaviours.coroutines.StartCoroutine(SwitchSceneToSkeld());
+        }
+
+        private static IEnumerator SwitchSceneToSkeld()
+        {
+            yield return new WaitForSeconds(SecondsForRoleExploration);
+
+            ScenesManager.LoadScene(Scene.Skeld);
         }
     }
 }

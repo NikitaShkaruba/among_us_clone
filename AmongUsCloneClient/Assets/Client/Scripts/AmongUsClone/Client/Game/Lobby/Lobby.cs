@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.Game.Lobby
 {
+    // Todo: decouple components from lobby prefab into lobby scene
     [RequireComponent(typeof(GameStartable))]
     public class Lobby : MonoBehaviour
     {

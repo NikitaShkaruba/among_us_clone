@@ -14,6 +14,7 @@ namespace AmongUsClone.Server
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private ClientConnectionsListener clientConnectionsListener;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayGamePhase playGamePhase;
 
         private void Start()
         {
@@ -35,6 +36,10 @@ namespace AmongUsClone.Server
             {
                 case Scene.Lobby:
                     lobbyGamePhase.Initialize();
+                    break;
+
+                case Scene.Skeld:
+                    playGamePhase.Initialize();
                     break;
             }
         }

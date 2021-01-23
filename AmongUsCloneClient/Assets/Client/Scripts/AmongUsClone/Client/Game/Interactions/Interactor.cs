@@ -55,7 +55,8 @@ namespace AmongUsClone.Client.Game.Interactions
         [CanBeNull]
         private Interactable FindClosestInteractableInRange()
         {
-            if (ScenesManager.GetActiveScene() == Scene.RoleReveal)
+            // Todo: fix a bug where player could try to interact with already unloaded object
+            if (ScenesManager.GetActiveScene() != Scene.Lobby)
             {
                 return null;
             }

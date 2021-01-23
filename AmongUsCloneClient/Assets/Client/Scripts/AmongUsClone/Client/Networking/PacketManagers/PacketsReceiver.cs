@@ -55,11 +55,9 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {
                 int myPlayerId = packet.ReadInt();
                 int maxPlayersAmount = packet.ReadInt();
-                int minRequiredPlayersAmountForGame = packet.ReadInt();
-                int secondsForGameLaunch = packet.ReadInt();
 
                 connectionToServer.FinishConnection(myPlayerId);
-                lobbyGamePhase.InitializeGameSettings(maxPlayersAmount, minRequiredPlayersAmountForGame, secondsForGameLaunch);
+                lobbyGamePhase.InitializeGameSettings(maxPlayersAmount);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
             };

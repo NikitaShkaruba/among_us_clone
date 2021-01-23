@@ -1,5 +1,6 @@
 using System;
 using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
@@ -25,8 +26,6 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             Packet packet = new Packet((int) packetTypeId);
             packet.Write(playerId);
             packet.Write(PlayersManager.MaxPlayerId + 1);
-            packet.Write(PlayersManager.MinRequiredPlayersAmountForGame);
-            packet.Write(PlayersManager.SecondsForGameLaunch);
 
             SendTcpPacket(playerId, packetTypeId, packet);
         }

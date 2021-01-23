@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AmongUsClone.Server.Networking;
+using AmongUsClone.Shared.Game;
 using UnityEngine;
 
 namespace AmongUsClone.Server.Game
@@ -10,8 +11,7 @@ namespace AmongUsClone.Server.Game
     {
         public const int MinPlayerId = 0;
         public const int MaxPlayerId = 9;
-        public const int MinRequiredPlayersAmountForGame = 4;
-        public const int SecondsForGameLaunch = 5;
+        public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
 
         public readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
     }

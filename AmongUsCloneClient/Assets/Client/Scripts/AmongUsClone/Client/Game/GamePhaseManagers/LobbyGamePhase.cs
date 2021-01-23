@@ -23,8 +23,8 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public Lobby.Lobby lobby;
 
         public int maxPlayersAmount;
-        public int minRequiredPlayersAmountForGame;
-        public int secondsForGameLaunch;
+        public int minRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
+        public int secondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
 
         public void Initialize()
         {
@@ -32,11 +32,9 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             lobby.gameObject.SetActive(false); // Make it hidden before a first player joins
         }
 
-        public void InitializeGameSettings(int maxPlayersAmount, int minRequiredPlayersAmountForGame, int secondsForGameLaunch)
+        public void InitializeGameSettings(int maxPlayersAmount)
         {
             this.maxPlayersAmount = maxPlayersAmount;
-            this.minRequiredPlayersAmountForGame = minRequiredPlayersAmountForGame;
-            this.secondsForGameLaunch = secondsForGameLaunch;
         }
 
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
@@ -63,6 +61,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         public void RemovePlayerFromLobby(int playerId)
         {
+            // Todo: move into a separate ScriptableObject
             if (!playersManager.players.ContainsKey(playerId))
             {
                 throw new Exception("Unable to remove non existent player");

@@ -9,6 +9,7 @@ using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Meta;
+using AmongUsClone.Shared.Scenes;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 using Random = System.Random;
@@ -24,6 +25,8 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private Lobby lobby;
+
+        public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
 
         public void Initialize()
         {
@@ -75,6 +78,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         public void DisconnectPlayer(int playerId)
         {
+            // Todo: move into a separate ScriptableObject
             if (!playersManager.clients.ContainsKey(playerId))
             {
                 Logger.LogNotice(LoggerSection.Connection, $"Skipping player {playerId} disconnect, because it is already disconnected");
@@ -92,6 +96,12 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
                 }
 
                 Logger.LogEvent(LoggerSection.Connection, $"Removed every player, because the host player {playerId} has disconnected");
+
+                // Get ready to accept fresh new players
+                if (ScenesManager.GetActiveScene() != Scene.Lobby)
+                {
+                    ScenesManager.SwitchScene(Scene.Lobby);
+                }
             }
             else
             {
@@ -124,7 +134,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         private IEnumerator StartGame()
         {
-            yield return new WaitForSeconds(PlayersManager.SecondsForGameLaunch);
+            yield return new WaitForSeconds(SecondsForGameLaunch);
 
             int[] impostorPlayerIds = GetImpostorPlayerIds();
             foreach (int impostorPlayerId in impostorPlayerIds)
@@ -133,6 +143,8 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             }
 
             packetsSender.SendGameStartedPacket(impostorPlayerIds);
+
+            ScenesManager.LoadScene(Scene.Skeld);
 
             Logger.LogEvent(SharedLoggerSection.GameStart, $"Game has started. Impostors: {string.Join(", ", impostorPlayerIds)}");
         }

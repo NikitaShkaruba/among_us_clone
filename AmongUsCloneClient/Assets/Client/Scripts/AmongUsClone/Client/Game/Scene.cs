@@ -5,5 +5,6 @@ namespace AmongUsClone.Client.Game
         public const string MainMenu = "MainMenu";
         public const string Lobby = "Lobby";
         public const string RoleReveal = "RoleReveal";
+        public const string Skeld = "Skeld";
     }
 }
