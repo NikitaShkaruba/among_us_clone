@@ -1,5 +1,6 @@
 using System;
 using System.Net.Sockets;
+using AmongUsClone.Client.Game.Meta;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Logging;
@@ -12,6 +13,7 @@ namespace AmongUsClone.Client.Networking
     {
         private readonly PacketsReceiver packetsReceiver;
         private readonly ConnectionToServer connectionToServer;
+        private readonly MetaMonoBehaviours metaMonoBehaviours;
 
         public TcpConnection(ConnectionToServer connectionToServer, PacketsReceiver packetsReceiver, MetaMonoBehaviours metaMonoBehaviours) : base(metaMonoBehaviours)
         {

@@ -18,6 +18,6 @@ MonoBehaviour:
   playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
   packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
   lobby: {fileID: 0}
-  maxPlayersAmount: 0
-  minRequiredPlayersAmountForGame: 0
-  secondsForGameLaunch: 0
+  maxPlayersAmount: 10
+  minRequiredPlayersAmountForGame: 4
+  secondsForGameLaunch: 5

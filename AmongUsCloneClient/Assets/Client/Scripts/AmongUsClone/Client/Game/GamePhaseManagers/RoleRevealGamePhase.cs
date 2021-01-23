@@ -1,5 +1,6 @@
 using System.Collections;
 using AmongUsClone.Client.Game.RoleReveal;
+using AmongUsClone.Client.Meta;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
@@ -22,8 +23,8 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             roleRevealScreen = FindObjectOfType<RoleRevealScreen>();
 
             metaMonoBehaviours.coroutines.StartCoroutine(RevealRole());
-            roleRevealScreen.ShelterPlayerGameObjects();
-            roleRevealScreen.UpdateCamera();
+            FindObjectOfType<GameObjectsCache>().CachePlayers();
+            RoleRevealScreen.UpdateCamera();
 
             ScenesManager.UnloadScene(Scene.Lobby);
         }

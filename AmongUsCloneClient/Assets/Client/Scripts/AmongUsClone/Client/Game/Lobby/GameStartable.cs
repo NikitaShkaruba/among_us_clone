@@ -40,7 +40,7 @@ namespace AmongUsClone.Client.Game.Lobby
 
         public void InitiateGameStart()
         {
-            secondsBeforeGameStartsLeft = lobbyGamePhase.secondsForGameLaunch;
+            secondsBeforeGameStartsLeft = LobbyGamePhase.SecondsForGameLaunch;
             gameStartsInLabel.text = GetGameStartsInLabelText();
             gameStartsInLabel.gameObject.SetActive(true);
             StartCoroutine(ProcessGameStartTick());

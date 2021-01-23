@@ -9,7 +9,7 @@ namespace AmongUsClone.Client.Game.Lobby
     [RequireComponent(typeof(GameStartable))]
     public class Lobby : MonoBehaviour
     {
-        public PlayersContainer playersContainer;
+        public GameObject playersContainer;
         public GameStartable gameStartable;
 
         public PlayersCounter playersCounter;

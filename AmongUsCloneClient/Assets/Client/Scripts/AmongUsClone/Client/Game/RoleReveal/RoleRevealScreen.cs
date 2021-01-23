@@ -1,8 +1,8 @@
 using System.Collections;
 using AmongUsClone.Client.Game.PlayerLogic;
+using AmongUsClone.Shared.Game;
 using UnityEngine;
 using UnityEngine.UI;
-using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.RoleReveal
 {
@@ -16,23 +16,16 @@ namespace AmongUsClone.Client.Game.RoleReveal
         [SerializeField] private Text ImpostorsAmountExplanationLabel;
         [SerializeField] private Text ImpostorsAmountLabel;
         [SerializeField] private GameObject playersContainer;
-        [SerializeField] private PlayerDummy[] playerDummies;
+        [SerializeField] private Player[] playerDummies;
         [SerializeField] private GameObject curtains;
         [SerializeField] private GameObject leftCurtain;
         [SerializeField] private GameObject rightCurtain;
 
         public float curtainOpeningSpeed = 0.1f;
 
-        public void ShelterPlayerGameObjects()
-        {
-            foreach (Player player in playersManager.players.Values)
-            {
-                player.transform.parent = playersContainer.transform;
-            }
-        }
-
         public void ShowRole()
         {
+            // Todo: fix blocking controlled player movement
             ShhhScreen.SetActive(false);
 
             if (playersManager.controlledPlayer.information.isImposter)
@@ -45,8 +38,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
                 CrewmateEnvironment.SetActive(true);
             }
 
-            PlacePlayersIntoSlots(playersManager.controlledPlayer.information.isImposter);
-            playersManager.controlledPlayer.movable.isDisabled = true;
+            UpdatePlayers(playersManager.controlledPlayer.information.isImposter);
             playersContainer.SetActive(true);
 
             curtains.SetActive(true);
@@ -63,8 +55,9 @@ namespace AmongUsClone.Client.Game.RoleReveal
             StartCoroutine(OpenCurtain());
         }
 
-        public void UpdateCamera()
+        public static void UpdateCamera()
         {
+            // Todo: Add different camera to every scene
             PlayerCamera playerCamera = FindObjectOfType<PlayerCamera>();
 
             playerCamera.target = null;
@@ -72,36 +65,35 @@ namespace AmongUsClone.Client.Game.RoleReveal
             playerCamera.shaking = false;
         }
 
-        private void PlacePlayersIntoSlots(bool impostorsOnly)
+        private void UpdatePlayers(bool impostorsOnly)
         {
             int playerDummyIndex = 0;
 
+            // Update colors of active dummies
             for (int playerId = 0; playerId < playersManager.players.Count; playerId++)
             {
                 Player player = playersManager.players[playerId];
 
                 if (impostorsOnly && !player.information.isImposter)
                 {
-                    player.gameObject.SetActive(false);
                     continue;
                 }
 
-                ReplaceDummyWithPlayer(playerDummyIndex, player);
+                UpdateDummyColor(playerDummyIndex, player.colorable.color);
+                playerDummyIndex++;
+            }
 
-                player.nameLabel.gameObject.SetActive(false);
-
+            // Hide not active dummies
+            while (playerDummyIndex < GameConfiguration.PlayersAmount)
+            {
+                playerDummies[playerDummyIndex].gameObject.SetActive(false);
                 playerDummyIndex++;
             }
         }
 
-        private void ReplaceDummyWithPlayer(int playerDummyIndex, Player player)
+        private void UpdateDummyColor(int playerDummyIndex, PlayerColor color)
         {
-            PlayerDummy dummy = playerDummies[playerDummyIndex];
-
-            player.transform.localPosition = dummy.transform.localPosition;
-            player.transform.localScale = dummy.transform.localScale;
-            player.spriteRenderer.flipX = dummy.spriteRenderer.flipX; // Todo: fix a bug with player flipX locking
-            Logger.LogDebug($"Player {playerDummyIndex} sprite renderer's flip: {dummy.spriteRenderer.flipX}");
+            playerDummies[playerDummyIndex].colorable.ChangeColor(color);
         }
 
         private void UpdateImpostorsAmountLabel()

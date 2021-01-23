@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using AmongUsClone.Client.Game.Meta;
 using AmongUsClone.Shared.Meta;
 using UnityEngine;
 

@@ -1,4 +1,5 @@
 using AmongUsClone.Client.Game.GamePhaseManagers;
+using AmongUsClone.Client.Game.Meta;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;

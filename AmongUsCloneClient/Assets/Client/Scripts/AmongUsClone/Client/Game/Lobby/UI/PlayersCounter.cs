@@ -23,7 +23,7 @@ namespace AmongUsClone.Client.Game.Lobby.UI
 
         private void UpdateLabel()
         {
-            textLabel.text = $"{playersManager.players.Count} / {lobbyGamePhase.maxPlayersAmount}";
+            textLabel.text = $"{playersManager.players.Count} / {LobbyGamePhase.MaxPlayersAmount}";
             textLabel.color = lobbyGamePhase.HasEnoughPlayersForGame() ? Color.white : Color.red;
         }
     }

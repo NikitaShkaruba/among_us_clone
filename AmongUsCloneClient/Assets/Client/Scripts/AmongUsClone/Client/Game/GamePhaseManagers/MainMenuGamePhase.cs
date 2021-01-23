@@ -1,3 +1,4 @@
+using AmongUsClone.Client.Game.Meta;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.UI.UiElements;

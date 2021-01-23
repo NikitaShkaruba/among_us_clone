@@ -54,10 +54,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             Action action = () =>
             {
                 int myPlayerId = packet.ReadInt();
-                int maxPlayersAmount = packet.ReadInt();
-
                 connectionToServer.FinishConnection(myPlayerId);
-                lobbyGamePhase.InitializeGameSettings(maxPlayersAmount);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Connected successfully to server. My player id is {myPlayerId}");
             };

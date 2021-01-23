@@ -22,19 +22,14 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         public Lobby.Lobby lobby;
 
-        public int maxPlayersAmount;
-        public int minRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
-        public int secondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
+        public const int MaxPlayersAmount = GameConfiguration.PlayersAmount;
+        public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
+        public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
 
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby.Lobby>();
             lobby.gameObject.SetActive(false); // Make it hidden before a first player joins
-        }
-
-        public void InitializeGameSettings(int maxPlayersAmount)
-        {
-            this.maxPlayersAmount = maxPlayersAmount;
         }
 
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
@@ -50,7 +45,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             GameObject chosenPlayerPrefab = isControlledPlayerConnecting ? clientControllablePlayerPrefab : playerPrefab;
             Player player = Instantiate(chosenPlayerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
             player.Initialize(playerId, playerName, playerColor, isPlayerHost);
-            lobby.playersContainer.PlacePlayerIntoPlayersContainer(player.gameObject);
+            player.transform.parent = lobby.playersContainer.transform;
             playersManager.AddPlayer(playerId, player);
 
             if (isControlledPlayerConnecting)
@@ -127,7 +122,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         public bool HasEnoughPlayersForGame()
         {
-            return playersManager.players.Count >= minRequiredPlayersAmountForGame;
+            return playersManager.players.Count >= MinRequiredPlayersAmountForGame;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace AmongUsClone.Server.Game
     public class PlayersManager : ScriptableObject
     {
         public const int MinPlayerId = 0;
-        public const int MaxPlayerId = 9;
+        public const int MaxPlayerId = GameConfiguration.PlayersAmount - 1;
         public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
 
         public readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
