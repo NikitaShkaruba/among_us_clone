@@ -38,6 +38,12 @@ namespace AmongUsClone.Client.Game
 
         public void RemovePlayer(int playerId)
         {
+            if (!players.ContainsKey(playerId))
+            {
+                throw new Exception("Unable to remove non existent player");
+            }
+
+            Destroy(players[playerId].gameObject);
             players.Remove(playerId);
             playersAmountChanged?.Invoke();
         }

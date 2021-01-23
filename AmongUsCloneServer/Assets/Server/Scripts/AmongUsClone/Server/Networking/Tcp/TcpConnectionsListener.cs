@@ -20,7 +20,6 @@ namespace AmongUsClone.Server.Networking.Tcp
         [SerializeField] private UdpClient udpClient;
         [SerializeField] private PacketsReceiver packetsReceiver;
         [SerializeField] private PacketsSender packetsSender;
-        [SerializeField] private LobbyGamePhase lobbyGamePhase;
 
         private TcpListener tcpListener;
 
@@ -47,7 +46,7 @@ namespace AmongUsClone.Server.Networking.Tcp
                     continue;
                 }
 
-                playersManager.clients[playerId] = new Client(playerId, udpClient, packetsReceiver, packetsSender, lobbyGamePhase, metaMonoBehaviours);
+                playersManager.clients[playerId] = new Client(playerId, udpClient, packetsReceiver, packetsSender, playersManager, metaMonoBehaviours);
                 playersManager.clients[playerId].ConnectTcp(tcpClient);
                 return;
             }

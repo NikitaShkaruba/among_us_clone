@@ -1,4 +1,5 @@
 using System.Net;
+using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
@@ -28,9 +29,9 @@ namespace AmongUsClone.Server.Networking
         private readonly UdpClient udpClient;
         private readonly PacketsReceiver packetsReceiver;
         private readonly PacketsSender packetsSender;
-        private readonly LobbyGamePhase lobbyGamePhase;
+        private readonly PlayersManager playersManager;
 
-        public Client(int playerId, UdpClient udpClient, PacketsReceiver packetsReceiver, PacketsSender packetsSender, LobbyGamePhase lobbyGamePhase, MetaMonoBehaviours metaMonoBehaviours)
+        public Client(int playerId, UdpClient udpClient, PacketsReceiver packetsReceiver, PacketsSender packetsSender, PlayersManager playersManager, MetaMonoBehaviours metaMonoBehaviours)
         {
             this.playerId = playerId;
 
@@ -41,7 +42,7 @@ namespace AmongUsClone.Server.Networking
             this.udpClient = udpClient;
             this.packetsReceiver = packetsReceiver;
             this.packetsSender = packetsSender;
-            this.lobbyGamePhase = lobbyGamePhase;
+            this.playersManager = playersManager;
         }
 
         /**
@@ -59,7 +60,7 @@ namespace AmongUsClone.Server.Networking
 
         public void ConnectTcp(TcpClient tcpClient)
         {
-            tcpConnection = new Tcp.TcpConnection(playerId, tcpClient, packetsReceiver, packetsSender, lobbyGamePhase, metaMonoBehaviours);
+            tcpConnection = new Tcp.TcpConnection(playerId, tcpClient, packetsReceiver, packetsSender, playersManager, metaMonoBehaviours);
             tcpConnection.InitializeCommunication();
         }
 

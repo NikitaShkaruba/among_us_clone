@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Snapshots;
@@ -21,6 +22,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         [SerializeField] private NetworkSimulation networkSimulation;
         [SerializeField] private GameSnapshots gameSnapshots;
         [SerializeField] private ConnectionToServer connectionToServer;
+        [SerializeField] private PlayersManager playersManager;
 
         private delegate void OnPacketReceivedCallback(Packet packet);
 
@@ -96,8 +98,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             Action action = () =>
             {
                 int playerId = packet.ReadInt();
-
-                lobbyGamePhase.RemovePlayerFromLobby(playerId);
+                playersManager.RemovePlayer(playerId);
 
                 Logger.LogEvent(LoggerSection.Connection, $"Player {playerId} has disconnected");
             };

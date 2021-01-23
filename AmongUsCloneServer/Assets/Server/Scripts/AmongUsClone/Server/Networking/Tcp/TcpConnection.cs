@@ -1,5 +1,6 @@
 using System;
 using System.Net.Sockets;
+using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking.PacketManagers;
@@ -14,10 +15,10 @@ namespace AmongUsClone.Server.Networking.Tcp
         private MetaMonoBehaviours metaMonoBehaviours;
         private PacketsReceiver packetsReceiver;
         private PacketsSender packetsSender;
-        private LobbyGamePhase lobbyGamePhase;
+        private PlayersManager playersManager;
         private readonly int playerId;
 
-        public TcpConnection(int playerId, TcpClient tcpClient, PacketsReceiver packetsReceiver, PacketsSender packetsSender, LobbyGamePhase lobbyGamePhase, MetaMonoBehaviours metaMonoBehaviours) : base(metaMonoBehaviours)
+        public TcpConnection(int playerId, TcpClient tcpClient, PacketsReceiver packetsReceiver, PacketsSender packetsSender, PlayersManager playersManager, MetaMonoBehaviours metaMonoBehaviours) : base(metaMonoBehaviours)
         {
             this.playerId = playerId;
             receivePacket = new Packet();
@@ -25,7 +26,7 @@ namespace AmongUsClone.Server.Networking.Tcp
 
             this.packetsReceiver = packetsReceiver;
             this.packetsSender = packetsSender;
-            this.lobbyGamePhase = lobbyGamePhase;
+            this.playersManager = playersManager;
             this.metaMonoBehaviours = metaMonoBehaviours;
 
             this.tcpClient = tcpClient;
@@ -48,7 +49,7 @@ namespace AmongUsClone.Server.Networking.Tcp
                 int byteLength = stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() => lobbyGamePhase.DisconnectPlayer(playerId));
+                    metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() => playersManager.DisconnectPlayer(playerId));
                     return;
                 }
 
@@ -63,7 +64,7 @@ namespace AmongUsClone.Server.Networking.Tcp
             catch (Exception exception)
             {
                 Logger.LogError(LoggerSection.Network, $"Error receiving TCP data: {exception}");
-                metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() => lobbyGamePhase.DisconnectPlayer(playerId));
+                metaMonoBehaviours.applicationCallbacks.ScheduleFixedUpdateAction(() => playersManager.DisconnectPlayer(playerId));
             }
         }
     }

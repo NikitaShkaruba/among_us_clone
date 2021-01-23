@@ -1,7 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
+using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game;
+using AmongUsClone.Shared.Scenes;
 using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game
 {
@@ -9,10 +14,53 @@ namespace AmongUsClone.Server.Game
     // [CreateAssetMenu(fileName = "PlayersManager", menuName = "PlayersManager")]
     public class PlayersManager : ScriptableObject
     {
+        [SerializeField] private PacketsSender packetsSender;
+
         public const int MinPlayerId = 0;
         public const int MaxPlayerId = GameConfiguration.PlayersAmount - 1;
         public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
 
         public readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
+
+        public void DisconnectPlayer(int playerId)
+        {
+            // Todo: move into a separate ScriptableObject
+            if (!clients.ContainsKey(playerId))
+            {
+                Logger.LogNotice(LoggerSection.Connection, $"Skipping player {playerId} disconnect, because it is already disconnected");
+                return;
+            }
+
+            Logger.LogEvent(LoggerSection.Connection, $"{clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
+
+            if (clients[playerId].player.information.isLobbyHost)
+            {
+                packetsSender.SendKickedPacket(playerId);
+                foreach (int playerIdToRemove in clients.Keys.ToList())
+                {
+                    RemovePlayerFromGame(playerIdToRemove);
+                }
+
+                Logger.LogEvent(LoggerSection.Connection, $"Removed every player, because the host player {playerId} has disconnected");
+
+                // Get ready to accept fresh new players
+                if (ScenesManager.GetActiveScene() != Scene.Lobby)
+                {
+                    ScenesManager.SwitchScene(Scene.Lobby);
+                }
+            }
+            else
+            {
+                packetsSender.SendPlayerDisconnectedPacket(playerId);
+                RemovePlayerFromGame(playerId);
+            }
+        }
+
+        private void RemovePlayerFromGame(int playerId)
+        {
+            PlayerColors.ReleasePlayerColor(playerId);
+            Destroy(clients[playerId].player.gameObject);
+            clients.Remove(playerId);
+        }
     }
 }

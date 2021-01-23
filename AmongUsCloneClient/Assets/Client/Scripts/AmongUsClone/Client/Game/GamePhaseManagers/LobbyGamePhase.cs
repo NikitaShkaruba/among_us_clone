@@ -54,18 +54,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             }
         }
 
-        public void RemovePlayerFromLobby(int playerId)
-        {
-            // Todo: move into a separate ScriptableObject
-            if (!playersManager.players.ContainsKey(playerId))
-            {
-                throw new Exception("Unable to remove non existent player");
-            }
-
-            Destroy(playersManager.players[playerId].gameObject);
-            playersManager.RemovePlayer(playerId);
-        }
-
         public void ChangePlayerColor(int playerId, PlayerColor playerColor)
         {
             playersManager.players[playerId].colorable.ChangeColor(playerColor);

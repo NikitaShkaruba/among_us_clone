@@ -76,40 +76,6 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             }
         }
 
-        public void DisconnectPlayer(int playerId)
-        {
-            // Todo: move into a separate ScriptableObject
-            if (!playersManager.clients.ContainsKey(playerId))
-            {
-                Logger.LogNotice(LoggerSection.Connection, $"Skipping player {playerId} disconnect, because it is already disconnected");
-                return;
-            }
-
-            Logger.LogEvent(LoggerSection.Connection, $"{playersManager.clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
-
-            if (playersManager.clients[playerId].player.information.isLobbyHost)
-            {
-                packetsSender.SendKickedPacket(playerId);
-                foreach (int playerIdToRemove in playersManager.clients.Keys.ToList())
-                {
-                    RemovePlayerFromGame(playerIdToRemove);
-                }
-
-                Logger.LogEvent(LoggerSection.Connection, $"Removed every player, because the host player {playerId} has disconnected");
-
-                // Get ready to accept fresh new players
-                if (ScenesManager.GetActiveScene() != Scene.Lobby)
-                {
-                    ScenesManager.SwitchScene(Scene.Lobby);
-                }
-            }
-            else
-            {
-                packetsSender.SendPlayerDisconnectedPacket(playerId);
-                RemovePlayerFromGame(playerId);
-            }
-        }
-
         public void SavePlayerInput(int playerId, PlayerInput playerInput)
         {
             playersManager.clients[playerId].player.remoteControllable.EnqueueInput(playerInput);
@@ -147,13 +113,6 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             ScenesManager.LoadScene(Scene.Skeld);
 
             Logger.LogEvent(SharedLoggerSection.GameStart, $"Game has started. Impostors: {string.Join(", ", impostorPlayerIds)}");
-        }
-
-        private void RemovePlayerFromGame(int playerId)
-        {
-            PlayerColors.ReleasePlayerColor(playerId);
-            Destroy(playersManager.clients[playerId].player.gameObject);
-            playersManager.clients.Remove(playerId);
         }
 
         private int[] GetImpostorPlayerIds()
