@@ -29,6 +29,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             {
                 player.transform.parent = skeld.playersContainer.transform;
                 player.transform.position = skeld.playerMeetingLocations[player.information.id].transform.position;
+
+                if (player.information.isImposter)
+                {
+                    player.nameLabel.color = Color.red;
+                }
             }
 
             playersManager.controlledPlayer.movable.isDisabled = false;
