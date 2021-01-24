@@ -18,9 +18,10 @@ namespace AmongUsClone.Client.Game.Lobby
 
         private int secondsBeforeGameStartsLeft;
 
-        private void Awake()
+        private void Start()
         {
             playersManager.playersAmountChanged += UpdateStartButtonOpacity;
+            UpdateStartButtonOpacity();
         }
 
         private void OnDestroy()

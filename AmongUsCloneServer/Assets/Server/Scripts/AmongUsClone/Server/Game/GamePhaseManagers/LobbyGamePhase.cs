@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using AmongUsClone.Server.Game.PlayerLogic;
-using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared;
@@ -36,22 +35,9 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            // Dummy with appropriate position, spriteRenderer.flipX from scene
-            Player lobbyPlayerDummy = lobby.playerDummies[playerId];
-
-            Vector2 playerPosition = lobbyPlayerDummy.transform.position;
+            Vector2 playerPosition = lobby.playerSpawnLocations[playerId].position;
             Player player = Instantiate(playerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
-            player.spriteRenderer.flipX = lobbyPlayerDummy.spriteRenderer.flipX;
-
-            PlayersContainer playersContainer = FindObjectOfType<PlayersContainer>();
-            if (playersContainer == null)
-            {
-                Logger.LogError(LoggerSection.Initialization, "Unable to find PlayersContainer object");
-            }
-            else
-            {
-                playersContainer.PlacePlayerIntoPlayersContainer(player.gameObject);
-            }
+            player.transform.parent = lobby.playersContainer.transform;
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
             bool isLobbyHost = playerId == PlayersManager.MinPlayerId;

@@ -50,7 +50,6 @@ namespace AmongUsClone.Shared.Scenes
             UnloadScene(sceneToUnload.name);
         }
 
-        // ReSharper disable once MemberCanBeMadeStatic.Global
         public string GetActiveScene()
         {
             return SceneManager.GetActiveScene().name;
