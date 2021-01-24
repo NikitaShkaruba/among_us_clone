@@ -83,7 +83,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
             }
 
             // Hide not active dummies
-            while (playerDummyIndex < GameConfiguration.PlayersAmount)
+            while (playerDummyIndex < GameConfiguration.MaxPlayersAmount)
             {
                 playerDummies[playerDummyIndex].gameObject.SetActive(false);
                 playerDummyIndex++;

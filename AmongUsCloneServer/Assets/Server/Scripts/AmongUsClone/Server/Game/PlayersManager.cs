@@ -18,8 +18,7 @@ namespace AmongUsClone.Server.Game
         [SerializeField] private PacketsSender packetsSender;
 
         public const int MinPlayerId = 0;
-        public const int MaxPlayerId = GameConfiguration.PlayersAmount - 1;
-        public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
+        public const int MaxPlayerId = GameConfiguration.MaxPlayersAmount - 1;
 
         public readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
 

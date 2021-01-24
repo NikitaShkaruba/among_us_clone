@@ -30,7 +30,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         private List<Action> onSceneLoadedActions = new List<Action>();
         private bool sceneLoadRequested;
 
-        public const int MaxPlayersAmount = GameConfiguration.PlayersAmount;
+        public const int MaxPlayersAmount = GameConfiguration.MaxPlayersAmount;
         public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
 
