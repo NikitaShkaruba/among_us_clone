@@ -80,6 +80,12 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         public void ScheduleGameStart()
         {
+            if (playersManager.clients.Count < GameConfiguration.MinRequiredPlayersAmountForGame)
+            {
+                Logger.LogError(SharedLoggerSection.GameStart, "Attempt to start a game with too few players in it");
+                return;
+            }
+
             packetsSender.SendGameStartsPacket();
             metaMonoBehaviours.coroutines.StartCoroutine(StartGame());
             Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
