@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Game.PlayerLogic;
@@ -66,7 +67,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             const ServerPacketType packetType = ServerPacketType.GameSnapshot;
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 if (!client.IsFullyInitialized())
                 {
@@ -140,7 +141,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             packet.WriteLength();
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 client.SendTcpPacket(packet);
             }
@@ -153,7 +154,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             packet.WriteLength();
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 if (client.playerId == ignoredPlayerId)
                 {
@@ -179,7 +180,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             packet.WriteLength();
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 client.SendUdpPacket(packet);
             }
@@ -192,7 +193,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             packet.WriteLength();
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 if (client.playerId == ignoredPlayerId)
                 {

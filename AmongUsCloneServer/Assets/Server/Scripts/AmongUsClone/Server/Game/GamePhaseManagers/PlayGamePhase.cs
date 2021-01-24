@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.Maps;
@@ -30,7 +31,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         private void PlacePlayersIntoMeetingPositions()
         {
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 client.player.transform.parent = skeld.playersContainer.transform;
                 client.player.transform.position = skeld.playerMeetingLocations[client.playerId].transform.position;
@@ -42,7 +43,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         {
             yield return new WaitForSeconds(SecondsForRoleExploration);
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 client.player.movable.isDisabled = false;
             }

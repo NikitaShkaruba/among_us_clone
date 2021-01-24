@@ -1,3 +1,4 @@
+using System.Linq;
 using AmongUsClone.Server.Networking;
 using TMPro;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace AmongUsClone.Server.Game.UI.Debug
         {
             string labelText = "Last processed inputs:\n";
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 if (!client.IsFullyInitialized())
                 {

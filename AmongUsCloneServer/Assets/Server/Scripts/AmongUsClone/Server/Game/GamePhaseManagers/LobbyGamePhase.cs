@@ -58,7 +58,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
             playersManager.clients[playerId].FinishInitialization(player);
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (Client client in playersManager.clients.Values.ToList())
             {
                 if (!client.IsFullyInitialized())
                 {
