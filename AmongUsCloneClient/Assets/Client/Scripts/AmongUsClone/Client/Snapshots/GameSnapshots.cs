@@ -1,6 +1,5 @@
 using System.Linq;
 using AmongUsClone.Client.Game;
-using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.PlayerLogic;
@@ -16,7 +15,7 @@ namespace AmongUsClone.Client.Snapshots
     // [CreateAssetMenu(fileName = "GameSnapshots", menuName = "GameSnapshots")]
     public class GameSnapshots : ScriptableObject
     {
-        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
 
         public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
@@ -112,14 +111,14 @@ namespace AmongUsClone.Client.Snapshots
             Logger.LogEvent(LoggerSection.ServerReconciliation, $"Reconciled position with the server position. SnapshotId: {gameSnapshot.id}. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {incorrectClientPosition}.");
         }
 
-        private static bool ShouldProcessServerSnapshots()
+        private bool ShouldProcessServerSnapshots()
         {
             string[] activeScenes = {
                 Scene.Lobby,
                 Scene.Skeld
             };
 
-            return activeScenes.Contains(ScenesManager.GetActiveScene());
+            return activeScenes.Contains(scenesManager.GetActiveScene());
         }
     }
 }

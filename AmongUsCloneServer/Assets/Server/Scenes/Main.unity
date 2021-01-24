@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
+  scenesManager: {fileID: 11400000, guid: e5db509cc25877842ba67a5005d280f9, type: 2}
   clientConnectionsListener: {fileID: 11400000, guid: fd5e10dbe18c1334182e7caddccc2ca8, type: 2}
   lobbyGamePhase: {fileID: 11400000, guid: 1b6423200ac2837428679aa22764623f, type: 2}
   playGamePhase: {fileID: 11400000, guid: b0cf25932624c6b49ba943ae169eb140, type: 2}

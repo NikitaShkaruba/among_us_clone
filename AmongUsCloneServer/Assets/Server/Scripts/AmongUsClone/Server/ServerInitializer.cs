@@ -12,6 +12,7 @@ namespace AmongUsClone.Server
     public class ServerInitializer : MonoBehaviour
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private ClientConnectionsListener clientConnectionsListener;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private PlayGamePhase playGamePhase;
@@ -21,17 +22,15 @@ namespace AmongUsClone.Server
             Logger.Initialize(new[] {LoggerSection.GameSnapshots, LoggerSection.Network}, true);
             Logger.LogEvent(LoggerSection.Initialization, "Started server initialization");
 
-            ScenesManager.Initialize(SceneInitializeCallbacks);
+            scenesManager.Initialize(ScenesInitializationCallback);
             metaMonoBehaviours.Initialize();
             clientConnectionsListener.StartListening();
 
-            ScenesManager.LoadScene(Scenes.Lobby);
+            scenesManager.LoadScene(Scenes.Lobby);
         }
 
-        private void SceneInitializeCallbacks(UnityEngine.SceneManagement.Scene scene, LoadSceneMode loadSceneMode)
+        private void ScenesInitializationCallback(UnityEngine.SceneManagement.Scene scene, LoadSceneMode loadSceneMode)
         {
-            SceneManager.SetActiveScene(scene);
-
             switch (scene.name)
             {
                 case Scene.Lobby:

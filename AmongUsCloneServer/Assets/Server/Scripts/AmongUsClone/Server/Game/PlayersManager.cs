@@ -14,6 +14,7 @@ namespace AmongUsClone.Server.Game
     // [CreateAssetMenu(fileName = "PlayersManager", menuName = "PlayersManager")]
     public class PlayersManager : ScriptableObject
     {
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PacketsSender packetsSender;
 
         public const int MinPlayerId = 0;
@@ -44,9 +45,9 @@ namespace AmongUsClone.Server.Game
                 Logger.LogEvent(LoggerSection.Connection, $"Removed every player, because the host player {playerId} has disconnected");
 
                 // Get ready to accept fresh new players
-                if (ScenesManager.GetActiveScene() != Scene.Lobby)
+                if (scenesManager.GetActiveScene() != Scene.Lobby)
                 {
-                    ScenesManager.SwitchScene(Scene.Lobby);
+                    scenesManager.SwitchScene(Scene.Lobby);
                 }
             }
             else

@@ -23,17 +23,15 @@ namespace AmongUsClone.Client
             Logger.Initialize(new[] {LoggerSection.Network, LoggerSection.GameSnapshots}, true);
             Logger.LogEvent(LoggerSection.Initialization, "Started client initialization");
 
-            scenesManager.Initialize(SceneInitializeCallbacks);
+            scenesManager.Initialize(ScenesInitializationCallback);
             metaMonoBehaviours.Initialize();
             Logger.LogEvent(LoggerSection.Initialization, "Initialized meta mono behaviours");
 
             scenesManager.LoadScene(Scene.MainMenu);
         }
 
-        private void SceneInitializeCallbacks(UnityEngine.SceneManagement.Scene scene, LoadSceneMode loadedSceneMode)
+        private void ScenesInitializationCallback(UnityEngine.SceneManagement.Scene scene, LoadSceneMode loadedSceneMode)
         {
-            SceneManager.SetActiveScene(scene);
-
             switch (scene.name)
             {
                 case Scene.MainMenu:

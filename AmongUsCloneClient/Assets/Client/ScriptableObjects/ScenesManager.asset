@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ca2c1503a3c4074ab1a16eeb889ae5e, type: 3}
-  m_Name: PlayersManager
+  m_Script: {fileID: 11500000, guid: a53dbc60221c492cb5ac9151ba2f46ba, type: 3}
+  m_Name: ScenesManager
   m_EditorClassIdentifier: 
-  scenesManager: {fileID: 11400000, guid: e5db509cc25877842ba67a5005d280f9, type: 2}
-  packetsSender: {fileID: 11400000, guid: 01e5ca764c91ea547a70c58b861cd0c5, type: 2}

@@ -20,10 +20,11 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
     // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
     public class LobbyGamePhase : ScriptableObject
     {
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private GameObject playerPrefab;
-        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private Lobby lobby;
 
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
@@ -110,7 +111,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
             packetsSender.SendGameStartedPacket(impostorPlayerIds);
 
-            ScenesManager.LoadScene(Scene.Skeld);
+            scenesManager.LoadScene(Scene.Skeld);
 
             Logger.LogEvent(SharedLoggerSection.GameStart, $"Game has started. Impostors: {string.Join(", ", impostorPlayerIds)}");
         }

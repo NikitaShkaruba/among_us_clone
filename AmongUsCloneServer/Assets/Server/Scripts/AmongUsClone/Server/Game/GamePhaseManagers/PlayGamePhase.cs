@@ -14,6 +14,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
     public class PlayGamePhase : ScriptableObject
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private Skeld skeld;
 
@@ -26,7 +27,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             PlacePlayersIntoMeetingPositions();
             metaMonoBehaviours.coroutines.StartCoroutine(UnlockPlayerMovement());
 
-            ScenesManager.UnloadScene(Scene.Lobby);
+            scenesManager.UnloadScene(Scene.Lobby);
         }
 
         private void PlacePlayersIntoMeetingPositions()

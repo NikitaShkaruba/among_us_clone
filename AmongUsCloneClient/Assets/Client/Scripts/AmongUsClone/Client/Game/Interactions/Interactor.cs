@@ -63,7 +63,6 @@ namespace AmongUsClone.Client.Game.Interactions
         [CanBeNull]
         private Interactable FindClosestInteractableInRange()
         {
-            // Todo: fix a bug where player could try to interact with already unloaded object
             float distanceToClosesInteractable = float.PositiveInfinity;
             Interactable closestInteractable = null;
 

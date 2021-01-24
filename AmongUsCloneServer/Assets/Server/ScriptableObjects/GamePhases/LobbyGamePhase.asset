@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235e2ca361e34cfc8e6f223daec885d2, type: 3}
   m_Name: LobbyGamePhase
   m_EditorClassIdentifier: 
+  metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
+  scenesManager: {fileID: 11400000, guid: e5db509cc25877842ba67a5005d280f9, type: 2}
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
   packetsSender: {fileID: 11400000, guid: 01e5ca764c91ea547a70c58b861cd0c5, type: 2}
   playerPrefab: {fileID: 4489031036040563366, guid: 30874e6d32314eb4c8d642674a296f6f, type: 3}
-  metaMonoBehaviours: {fileID: 11400000, guid: 964904e889af78641b067eaf831d4823, type: 2}
   lobby: {fileID: 0}
