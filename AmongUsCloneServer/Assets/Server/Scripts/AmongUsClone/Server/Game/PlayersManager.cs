@@ -25,7 +25,6 @@ namespace AmongUsClone.Server.Game
 
         public void DisconnectPlayer(int playerId)
         {
-            // Todo: move into a separate ScriptableObject
             if (!clients.ContainsKey(playerId))
             {
                 Logger.LogNotice(LoggerSection.Connection, $"Skipping player {playerId} disconnect, because it is already disconnected");
