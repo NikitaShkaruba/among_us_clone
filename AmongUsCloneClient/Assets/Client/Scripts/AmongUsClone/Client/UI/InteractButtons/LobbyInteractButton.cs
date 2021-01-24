@@ -22,6 +22,11 @@ namespace AmongUsClone.Client.UI.InteractButtons
 
         private void OnDestroy()
         {
+            if (interactor == null)
+            {
+                return;
+            }
+
             interactor.newInteractableChosen -= UpdateImage;
         }
 
