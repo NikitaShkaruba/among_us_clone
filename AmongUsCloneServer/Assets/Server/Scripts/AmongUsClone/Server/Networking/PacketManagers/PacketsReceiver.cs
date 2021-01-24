@@ -4,6 +4,7 @@ using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Networking;
@@ -46,6 +47,14 @@ namespace AmongUsClone.Server.Networking.PacketManagers
         {
             int packetPlayerId = packet.ReadInt();
             string userName = packet.ReadString();
+            string userApiVersion = packet.ReadString();
+
+            if (userApiVersion != GameConfiguration.ApiVersion)
+            {
+                playersManager.clients.Remove(playerId);
+                Logger.LogError(LoggerSection.Connection, $"Unable to add a client with old version ({userApiVersion}) to the game");
+                return;
+            }
 
             if (playerId != packetPlayerId)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using AmongUsClone.Client.Game.GamePhaseManagers;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
@@ -24,6 +25,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 Packet packet = new Packet((int) clientPacketType);
                 packet.Write(connectionToServer.myPlayerId);
                 packet.Write(mainMenuGamePhase.mainMenu.userNameField.text);
+                packet.Write(GameConfiguration.ApiVersion);
 
                 connectionToServer.SendTcpPacket(clientPacketType, packet);
             };
