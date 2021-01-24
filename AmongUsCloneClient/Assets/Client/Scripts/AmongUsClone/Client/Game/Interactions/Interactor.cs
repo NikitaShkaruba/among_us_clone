@@ -25,7 +25,7 @@ namespace AmongUsClone.Client.Game.Interactions
 
         private void Start()
         {
-            scenesManager.onScenesUpdate += CacheInteractables;
+            scenesManager.onSceneUpdate += CacheInteractables;
             CacheInteractables();
         }
 

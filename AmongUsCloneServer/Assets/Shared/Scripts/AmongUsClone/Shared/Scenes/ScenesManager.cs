@@ -15,14 +15,21 @@ namespace AmongUsClone.Shared.Scenes
     // [CreateAssetMenu(fileName = "ScenesManager", menuName = "ScenesManager")]
     public class ScenesManager : ScriptableObject
     {
-        public Action onScenesUpdate;
+        public Action onSceneUpdate;
+        private Action customSceneLoadedCallback;
 
-        public void Initialize(UnityAction<Scene, LoadSceneMode> scenesInitializationCallback)
+        public void Initialize(UnityAction<Scene, LoadSceneMode> defaultScenesInitializationCallback)
         {
             SceneManager.sceneLoaded += (scene, loadSceneMode) =>
             {
                 SceneManager.SetActiveScene(scene);
-                scenesInitializationCallback(scene, loadSceneMode);
+
+                defaultScenesInitializationCallback(scene, loadSceneMode);
+
+                if (customSceneLoadedCallback != null)
+                {
+                    CallCustomSceneLoadedCallback();
+                }
             };
         }
 
@@ -31,7 +38,7 @@ namespace AmongUsClone.Shared.Scenes
             SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
             Logger.LogEvent(SharedLoggerSection.ScenesManager, $"Loaded scene {sceneName}");
 
-            onScenesUpdate?.Invoke();
+            onSceneUpdate?.Invoke();
         }
 
         public void UnloadScene(string sceneName)
@@ -39,11 +46,13 @@ namespace AmongUsClone.Shared.Scenes
             SceneManager.UnloadSceneAsync(sceneName);
             Logger.LogEvent(SharedLoggerSection.ScenesManager, $"Unloaded scene {sceneName}");
 
-            onScenesUpdate?.Invoke();
+            onSceneUpdate?.Invoke();
         }
 
-        public void SwitchScene(string sceneName)
+        public void SwitchScene(string sceneName, Action customSceneLoadedCallback = null)
         {
+            this.customSceneLoadedCallback = customSceneLoadedCallback;
+
             Scene sceneToUnload = SceneManager.GetActiveScene();
 
             LoadScene(sceneName);
@@ -53,6 +62,12 @@ namespace AmongUsClone.Shared.Scenes
         public string GetActiveScene()
         {
             return SceneManager.GetActiveScene().name;
+        }
+
+        private void CallCustomSceneLoadedCallback()
+        {
+            customSceneLoadedCallback();
+            customSceneLoadedCallback = null;
         }
     }
 }

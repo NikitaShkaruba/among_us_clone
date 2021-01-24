@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
+using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -13,6 +16,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
     public class LobbyGamePhase : ScriptableObject
     {
+        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PacketsSender packetsSender;
@@ -23,6 +27,9 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         public Lobby.Lobby lobby;
 
+        private List<Action> onSceneLoadedActions = new List<Action>();
+        private bool sceneLoadRequested;
+
         public const int MaxPlayersAmount = GameConfiguration.PlayersAmount;
         public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
@@ -30,17 +37,16 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby.Lobby>();
-            lobby.gameObject.SetActive(false); // Make it hidden before a first player joins
         }
 
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
         {
             bool isControlledPlayerConnecting = playerId == connectionToServer.myPlayerId;
 
-            if (lobby.gameObject.activeSelf == false)
+            if (lobby == false)
             {
-                scenesManager.UnloadScene(Scene.MainMenu);
-                lobby.gameObject.SetActive(true);
+                InitializeLobby(playerId, playerName, playerColor, playerPosition, isPlayerHost);
+                return;
             }
 
             GameObject chosenPlayerPrefab = isControlledPlayerConnecting ? clientControllablePlayerPrefab : playerPrefab;
@@ -91,6 +97,29 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             scenesManager.LoadScene(Scene.RoleReveal);
 
             Logger.LogDebug($"Game has started. Impostors amount: {impostorsAmount}");
+        }
+
+        private void InitializeLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
+        {
+            // We cannot instantly load a scene and then add a player to it - this is made at the next frame.
+            // In order to solve it, we switch a scene and pass a callback where all wanted players will be added
+            onSceneLoadedActions.Add(() => AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerHost));
+
+            if (!sceneLoadRequested)
+            {
+                scenesManager.SwitchScene(Scene.Lobby, OnLobbySceneLoaded);
+                sceneLoadRequested = true;
+            }
+        }
+
+        private void OnLobbySceneLoaded()
+        {
+            foreach (Action onSceneLoadAction in onSceneLoadedActions)
+            {
+                onSceneLoadAction();
+            }
+
+            sceneLoadRequested = false;
         }
 
         private void InitializeControlledPlayer(Player player)

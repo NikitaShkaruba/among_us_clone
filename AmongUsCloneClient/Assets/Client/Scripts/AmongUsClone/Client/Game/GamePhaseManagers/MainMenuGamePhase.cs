@@ -36,7 +36,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             Logger.LogEvent(LoggerSection.Connection, "Connecting to a server");
             connectionToServer.Connect();
             metaMonoBehaviours.applicationCallbacks.ScheduleOnApplicationQuitActions(OnApplicationQuit);
-            scenesManager.LoadScene(Scene.Lobby);
         }
 
         // Unity holds some data between running game instances, so we need to cleanup by hand
