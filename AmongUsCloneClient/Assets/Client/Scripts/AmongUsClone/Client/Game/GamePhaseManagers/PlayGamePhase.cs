@@ -28,9 +28,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             {
                 player.transform.parent = skeld.playersContainer.transform;
                 player.transform.position = skeld.playerMeetingLocations[player.information.id].transform.position;
-                player.transform.localScale = new Vector3(1.7f, 1.7f, 0f); // Todo: remove this unconvenient 'scale back', 'name label activation' actions
-                player.nameLabel.gameObject.SetActive(true);
-                player.gameObject.SetActive(true);
             }
 
             playersManager.controlledPlayer.movable.isDisabled = false;

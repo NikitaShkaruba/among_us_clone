@@ -1790,11 +1790,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
-  ShhhScreen: {fileID: 786053106}
-  CrewmateEnvironment: {fileID: 1057333425}
-  ImpostorEnvironment: {fileID: 1798235767}
-  ImpostorsAmountExplanationLabel: {fileID: 919484744}
-  ImpostorsAmountLabel: {fileID: 659942756}
+  shhhScreen: {fileID: 786053106}
+  crewmateEnvironment: {fileID: 1057333425}
+  impostorEnvironment: {fileID: 1798235767}
+  impostorsAmountExplanationLabel: {fileID: 919484744}
+  impostorsAmountLabel: {fileID: 659942756}
   playersContainer: {fileID: 632898366}
   playerDummies:
   - {fileID: 1371340418}

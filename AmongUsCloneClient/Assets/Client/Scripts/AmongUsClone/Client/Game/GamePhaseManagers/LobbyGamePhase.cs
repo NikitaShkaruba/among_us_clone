@@ -1,4 +1,3 @@
-using System;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.Networking.PacketManagers;

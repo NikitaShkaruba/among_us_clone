@@ -10,11 +10,11 @@ namespace AmongUsClone.Client.Game.RoleReveal
     {
         [SerializeField] private PlayersManager playersManager;
 
-        [SerializeField] private GameObject ShhhScreen;
-        [SerializeField] private GameObject CrewmateEnvironment;
-        [SerializeField] private GameObject ImpostorEnvironment;
-        [SerializeField] private Text ImpostorsAmountExplanationLabel;
-        [SerializeField] private Text ImpostorsAmountLabel;
+        [SerializeField] private GameObject shhhScreen;
+        [SerializeField] private GameObject crewmateEnvironment;
+        [SerializeField] private GameObject impostorEnvironment;
+        [SerializeField] private Text impostorsAmountExplanationLabel;
+        [SerializeField] private Text impostorsAmountLabel;
         [SerializeField] private GameObject playersContainer;
         [SerializeField] private Player[] playerDummies;
         [SerializeField] private GameObject curtains;
@@ -25,17 +25,16 @@ namespace AmongUsClone.Client.Game.RoleReveal
 
         public void ShowRole()
         {
-            // Todo: fix blocking controlled player movement
-            ShhhScreen.SetActive(false);
+            shhhScreen.SetActive(false);
 
             if (playersManager.controlledPlayer.information.isImposter)
             {
-                ImpostorEnvironment.SetActive(true);
+                impostorEnvironment.SetActive(true);
             }
             else
             {
                 UpdateImpostorsAmountLabel();
-                CrewmateEnvironment.SetActive(true);
+                crewmateEnvironment.SetActive(true);
             }
 
             UpdatePlayers(playersManager.controlledPlayer.information.isImposter);
@@ -47,7 +46,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
 
         private IEnumerator OpenCurtain()
         {
-            yield return new WaitForSeconds(0.001f);
+            yield return new WaitForEndOfFrame();
 
             leftCurtain.transform.position -= new Vector3(curtainOpeningSpeed, 0f, 0f);
             rightCurtain.transform.position += new Vector3(curtainOpeningSpeed, 0f, 0f);
@@ -100,13 +99,13 @@ namespace AmongUsClone.Client.Game.RoleReveal
         {
             if (playersManager.impostorsAmount == 1)
             {
-                ImpostorsAmountExplanationLabel.text = "There is                   among us";
-                ImpostorsAmountLabel.text = "an imposter";
+                impostorsAmountExplanationLabel.text = "There is                   among us";
+                impostorsAmountLabel.text = "an imposter";
             }
             else
             {
-                ImpostorsAmountExplanationLabel.text = "There are                     among us";
-                ImpostorsAmountLabel.text = $" {playersManager.impostorsAmount} impostors";
+                impostorsAmountExplanationLabel.text = "There are                     among us";
+                impostorsAmountLabel.text = $" {playersManager.impostorsAmount} impostors";
             }
         }
     }
