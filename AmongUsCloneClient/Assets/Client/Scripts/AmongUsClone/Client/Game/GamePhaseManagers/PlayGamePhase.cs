@@ -10,6 +10,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     public class PlayGamePhase : ScriptableObject
     {
         [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private Skeld skeld;
 
         public void Initialize()
@@ -19,7 +20,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             InitializePlayers();
             SetupCamera();
 
-            ScenesManager.UnloadScene(Scene.RoleReveal);
+            scenesManager.UnloadScene(Scene.RoleReveal);
         }
 
         private void InitializePlayers()

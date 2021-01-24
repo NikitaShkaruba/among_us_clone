@@ -1,5 +1,4 @@
 using AmongUsClone.Client.Game.GamePhaseManagers;
-using AmongUsClone.Client.Game.Meta;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
@@ -13,6 +12,7 @@ namespace AmongUsClone.Client
     public class ClientInitializer : MonoBehaviour
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private RoleRevealGamePhase roleRevealGamePhase;
@@ -23,11 +23,11 @@ namespace AmongUsClone.Client
             Logger.Initialize(new[] {LoggerSection.Network, LoggerSection.GameSnapshots}, true);
             Logger.LogEvent(LoggerSection.Initialization, "Started client initialization");
 
-            ScenesManager.Initialize(SceneInitializeCallbacks);
+            scenesManager.Initialize(SceneInitializeCallbacks);
             metaMonoBehaviours.Initialize();
             Logger.LogEvent(LoggerSection.Initialization, "Initialized meta mono behaviours");
 
-            ScenesManager.LoadScene(Scene.MainMenu);
+            scenesManager.LoadScene(Scene.MainMenu);
         }
 
         private void SceneInitializeCallbacks(UnityEngine.SceneManagement.Scene scene, LoadSceneMode loadedSceneMode)

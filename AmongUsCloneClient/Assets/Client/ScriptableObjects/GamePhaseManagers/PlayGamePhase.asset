@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PlayGamePhase
   m_EditorClassIdentifier: 
   playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
+  scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
   skeld: {fileID: 0}

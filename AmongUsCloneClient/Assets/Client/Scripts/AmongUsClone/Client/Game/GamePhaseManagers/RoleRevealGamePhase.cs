@@ -13,6 +13,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     public class RoleRevealGamePhase : ScriptableObject
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private RoleRevealScreen roleRevealScreen;
 
         private const int SecondsForRoleExploration = GameConfiguration.SecondsForRoleExploration;
@@ -26,7 +27,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             FindObjectOfType<GameObjectsCache>().CachePlayers();
             RoleRevealScreen.UpdateCamera();
 
-            ScenesManager.UnloadScene(Scene.Lobby);
+            scenesManager.UnloadScene(Scene.Lobby);
         }
 
         private IEnumerator RevealRole()
@@ -37,11 +38,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             metaMonoBehaviours.coroutines.StartCoroutine(SwitchSceneToSkeld());
         }
 
-        private static IEnumerator SwitchSceneToSkeld()
+        private IEnumerator SwitchSceneToSkeld()
         {
             yield return new WaitForSeconds(SecondsForRoleExploration);
 
-            ScenesManager.LoadScene(Scene.Skeld);
+            scenesManager.LoadScene(Scene.Skeld);
         }
     }
 }

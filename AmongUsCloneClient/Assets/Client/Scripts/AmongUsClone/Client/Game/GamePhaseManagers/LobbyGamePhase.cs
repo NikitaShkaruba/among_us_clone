@@ -13,11 +13,13 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
     public class LobbyGamePhase : ScriptableObject
     {
+        [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private ScenesManager scenesManager;
+        [SerializeField] private PacketsSender packetsSender;
+        [SerializeField] private ConnectionToServer connectionToServer;
+
         [SerializeField] private GameObject clientControllablePlayerPrefab;
         [SerializeField] private GameObject playerPrefab;
-        [SerializeField] private ConnectionToServer connectionToServer;
-        [SerializeField] private PlayersManager playersManager;
-        [SerializeField] private PacketsSender packetsSender;
 
         public Lobby.Lobby lobby;
 
@@ -37,7 +39,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
             if (lobby.gameObject.activeSelf == false)
             {
-                ScenesManager.UnloadScene(Scene.MainMenu);
+                scenesManager.UnloadScene(Scene.MainMenu);
                 lobby.gameObject.SetActive(true);
             }
 
@@ -86,7 +88,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                 }
             }
 
-            ScenesManager.LoadScene(Scene.RoleReveal);
+            scenesManager.LoadScene(Scene.RoleReveal);
 
             Logger.LogDebug($"Game has started. Impostors amount: {impostorsAmount}");
         }

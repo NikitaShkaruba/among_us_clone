@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using AmongUsClone.Client.Game;
-using AmongUsClone.Client.Game.Meta;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Meta;
@@ -26,6 +25,7 @@ namespace AmongUsClone.Client.Networking
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private PacketsReceiver packetsReceiver;
         [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private ScenesManager scenesManager;
 
         private TcpConnection tcpConnection;
         private UdpConnection udpConnection;
@@ -62,7 +62,7 @@ namespace AmongUsClone.Client.Networking
             udpConnection.CloseConnection();
             udpConnection = null;
 
-            ScenesManager.SwitchScene(Scene.MainMenu);
+            scenesManager.SwitchScene(Scene.MainMenu);
             playersManager.ClearPlayers();
 
             Logger.LogEvent(LoggerSection.Connection, "Disconnected from the server");

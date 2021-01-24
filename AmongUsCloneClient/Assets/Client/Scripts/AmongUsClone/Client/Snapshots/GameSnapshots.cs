@@ -21,7 +21,7 @@ namespace AmongUsClone.Client.Snapshots
 
         public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
-            if (ScenesManager.GetActiveScene() == Scene.RoleReveal)
+            if (!ShouldProcessServerSnapshots())
             {
                 return;
             }
@@ -110,6 +110,16 @@ namespace AmongUsClone.Client.Snapshots
             Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
             Logger.LogEvent(LoggerSection.ServerReconciliation, $"Reconciled position with the server position. SnapshotId: {gameSnapshot.id}. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {incorrectClientPosition}.");
+        }
+
+        private static bool ShouldProcessServerSnapshots()
+        {
+            string[] activeScenes = {
+                Scene.Lobby,
+                Scene.Skeld
+            };
+
+            return activeScenes.Contains(ScenesManager.GetActiveScene());
         }
     }
 }

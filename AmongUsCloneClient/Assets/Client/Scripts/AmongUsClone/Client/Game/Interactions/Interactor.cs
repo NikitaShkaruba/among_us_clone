@@ -12,6 +12,8 @@ namespace AmongUsClone.Client.Game.Interactions
      */
     public class Interactor : MonoBehaviour
     {
+        [SerializeField] private ScenesManager scenesManager;
+
         public float interactionDistance;
         public KeyCode interactionKey = KeyCode.E;
 
@@ -21,12 +23,13 @@ namespace AmongUsClone.Client.Game.Interactions
 
         public Action<Interactable> newInteractableChosen;
 
-        public void Start()
+        private void Start()
         {
-            interactables = FindObjectsOfType<Interactable>().ToList();
+            scenesManager.onScenesUpdate += CacheInteractables;
+            CacheInteractables();
         }
 
-        public void Update()
+        private void Update()
         {
             chosenInteractableLastFrame = chosenInteractable;
             chosenInteractable = FindClosestInteractableInRange();
@@ -38,6 +41,11 @@ namespace AmongUsClone.Client.Game.Interactions
             {
                 chosenInteractable.Interact();
             }
+        }
+
+        public void CacheInteractables()
+        {
+            interactables = FindObjectsOfType<Interactable>().ToList();
         }
 
         private void CallInteractableChangedIfNeeded(Interactable interactable)
@@ -56,11 +64,6 @@ namespace AmongUsClone.Client.Game.Interactions
         private Interactable FindClosestInteractableInRange()
         {
             // Todo: fix a bug where player could try to interact with already unloaded object
-            if (ScenesManager.GetActiveScene() != Scene.Lobby)
-            {
-                return null;
-            }
-
             float distanceToClosesInteractable = float.PositiveInfinity;
             Interactable closestInteractable = null;
 

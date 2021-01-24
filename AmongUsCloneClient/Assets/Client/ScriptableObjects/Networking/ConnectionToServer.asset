@@ -17,3 +17,4 @@ MonoBehaviour:
   packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
   packetsReceiver: {fileID: 11400000, guid: 6c88e060fa90752418310623d44ac706, type: 2}
   playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
+  scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
