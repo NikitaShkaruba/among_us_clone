@@ -27,6 +27,7 @@ namespace AmongUsClone.Client
             metaMonoBehaviours.Initialize();
             Logger.LogEvent(LoggerSection.Initialization, "Initialized meta mono behaviours");
 
+            lobbyGamePhase.Reset();
             scenesManager.LoadScene(Scene.MainMenu);
         }
 

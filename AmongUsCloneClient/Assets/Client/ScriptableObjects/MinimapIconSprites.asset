@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ce657e6e8514ed18baef33b0b0f2aad, type: 3}
+  m_Name: MinimapIconSprites
+  m_EditorClassIdentifier: 
+  redSprite: {fileID: -9175942578879794015, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  blueSprite: {fileID: 4839538990997147192, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  greenSprite: {fileID: -6345902928993658427, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  yellowSprite: {fileID: 3989213495417790444, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  pinkSprite: {fileID: 6767094116090219075, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  orangeSprite: {fileID: 7811012197627406576, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  purpleSprite: {fileID: 7251774854476766060, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  blackSprite: {fileID: -8267992842558676372, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  brownSprite: {fileID: 4011190056033974046, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  cyanSprite: {fileID: 4593274314844463404, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  limeSprite: {fileID: 2450983010323572528, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}
+  whiteSprite: {fileID: -3523637274382773165, guid: 7a183c6561cfd9b458e5ef1f4dce056f, type: 3}

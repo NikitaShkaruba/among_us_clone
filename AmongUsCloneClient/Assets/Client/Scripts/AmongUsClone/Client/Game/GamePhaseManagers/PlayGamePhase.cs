@@ -1,4 +1,5 @@
 using AmongUsClone.Client.Game.PlayerLogic;
+using AmongUsClone.Client.UI.UiElements;
 using AmongUsClone.Shared.Game.Maps;
 using AmongUsClone.Shared.Scenes;
 using UnityEngine;
@@ -37,6 +38,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             }
 
             playersManager.controlledPlayer.movable.isDisabled = false;
+            playersManager.controlledPlayer.clientControllable.openMinimapButton = FindObjectOfType<OpenMinimapButton>();
         }
 
         private void SetupCamera()

@@ -34,6 +34,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
 
+        public void Reset()
+        {
+            sceneLoadRequested = false;
+        }
+
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby.Lobby>();

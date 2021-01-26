@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - Players
-  - 
+  - Minimap
   - 
   - 
   - 
@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Minimap
+    uniqueID: 3379013963
+    locked: 0
   - name: Background
     uniqueID: 2802945615
     locked: 0

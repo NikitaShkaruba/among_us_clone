@@ -14,6 +14,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
     [RequireComponent(typeof(PlayerAnimator))]
     [RequireComponent(typeof(Colorable))]
     [RequireComponent(typeof(Interactor))]
+    [RequireComponent(typeof(MinimapIconOwnable))]
     public class Player : MonoBehaviour
     {
         public PlayerInformation information;
@@ -23,6 +24,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public PlayerAnimator animator;
         public Colorable colorable;
         public Interactor interactor;
+        public MinimapIconOwnable minimapIconOwnable;
 
         public SpriteRenderer spriteRenderer;
         public Text nameLabel;
@@ -31,6 +33,11 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         {
             information.Initialize(playerId, playerName, isPlayerHost);
             colorable.Initialize(playerColor);
+
+            if (minimapIconOwnable != null)
+            {
+                minimapIconOwnable.Initialize();
+            }
         }
     }
 }
