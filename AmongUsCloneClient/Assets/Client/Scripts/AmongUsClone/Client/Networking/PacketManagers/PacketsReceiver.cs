@@ -7,6 +7,7 @@ using AmongUsClone.Client.Snapshots;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Networking;
 using AmongUsClone.Shared.Networking.PacketTypes;
+using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using Helpers = AmongUsClone.Shared.Helpers;
@@ -18,6 +19,8 @@ namespace AmongUsClone.Client.Networking.PacketManagers
     // [CreateAssetMenu(fileName = "PacketsReceiver", menuName = "PacketsReceiver")]
     public class PacketsReceiver : ScriptableObject
     {
+        [SerializeField] private ScenesManager scenesManager;
+        [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private NetworkSimulation networkSimulation;
         [SerializeField] private GameSnapshots gameSnapshots;
@@ -85,7 +88,14 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 PlayerColor playerColor = (PlayerColor) packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
 
-                lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
+                if (scenesManager.GetActiveScene() == Scene.MainMenu)
+                {
+                    mainMenuGamePhase.InitializeLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
+                }
+                else
+                {
+                    lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
+                }
 
                 Logger.LogEvent(LoggerSection.Connection, $"Added player {playerId} to lobby");
             };

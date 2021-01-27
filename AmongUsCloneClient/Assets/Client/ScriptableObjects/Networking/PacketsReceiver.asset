@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87fd9c640342bdd44af7d69c6a2cc8e9, type: 3}
   m_Name: PacketsReceiver
   m_EditorClassIdentifier: 
+  scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
+  mainMenuGamePhase: {fileID: 11400000, guid: 35986724e249bf048b03654746391693, type: 2}
   lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
   networkSimulation: {fileID: 11400000, guid: 5b791409b5a78644eae59cba7109c634, type: 2}
   gameSnapshots: {fileID: 11400000, guid: 0f38b4fc6e54829498f9513fdca82ac2, type: 2}

@@ -2,12 +2,14 @@
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberCanBeMadeStatic.Global
 
+
 using System;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Logger = AmongUsClone.Shared.Logging.Logger;
+using Scene = AmongUsClone.Client.Game.Scene;
 
 namespace AmongUsClone.Shared.Scenes
 {
@@ -15,22 +17,49 @@ namespace AmongUsClone.Shared.Scenes
     // [CreateAssetMenu(fileName = "ScenesManager", menuName = "ScenesManager")]
     public class ScenesManager : ScriptableObject
     {
+        [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private RoleRevealGamePhase roleRevealGamePhase;
+        [SerializeField] private PlayGamePhase playGamePhase;
+
         public Action onSceneUpdate;
         private Action customSceneLoadedCallback;
 
-        public void Initialize(UnityAction<Scene, LoadSceneMode> defaultScenesInitializationCallback)
+        public void Initialize()
         {
             SceneManager.sceneLoaded += (scene, loadSceneMode) =>
             {
                 SceneManager.SetActiveScene(scene);
 
-                defaultScenesInitializationCallback(scene, loadSceneMode);
+                InitializeScene(scene);
 
                 if (customSceneLoadedCallback != null)
                 {
                     CallCustomSceneLoadedCallback();
                 }
             };
+        }
+
+        private void InitializeScene(UnityEngine.SceneManagement.Scene scene)
+        {
+            switch (scene.name)
+            {
+                case Scene.MainMenu:
+                    mainMenuGamePhase.Initialize();
+                    break;
+                case Scene.Lobby:
+                    lobbyGamePhase.Initialize();
+                    break;
+                case Scene.RoleReveal:
+                    roleRevealGamePhase.Initialize();
+                    break;
+                case Scene.Skeld:
+                    playGamePhase.Initialize();
+                    break;
+                default:
+                    Logger.LogError(SharedLoggerSection.ScenesManager, $"No game phase initializer found for the scene {scene.name}");
+                    break;
+            }
         }
 
         public void LoadScene(string sceneName)
@@ -53,7 +82,7 @@ namespace AmongUsClone.Shared.Scenes
         {
             this.customSceneLoadedCallback = customSceneLoadedCallback;
 
-            Scene sceneToUnload = SceneManager.GetActiveScene();
+            UnityEngine.SceneManagement.Scene sceneToUnload = SceneManager.GetActiveScene();
 
             LoadScene(sceneName);
             UnloadScene(sceneToUnload.name);

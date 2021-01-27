@@ -13,41 +13,17 @@ namespace AmongUsClone.Client
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private ScenesManager scenesManager;
-        [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
-        [SerializeField] private LobbyGamePhase lobbyGamePhase;
-        [SerializeField] private RoleRevealGamePhase roleRevealGamePhase;
-        [SerializeField] private PlayGamePhase playGamePhase;
 
         public void Start()
         {
             Logger.Initialize(new[] {LoggerSection.Network, LoggerSection.GameSnapshots}, true);
             Logger.LogEvent(LoggerSection.Initialization, "Started client initialization");
 
-            scenesManager.Initialize(ScenesInitializationCallback);
             metaMonoBehaviours.Initialize();
-            Logger.LogEvent(LoggerSection.Initialization, "Initialized meta mono behaviours");
+            scenesManager.Initialize();
+            Logger.LogEvent(LoggerSection.Initialization, "Initialized global environment");
 
-            lobbyGamePhase.Reset();
             scenesManager.LoadScene(Scene.MainMenu);
-        }
-
-        private void ScenesInitializationCallback(UnityEngine.SceneManagement.Scene scene, LoadSceneMode loadedSceneMode)
-        {
-            switch (scene.name)
-            {
-                case Scene.MainMenu:
-                    mainMenuGamePhase.Initialize();
-                    break;
-                case Scene.Lobby:
-                    lobbyGamePhase.Initialize();
-                    break;
-                case Scene.RoleReveal:
-                    roleRevealGamePhase.Initialize();
-                    break;
-                case Scene.Skeld:
-                    playGamePhase.Initialize();
-                    break;
-            }
         }
     }
 }

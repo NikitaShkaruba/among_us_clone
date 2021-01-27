@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.Networking.PacketManagers;
@@ -27,17 +25,9 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         public Lobby.Lobby lobby;
 
-        private List<Action> onSceneLoadedActions = new List<Action>();
-        private bool sceneLoadRequested;
-
         public const int MaxPlayersAmount = GameConfiguration.MaxPlayersAmount;
         public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
-
-        public void Reset()
-        {
-            sceneLoadRequested = false;
-        }
 
         public void Initialize()
         {
@@ -47,12 +37,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
         {
             bool isControlledPlayerConnecting = playerId == connectionToServer.myPlayerId;
-
-            if (lobby == false)
-            {
-                InitializeLobby(playerId, playerName, playerColor, playerPosition, isPlayerHost);
-                return;
-            }
 
             GameObject chosenPlayerPrefab = isControlledPlayerConnecting ? clientControllablePlayerPrefab : playerPrefab;
             Player player = Instantiate(chosenPlayerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
@@ -102,29 +86,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             scenesManager.LoadScene(Scene.RoleReveal);
 
             Logger.LogDebug($"Game has started. Impostors amount: {impostorsAmount}");
-        }
-
-        private void InitializeLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
-        {
-            // We cannot instantly load a scene and then add a player to it - this is made at the next frame.
-            // In order to solve it, we switch a scene and pass a callback where all wanted players will be added
-            onSceneLoadedActions.Add(() => AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerHost));
-
-            if (!sceneLoadRequested)
-            {
-                scenesManager.SwitchScene(Scene.Lobby, OnLobbySceneLoaded);
-                sceneLoadRequested = true;
-            }
-        }
-
-        private void OnLobbySceneLoaded()
-        {
-            foreach (Action onSceneLoadAction in onSceneLoadedActions)
-            {
-                onSceneLoadAction();
-            }
-
-            sceneLoadRequested = false;
         }
 
         private void InitializeControlledPlayer(Player player)
