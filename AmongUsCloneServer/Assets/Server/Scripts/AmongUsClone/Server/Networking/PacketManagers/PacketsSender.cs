@@ -49,6 +49,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             packet.Write(player.information.isLobbyHost);
             packet.Write((int) player.colorable.color);
             packet.Write(player.information.transform.position);
+            packet.Write(!player.spriteRenderer.flipX);
 
             SendTcpPacket(playerId, packetType, packet);
         }

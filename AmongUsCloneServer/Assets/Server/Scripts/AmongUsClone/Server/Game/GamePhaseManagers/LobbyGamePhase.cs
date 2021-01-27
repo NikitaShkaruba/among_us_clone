@@ -35,13 +35,14 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         public void ConnectPlayer(int playerId, string playerName)
         {
-            Vector2 playerPosition = lobby.playerSpawnLocations[playerId].position;
+            Vector2 playerPosition = lobby.playerSpawnPrototypes[playerId].transform.position;
             Player player = Instantiate(playerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
             player.transform.parent = lobby.playersContainer.transform;
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
+            bool isLookingRight = !lobby.playerSpawnPrototypes[playerId].spriteRenderer.flipX;
             bool isLobbyHost = playerId == PlayersManager.MinPlayerId;
-            player.Initialize(playerId, playerName, playerColor, isLobbyHost);
+            player.Initialize(playerId, playerName, playerColor, isLookingRight, isLobbyHost);
 
             playersManager.clients[playerId].FinishInitialization(player);
 

@@ -34,7 +34,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             lobby = FindObjectOfType<Lobby.Lobby>();
         }
 
-        public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
+        public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool playerLookingRight, bool isPlayerHost)
         {
             bool isControlledPlayerConnecting = playerId == connectionToServer.myPlayerId;
 
@@ -43,6 +43,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             player.Initialize(playerId, playerName, playerColor, isPlayerHost);
             player.transform.parent = lobby.playersContainer.transform;
             playersManager.AddPlayer(playerId, player);
+            player.animator.isLookingRight = playerLookingRight;
 
             if (isControlledPlayerConnecting)
             {
@@ -84,8 +85,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             }
 
             scenesManager.LoadScene(Scene.RoleReveal);
-
-            Logger.LogDebug($"Game has started. Impostors amount: {impostorsAmount}");
         }
 
         private void InitializeControlledPlayer(Player player)

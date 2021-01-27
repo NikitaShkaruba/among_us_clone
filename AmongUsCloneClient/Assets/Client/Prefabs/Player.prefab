@@ -35,9 +35,10 @@ MonoBehaviour:
   movable: {fileID: 5518854573400290162}
   controllable: {fileID: 2506714475783035418}
   clientControllable: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 5827258688513702030}
   colorable: {fileID: 4194513011835888611}
   interactor: {fileID: 0}
+  minimapIconOwnable: {fileID: 0}
   spriteRenderer: {fileID: 4896770467582969319}
   nameLabel: {fileID: 1612310649880161636}
 --- !u!114 &5827258688513702030
@@ -55,6 +56,7 @@ MonoBehaviour:
   astronautAnimatorControllersRepository: {fileID: 11400000, guid: 566c208ff80e4974cb9b0bfc7190d8af, type: 2}
   player: {fileID: 5533755165803020274}
   animator: {fileID: -3807439675510471058}
+  isLookingRight: 0
 --- !u!1001 &2310939974319833563
 PrefabInstance:
   m_ObjectHideFlags: 0

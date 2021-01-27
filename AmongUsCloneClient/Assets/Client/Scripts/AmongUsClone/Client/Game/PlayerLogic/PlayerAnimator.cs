@@ -17,7 +17,12 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         [SerializeField] private Player player;
         [SerializeField] private Animator animator;
 
-        private bool isLookingRight;
+        public bool isLookingRight;
+
+        public void Awake()
+        {
+            isLookingRight = !player.spriteRenderer.flipX;
+        }
 
         public void Start()
         {

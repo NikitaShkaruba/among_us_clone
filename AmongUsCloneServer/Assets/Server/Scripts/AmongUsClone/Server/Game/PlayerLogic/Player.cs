@@ -19,10 +19,11 @@ namespace AmongUsClone.Server.Game.PlayerLogic
 
         public SpriteRenderer spriteRenderer;
 
-        public void Initialize(int playerId, string playerName, PlayerColor playerColor, bool isLobbyHost)
+        public void Initialize(int playerId, string playerName, PlayerColor playerColor, bool isLookingRight, bool isLobbyHost)
         {
             information.Initialize(playerId, playerName, isLobbyHost);
             colorable.Initialize(playerColor);
+            spriteRenderer.flipX = !isLookingRight;
         }
     }
 }

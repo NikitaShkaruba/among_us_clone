@@ -87,14 +87,15 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 bool isPlayerLobbyHost = packet.ReadBool();
                 PlayerColor playerColor = (PlayerColor) packet.ReadInt();
                 Vector2 playerPosition = packet.ReadVector2();
+                bool playerLookingRight = packet.ReadBool();
 
                 if (scenesManager.GetActiveScene() == Scene.MainMenu)
                 {
-                    mainMenuGamePhase.InitializeLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
+                    mainMenuGamePhase.InitializeLobby(playerId, playerName, playerColor, playerPosition, playerLookingRight, isPlayerLobbyHost);
                 }
                 else
                 {
-                    lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerLobbyHost);
+                    lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, playerLookingRight, isPlayerLobbyHost);
                 }
 
                 Logger.LogEvent(LoggerSection.Connection, $"Added player {playerId} to lobby");

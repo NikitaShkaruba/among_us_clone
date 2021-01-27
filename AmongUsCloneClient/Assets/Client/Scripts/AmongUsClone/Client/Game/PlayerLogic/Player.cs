@@ -17,15 +17,19 @@ namespace AmongUsClone.Client.Game.PlayerLogic
     [RequireComponent(typeof(MinimapIconOwnable))]
     public class Player : MonoBehaviour
     {
+        [Header("Every Player components")]
         public PlayerInformation information;
         public Movable movable;
         public Controllable controllable;
-        public ClientControllable clientControllable;
         public PlayerAnimator animator;
         public Colorable colorable;
+
+        [Header("ClientControllable only components")]
+        public ClientControllable clientControllable;
         public Interactor interactor;
         public MinimapIconOwnable minimapIconOwnable;
 
+        [Header("Unity components")]
         public SpriteRenderer spriteRenderer;
         public Text nameLabel;
 

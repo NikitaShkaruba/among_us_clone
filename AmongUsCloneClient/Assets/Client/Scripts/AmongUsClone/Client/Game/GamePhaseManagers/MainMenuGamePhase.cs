@@ -36,8 +36,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             {
                 Logger.LogEvent(LoggerSection.MainMenu, "Unable to find MainMenu object in a scene");
             }
-
-            Logger.LogDebug("Initialized main menu game phase");
         }
 
         public void ConnectToLobby()
@@ -47,11 +45,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             metaMonoBehaviours.applicationCallbacks.ScheduleOnApplicationQuitActions(OnApplicationQuit);
         }
 
-        public void InitializeLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
+        public void InitializeLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool playerLookingRight, bool isPlayerHost)
         {
             // We cannot instantly load a scene and then add a player to it - this is made at the next frame.
             // In order to solve it, we switch a scene and pass a callback where all wanted players will be added
-            onSceneLoadedActions.Add(() => lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerHost));
+            onSceneLoadedActions.Add(() => lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, playerLookingRight, isPlayerHost));
 
             if (!sceneLoadRequested)
             {

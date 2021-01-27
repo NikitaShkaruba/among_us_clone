@@ -44,6 +44,8 @@ namespace AmongUsClone.Client.Game.RoleReveal
             StartCoroutine(OpenCurtain());
         }
 
+        // ReSharper disable once FunctionRecursiveOnAllPaths
+        // This Coroutine will stop the recursion when the RoleReveal scene unloads
         private IEnumerator OpenCurtain()
         {
             yield return new WaitForEndOfFrame();
@@ -78,7 +80,8 @@ namespace AmongUsClone.Client.Game.RoleReveal
                     continue;
                 }
 
-                UpdateDummyColor(playerDummyIndex, player.colorable.color);
+                playerDummies[playerDummyIndex].colorable.ChangeColor(player.colorable.color);
+
                 playerDummyIndex++;
             }
 
@@ -88,11 +91,6 @@ namespace AmongUsClone.Client.Game.RoleReveal
                 playerDummies[playerDummyIndex].gameObject.SetActive(false);
                 playerDummyIndex++;
             }
-        }
-
-        private void UpdateDummyColor(int playerDummyIndex, PlayerColor color)
-        {
-            playerDummies[playerDummyIndex].colorable.ChangeColor(color);
         }
 
         private void UpdateImpostorsAmountLabel()
