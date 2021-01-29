@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace AmongUsClone.Client.UI.InteractButtons
 {
     [RequireComponent(typeof(Image))]
+    // Todo: rework for not only 'lobby interact button'
     public class LobbyInteractButton : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private Interactor interactor;

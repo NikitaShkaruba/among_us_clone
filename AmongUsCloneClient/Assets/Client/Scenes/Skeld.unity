@@ -1444,6 +1444,10 @@ PrefabInstance:
       propertyPath: minimap
       value: 
       objectReference: {fileID: 1441845717}
+    - target: {fileID: 8216171008774997942, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
+      propertyPath: inputReader
+      value: 
+      objectReference: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
 --- !u!224 &616870672 stripped

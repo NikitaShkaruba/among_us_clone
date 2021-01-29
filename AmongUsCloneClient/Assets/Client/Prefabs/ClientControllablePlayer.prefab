@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
+  inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
   interactionDistance: 2
-  interactionKey: 101
   chosenInteractable: {fileID: 0}
 --- !u!114 &2693481040140365202
 MonoBehaviour:
@@ -45,7 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
   scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
-  openMinimapButton: {fileID: 0}
+  inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
+  player: {fileID: 6521604974166234097}
 --- !u!1 &2533179505844657248
 GameObject:
   m_ObjectHideFlags: 0

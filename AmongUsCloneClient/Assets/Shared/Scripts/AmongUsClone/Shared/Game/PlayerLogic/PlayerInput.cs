@@ -12,9 +12,6 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         public bool moveRight;
         public bool moveBottom;
 
-        // Todo: separate client and server user input
-        public bool toggleMinimap;
-
         public PlayerInput()
         {
         }

@@ -4,22 +4,20 @@ using System.Linq;
 using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking.PacketManagers;
-using AmongUsClone.Client.UI.UiElements;
-using AmongUsClone.Shared.Game.PlayerLogic;
-using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
+using PlayerInput = AmongUsClone.Shared.Game.PlayerLogic.PlayerInput;
 
 namespace AmongUsClone.Client.PlayerLogic
 {
-    [RequireComponent(typeof(Player))]
     public class ClientControllable : MonoBehaviour
     {
         [SerializeField] private PacketsSender packetsSender;
-        [SerializeField] private ScenesManager scenesManager;
+        [SerializeField] private InputReader inputReader;
 
-        private Player player;
-        public OpenMinimapButton openMinimapButton;
+        [SerializeField] private Player player;
+
+        private Vector2 movement;
 
         public readonly Dictionary<int, ClientControllableStateSnapshot> stateSnapshots = new Dictionary<int, ClientControllableStateSnapshot>();
 
@@ -28,24 +26,25 @@ namespace AmongUsClone.Client.PlayerLogic
             player = GetComponent<Player>();
         }
 
+        private void OnEnable() {
+            inputReader.onMove += OnMovement;
+        }
+
+        private void OnDisable()
+        {
+            inputReader.onMove -= OnMovement;
+        }
+
+        private void OnMovement(Vector2 movement)
+        {
+            this.movement = movement;
+        }
+
         private void FixedUpdate()
         {
             UpdatePlayerInput();
 
             player.movable.MoveByPlayerInput(player.controllable.playerInput);
-
-            // Todo: rework for actions
-            if (scenesManager.GetActiveScene() == Scene.Skeld)
-            {
-                if (player.controllable.playerInput.toggleMinimap)
-                {
-                    openMinimapButton.Click();
-                }
-                else
-                {
-                    openMinimapButton.Release();
-                }
-            }
 
             StartCoroutine(SaveStateSnapshot());
             packetsSender.SendPlayerInputPacket(player.controllable.playerInput.Clone());
@@ -63,11 +62,10 @@ namespace AmongUsClone.Client.PlayerLogic
             player.controllable.playerInput = new PlayerInput
             {
                 id = GenerateNextPlayerInputId(),
-                moveTop = Input.GetKey(KeyCode.W),
-                moveLeft = Input.GetKey(KeyCode.A),
-                moveBottom = Input.GetKey(KeyCode.S),
-                moveRight = Input.GetKey(KeyCode.D),
-                toggleMinimap = Input.GetKey(KeyCode.Tab),
+                moveTop = movement.y > 0,
+                moveLeft = movement.x < 0,
+                moveBottom = movement.y < 0,
+                moveRight = movement.x > 0,
             };
         }
 

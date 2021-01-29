@@ -38,7 +38,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             }
 
             playersManager.controlledPlayer.movable.isDisabled = false;
-            playersManager.controlledPlayer.clientControllable.openMinimapButton = FindObjectOfType<OpenMinimapButton>();
         }
 
         private void SetupCamera()
