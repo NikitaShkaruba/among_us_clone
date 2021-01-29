@@ -36,8 +36,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                     player.nameLabel.color = Color.red;
                 }
             }
-
-            playersManager.controlledPlayer.movable.isDisabled = false;
         }
 
         private void SetupCamera()

@@ -10,8 +10,6 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         public Rigidbody2D rigidbody2D;
         public float moveSpeed;
 
-        public bool isDisabled;
-
         public void MoveByPlayerInput(PlayerInput playerInput)
         {
             Vector2 relativePosition = GetMoveDirection(playerInput) * moveSpeed * Time.fixedDeltaTime;
@@ -26,11 +24,6 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 
         public void Move(Vector2 newPosition)
         {
-            if (isDisabled)
-            {
-                return;
-            }
-
             rigidbody2D.MovePosition(newPosition);
         }
 

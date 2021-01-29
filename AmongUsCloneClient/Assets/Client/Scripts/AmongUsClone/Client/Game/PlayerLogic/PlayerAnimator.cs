@@ -99,11 +99,6 @@ namespace AmongUsClone.Client.Game.PlayerLogic
 
         private void Update()
         {
-            if (player.movable.isDisabled)
-            {
-                return;
-            }
-
             UpdateIsLookingRight();
 
             animator.SetBool(animatorPropertyIsMoving, player.controllable.IsMoving());
