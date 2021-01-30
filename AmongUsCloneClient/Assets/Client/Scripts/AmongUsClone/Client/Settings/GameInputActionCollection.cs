@@ -21,9 +21,33 @@ namespace AmongUsClone.Client.Settings
             ""id"": ""67f59c9b-fbc0-4402-8f0e-714fd0459e70"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""MoveUp"",
                     ""type"": ""Button"",
-                    ""id"": ""d69586b1-0e3c-4efa-b777-67e8dab5e313"",
+                    ""id"": ""461ea9b6-8c3c-4859-ae55-beacacda19bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MoveRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a1ddad7-4c82-4801-9e35-31c7d0ac25a6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MoveDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""96752462-e1dd-41ef-a76b-92884ffa1ded"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MoveLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""e608f4ba-60eb-4394-a74b-c1db75466644"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -47,61 +71,6 @@ namespace AmongUsClone.Client.Settings
             ],
             ""bindings"": [
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""e3b2418e-77a2-4516-bdae-8f9731b1c1c0"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""6e619de1-ace2-437a-aedd-aaa3ac1d4bb7"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""ae24de43-d91e-4e7a-842d-c2405c9893f6"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""4592b9c5-bb68-4aa3-b751-46e24abf4f74"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""50897eed-d393-4429-a9ec-998655d2b08e"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""714b4a6b-015f-4a8c-84df-d948c3ce1366"",
                     ""path"": ""<Keyboard>/e"",
@@ -122,6 +91,50 @@ namespace AmongUsClone.Client.Settings
                     ""action"": ""ToggleMiniMap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6bfed084-81be-448f-85ad-611b3ccde716"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f23b7c15-c4e1-4ba1-8090-87309b870af5"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f92c7ef3-2674-4012-8033-e97b98cedeec"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83fda8f2-9118-4da7-a016-501b6d3cf3b6"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -130,7 +143,10 @@ namespace AmongUsClone.Client.Settings
 }");
             // CrewmateControls
             m_CrewmateControls = asset.FindActionMap("CrewmateControls", throwIfNotFound: true);
-            m_CrewmateControls_Move = m_CrewmateControls.FindAction("Move", throwIfNotFound: true);
+            m_CrewmateControls_MoveUp = m_CrewmateControls.FindAction("MoveUp", throwIfNotFound: true);
+            m_CrewmateControls_MoveRight = m_CrewmateControls.FindAction("MoveRight", throwIfNotFound: true);
+            m_CrewmateControls_MoveDown = m_CrewmateControls.FindAction("MoveDown", throwIfNotFound: true);
+            m_CrewmateControls_MoveLeft = m_CrewmateControls.FindAction("MoveLeft", throwIfNotFound: true);
             m_CrewmateControls_Interact = m_CrewmateControls.FindAction("Interact", throwIfNotFound: true);
             m_CrewmateControls_ToggleMiniMap = m_CrewmateControls.FindAction("ToggleMiniMap", throwIfNotFound: true);
         }
@@ -182,14 +198,20 @@ namespace AmongUsClone.Client.Settings
         // CrewmateControls
         private readonly InputActionMap m_CrewmateControls;
         private ICrewmateControlsActions m_CrewmateControlsActionsCallbackInterface;
-        private readonly InputAction m_CrewmateControls_Move;
+        private readonly InputAction m_CrewmateControls_MoveUp;
+        private readonly InputAction m_CrewmateControls_MoveRight;
+        private readonly InputAction m_CrewmateControls_MoveDown;
+        private readonly InputAction m_CrewmateControls_MoveLeft;
         private readonly InputAction m_CrewmateControls_Interact;
         private readonly InputAction m_CrewmateControls_ToggleMiniMap;
         public struct CrewmateControlsActions
         {
             private @GameInputActionCollection m_Wrapper;
             public CrewmateControlsActions(@GameInputActionCollection wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_CrewmateControls_Move;
+            public InputAction @MoveUp => m_Wrapper.m_CrewmateControls_MoveUp;
+            public InputAction @MoveRight => m_Wrapper.m_CrewmateControls_MoveRight;
+            public InputAction @MoveDown => m_Wrapper.m_CrewmateControls_MoveDown;
+            public InputAction @MoveLeft => m_Wrapper.m_CrewmateControls_MoveLeft;
             public InputAction @Interact => m_Wrapper.m_CrewmateControls_Interact;
             public InputAction @ToggleMiniMap => m_Wrapper.m_CrewmateControls_ToggleMiniMap;
             public InputActionMap Get() { return m_Wrapper.m_CrewmateControls; }
@@ -201,9 +223,18 @@ namespace AmongUsClone.Client.Settings
             {
                 if (m_Wrapper.m_CrewmateControlsActionsCallbackInterface != null)
                 {
-                    @Move.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMove;
-                    @Move.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMove;
-                    @Move.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMove;
+                    @MoveUp.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveUp;
+                    @MoveUp.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveUp;
+                    @MoveUp.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveUp;
+                    @MoveRight.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveRight;
+                    @MoveRight.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveRight;
+                    @MoveRight.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveRight;
+                    @MoveDown.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveDown;
+                    @MoveDown.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveDown;
+                    @MoveDown.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveDown;
+                    @MoveLeft.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveLeft;
+                    @MoveLeft.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveLeft;
+                    @MoveLeft.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnMoveLeft;
                     @Interact.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnInteract;
                     @Interact.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnInteract;
                     @Interact.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnInteract;
@@ -214,9 +245,18 @@ namespace AmongUsClone.Client.Settings
                 m_Wrapper.m_CrewmateControlsActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Move.started += instance.OnMove;
-                    @Move.performed += instance.OnMove;
-                    @Move.canceled += instance.OnMove;
+                    @MoveUp.started += instance.OnMoveUp;
+                    @MoveUp.performed += instance.OnMoveUp;
+                    @MoveUp.canceled += instance.OnMoveUp;
+                    @MoveRight.started += instance.OnMoveRight;
+                    @MoveRight.performed += instance.OnMoveRight;
+                    @MoveRight.canceled += instance.OnMoveRight;
+                    @MoveDown.started += instance.OnMoveDown;
+                    @MoveDown.performed += instance.OnMoveDown;
+                    @MoveDown.canceled += instance.OnMoveDown;
+                    @MoveLeft.started += instance.OnMoveLeft;
+                    @MoveLeft.performed += instance.OnMoveLeft;
+                    @MoveLeft.canceled += instance.OnMoveLeft;
                     @Interact.started += instance.OnInteract;
                     @Interact.performed += instance.OnInteract;
                     @Interact.canceled += instance.OnInteract;
@@ -229,7 +269,10 @@ namespace AmongUsClone.Client.Settings
         public CrewmateControlsActions @CrewmateControls => new CrewmateControlsActions(this);
         public interface ICrewmateControlsActions
         {
-            void OnMove(InputAction.CallbackContext context);
+            void OnMoveUp(InputAction.CallbackContext context);
+            void OnMoveRight(InputAction.CallbackContext context);
+            void OnMoveDown(InputAction.CallbackContext context);
+            void OnMoveLeft(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
             void OnToggleMiniMap(InputAction.CallbackContext context);
         }
