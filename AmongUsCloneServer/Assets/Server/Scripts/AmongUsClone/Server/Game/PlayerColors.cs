@@ -51,7 +51,7 @@ namespace AmongUsClone.Server.Game
         {
             if (occupiedColors.ContainsValue(playerId))
             {
-                throw new Exception("Attempt to take already occupied color");
+                throw new Exception($"Attempt to take already occupied color {color}");
             }
 
             occupiedColors[color] = playerId;

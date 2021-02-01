@@ -34,11 +34,12 @@ MonoBehaviour:
   information: {fileID: 8497709941785751547}
   movable: {fileID: 5518854573400290162}
   controllable: {fileID: 2506714475783035418}
-  clientControllable: {fileID: 0}
   animator: {fileID: 5827258688513702030}
   colorable: {fileID: 4194513011835888611}
+  clientControllable: {fileID: 0}
   interactor: {fileID: 0}
   minimapIconOwnable: {fileID: 0}
+  viewable: {fileID: 0}
   spriteRenderer: {fileID: 4896770467582969319}
   nameLabel: {fileID: 1612310649880161636}
 --- !u!114 &5827258688513702030
@@ -76,6 +77,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3923207398557887679, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 389d654488df46242b453bce767bef3a, type: 2}
     - target: {fileID: 6088089826452821131, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -123,7 +128,11 @@ PrefabInstance:
     - target: {fileID: 6140159922534816239, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8f746c81c6624cc4998b619c7f3feee9, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7198662478761133116, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cc3f65baffaeff348bb59ee7220a38fa, type: 2}
     - target: {fileID: 7830046557350688026, guid: e704ba606ffe8ed44ac35a5beb48f0e8, type: 3}
       propertyPath: m_RootOrder
       value: 0

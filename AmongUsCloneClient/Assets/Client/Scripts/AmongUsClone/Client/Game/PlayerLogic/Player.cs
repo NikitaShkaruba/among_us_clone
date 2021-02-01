@@ -10,11 +10,8 @@ namespace AmongUsClone.Client.Game.PlayerLogic
     [RequireComponent(typeof(PlayerInformation))]
     [RequireComponent(typeof(Movable))]
     [RequireComponent(typeof(Controllable))]
-    [RequireComponent(typeof(ClientControllable))]
     [RequireComponent(typeof(PlayerAnimator))]
     [RequireComponent(typeof(Colorable))]
-    [RequireComponent(typeof(Interactor))]
-    [RequireComponent(typeof(MinimapIconOwnable))]
     public class Player : MonoBehaviour
     {
         [Header("Every Player components")]
@@ -28,6 +25,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public ClientControllable clientControllable;
         public Interactor interactor;
         public MinimapIconOwnable minimapIconOwnable;
+        public Viewable viewable;
 
         [Header("Unity components")]
         public SpriteRenderer spriteRenderer;

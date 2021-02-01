@@ -6,6 +6,7 @@ using Random = System.Random;
 
 namespace AmongUsClone.Client.UI.UiElements
 {
+    // Todo: fix already occupied color on double click
     public class MainMenu : MonoBehaviour
     {
         [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
