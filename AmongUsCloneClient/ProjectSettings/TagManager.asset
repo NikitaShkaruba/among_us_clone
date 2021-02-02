@@ -15,7 +15,6 @@ TagManager:
   - 
   - Players
   - Minimap
-  - Obstacles
   - 
   - 
   - 
@@ -26,6 +25,7 @@ TagManager:
   - 
   - 
   - 
+  - FieldOfViewObstacles
   - 
   - 
   - 

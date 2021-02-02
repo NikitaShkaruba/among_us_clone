@@ -129,7 +129,7 @@ MonoBehaviour:
   fieldOfViewMeshFilter: {fileID: 164972710805607858}
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1048576
   meshResolution: 1
   viewRadius: 5.25
 --- !u!114 &6565230547845059123
@@ -353,6 +353,10 @@ PrefabInstance:
     - target: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
       propertyPath: m_Name
       value: ClientControllablePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159293873271798641, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8389967345354167632, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
       propertyPath: m_LocalPosition.x
