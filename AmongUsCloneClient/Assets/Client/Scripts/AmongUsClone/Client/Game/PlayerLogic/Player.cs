@@ -20,6 +20,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         public Controllable controllable;
         public PlayerAnimator animator;
         public Colorable colorable;
+        public ForciblyVisible forciblyVisible;
 
         [Header("ClientControllable only components")]
         public ClientControllable clientControllable;

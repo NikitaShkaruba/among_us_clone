@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HideableRevealer
-  m_Shader: {fileID: 4800000, guid: b8effbd221c889a40a0ebcf2d82548be, type: 3}
+  m_Name: Revealable
+  m_Shader: {fileID: 4800000, guid: fd76e56f49a8c7342b98d0305fc6265c, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -39,7 +39,7 @@ Material:
     - PixelSnap: 0
     - _EnableExternalAlpha: 0
     m_Colors:
-    - _Color: {r: 0.9528302, g: 0.15730685, b: 0.15730685, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 0.49019608}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

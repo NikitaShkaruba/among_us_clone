@@ -56,7 +56,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 moveTop = moveTop,
                 moveBottom = moveBottom,
                 moveLeft = moveLeft,
-                moveRight = moveRight,
+                moveRight = moveRight
             };
         }
 

@@ -35,7 +35,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                 {
                     player.nameLabel.color = Color.red;
                 }
+
+                player.forciblyVisible.AllowHiding();
             }
+
+            playersManager.controlledPlayer.viewable.Enable();
         }
 
         private void SetupCamera()

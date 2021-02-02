@@ -10,7 +10,8 @@ namespace AmongUsClone.Client.PlayerLogic
     {
         public const float ViewAngle = 360;
 
-        [SerializeField] private MeshFilter viewMeshFilter;
+        [SerializeField] public GameObject fieldOfView;
+        [SerializeField] private MeshFilter fieldOfViewMeshFilter;
         [SerializeField] private LayerMask obstacleMask;
         [SerializeField] private float meshResolution;
         public float viewRadius;
@@ -24,12 +25,22 @@ namespace AmongUsClone.Client.PlayerLogic
                 name = "Field of View mesh"
             };
 
-            viewMeshFilter.mesh = fieldOfViewMesh;
+            fieldOfViewMeshFilter.mesh = fieldOfViewMesh;
         }
 
         private void LateUpdate()
         {
+            if (!IsEnabled())
+            {
+                return;
+            }
+
             DrawFieldOfView();
+        }
+
+        public void Enable()
+        {
+            fieldOfView.SetActive(true);
         }
 
         private void DrawFieldOfView()
@@ -128,6 +139,11 @@ namespace AmongUsClone.Client.PlayerLogic
             float y = Mathf.Cos(angle * Mathf.Deg2Rad);
 
             return new Vector2(x, y);
+        }
+
+        private bool IsEnabled()
+        {
+            return fieldOfView.activeSelf;
         }
     }
 }
