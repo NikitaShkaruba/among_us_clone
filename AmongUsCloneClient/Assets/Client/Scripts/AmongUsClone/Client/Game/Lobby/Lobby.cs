@@ -8,6 +8,6 @@ namespace AmongUsClone.Client.Game.Lobby
         public GameObject playersContainer;
         public GameStartable gameStartable;
 
-        public LobbyInteractButton interactButton;
+        public InteractButton interactButton;
     }
 }
