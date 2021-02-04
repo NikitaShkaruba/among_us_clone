@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using AmongUsClone.Server.Game;
-using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
+using AmongUsClone.Server.Snapshots;
 using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Networking;
@@ -19,6 +19,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
     public class PacketsSender : ScriptableObject
     {
         [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private ClientGameSnapshotsManager clientGameSnapshotsManager;
 
         public void SendWelcomePacket(int playerId)
         {
@@ -75,7 +76,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                     continue;
                 }
 
-                ClientGameSnapshot clientGameSnapshot = new ClientGameSnapshot(gameSnapshot, client.player.remoteControllable.lastProcessedInputId);
+                ClientGameSnapshot clientGameSnapshot = clientGameSnapshotsManager.CreateClientGameSnapshot(client, gameSnapshot);
 
                 Packet packet = new Packet((int) packetType);
                 packet.Write(clientGameSnapshot);

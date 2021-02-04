@@ -122,16 +122,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5116485933257911524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9a0ad771b040bbaa4ff9b908a5947c, type: 3}
+  m_Script: {fileID: 11500000, guid: 012fc6b4b51b46a88ba0f449cd6e47aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldOfView: {fileID: 3809647311139577523}
-  fieldOfViewMeshFilter: {fileID: 164972710805607858}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1048576
   meshResolution: 1
   viewRadius: 5.25
+  fieldOfView: {fileID: 3809647311139577523}
+  fieldOfViewMeshFilter: {fileID: 164972710805607858}
 --- !u!114 &6565230547845059123
 MonoBehaviour:
   m_ObjectHideFlags: 0

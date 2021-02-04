@@ -16,7 +16,7 @@ namespace Client.Editor
 
             // Draw arc
             Handles.color = Color.white;
-            Handles.DrawWireArc(viewable.transform.position, Vector3.forward, Vector3.left, Viewable.ViewAngle, viewable.viewRadius);
+            Handles.DrawWireArc(viewable.transform.position, Vector3.forward, Vector3.left, AmongUsClone.Shared.Game.PlayerLogic.Viewable.ViewAngle, viewable.viewRadius);
         }
     }
 }

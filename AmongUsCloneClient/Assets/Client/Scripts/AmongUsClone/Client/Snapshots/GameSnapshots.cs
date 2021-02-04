@@ -32,17 +32,28 @@ namespace AmongUsClone.Client.Snapshots
 
         private void UpdatePlayers(ClientGameSnapshot gameSnapshot)
         {
-            Player controlledPlayer = playersManager.controlledPlayer;
-
-            foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
+            foreach (Player player in playersManager.players.Values)
             {
-                if (snapshotPlayerInfo.id == controlledPlayer.information.id)
+                if (player == playersManager.controlledPlayer)
                 {
-                    UpdateControlledPlayer(gameSnapshot, controlledPlayer);
+                    UpdateControlledPlayer(gameSnapshot, player);
+                }
+                else if (gameSnapshot.playersInfo.ContainsKey(player.information.id))
+                {
+                    if (!player.gameObject.activeSelf)
+                    {
+                        // Todo: fix slow 'just becoming visible' players
+                        player.gameObject.SetActive(true);
+                    }
+
+                    UpdateNotControlledPlayer(gameSnapshot.playersInfo[player.information.id]);
                 }
                 else
                 {
-                    UpdateNotControlledPlayer(snapshotPlayerInfo);
+                    if (player.gameObject.activeSelf)
+                    {
+                        player.gameObject.SetActive(false);
+                    }
                 }
             }
         }
@@ -113,7 +124,8 @@ namespace AmongUsClone.Client.Snapshots
 
         private bool ShouldProcessServerSnapshots()
         {
-            string[] activeScenes = {
+            string[] activeScenes =
+            {
                 Scene.Lobby,
                 Scene.Skeld
             };

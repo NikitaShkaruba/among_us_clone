@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab71a437c44f430da7007f9b53e3f4f6, type: 3}
-  m_Name: PacketsSender
+  m_Script: {fileID: 11500000, guid: 5bf71fed4164462ab2f8fd75f1dda78c, type: 3}
+  m_Name: ClientGameSnapshotsManager
   m_EditorClassIdentifier: 
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
-  clientGameSnapshotsManager: {fileID: 11400000, guid: bd1dffcaeb619d94db4e996b04e1448d, type: 2}

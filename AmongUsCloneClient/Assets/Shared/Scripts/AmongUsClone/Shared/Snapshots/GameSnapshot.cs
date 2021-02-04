@@ -12,10 +12,10 @@ namespace AmongUsClone.Shared.Snapshots
         public readonly int id;
         public readonly Dictionary<int, SnapshotPlayerInfo> playersInfo;
 
-        public GameSnapshot(int id, Dictionary<int, SnapshotPlayerInfo> snapshotPlayersInfoInfo)
+        public GameSnapshot(int id, Dictionary<int, SnapshotPlayerInfo> snapshotPlayersInfo)
         {
             this.id = id;
-            playersInfo = snapshotPlayersInfoInfo;
+            playersInfo = snapshotPlayersInfo;
         }
 
         public override string ToString()

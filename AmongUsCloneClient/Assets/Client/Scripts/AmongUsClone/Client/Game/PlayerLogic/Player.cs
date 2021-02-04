@@ -4,6 +4,7 @@ using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 using UnityEngine.UI;
+using Viewable = AmongUsClone.Client.PlayerLogic.Viewable;
 
 namespace AmongUsClone.Client.Game.PlayerLogic
 {

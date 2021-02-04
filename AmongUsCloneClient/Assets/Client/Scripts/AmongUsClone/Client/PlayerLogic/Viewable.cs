@@ -4,19 +4,15 @@ using UnityEngine;
 namespace AmongUsClone.Client.PlayerLogic
 {
     // Todo: fix 'Start button', 'Ssshhh screen' dirty sprites
-    // Todo: fix Storage colliders (and others)
     // Todo: fix player game object names
-    public class Viewable : MonoBehaviour
+    public class Viewable : Shared.Game.PlayerLogic.Viewable
     {
-        public const float ViewAngle = 360;
-
         [SerializeField] public GameObject fieldOfView;
         [SerializeField] private MeshFilter fieldOfViewMeshFilter;
-        [SerializeField] private LayerMask obstacleMask;
-        [SerializeField] private float meshResolution;
-        public float viewRadius;
 
         private Mesh fieldOfViewMesh;
+
+        private bool IsEnabled => fieldOfView.activeSelf;
 
         private void Start()
         {
@@ -30,7 +26,7 @@ namespace AmongUsClone.Client.PlayerLogic
 
         private void LateUpdate()
         {
-            if (!IsEnabled())
+            if (!IsEnabled)
             {
                 return;
             }
@@ -51,24 +47,6 @@ namespace AmongUsClone.Client.PlayerLogic
             fieldOfViewMesh.vertices = ComputeMeshVertices(viewPoints);
             fieldOfViewMesh.triangles = ComputeMeshTriangles(viewPoints);
             fieldOfViewMesh.RecalculateNormals();
-        }
-
-        private List<Vector2> ComputeViewPoints()
-        {
-            int raysAmount = Mathf.RoundToInt(ViewAngle * meshResolution);
-            float raySize = ViewAngle / raysAmount;
-
-            List<Vector2> viewPoints = new List<Vector2>();
-
-            for (int rayIndex = 0; rayIndex < raysAmount; rayIndex++)
-            {
-                float angle = transform.eulerAngles.y - ViewAngle / 2 + raySize * rayIndex;
-                Vector2 viewPoint = ViewCast(angle);
-
-                viewPoints.Add(viewPoint);
-            }
-
-            return viewPoints;
         }
 
         /**
@@ -118,32 +96,6 @@ namespace AmongUsClone.Client.PlayerLogic
             triangles[lastTriangleIndex * verticesAmountInTriangle + 2] = 1;
 
             return triangles;
-        }
-
-        private Vector2 ViewCast(float angle)
-        {
-            Vector2 direction = ComputeDirectionByAngle(angle);
-
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, direction, viewRadius, obstacleMask);
-            if (!raycastHit2D)
-            {
-                return (Vector2) transform.position + direction * viewRadius; // Return max viewable point
-            }
-
-            return raycastHit2D.point;
-        }
-
-        private static Vector2 ComputeDirectionByAngle(float angle)
-        {
-            float x = Mathf.Sin(angle * Mathf.Deg2Rad);
-            float y = Mathf.Cos(angle * Mathf.Deg2Rad);
-
-            return new Vector2(x, y);
-        }
-
-        private bool IsEnabled()
-        {
-            return fieldOfView.activeSelf;
         }
     }
 }

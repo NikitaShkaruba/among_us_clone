@@ -15,7 +15,7 @@ namespace AmongUsClone.Client.Networking
     {
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
 
-        public const int Ping = 1000;
+        public const int Ping = 100;
 
         public void SendThroughNetwork(Action action)
         {

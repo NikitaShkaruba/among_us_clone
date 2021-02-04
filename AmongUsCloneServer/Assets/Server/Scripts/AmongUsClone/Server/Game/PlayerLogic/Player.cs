@@ -9,6 +9,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     [RequireComponent(typeof(Controllable))]
     [RequireComponent(typeof(RemoteControllable))]
     [RequireComponent(typeof(Colorable))]
+    [RequireComponent(typeof(Viewable))]
     public class Player : MonoBehaviour
     {
         public PlayerInformation information;
@@ -16,6 +17,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         public Controllable controllable;
         public RemoteControllable remoteControllable;
         public Colorable colorable;
+        public Viewable viewable;
 
         public SpriteRenderer spriteRenderer;
 
