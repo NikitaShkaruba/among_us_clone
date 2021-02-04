@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace AmongUsClone.Shared.Game.PlayerLogic
 {
-    // Todo: fix player game object names
     public abstract class Viewable : MonoBehaviour
     {
         public const float ViewAngle = 360;

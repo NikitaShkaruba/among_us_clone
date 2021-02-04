@@ -40,6 +40,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
             GameObject chosenPlayerPrefab = isControlledPlayerConnecting ? clientControllablePlayerPrefab : playerPrefab;
             Player player = Instantiate(chosenPlayerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
+            player.name = isControlledPlayerConnecting ? $"Player{playerId} (ClientControllable)" : $"Player{playerId}";
             player.Initialize(playerId, playerName, playerColor, isPlayerHost);
             player.transform.parent = lobby.playersContainer.transform;
             playersManager.AddPlayer(playerId, player);

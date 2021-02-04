@@ -37,6 +37,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         {
             Vector2 playerPosition = lobby.playerSpawnPrototypes[playerId].transform.position;
             Player player = Instantiate(playerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
+            player.gameObject.name = $"Player{playerId}";
             player.transform.parent = lobby.playersContainer.transform;
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
