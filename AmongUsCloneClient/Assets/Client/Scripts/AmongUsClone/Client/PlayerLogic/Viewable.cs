@@ -3,8 +3,6 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.PlayerLogic
 {
-    // Todo: fix 'Start button', 'Ssshhh screen' dirty sprites
-    // Todo: fix player game object names
     public class Viewable : Shared.Game.PlayerLogic.Viewable
     {
         [SerializeField] public GameObject fieldOfView;
