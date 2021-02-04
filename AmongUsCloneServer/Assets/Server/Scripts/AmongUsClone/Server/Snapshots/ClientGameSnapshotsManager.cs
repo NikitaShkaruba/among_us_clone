@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Networking;
+using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
+using Scene = AmongUsClone.Server.Game.Scene;
 
 namespace AmongUsClone.Server.Snapshots
 {
@@ -11,6 +13,7 @@ namespace AmongUsClone.Server.Snapshots
     public class ClientGameSnapshotsManager : ScriptableObject
     {
         [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private ScenesManager scenesManager;
 
         public ClientGameSnapshot CreateClientGameSnapshot(Client client, GameSnapshot gameSnapshot)
         {
@@ -22,6 +25,12 @@ namespace AmongUsClone.Server.Snapshots
 
         private Dictionary<int, SnapshotPlayerInfo> FilterHiddenPlayersFromSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)
         {
+            // Everyone sees everyone in the lobby
+            if (scenesManager.GetActiveScene() == Scene.Lobby)
+            {
+                return gameSnapshot.playersInfo;
+            }
+
             Dictionary<int, SnapshotPlayerInfo> visibleSnapshotPlayersInfo = new Dictionary<int, SnapshotPlayerInfo>();
 
             foreach (Client client in playersManager.clients.Values)

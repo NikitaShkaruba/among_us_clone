@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ClientGameSnapshotsManager
   m_EditorClassIdentifier: 
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
+  scenesManager: {fileID: 11400000, guid: e5db509cc25877842ba67a5005d280f9, type: 2}
