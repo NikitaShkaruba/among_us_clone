@@ -27,10 +27,14 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private Lobby lobby;
 
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
+        
+        private bool gameStartRequested;
 
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby>();
+            
+            gameStartRequested = false;
         }
 
         public void ConnectPlayer(int playerId, string playerName)
@@ -88,8 +92,16 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
                 return;
             }
 
+            if (gameStartRequested)
+            {
+                Logger.LogError(SharedLoggerSection.GameStart, "Attempt to start a game which is already starting");
+                return;
+            }
+
+            gameStartRequested = true;
             packetsSender.SendGameStartsPacket();
             metaMonoBehaviours.coroutines.StartCoroutine(StartGame());
+            
             Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
         }
 
