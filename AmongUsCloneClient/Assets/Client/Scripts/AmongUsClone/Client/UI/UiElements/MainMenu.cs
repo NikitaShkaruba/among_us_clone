@@ -17,6 +17,11 @@ namespace AmongUsClone.Client.UI.UiElements
 
         public void ConnectToServer()
         {
+            if (loadingLabel.gameObject.activeSelf)
+            {
+                return;
+            }
+        
             if (!IsUserNameFieldValid())
             {
                 if (isUserNameFieldHighlighted)
