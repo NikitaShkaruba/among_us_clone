@@ -8,5 +8,6 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
         PlayerInput,
         ColorChangeRequest,
         StartGame,
+        AdminPanelUseRequest,
     }
 }

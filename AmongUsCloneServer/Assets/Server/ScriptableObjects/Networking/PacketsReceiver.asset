@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
   lobbyGamePhase: {fileID: 11400000, guid: 1b6423200ac2837428679aa22764623f, type: 2}
+  playGamePhase: {fileID: 11400000, guid: b0cf25932624c6b49ba943ae169eb140, type: 2}

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Linq;
+using AmongUsClone.Server.Game.Interactions;
+using AmongUsClone.Server.Game.Maps.Surveillance;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
@@ -27,13 +29,13 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private Lobby lobby;
 
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
-        
+
         private bool gameStartRequested;
 
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby>();
-            
+
             gameStartRequested = false;
         }
 
@@ -76,12 +78,14 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
         public void ChangePlayerColor(int playerId)
         {
-            PlayerColor newPlayerColor = PlayerColors.SwitchToRandomColor(playerId);
+            Interactable interactable = playersManager.clients[playerId].player.nearbyInteractableChooser.chosen;
+            if (interactable == null || interactable.GetType() != typeof(LobbyComputer))
+            {
+                Logger.LogError(SharedLoggerSection.PlayerColors, $"Attempt to change a color for player {playerId} when not being nearby a lobby computer");
+                return;
+            }
 
-            playersManager.clients[playerId].player.colorable.ChangeColor(newPlayerColor);
-            packetsSender.SendColorChanged(playerId, newPlayerColor);
-
-            Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(newPlayerColor)}");
+            interactable.Interact(playerId);
         }
 
         public void ScheduleGameStart()
@@ -101,7 +105,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             gameStartRequested = true;
             packetsSender.SendGameStartsPacket();
             metaMonoBehaviours.coroutines.StartCoroutine(StartGame());
-            
+
             Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
         }
 

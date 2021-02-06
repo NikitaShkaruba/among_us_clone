@@ -1,68 +1,56 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using AmongUsClone.Client.Logging;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Scenes;
-using JetBrains.Annotations;
 using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.Interactions
 {
     /**
      * Object that interacts with interactables
      */
-    public class Interactor : MonoBehaviour
+    public class Interactor : NearbyMonoBehavioursChooser<Interactable>
     {
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private InputReader inputReader;
 
-        public float interactionDistance;
         private bool interactButtonPressed;
 
-        private List<Interactable> interactables;
-        [CanBeNull] public Interactable chosenInteractable;
         private Interactable chosenInteractableLastFrame;
 
         public Action<Interactable> newInteractableChosen;
 
-        private void Start()
-        {
-            CacheInteractables();
-        }
-
         private void OnEnable()
         {
-            scenesManager.onSceneUpdate += CacheInteractables;
+            scenesManager.onSceneUpdate += CacheChosables;
             inputReader.onInteract += Interact;
         }
 
         private void OnDisable()
         {
-            scenesManager.onSceneUpdate -= CacheInteractables;
+            scenesManager.onSceneUpdate -= CacheChosables;
             inputReader.onInteract -= Interact;
         }
 
-        private void Update()
+        private new void Update()
         {
-            chosenInteractableLastFrame = chosenInteractable;
-            chosenInteractable = FindClosestInteractableInRange();
+            chosenInteractableLastFrame = chosen;
+            base.Update();
 
-            BroadcastToInteractablesTheirStates(chosenInteractable);
-            CallInteractableChangedIfNeeded(chosenInteractable);
+            BroadcastToInteractablesTheirStates(chosen);
+            CallInteractableChangedIfNeeded(chosen);
         }
 
         private void Interact()
         {
-            if (chosenInteractable == null)
+            if (chosen == null)
             {
+                Logger.LogError(LoggerSection.Interactions, "Unable to interact without any chosen interactable");
                 return;
             }
 
-            chosenInteractable.Interact();
-        }
-
-        private void CacheInteractables()
-        {
-            interactables = FindObjectsOfType<Interactable>().ToList();
+            chosen.Interact();
         }
 
         private void CallInteractableChangedIfNeeded(Interactable interactable)
@@ -77,30 +65,9 @@ namespace AmongUsClone.Client.Game.Interactions
             }
         }
 
-        [CanBeNull]
-        private Interactable FindClosestInteractableInRange()
-        {
-            float distanceToClosesInteractable = float.PositiveInfinity;
-            Interactable closestInteractable = null;
-
-            foreach (Interactable interactable in interactables)
-            {
-                Vector3 positionDifferenceWithControlledPlayer = transform.position - interactable.transform.position;
-                if (positionDifferenceWithControlledPlayer.magnitude > interactionDistance || positionDifferenceWithControlledPlayer.magnitude > distanceToClosesInteractable)
-                {
-                    continue;
-                }
-
-                distanceToClosesInteractable = positionDifferenceWithControlledPlayer.magnitude;
-                closestInteractable = interactable;
-            }
-
-            return closestInteractable;
-        }
-
         private void BroadcastToInteractablesTheirStates(Interactable possibleInteractable)
         {
-            foreach (Interactable interactable in interactables)
+            foreach (Interactable interactable in chosables)
             {
                 if (interactable == null)
                 {
@@ -109,11 +76,11 @@ namespace AmongUsClone.Client.Game.Interactions
 
                 if (interactable == possibleInteractable)
                 {
-                    interactable.NoteThatInteractionMayBeSelected();
+                    interactable.NoteThatMayBeSelected();
                 }
                 else
                 {
-                    interactable.NotThatInteractionMayNotBeSelected();
+                    interactable.NoteThatMayNotBeSelected();
                 }
             }
         }

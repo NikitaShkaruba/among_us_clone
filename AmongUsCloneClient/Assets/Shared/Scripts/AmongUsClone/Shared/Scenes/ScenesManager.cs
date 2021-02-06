@@ -30,6 +30,13 @@ namespace AmongUsClone.Shared.Scenes
                 {
                     CallCustomSceneLoadedCallback();
                 }
+
+                onSceneUpdate?.Invoke();
+            };
+
+            SceneManager.sceneUnloaded += (scene) =>
+            {
+                onSceneUpdate?.Invoke();
             };
         }
 
@@ -37,16 +44,12 @@ namespace AmongUsClone.Shared.Scenes
         {
             SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
             Logger.LogEvent(SharedLoggerSection.ScenesManager, $"Loaded scene {sceneName}");
-
-            onSceneUpdate?.Invoke();
         }
 
         public void UnloadScene(string sceneName)
         {
             SceneManager.UnloadSceneAsync(sceneName);
             Logger.LogEvent(SharedLoggerSection.ScenesManager, $"Unloaded scene {sceneName}");
-
-            onSceneUpdate?.Invoke();
         }
 
         public void SwitchScene(string sceneName, Action customSceneLoadedCallback = null)

@@ -10,7 +10,7 @@ namespace AmongUsClone.Client.Game.Interactions
         public InteractableType type;
         private bool wasInteractableFrameBefore;
 
-        public void NoteThatInteractionMayBeSelected()
+        public void NoteThatMayBeSelected()
         {
             if (wasInteractableFrameBefore)
             {
@@ -21,7 +21,7 @@ namespace AmongUsClone.Client.Game.Interactions
             wasInteractableFrameBefore = true;
         }
 
-        public void NotThatInteractionMayNotBeSelected()
+        public void NoteThatMayNotBeSelected()
         {
             if (!wasInteractableFrameBefore)
             {

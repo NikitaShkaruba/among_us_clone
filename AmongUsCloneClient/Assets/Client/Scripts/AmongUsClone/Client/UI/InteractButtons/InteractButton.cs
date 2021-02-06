@@ -9,9 +9,13 @@ namespace AmongUsClone.Client.UI.InteractButtons
     [RequireComponent(typeof(Image))]
     public class InteractButton : MonoBehaviour, IPointerClickHandler
     {
+        [Header("General")]
         [SerializeField] private Interactor interactor;
         [SerializeField] private Image buttonImage;
+
+        [Header("Button sprites")]
         [SerializeField] private Sprite customizeButtonSprite;
+        [SerializeField] private Sprite useAdminPanelButtonSprite;
         [SerializeField] private Sprite useButtonSprite;
 
         private void Start()
@@ -38,26 +42,40 @@ namespace AmongUsClone.Client.UI.InteractButtons
 
         private void UpdateImage(Interactable interactable)
         {
-            if (interactable == null || interactable.type != InteractableType.Customize)
+            if (interactable == null)
             {
                 buttonImage.overrideSprite = useButtonSprite;
                 buttonImage.color = Helpers.halfVisibleColor;
+                return;
             }
-            else
+
+            switch (interactable.type)
             {
-                buttonImage.overrideSprite = customizeButtonSprite;
-                buttonImage.color = Helpers.fullyVisibleColor;
+                case InteractableType.Customize:
+                    buttonImage.overrideSprite = customizeButtonSprite;
+                    buttonImage.color = Helpers.fullyVisibleColor;
+                    break;
+
+                case InteractableType.UseAdminPanel:
+                    buttonImage.overrideSprite = useAdminPanelButtonSprite;
+                    buttonImage.color = Helpers.fullyVisibleColor;
+                    break;
+
+                default:
+                    buttonImage.overrideSprite = useButtonSprite;
+                    buttonImage.color = Helpers.halfVisibleColor;
+                    break;
             }
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (interactor.chosenInteractable == null)
+            if (interactor.chosen == null)
             {
                 return;
             }
 
-            interactor.chosenInteractable.Interact();
+            interactor.chosen.Interact();
         }
     }
 }

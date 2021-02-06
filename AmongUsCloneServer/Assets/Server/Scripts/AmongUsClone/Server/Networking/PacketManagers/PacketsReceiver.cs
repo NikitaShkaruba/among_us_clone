@@ -20,6 +20,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
     {
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayGamePhase playGamePhase;
 
         private Dictionary<int, TcpConnection.OnPacketReceivedCallback> packetHandlers;
 
@@ -30,7 +31,8 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
                 {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
                 {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket},
-                {(int) ClientPacketType.StartGame, ProcessStartGamePacket}
+                {(int) ClientPacketType.StartGame, ProcessStartGamePacket},
+                {(int) ClientPacketType.AdminPanelUseRequest, ProcessAdminPanelUseRequestPacket}
             };
         }
 
@@ -77,6 +79,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             // Because of multi threading we might not have this client yet
             if (!playersManager.clients.ContainsKey(playerId))
             {
+                Logger.LogNotice(LoggerSection.GameSnapshots, $"Unable to process not yet initialized player {playerId} input");
                 return;
             }
 
@@ -99,6 +102,11 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
 
             lobbyGamePhase.ScheduleGameStart();
+        }
+
+        private void ProcessAdminPanelUseRequestPacket(int playerId, Packet packet)
+        {
+            playGamePhase.RevealAdminPanelMap(playerId);
         }
     }
 }

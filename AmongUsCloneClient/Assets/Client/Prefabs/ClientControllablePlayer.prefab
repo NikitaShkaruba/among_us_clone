@@ -94,10 +94,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1c1449b7b0435c9e5cd83454b2e218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxDistance: 2
+  chosen: {fileID: 0}
   scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
   inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
-  interactionDistance: 2
-  chosenInteractable: {fileID: 0}
 --- !u!114 &2693481040140365202
 MonoBehaviour:
   m_ObjectHideFlags: 0

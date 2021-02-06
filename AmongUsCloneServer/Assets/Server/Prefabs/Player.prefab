@@ -14,6 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 7919225120034550726}
   lastProcessedInputId: -1
+--- !u!114 &1043949617194610149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4489031036040563366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402d15037abb4441b2c96a54bbc85b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  scenesManager: {fileID: 11400000, guid: e5db509cc25877842ba67a5005d280f9, type: 2}
 --- !u!114 &4888935876384969276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53,6 +67,7 @@ MonoBehaviour:
   remoteControllable: {fileID: 151776526704875330}
   colorable: {fileID: 6138985039283743138}
   viewable: {fileID: 4888935876384969276}
+  nearbyInteractableChooser: {fileID: 1043949617194610149}
   spriteRenderer: {fileID: 3238998293717618598}
 --- !u!1 &8970339713319823812
 GameObject:

@@ -1,8 +1,9 @@
 using UnityEngine;
 
-namespace AmongUsClone.Shared.Game.Maps
+namespace AmongUsClone.Shared.Maps
 {
-    public class Skeld : MonoBehaviour
+    // Todo: fix minimap player location
+    public class PlayerSpawnable : MonoBehaviour
     {
         public GameObject playersContainer;
         public Transform[] playerMeetingLocations;

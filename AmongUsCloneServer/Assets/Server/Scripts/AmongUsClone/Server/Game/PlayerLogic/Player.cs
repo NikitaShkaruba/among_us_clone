@@ -1,3 +1,4 @@
+using AmongUsClone.Server.Game.Interactions;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         public RemoteControllable remoteControllable;
         public Colorable colorable;
         public Viewable viewable;
+        public NearbyInteractableChooser nearbyInteractableChooser;
 
         public SpriteRenderer spriteRenderer;
 

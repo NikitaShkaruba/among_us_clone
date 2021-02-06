@@ -9,6 +9,7 @@ using AmongUsClone.Shared.Networking;
 
 namespace AmongUsClone.Client.Networking
 {
+    // Todo: detect when server shuts down
     public class TcpConnection : Shared.Networking.TcpConnection
     {
         private readonly PacketsReceiver packetsReceiver;

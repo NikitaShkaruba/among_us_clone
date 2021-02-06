@@ -1,6 +1,5 @@
+using AmongUsClone.Client.Game.Maps;
 using AmongUsClone.Client.Game.PlayerLogic;
-using AmongUsClone.Client.UI.UiElements;
-using AmongUsClone.Shared.Game.Maps;
 using AmongUsClone.Shared.Scenes;
 using UnityEngine;
 
@@ -28,8 +27,8 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         {
             foreach (Player player in playersManager.players.Values)
             {
-                player.transform.parent = skeld.playersContainer.transform;
-                player.transform.position = skeld.playerMeetingLocations[player.information.id].transform.position;
+                player.transform.parent = skeld.playerSpawnable.playersContainer.transform;
+                player.transform.position = skeld.playerSpawnable.playerMeetingLocations[player.information.id].transform.position;
 
                 if (player.information.isImposter)
                 {
@@ -40,6 +39,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             }
 
             playersManager.controlledPlayer.viewable.Enable();
+            skeld.interactButton.SetInteractor(playersManager.controlledPlayer.interactor);
         }
 
         private void SetupCamera()

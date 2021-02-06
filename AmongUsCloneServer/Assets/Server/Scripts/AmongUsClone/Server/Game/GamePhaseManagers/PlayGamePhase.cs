@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Linq;
+using AmongUsClone.Server.Game.Interactions;
+using AmongUsClone.Server.Game.Maps.Surveillance;
+using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Shared.Game;
-using AmongUsClone.Shared.Game.Maps;
+using AmongUsClone.Shared.Logging;
+using AmongUsClone.Shared.Maps;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
 using UnityEngine;
+using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game.GamePhaseManagers
 {
@@ -16,13 +21,13 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
-        [SerializeField] private Skeld skeld;
+        [SerializeField] private PlayerSpawnable playerSpawnable;
 
         public const int SecondsForRoleExploration = GameConfiguration.SecondsForRoleExploration;
 
         public void Initialize()
         {
-            skeld = FindObjectOfType<Skeld>();
+            playerSpawnable = FindObjectOfType<PlayerSpawnable>();
 
             PlacePlayersIntoMeetingPositions();
             metaMonoBehaviours.coroutines.StartCoroutine(UnlockPlayerMovement());
@@ -34,8 +39,8 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         {
             foreach (Client client in playersManager.clients.Values.ToList())
             {
-                client.player.transform.parent = skeld.playersContainer.transform;
-                client.player.transform.position = skeld.playerMeetingLocations[client.playerId].transform.position;
+                client.player.transform.parent = playerSpawnable.playersContainer.transform;
+                client.player.transform.position = playerSpawnable.playerMeetingLocations[client.playerId].transform.position;
                 client.player.movable.isDisabled = true;
             }
         }
@@ -48,6 +53,18 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             {
                 client.player.movable.isDisabled = false;
             }
+        }
+
+        public void RevealAdminPanelMap(int playerId)
+        {
+            Interactable interactable = playersManager.clients[playerId].player.nearbyInteractableChooser.chosen;
+            if (interactable == null || interactable.GetType() != typeof(AdminPanel))
+            {
+                Logger.LogError(LoggerSection.Interactions, $"Attempt to reveal admin panel map for a player {playerId} which does not stand nearby");
+                return;
+            }
+
+            interactable.Interact(playerId);
         }
     }
 }
