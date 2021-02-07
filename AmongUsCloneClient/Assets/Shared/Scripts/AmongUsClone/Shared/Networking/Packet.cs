@@ -133,13 +133,20 @@ namespace AmongUsClone.Shared.Networking
         {
             Write(clientGameSnapshot.id);
             Write(clientGameSnapshot.yourLastProcessedInputId);
-            Write(clientGameSnapshot.playersInfo.Count);
 
+            Write(clientGameSnapshot.playersInfo.Count);
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo.Values)
             {
                 Write(snapshotPlayerInfo.id);
                 Write(snapshotPlayerInfo.position);
                 Write(snapshotPlayerInfo.input);
+            }
+
+            Write(clientGameSnapshot.adminPanelPositions.Count);
+            foreach (KeyValuePair<int, int> pair in clientGameSnapshot.adminPanelPositions)
+            {
+                Write(pair.Key);
+                Write(pair.Value);
             }
         }
 
@@ -337,7 +344,17 @@ namespace AmongUsClone.Shared.Networking
                 snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput);
             }
 
-            return new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos);
+            Dictionary<int, int> adminPanelInfo = new Dictionary<int, int>();
+            int adminPanelInfoLength = ReadInt(updateReadPosition);
+            for (int adminPanelInfoPiece = 0; adminPanelInfoPiece < adminPanelInfoLength; adminPanelInfoPiece++)
+            {
+                int roomId = ReadInt(updateReadPosition);
+                int playersAmount = ReadInt(updateReadPosition);
+
+                adminPanelInfo[roomId] = playersAmount;
+            }
+
+            return new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos, adminPanelInfo);
         }
 
         #endregion

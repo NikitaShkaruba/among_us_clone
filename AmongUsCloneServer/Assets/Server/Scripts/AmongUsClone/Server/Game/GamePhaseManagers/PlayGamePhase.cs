@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Linq;
 using AmongUsClone.Server.Game.Interactions;
+using AmongUsClone.Server.Game.Maps;
 using AmongUsClone.Server.Game.Maps.Surveillance;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Shared.Game;
-using AmongUsClone.Shared.Logging;
-using AmongUsClone.Shared.Maps;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
 using UnityEngine;
@@ -21,13 +20,13 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
-        [SerializeField] private PlayerSpawnable playerSpawnable;
+        public ServerSkeld serverSkeld;
 
         public const int SecondsForRoleExploration = GameConfiguration.SecondsForRoleExploration;
 
         public void Initialize()
         {
-            playerSpawnable = FindObjectOfType<PlayerSpawnable>();
+            serverSkeld = FindObjectOfType<ServerSkeld>();
 
             PlacePlayersIntoMeetingPositions();
             metaMonoBehaviours.coroutines.StartCoroutine(UnlockPlayerMovement());
@@ -39,8 +38,8 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         {
             foreach (Client client in playersManager.clients.Values.ToList())
             {
-                client.player.transform.parent = playerSpawnable.playersContainer.transform;
-                client.player.transform.position = playerSpawnable.playerMeetingLocations[client.playerId].transform.position;
+                client.player.transform.parent = serverSkeld.sharedSkeld.playerSpawnable.playersContainer.transform;
+                client.player.transform.position = serverSkeld.sharedSkeld.playerSpawnable.playerMeetingLocations[client.playerId].transform.position;
                 client.player.movable.isDisabled = true;
             }
         }
@@ -55,7 +54,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             }
         }
 
-        public void RevealAdminPanelMap(int playerId)
+        public void InteractWithAdminPanel(int playerId)
         {
             Interactable interactable = playersManager.clients[playerId].player.nearbyInteractableChooser.chosen;
             if (interactable == null || interactable.GetType() != typeof(AdminPanel))

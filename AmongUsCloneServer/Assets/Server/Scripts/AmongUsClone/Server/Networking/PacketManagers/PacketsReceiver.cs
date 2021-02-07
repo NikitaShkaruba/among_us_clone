@@ -32,7 +32,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
                 {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
                 {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket},
                 {(int) ClientPacketType.StartGame, ProcessStartGamePacket},
-                {(int) ClientPacketType.AdminPanelUseRequest, ProcessAdminPanelUseRequestPacket}
+                {(int) ClientPacketType.AdminPanelInteraction, ProcessAdminPanelInteractionPacket}
             };
         }
 
@@ -104,9 +104,9 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             lobbyGamePhase.ScheduleGameStart();
         }
 
-        private void ProcessAdminPanelUseRequestPacket(int playerId, Packet packet)
+        private void ProcessAdminPanelInteractionPacket(int playerId, Packet packet)
         {
-            playGamePhase.RevealAdminPanelMap(playerId);
+            playGamePhase.InteractWithAdminPanel(playerId);
         }
     }
 }

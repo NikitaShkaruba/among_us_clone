@@ -1,5 +1,6 @@
 using System.Collections;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Shared.Game.Rooms;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ namespace AmongUsClone.Client.UI
     [RequireComponent(typeof(Text))]
     public class RoomNameLabel : MonoBehaviour
     {
+        [SerializeField] private PlayersManager playersManager;
+
         public Text label;
         public float transitionSpeed;
         public float hideDepth;
@@ -24,8 +27,7 @@ namespace AmongUsClone.Client.UI
 
             foreach (Room room in rooms)
             {
-                room.onControlledPlayerEnter += OnControlledPlayerEnter;
-                room.onControlledPlayerExit += OnControlledPlayerExit;
+                room.walkingPlayersDetectable.SubscribeToPlayerEvents(playersManager.controlledPlayer.information.id, OnControlledPlayerEnter, OnControlledPlayerExit);
             }
         }
 
@@ -35,14 +37,13 @@ namespace AmongUsClone.Client.UI
 
             foreach (Room room in rooms)
             {
-                room.onControlledPlayerEnter -= OnControlledPlayerEnter;
-                room.onControlledPlayerExit -= OnControlledPlayerExit;
+                room.walkingPlayersDetectable.UnsubscribeFromPlayerEvents(playersManager.controlledPlayer.information.id, OnControlledPlayerEnter, OnControlledPlayerExit);
             }
         }
 
-        private void OnControlledPlayerEnter(string roomName)
+        private void OnControlledPlayerEnter(Room room)
         {
-            label.text = roomName;
+            label.text = room.name;
             isTransitionDirectionUp = true;
 
             if (!transitionGoing)
@@ -52,7 +53,7 @@ namespace AmongUsClone.Client.UI
             }
         }
 
-        private void OnControlledPlayerExit()
+        private void OnControlledPlayerExit(Room room)
         {
             isTransitionDirectionUp = false;
 

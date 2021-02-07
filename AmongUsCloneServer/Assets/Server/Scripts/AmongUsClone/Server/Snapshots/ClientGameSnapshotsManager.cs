@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AmongUsClone.Server.Game;
+using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
@@ -12,6 +13,7 @@ namespace AmongUsClone.Server.Snapshots
     // [CreateAssetMenu(fileName = "ClientGameSnapshotsManager", menuName = "ClientGameSnapshotsManager")]
     public class ClientGameSnapshotsManager : ScriptableObject
     {
+        [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private ScenesManager scenesManager;
 
@@ -19,8 +21,19 @@ namespace AmongUsClone.Server.Snapshots
         {
             Dictionary<int, SnapshotPlayerInfo> visiblePlayersInfo = FilterHiddenPlayersFromSnapshot(gameSnapshot, client.playerId);
             int remoteControllableLastProcessedInputId = client.player.remoteControllable.lastProcessedInputId;
+            Dictionary<int, int> adminPanelInformation = IsAdminPanelInformationNeeded(client.playerId) ? playGamePhase.serverSkeld.adminPanel.GeneratePlayersData(client.playerId) : new Dictionary<int, int>();
 
-            return new ClientGameSnapshot(gameSnapshot.id, visiblePlayersInfo, remoteControllableLastProcessedInputId);
+            return new ClientGameSnapshot(gameSnapshot.id, remoteControllableLastProcessedInputId, visiblePlayersInfo, adminPanelInformation);
+        }
+
+        private bool IsAdminPanelInformationNeeded(int playerId)
+        {
+            if (scenesManager.GetActiveScene() != Scene.Skeld)
+            {
+                return false;
+            }
+
+            return playGamePhase.serverSkeld.adminPanel.IsPlayerLooking(playerId);
         }
 
         private Dictionary<int, SnapshotPlayerInfo> FilterHiddenPlayersFromSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)

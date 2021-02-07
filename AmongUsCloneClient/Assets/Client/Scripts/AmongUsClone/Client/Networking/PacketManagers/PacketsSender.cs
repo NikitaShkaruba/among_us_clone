@@ -74,11 +74,11 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             networkSimulation.SendThroughNetwork(action);
         }
 
-        public void SendAdminPanelRequestPacket()
+        public void SendAdminPanelInteractionPacket()
         {
             Action action = () =>
             {
-                const ClientPacketType clientPacketType = ClientPacketType.AdminPanelUseRequest;
+                const ClientPacketType clientPacketType = ClientPacketType.AdminPanelInteraction;
 
                 Packet packet = new Packet((int) clientPacketType);
                 connectionToServer.SendTcpPacket(clientPacketType, packet);

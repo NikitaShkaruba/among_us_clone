@@ -197,6 +197,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a177b1c844004e8ca5b35f3edac0590e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
+  lookingPlayerIds: 
+--- !u!1 &150470141 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7645927294103734618, guid: 88d1885001ae46642aa4e21409c56cd4, type: 3}
+  m_PrefabInstance: {fileID: 150470138}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &150470142 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1261525136943200553, guid: 88d1885001ae46642aa4e21409c56cd4, type: 3}
+  m_PrefabInstance: {fileID: 150470138}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150470141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1e66060208434dbd3c4ed46db98316, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &150470143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150470141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d43f08b150a94fa397ddbe0a558e865c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  adminPanel: {fileID: 150470140}
+  sharedSkeld: {fileID: 150470142}
 --- !u!1 &651491812
 GameObject:
   m_ObjectHideFlags: 0

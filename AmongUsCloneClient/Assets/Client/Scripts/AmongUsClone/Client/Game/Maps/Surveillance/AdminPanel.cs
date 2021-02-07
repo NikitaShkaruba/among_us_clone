@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AmongUsClone.Client.Game.Interactions;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Logging;
@@ -6,18 +7,45 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.Maps.Surveillance
 {
+    // Todo: stop animations when movable is disabled
+    // Todo: forbid hotkeys when in adminmap (just E)
+    // Todo: forbid hotkeys when in minimap (just wasd + tab)
+    // Todo: move player code to sharedPlayer
     public class AdminPanel : Interactable
     {
+        [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PacketsSender packetsSender;
 
-        public Material materialWithOutline;
-        public Material materialWithOutlineAndHighlight;
-        public new Renderer renderer;
+        [SerializeField] private GameObject adminPanelMinimap;
+        [SerializeField] private Material materialWithOutline;
+        [SerializeField] private Material materialWithOutlineAndHighlight;
+        [SerializeField] private new Renderer renderer;
+        [SerializeField] private AdminPanelCrewMateIconsShowable adminPanelCrewMateIconsShowable;
+
+        public bool isControlledPlayerViewing;
 
         public override void Interact()
         {
-            packetsSender.SendAdminPanelRequestPacket();
+            isControlledPlayerViewing = !isControlledPlayerViewing;
+            packetsSender.SendAdminPanelInteractionPacket();
+
+            if (isControlledPlayerViewing)
+            {
+                adminPanelMinimap.SetActive(true);
+                playersManager.controlledPlayer.movable.isDisabled = true;
+            }
+            else
+            {
+                adminPanelMinimap.SetActive(false);
+                playersManager.controlledPlayer.movable.isDisabled = false;
+            }
+
             Logger.LogEvent(SharedLoggerSection.PlayerColors, "Requested admin panel");
+        }
+
+        public void UpdateMinimap(Dictionary<int, int> gameSnapshotAdminPanelPositions)
+        {
+                adminPanelCrewMateIconsShowable.UpdateIcons(gameSnapshotAdminPanelPositions);
         }
 
         protected override void SetHighlighting()

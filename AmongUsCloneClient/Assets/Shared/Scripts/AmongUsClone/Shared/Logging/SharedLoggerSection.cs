@@ -8,5 +8,6 @@ namespace AmongUsClone.Shared.Logging
         public const string PlayerColors = "Colorable";
         public const string GameStart = "GameStart";
         public const string ScenesManager = "GameStart";
+        public const string Rooms = "Rooms";
     }
 }

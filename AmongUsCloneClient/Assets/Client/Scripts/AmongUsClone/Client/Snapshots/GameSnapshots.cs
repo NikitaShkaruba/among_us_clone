@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.PlayerLogic;
@@ -17,6 +19,7 @@ namespace AmongUsClone.Client.Snapshots
     {
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private PlayGamePhase playGamePhase;
 
         public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
@@ -26,6 +29,11 @@ namespace AmongUsClone.Client.Snapshots
             }
 
             UpdatePlayers(gameSnapshot);
+
+            if (gameSnapshot.adminPanelPositions.Count != 0)
+            {
+                playGamePhase.UpdateAdminPanelMinimap(gameSnapshot.adminPanelPositions);
+            }
 
             Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
         }

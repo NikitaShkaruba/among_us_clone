@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AmongUsClone.Client.Game.Maps;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Shared.Scenes;
@@ -11,11 +12,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     {
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private ScenesManager scenesManager;
-        [SerializeField] private Skeld skeld;
+        public ClientSkeld clientSkeld;
 
         public void Initialize()
         {
-            skeld = FindObjectOfType<Skeld>();
+            clientSkeld = FindObjectOfType<ClientSkeld>();
 
             InitializePlayers();
             SetupCamera();
@@ -27,8 +28,8 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         {
             foreach (Player player in playersManager.players.Values)
             {
-                player.transform.parent = skeld.playerSpawnable.playersContainer.transform;
-                player.transform.position = skeld.playerSpawnable.playerMeetingLocations[player.information.id].transform.position;
+                player.transform.parent = clientSkeld.playerSpawnable.playersContainer.transform;
+                player.transform.position = clientSkeld.playerSpawnable.playerMeetingLocations[player.information.id].transform.position;
 
                 if (player.information.isImposter)
                 {
@@ -39,7 +40,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             }
 
             playersManager.controlledPlayer.viewable.Enable();
-            skeld.interactButton.SetInteractor(playersManager.controlledPlayer.interactor);
+            clientSkeld.interactButton.SetInteractor(playersManager.controlledPlayer.interactor);
         }
 
         private void SetupCamera()
@@ -48,6 +49,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
             playerCamera.target = playersManager.controlledPlayer.gameObject;
             playerCamera.transform.position = Vector3.zero;
+        }
+
+        public void UpdateAdminPanelMinimap(Dictionary<int, int> gameSnapshotAdminPanelPositions)
+        {
+            clientSkeld.adminPanel.UpdateMinimap(gameSnapshotAdminPanelPositions);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     [RequireComponent(typeof(RemoteControllable))]
     [RequireComponent(typeof(Colorable))]
     [RequireComponent(typeof(Viewable))]
+    [RequireComponent(typeof(NearbyInteractableChooser))]
     public class Player : MonoBehaviour
     {
         public PlayerInformation information;

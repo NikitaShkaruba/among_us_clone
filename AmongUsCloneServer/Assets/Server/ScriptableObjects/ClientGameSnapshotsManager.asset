@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf71fed4164462ab2f8fd75f1dda78c, type: 3}
   m_Name: ClientGameSnapshotsManager
   m_EditorClassIdentifier: 
+  playGamePhase: {fileID: 11400000, guid: b0cf25932624c6b49ba943ae169eb140, type: 2}
   playersManager: {fileID: 11400000, guid: c1031053f85a3194cbbcad61b5c52a90, type: 2}
   scenesManager: {fileID: 11400000, guid: e5db509cc25877842ba67a5005d280f9, type: 2}
