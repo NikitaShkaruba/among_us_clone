@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.UI.UiElements
 {
-    public class OpenMinimapButton : MonoBehaviour
+    public class MinimapButton : MonoBehaviour
     {
         public InputReader inputReader;
 

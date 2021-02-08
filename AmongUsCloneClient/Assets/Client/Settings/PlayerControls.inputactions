@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ToggleSettings",
+                    "type": "Button",
+                    "id": "f6b7672c-68e7-4a9b-8467-9ef4003c5d48",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -118,6 +126,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MoveLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f8de9a0f-8afc-465a-88d1-cbf43d965048",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleSettings",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

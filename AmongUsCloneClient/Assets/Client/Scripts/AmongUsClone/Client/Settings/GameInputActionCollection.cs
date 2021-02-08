@@ -67,6 +67,14 @@ namespace AmongUsClone.Client.Settings
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleSettings"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6b7672c-68e7-4a9b-8467-9ef4003c5d48"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -135,6 +143,17 @@ namespace AmongUsClone.Client.Settings
                     ""action"": ""MoveLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f8de9a0f-8afc-465a-88d1-cbf43d965048"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleSettings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -149,6 +168,7 @@ namespace AmongUsClone.Client.Settings
             m_CrewmateControls_MoveLeft = m_CrewmateControls.FindAction("MoveLeft", throwIfNotFound: true);
             m_CrewmateControls_Interact = m_CrewmateControls.FindAction("Interact", throwIfNotFound: true);
             m_CrewmateControls_ToggleMiniMap = m_CrewmateControls.FindAction("ToggleMiniMap", throwIfNotFound: true);
+            m_CrewmateControls_ToggleSettings = m_CrewmateControls.FindAction("ToggleSettings", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -204,6 +224,7 @@ namespace AmongUsClone.Client.Settings
         private readonly InputAction m_CrewmateControls_MoveLeft;
         private readonly InputAction m_CrewmateControls_Interact;
         private readonly InputAction m_CrewmateControls_ToggleMiniMap;
+        private readonly InputAction m_CrewmateControls_ToggleSettings;
         public struct CrewmateControlsActions
         {
             private @GameInputActionCollection m_Wrapper;
@@ -214,6 +235,7 @@ namespace AmongUsClone.Client.Settings
             public InputAction @MoveLeft => m_Wrapper.m_CrewmateControls_MoveLeft;
             public InputAction @Interact => m_Wrapper.m_CrewmateControls_Interact;
             public InputAction @ToggleMiniMap => m_Wrapper.m_CrewmateControls_ToggleMiniMap;
+            public InputAction @ToggleSettings => m_Wrapper.m_CrewmateControls_ToggleSettings;
             public InputActionMap Get() { return m_Wrapper.m_CrewmateControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -241,6 +263,9 @@ namespace AmongUsClone.Client.Settings
                     @ToggleMiniMap.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnToggleMiniMap;
                     @ToggleMiniMap.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnToggleMiniMap;
                     @ToggleMiniMap.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnToggleMiniMap;
+                    @ToggleSettings.started -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnToggleSettings;
+                    @ToggleSettings.performed -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnToggleSettings;
+                    @ToggleSettings.canceled -= m_Wrapper.m_CrewmateControlsActionsCallbackInterface.OnToggleSettings;
                 }
                 m_Wrapper.m_CrewmateControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -263,6 +288,9 @@ namespace AmongUsClone.Client.Settings
                     @ToggleMiniMap.started += instance.OnToggleMiniMap;
                     @ToggleMiniMap.performed += instance.OnToggleMiniMap;
                     @ToggleMiniMap.canceled += instance.OnToggleMiniMap;
+                    @ToggleSettings.started += instance.OnToggleSettings;
+                    @ToggleSettings.performed += instance.OnToggleSettings;
+                    @ToggleSettings.canceled += instance.OnToggleSettings;
                 }
             }
         }
@@ -275,6 +303,7 @@ namespace AmongUsClone.Client.Settings
             void OnMoveLeft(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
             void OnToggleMiniMap(InputAction.CallbackContext context);
+            void OnToggleSettings(InputAction.CallbackContext context);
         }
     }
 }

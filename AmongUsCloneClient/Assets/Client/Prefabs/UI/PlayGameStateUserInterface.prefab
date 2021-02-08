@@ -123,7 +123,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1119294023971356892}
         m_TargetAssemblyTypeName: AmongUsClone.Client.UI.ActiveSceneUserInterface,
           Assembly-CSharp
-        m_MethodName: TogglePauseMenu
+        m_MethodName: ToggleMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

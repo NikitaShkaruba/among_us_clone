@@ -31,7 +31,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 234447103118264312}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -102,7 +102,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 234447103118264312}
-  - component: {fileID: 7174752204021435385}
   m_Layer: 0
   m_Name: ActiveSceneUserInterace
   m_TagString: Untagged
@@ -123,7 +122,6 @@ RectTransform:
   m_Children:
   - {fileID: 8683879528177187149}
   - {fileID: 3909743624026778378}
-  - {fileID: 8683879528237402283}
   - {fileID: 2707735954429038656}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -133,23 +131,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7174752204021435385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2329251861969935529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d687a728baa24669a093df2ff87d0cfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 8683879528237402284}
-  pauseMenuExpandSpeed: 0.1
-  pauseMenuUpdateRate: 0.005
-  pauseMenuMinScale: 0.01
-  pauseMenuMaxScale: 1
 --- !u!1 &8546404843771678253
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,6 +448,7 @@ GameObject:
   - component: {fileID: 8683879528177187146}
   - component: {fileID: 8683879528177187147}
   - component: {fileID: 8683879528177187148}
+  - component: {fileID: 1822798215422870929}
   m_Layer: 0
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -484,7 +466,8 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8683879528237402283}
   m_Father: {fileID: 234447103118264312}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -574,10 +557,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7174752204021435385}
-        m_TargetAssemblyTypeName: AmongUsClone.Client.UI.ActiveSceneUserInterface,
-          Assembly-CSharp
-        m_MethodName: TogglePauseMenu
+      - m_Target: {fileID: 1822798215422870929}
+        m_TargetAssemblyTypeName: AmongUsClone.Client.UI.SettingsButton, Assembly-CSharp
+        m_MethodName: ToggleMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -587,6 +569,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1822798215422870929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8683879528177187150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d687a728baa24669a093df2ff87d0cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
+  settingsMenu: {fileID: 8683879528237402284}
+  menuExpandSpeed: 0.1
+  menuUpdateRate: 0.005
+  menuMinScale: 0.01
+  menuMaxScale: 1
 --- !u!1 &8683879528237402284
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 8683879528237402281}
   - component: {fileID: 8683879528237402282}
   m_Layer: 0
-  m_Name: PauseMenu
+  m_Name: SettingsMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -617,13 +617,13 @@ RectTransform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_Children:
   - {fileID: 8683879526961727341}
-  m_Father: {fileID: 234447103118264312}
-  m_RootOrder: 2
+  m_Father: {fileID: 8683879528177187149}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 300}
+  m_AnchoredPosition: {x: -261.90002, y: -225}
+  m_SizeDelta: {x: 340, y: 340}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8683879528237402281
 CanvasRenderer:
