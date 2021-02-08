@@ -7,7 +7,6 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.Maps.Surveillance
 {
-    // Todo: stop animations when movable is disabled
     // Todo: forbid hotkeys when in adminmap (just E)
     // Todo: forbid hotkeys when in minimap (just wasd + tab)
     public class AdminPanel : Interactable

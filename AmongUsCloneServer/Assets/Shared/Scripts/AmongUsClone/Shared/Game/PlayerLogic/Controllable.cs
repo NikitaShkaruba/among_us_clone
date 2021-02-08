@@ -8,7 +8,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
     {
         public PlayerInput playerInput = new PlayerInput();
 
-        public bool IsMoving()
+        public bool TriesToMove()
         {
             return playerInput.moveBottom ||
                    playerInput.moveLeft ||

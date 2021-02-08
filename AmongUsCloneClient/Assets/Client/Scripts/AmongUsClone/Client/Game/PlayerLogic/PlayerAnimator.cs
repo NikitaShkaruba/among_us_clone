@@ -100,13 +100,20 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         private void Update()
         {
             UpdateIsLookingRight();
-
-            animator.SetBool(animatorPropertyIsMoving, clientPlayer.basePlayer.controllable.IsMoving());
             animator.SetBool(animatorPropertyIsLookingRight, isLookingRight);
+
+            bool isMoving = clientPlayer.basePlayer.controllable.TriesToMove() && !clientPlayer.basePlayer.movable.isDisabled;
+            animator.SetBool(animatorPropertyIsMoving, isMoving);
         }
 
         private void UpdateIsLookingRight()
         {
+            // Player is
+            if (clientPlayer.basePlayer.movable.isDisabled)
+            {
+                return;
+            }
+
             if (clientPlayer.basePlayer.controllable.playerInput.moveRight)
             {
                 isLookingRight = true;
