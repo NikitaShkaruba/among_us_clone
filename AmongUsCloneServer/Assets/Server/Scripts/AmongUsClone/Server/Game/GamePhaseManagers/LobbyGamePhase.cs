@@ -5,7 +5,6 @@ using AmongUsClone.Server.Game.Maps.Surveillance;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
-using AmongUsClone.Shared;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
@@ -42,16 +41,16 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         public void ConnectPlayer(int playerId, string playerName)
         {
             Vector2 playerPosition = lobby.playerSpawnPrototypes[playerId].transform.position;
-            Player player = Instantiate(playerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
-            player.gameObject.name = $"Player{playerId}";
-            player.transform.parent = lobby.playersContainer.transform;
+            ServerPlayer serverPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity).GetComponent<ServerPlayer>();
+            serverPlayer.gameObject.name = $"Player{playerId}";
+            serverPlayer.transform.parent = lobby.playersContainer.transform;
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
             bool isLookingRight = !lobby.playerSpawnPrototypes[playerId].spriteRenderer.flipX;
             bool isLobbyHost = playerId == PlayersManager.MinPlayerId;
-            player.Initialize(playerId, playerName, playerColor, isLookingRight, isLobbyHost);
+            serverPlayer.Initialize(playerId, playerName, playerColor, isLookingRight, isLobbyHost);
 
-            playersManager.clients[playerId].FinishInitialization(player);
+            playersManager.clients[playerId].FinishInitialization(serverPlayer);
 
             foreach (Client client in playersManager.clients.Values.ToList())
             {
@@ -61,24 +60,24 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
                 }
 
                 // Connect existent players with the new client (including himself)
-                packetsSender.SendPlayerConnectedPacket(client.playerId, playersManager.clients[playerId].player);
+                packetsSender.SendPlayerConnectedPacket(client.playerId, playersManager.clients[playerId].serverPlayer);
 
                 // Connect new player with each client (himself is already spawned)
                 if (client.playerId != playerId)
                 {
-                    packetsSender.SendPlayerConnectedPacket(playerId, client.player);
+                    packetsSender.SendPlayerConnectedPacket(playerId, client.serverPlayer);
                 }
             }
         }
 
         public void SavePlayerInput(int playerId, PlayerInput playerInput)
         {
-            playersManager.clients[playerId].player.remoteControllable.EnqueueInput(playerInput);
+            playersManager.clients[playerId].serverPlayer.remoteControllable.EnqueueInput(playerInput);
         }
 
         public void ChangePlayerColor(int playerId)
         {
-            Interactable interactable = playersManager.clients[playerId].player.nearbyInteractableChooser.chosen;
+            Interactable interactable = playersManager.clients[playerId].serverPlayer.nearbyInteractableChooser.chosen;
             if (interactable == null || interactable.GetType() != typeof(LobbyComputer))
             {
                 Logger.LogError(SharedLoggerSection.PlayerColors, $"Attempt to change a color for player {playerId} when not being nearby a lobby computer");
@@ -116,7 +115,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             int[] impostorPlayerIds = GetImpostorPlayerIds();
             foreach (int impostorPlayerId in impostorPlayerIds)
             {
-                playersManager.clients[impostorPlayerId].player.information.isImposter = true;
+                playersManager.clients[impostorPlayerId].basePlayer.impostorable.isImpostor = true;
             }
 
             packetsSender.SendGameStartedPacket(impostorPlayerIds);

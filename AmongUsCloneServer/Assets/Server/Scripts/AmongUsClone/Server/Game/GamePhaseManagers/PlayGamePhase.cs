@@ -38,9 +38,9 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         {
             foreach (Client client in playersManager.clients.Values.ToList())
             {
-                client.player.transform.parent = serverSkeld.sharedSkeld.playerSpawnable.playersContainer.transform;
-                client.player.transform.position = serverSkeld.sharedSkeld.playerSpawnable.playerMeetingLocations[client.playerId].transform.position;
-                client.player.movable.isDisabled = true;
+                client.basePlayer.transform.parent = serverSkeld.sharedSkeld.playerSpawnable.playersContainer.transform;
+                client.basePlayer.transform.position = serverSkeld.sharedSkeld.playerSpawnable.playerMeetingLocations[client.playerId].transform.position;
+                client.basePlayer.movable.isDisabled = true;
             }
         }
 
@@ -50,13 +50,13 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
             foreach (Client client in playersManager.clients.Values.ToList())
             {
-                client.player.movable.isDisabled = false;
+                client.basePlayer.movable.isDisabled = false;
             }
         }
 
         public void InteractWithAdminPanel(int playerId)
         {
-            Interactable interactable = playersManager.clients[playerId].player.nearbyInteractableChooser.chosen;
+            Interactable interactable = playersManager.clients[playerId].serverPlayer.nearbyInteractableChooser.chosen;
             if (interactable == null || interactable.GetType() != typeof(AdminPanel))
             {
                 Logger.LogError(LoggerSection.Interactions, $"Attempt to reveal admin panel map for a player {playerId} which does not stand nearby");

@@ -5,7 +5,7 @@ namespace AmongUsClone.Server.Game
 {
     public class Lobby : MonoBehaviour
     {
-        public Player[] playerSpawnPrototypes;
+        public ServerPlayer[] playerSpawnPrototypes;
         public GameObject playersContainer;
     }
 }

@@ -32,7 +32,7 @@ namespace AmongUsClone.Server.Game.UI.Debug
                     continue;
                 }
 
-                int lastInputId = client.player.remoteControllable.lastProcessedInputId;
+                int lastInputId = client.serverPlayer.remoteControllable.lastProcessedInputId;
                 labelText += $"Player {client.playerId}: {lastInputId} \n";
             }
 

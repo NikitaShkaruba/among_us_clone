@@ -73,10 +73,10 @@ namespace AmongUsClone.Server.Snapshots
                     continue;
                 }
 
-                snapshotPlayers[client.player.information.id] = new SnapshotPlayerInfo(
-                    client.player.information.id,
-                    client.player.transform.position,
-                    client.player.controllable.playerInput
+                snapshotPlayers[client.basePlayer.information.id] = new SnapshotPlayerInfo(
+                    client.basePlayer.information.id,
+                    client.basePlayer.transform.position,
+                    client.basePlayer.controllable.playerInput
                 );
             }
 

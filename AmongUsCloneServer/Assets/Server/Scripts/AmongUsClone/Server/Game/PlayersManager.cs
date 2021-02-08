@@ -32,7 +32,7 @@ namespace AmongUsClone.Server.Game
 
             Logger.LogEvent(LoggerSection.Connection, $"{clients[playerId].GetTcpEndPoint()} has disconnected (player {playerId})");
 
-            if (clients[playerId].player.information.isLobbyHost)
+            if (clients[playerId].serverPlayer.remoteControllable.isLobbyHost)
             {
                 packetsSender.SendKickedPacket(playerId);
                 foreach (int playerIdToRemove in clients.Keys.ToList())
@@ -58,7 +58,7 @@ namespace AmongUsClone.Server.Game
         private void RemovePlayerFromGame(int playerId)
         {
             PlayerColors.ReleasePlayerColor(playerId);
-            Destroy(clients[playerId].player.gameObject);
+            Destroy(clients[playerId].serverPlayer.gameObject);
             clients.Remove(playerId);
         }
     }

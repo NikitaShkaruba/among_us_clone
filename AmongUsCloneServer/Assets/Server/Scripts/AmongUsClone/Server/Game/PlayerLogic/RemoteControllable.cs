@@ -6,18 +6,19 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game.PlayerLogic
 {
-    [RequireComponent(typeof(Player))]
+    [RequireComponent(typeof(ServerPlayer))]
     public class RemoteControllable : MonoBehaviour
     {
-        [SerializeField] private Player player;
+        [SerializeField] private ServerPlayer serverPlayer;
+        public bool isLobbyHost;
 
         private readonly Queue<PlayerInput> queuedInputs = new Queue<PlayerInput>();
         public int lastProcessedInputId = -1;
 
         public void FixedUpdate()
         {
-            player.controllable.playerInput = GetPlayerInput();
-            player.movable.MoveByPlayerInput(player.controllable.playerInput);
+            serverPlayer.basePlayer.controllable.playerInput = GetPlayerInput();
+            serverPlayer.basePlayer.movable.MoveByPlayerInput(serverPlayer.basePlayer.controllable.playerInput);
         }
 
         private PlayerInput GetPlayerInput()

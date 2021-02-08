@@ -1,29 +1,26 @@
-using AmongUsClone.Client.Game;
-using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
-using Helpers = AmongUsClone.Shared.Helpers;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
-namespace AmongUsClone.Client.PlayerLogic
+namespace AmongUsClone.Client.Game.PlayerLogic
 {
     public class MinimapIconOwnable : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer minimapIconSpriteRenderer;
 
         [SerializeField] private MinimapIconSprites minimapIconSprites;
-        [SerializeField] private Player player;
+        [SerializeField] private ClientPlayer clientPlayer;
 
-        public void Initialize()
+        public void Start()
         {
             UpdateColor();
-            player.colorable.colorChanged += UpdateColor;
+            clientPlayer.basePlayer.colorable.colorChanged += UpdateColor;
         }
 
         private void UpdateColor()
         {
-            minimapIconSpriteRenderer.sprite = GetSprite(player.colorable.color);
+            minimapIconSpriteRenderer.sprite = GetSprite(clientPlayer.basePlayer.colorable.color);
         }
 
         private Sprite GetSprite(PlayerColor playerColor)
@@ -67,7 +64,7 @@ namespace AmongUsClone.Client.PlayerLogic
                     return minimapIconSprites.whiteSprite;
 
                 default:
-                    Logger.LogError(SharedLoggerSection.PlayerColors, $"Undefined sprite for color {Helpers.GetEnumName(playerColor)}");
+                    Logger.LogError(SharedLoggerSection.PlayerColors, $"Undefined sprite for color {Shared.Helpers.GetEnumName(playerColor)}");
                     return minimapIconSprites.redSprite;
             }
         }

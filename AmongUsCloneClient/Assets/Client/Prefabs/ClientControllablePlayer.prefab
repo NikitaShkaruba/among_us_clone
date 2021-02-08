@@ -95,9 +95,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 2
-  chosen: {fileID: 0}
   scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
   inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
+--- !u!114 &1578077595250915660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5116485933257911524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706eae5e445d4b8a9c8df6ad399dd465, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clientPlayer: {fileID: 6521604974166234097}
+  basePlayer: {fileID: 5539517800602073024}
+  clientControllable: {fileID: 6565230547845059123}
+  interactor: {fileID: 254043031835720268}
+  viewable: {fileID: 5858956482101493224}
+  minimapIconOwnable: {fileID: 2693481040140365202}
 --- !u!114 &2693481040140365202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimapIconSpriteRenderer: {fileID: 4405380557767515893}
   minimapIconSprites: {fileID: 11400000, guid: f5e586cd534e4e94690e3fd3c7bc89ab, type: 2}
-  player: {fileID: 6521604974166234097}
+  clientPlayer: {fileID: 6521604974166234097}
 --- !u!114 &5858956482101493224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,14 +139,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5116485933257911524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 012fc6b4b51b46a88ba0f449cd6e47aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d7ec95b60574304a9f41117f53ae62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1048576
   meshResolution: 1
-  viewRadius: 5.25
+  viewRadius: 5
   fieldOfView: {fileID: 3809647311139577523}
   fieldOfViewMeshFilter: {fileID: 164972710805607858}
 --- !u!114 &6565230547845059123
@@ -146,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
   inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
-  player: {fileID: 6521604974166234097}
+  clientPlayer: {fileID: 6521604974166234097}
 --- !u!1 &2533179505844657248
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,10 +363,18 @@ PrefabInstance:
       propertyPath: viewable
       value: 
       objectReference: {fileID: 5858956482101493224}
+    - target: {fileID: 5533755165803020274, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+      propertyPath: gameHostable
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5827258688513702030, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
       propertyPath: astronautAnimatorControllersRepository
       value: 
       objectReference: {fileID: 11400000, guid: 566c208ff80e4974cb9b0bfc7190d8af, type: 2}
+    - target: {fileID: 5827258688513702030, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+      propertyPath: clientPlayer
+      value: 
+      objectReference: {fileID: 6521604974166234097}
     - target: {fileID: 5858009883943387367, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
       propertyPath: m_Name
       value: ClientControllablePlayer
@@ -415,6 +440,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8389967345354167632, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
   m_PrefabInstance: {fileID: 1606303109329628163}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5539517800602073024 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6533296158752922563, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}
+  m_PrefabInstance: {fileID: 1606303109329628163}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5116485933257911524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf5ef62daf5b4bf4b9d0fd6550b774d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6521604974166234097 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5533755165803020274, guid: 9416b4fa3dd32ec4a8aee689e0a89bcd, type: 3}

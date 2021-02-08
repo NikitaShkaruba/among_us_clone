@@ -17,34 +17,33 @@ namespace AmongUsClone.Shared.Game.Rooms
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            // Todo: migrate to separate player component
-            PlayerInformation playerInformation = other.GetComponent<PlayerInformation>();
-            if (playerInformation == null)
+            BasePlayer basePlayer = other.GetComponent<BasePlayer>();
+            if (basePlayer == null)
             {
                 return;
             }
 
-            onAnyPlayerEnter?.Invoke(room, playerInformation.id);
+            onAnyPlayerEnter?.Invoke(room, basePlayer.information.id);
 
-            if (onEnterEvents.ContainsKey(playerInformation.id))
+            if (onEnterEvents.ContainsKey(basePlayer.information.id))
             {
-                onEnterEvents[playerInformation.id]?.Invoke(room);
+                onEnterEvents[basePlayer.information.id]?.Invoke(room);
             }
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            PlayerInformation playerInformation = other.GetComponent<PlayerInformation>();
-            if (playerInformation == null)
+            BasePlayer basePlayer = other.GetComponent<BasePlayer>();
+            if (basePlayer == null)
             {
                 return;
             }
 
-            onAnyPlayerExit?.Invoke(room, playerInformation.id);
+            onAnyPlayerExit?.Invoke(room, basePlayer.information.id);
 
-            if (onExitEvents.ContainsKey(playerInformation.id))
+            if (onExitEvents.ContainsKey(basePlayer.information.id))
             {
-                onExitEvents[playerInformation.id]?.Invoke(room);
+                onExitEvents[basePlayer.information.id]?.Invoke(room);
             }
         }
 

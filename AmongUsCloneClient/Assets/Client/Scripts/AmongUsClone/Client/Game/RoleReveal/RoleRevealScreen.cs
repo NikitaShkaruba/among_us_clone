@@ -16,7 +16,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
         [SerializeField] private Text impostorsAmountExplanationLabel;
         [SerializeField] private Text impostorsAmountLabel;
         [SerializeField] private GameObject playersContainer;
-        [SerializeField] private Player[] playerDummies;
+        [SerializeField] private ClientPlayer[] playerDummies;
         [SerializeField] private GameObject curtains;
         [SerializeField] private GameObject leftCurtain;
         [SerializeField] private GameObject rightCurtain;
@@ -27,7 +27,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
         {
             shhhScreen.SetActive(false);
 
-            if (playersManager.controlledPlayer.information.isImposter)
+            if (playersManager.controlledClientPlayer.basePlayer.impostorable.isImpostor)
             {
                 impostorEnvironment.SetActive(true);
             }
@@ -37,7 +37,7 @@ namespace AmongUsClone.Client.Game.RoleReveal
                 crewmateEnvironment.SetActive(true);
             }
 
-            UpdatePlayers(playersManager.controlledPlayer.information.isImposter);
+            UpdatePlayers(playersManager.controlledClientPlayer.basePlayer.impostorable.isImpostor);
             playersContainer.SetActive(true);
 
             curtains.SetActive(true);
@@ -73,14 +73,14 @@ namespace AmongUsClone.Client.Game.RoleReveal
             // Update colors of active dummies
             for (int playerId = 0; playerId < playersManager.players.Count; playerId++)
             {
-                Player player = playersManager.players[playerId];
+                ClientPlayer clientPlayer = playersManager.players[playerId];
 
-                if (impostorsOnly && !player.information.isImposter)
+                if (impostorsOnly && !clientPlayer.basePlayer.impostorable.isImpostor)
                 {
                     continue;
                 }
 
-                playerDummies[playerDummyIndex].colorable.ChangeColor(player.colorable.color);
+                playerDummies[playerDummyIndex].basePlayer.colorable.ChangeColor(clientPlayer.basePlayer.colorable.color);
 
                 playerDummyIndex++;
             }

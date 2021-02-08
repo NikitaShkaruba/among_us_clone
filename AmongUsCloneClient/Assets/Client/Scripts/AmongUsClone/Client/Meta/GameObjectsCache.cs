@@ -15,7 +15,7 @@ namespace AmongUsClone.Client.Meta
 
         public void CachePlayers()
         {
-            foreach (Player player in playersManager.players.Values)
+            foreach (ClientPlayer player in playersManager.players.Values)
             {
                 player.transform.parent = playersContainer.transform;
             }

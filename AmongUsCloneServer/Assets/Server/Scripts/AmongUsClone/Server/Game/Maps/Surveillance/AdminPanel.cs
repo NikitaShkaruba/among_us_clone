@@ -39,13 +39,13 @@ namespace AmongUsClone.Server.Game.Maps.Surveillance
             if (IsPlayerLooking(playerId))
             {
                 lookingPlayerIds.Remove(playerId);
-                playersManager.clients[playerId].player.movable.isDisabled = false;
+                playersManager.clients[playerId].basePlayer.movable.isDisabled = false;
                 Logger.LogEvent(LoggerSection.AdminPanelViewing, $"Player {playerId} stopped looking at admin panel");
             }
             else
             {
                 lookingPlayerIds.Add(playerId);
-                playersManager.clients[playerId].player.movable.isDisabled = true;
+                playersManager.clients[playerId].basePlayer.movable.isDisabled = true;
                 Logger.LogEvent(LoggerSection.AdminPanelViewing, $"Player {playerId} started looking at admin panel");
             }
         }
@@ -59,7 +59,7 @@ namespace AmongUsClone.Server.Game.Maps.Surveillance
             }
 
             Dictionary<int, int> adminPanelData = new Dictionary<int, int>();
-            foreach (KeyValuePair<int, List<int>> playerIdsInRoom in playerIdsInRooms) // Todo: fix always 0
+            foreach (KeyValuePair<int, List<int>> playerIdsInRoom in playerIdsInRooms)
             {
                 if (playerIdsInRoom.Value.Count == 0)
                 {

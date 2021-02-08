@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AmongUsClone.Client.PlayerLogic
+namespace AmongUsClone.Client.Game.PlayerLogic
 {
     /**
      * Players may be hidden in Among Us, and this class may forces players to always be visible

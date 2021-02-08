@@ -1,4 +1,4 @@
-﻿using AmongUsClone.Client.PlayerLogic;
+﻿using AmongUsClone.Client.Game.PlayerLogic;
 using UnityEditor;
 using UnityEngine;
 

@@ -10,7 +10,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
     // Todo: stop animations when movable is disabled
     // Todo: forbid hotkeys when in adminmap (just E)
     // Todo: forbid hotkeys when in minimap (just wasd + tab)
-    // Todo: move player code to sharedPlayer
     public class AdminPanel : Interactable
     {
         [SerializeField] private PlayersManager playersManager;
@@ -32,12 +31,12 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
             if (isControlledPlayerViewing)
             {
                 adminPanelMinimap.SetActive(true);
-                playersManager.controlledPlayer.movable.isDisabled = true;
+                playersManager.controlledClientPlayer.basePlayer.movable.isDisabled = true;
             }
             else
             {
                 adminPanelMinimap.SetActive(false);
-                playersManager.controlledPlayer.movable.isDisabled = false;
+                playersManager.controlledClientPlayer.basePlayer.movable.isDisabled = false;
             }
 
             Logger.LogEvent(SharedLoggerSection.PlayerColors, "Requested admin panel");

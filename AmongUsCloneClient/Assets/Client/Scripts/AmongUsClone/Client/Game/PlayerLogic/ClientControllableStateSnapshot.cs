@@ -1,7 +1,7 @@
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
-namespace AmongUsClone.Client.PlayerLogic
+namespace AmongUsClone.Client.Game.PlayerLogic
 {
     public class ClientControllableStateSnapshot
     {

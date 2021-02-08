@@ -5,29 +5,26 @@ using UnityEngine;
 
 namespace AmongUsClone.Server.Game.PlayerLogic
 {
-    [RequireComponent(typeof(PlayerInformation))]
-    [RequireComponent(typeof(Movable))]
-    [RequireComponent(typeof(Controllable))]
     [RequireComponent(typeof(RemoteControllable))]
-    [RequireComponent(typeof(Colorable))]
     [RequireComponent(typeof(Viewable))]
     [RequireComponent(typeof(NearbyInteractableChooser))]
-    public class Player : MonoBehaviour
+    public class ServerPlayer : MonoBehaviour
     {
-        public PlayerInformation information;
-        public Movable movable;
-        public Controllable controllable;
-        public RemoteControllable remoteControllable;
-        public Colorable colorable;
+        [Header("Parent component")]
+        public BasePlayer basePlayer;
+
+        [Header("Humble object components")]
         public Viewable viewable;
+        public RemoteControllable remoteControllable;
         public NearbyInteractableChooser nearbyInteractableChooser;
 
+        [Header("Unity components")]
         public SpriteRenderer spriteRenderer;
 
         public void Initialize(int playerId, string playerName, PlayerColor playerColor, bool isLookingRight, bool isLobbyHost)
         {
-            information.Initialize(playerId, playerName, isLobbyHost);
-            colorable.Initialize(playerColor);
+            remoteControllable.isLobbyHost = isLobbyHost;
+            basePlayer.Initialize(playerId, playerName, playerColor, isLobbyHost);
             spriteRenderer.flipX = !isLookingRight;
         }
     }

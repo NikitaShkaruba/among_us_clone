@@ -26,12 +26,12 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         private void InitializePlayers()
         {
-            foreach (Player player in playersManager.players.Values)
+            foreach (ClientPlayer player in playersManager.players.Values)
             {
                 player.transform.parent = clientSkeld.playerSpawnable.playersContainer.transform;
-                player.transform.position = clientSkeld.playerSpawnable.playerMeetingLocations[player.information.id].transform.position;
+                player.transform.position = clientSkeld.playerSpawnable.playerMeetingLocations[player.basePlayer.information.id].transform.position;
 
-                if (player.information.isImposter)
+                if (player.basePlayer.impostorable.isImpostor)
                 {
                     player.nameLabel.color = Color.red;
                 }
@@ -39,15 +39,15 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                 player.forciblyVisible.AllowHiding();
             }
 
-            playersManager.controlledPlayer.viewable.Enable();
-            clientSkeld.interactButton.SetInteractor(playersManager.controlledPlayer.interactor);
+            playersManager.controlledClientPlayer.viewable.Enable();
+            clientSkeld.interactButton.SetInteractor(playersManager.controlledClientPlayer.interactor);
         }
 
         private void SetupCamera()
         {
             PlayerCamera playerCamera = FindObjectOfType<PlayerCamera>();
 
-            playerCamera.target = playersManager.controlledPlayer.gameObject;
+            playerCamera.target = playersManager.controlledClientPlayer.gameObject;
             playerCamera.transform.position = Vector3.zero;
         }
 

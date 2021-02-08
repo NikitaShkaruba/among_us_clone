@@ -3,7 +3,6 @@ using AmongUsClone.Client.Networking;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
-using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -14,7 +13,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
     public class LobbyGamePhase : ScriptableObject
     {
-        [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PacketsSender packetsSender;
@@ -39,22 +37,23 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             bool isControlledPlayerConnecting = playerId == connectionToServer.myPlayerId;
 
             GameObject chosenPlayerPrefab = isControlledPlayerConnecting ? clientControllablePlayerPrefab : playerPrefab;
-            Player player = Instantiate(chosenPlayerPrefab, playerPosition, Quaternion.identity).GetComponent<Player>();
-            player.name = isControlledPlayerConnecting ? $"Player{playerId} (ClientControllable)" : $"Player{playerId}";
-            player.Initialize(playerId, playerName, playerColor, isPlayerHost);
-            player.transform.parent = lobby.playersContainer.transform;
-            playersManager.AddPlayer(playerId, player);
-            player.animator.isLookingRight = playerLookingRight;
+            ClientPlayer clientPlayer = Instantiate(chosenPlayerPrefab, playerPosition, Quaternion.identity).GetComponent<ClientPlayer>();
+            clientPlayer.name = isControlledPlayerConnecting ? $"Player{playerId} (ClientControllable)" : $"Player{playerId}";
+            clientPlayer.Initialize(playerId, playerName, playerColor, isPlayerHost);
+            clientPlayer.transform.parent = lobby.playersContainer.transform;
+            clientPlayer.animator.isLookingRight = playerLookingRight;
+
+            playersManager.AddPlayer(playerId, clientPlayer);
 
             if (isControlledPlayerConnecting)
             {
-                InitializeControlledPlayer(playersManager.players[playerId]);
+                InitializeControlledPlayer(playersManager.players[playerId].GetComponent<ClientControllablePlayer>());
             }
         }
 
         public void ChangePlayerColor(int playerId, PlayerColor playerColor)
         {
-            playersManager.players[playerId].colorable.ChangeColor(playerColor);
+            playersManager.players[playerId].basePlayer.colorable.ChangeColor(playerColor);
             Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Shared.Helpers.GetEnumName(playerColor)}");
         }
 
@@ -81,24 +80,24 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             {
                 foreach (int impostorPlayerId in impostorPlayerIds)
                 {
-                    playersManager.players[impostorPlayerId].information.isImposter = true;
+                    playersManager.players[impostorPlayerId].basePlayer.impostorable.isImpostor = true;
                 }
             }
 
             scenesManager.LoadScene(Scene.RoleReveal);
         }
 
-        private void InitializeControlledPlayer(Player player)
+        private void InitializeControlledPlayer(ClientControllablePlayer clientControllablePlayer)
         {
-            playersManager.controlledPlayer = player;
+            playersManager.controlledClientPlayer = clientControllablePlayer;
 
             PlayerCamera playerCamera = FindObjectOfType<PlayerCamera>();
-            playerCamera.target = playersManager.controlledPlayer.gameObject;
+            playerCamera.target = playersManager.controlledClientPlayer.gameObject;
             playerCamera.transform.position = Vector3.zero;
 
-            lobby.interactButton.SetInteractor(player.interactor);
+            lobby.interactButton.SetInteractor(clientControllablePlayer.interactor);
 
-            if (playersManager.controlledPlayer.information.isLobbyHost)
+            if (playersManager.controlledClientPlayer.basePlayer.gameHostable.isHost)
             {
                 lobby.gameStartable.ShowStartButtonForHost();
             }

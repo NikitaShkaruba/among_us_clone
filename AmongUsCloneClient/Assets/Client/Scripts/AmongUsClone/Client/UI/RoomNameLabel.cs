@@ -27,7 +27,7 @@ namespace AmongUsClone.Client.UI
 
             foreach (Room room in rooms)
             {
-                room.walkingPlayersDetectable.SubscribeToPlayerEvents(playersManager.controlledPlayer.information.id, OnControlledPlayerEnter, OnControlledPlayerExit);
+                room.walkingPlayersDetectable.SubscribeToPlayerEvents(playersManager.controlledClientPlayer.basePlayer.information.id, OnControlledPlayerEnter, OnControlledPlayerExit);
             }
         }
 
@@ -37,7 +37,7 @@ namespace AmongUsClone.Client.UI
 
             foreach (Room room in rooms)
             {
-                room.walkingPlayersDetectable.UnsubscribeFromPlayerEvents(playersManager.controlledPlayer.information.id, OnControlledPlayerEnter, OnControlledPlayerExit);
+                room.walkingPlayersDetectable.UnsubscribeFromPlayerEvents(playersManager.controlledClientPlayer.basePlayer.information.id, OnControlledPlayerEnter, OnControlledPlayerExit);
             }
         }
 

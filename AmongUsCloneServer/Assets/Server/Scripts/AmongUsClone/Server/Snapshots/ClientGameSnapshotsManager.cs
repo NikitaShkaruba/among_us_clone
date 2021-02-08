@@ -20,7 +20,7 @@ namespace AmongUsClone.Server.Snapshots
         public ClientGameSnapshot CreateClientGameSnapshot(Client client, GameSnapshot gameSnapshot)
         {
             Dictionary<int, SnapshotPlayerInfo> visiblePlayersInfo = FilterHiddenPlayersFromSnapshot(gameSnapshot, client.playerId);
-            int remoteControllableLastProcessedInputId = client.player.remoteControllable.lastProcessedInputId;
+            int remoteControllableLastProcessedInputId = client.serverPlayer.remoteControllable.lastProcessedInputId;
             Dictionary<int, int> adminPanelInformation = IsAdminPanelInformationNeeded(client.playerId) ? playGamePhase.serverSkeld.adminPanel.GeneratePlayersData(client.playerId) : new Dictionary<int, int>();
 
             return new ClientGameSnapshot(gameSnapshot.id, remoteControllableLastProcessedInputId, visiblePlayersInfo, adminPanelInformation);
@@ -56,7 +56,7 @@ namespace AmongUsClone.Server.Snapshots
                     }
 
                     bool isSelfInformation = snapshotPlayerInfo.id == currentPlayerId;
-                    bool isVisibleForCurrentPlayer = playersManager.clients[currentPlayerId].player.viewable.visiblePlayers.Exists(player => player.information.id == snapshotPlayerInfo.id);
+                    bool isVisibleForCurrentPlayer = playersManager.clients[currentPlayerId].serverPlayer.viewable.visiblePlayers.Exists(player => player.basePlayer.information.id == snapshotPlayerInfo.id);
                     if (!isVisibleForCurrentPlayer && !isSelfInformation)
                     {
                         continue;

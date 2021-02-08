@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
-using AmongUsClone.Client.PlayerLogic;
 using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
@@ -40,13 +38,13 @@ namespace AmongUsClone.Client.Snapshots
 
         private void UpdatePlayers(ClientGameSnapshot gameSnapshot)
         {
-            foreach (Player player in playersManager.players.Values)
+            foreach (ClientPlayer player in playersManager.players.Values)
             {
-                if (player == playersManager.controlledPlayer)
+                if (player == playersManager.controlledClientPlayer.clientPlayer)
                 {
-                    UpdateControlledPlayer(gameSnapshot, player);
+                    UpdateControlledPlayer(gameSnapshot, playersManager.controlledClientPlayer);
                 }
-                else if (gameSnapshot.playersInfo.ContainsKey(player.information.id))
+                else if (gameSnapshot.playersInfo.ContainsKey(player.basePlayer.information.id))
                 {
                     if (!player.gameObject.activeSelf)
                     {
@@ -54,7 +52,7 @@ namespace AmongUsClone.Client.Snapshots
                         player.gameObject.SetActive(true);
                     }
 
-                    UpdateNotControlledPlayer(gameSnapshot.playersInfo[player.information.id]);
+                    UpdateNotControlledPlayer(gameSnapshot.playersInfo[player.basePlayer.information.id]);
                 }
                 else
                 {
@@ -77,52 +75,52 @@ namespace AmongUsClone.Client.Snapshots
             playersManager.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
         }
 
-        private void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, Player controlledPlayer)
+        private void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, ClientControllablePlayer controlledClientPlayer)
         {
-            controlledPlayer.clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
+            controlledClientPlayer.clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
 
-            if (IsReconciliationNeeded(controlledPlayer, gameSnapshot))
+            if (IsReconciliationNeeded(controlledClientPlayer, gameSnapshot))
             {
-                Reconcile(controlledPlayer, gameSnapshot);
+                Reconcile(controlledClientPlayer, gameSnapshot);
             }
         }
 
-        private bool IsReconciliationNeeded(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
+        private bool IsReconciliationNeeded(ClientControllablePlayer controlledClientPlayer, ClientGameSnapshot gameSnapshot)
         {
             // If player has just spawned, he might not have gameSnapshots with which he may reconcile
-            if (!controlledPlayer.clientControllable.stateSnapshots.ContainsKey(gameSnapshot.yourLastProcessedInputId))
+            if (!controlledClientPlayer.clientControllable.stateSnapshots.ContainsKey(gameSnapshot.yourLastProcessedInputId))
             {
                 return false;
             }
 
             const float acceptablePositionError = 0.01f;
 
-            Vector2 serverPosition = gameSnapshot.playersInfo[controlledPlayer.information.id].position;
-            Vector2 clientPosition = controlledPlayer.clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
+            Vector2 serverPosition = gameSnapshot.playersInfo[controlledClientPlayer.basePlayer.information.id].position;
+            Vector2 clientPosition = controlledClientPlayer.clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
             Vector2 positionDifference = serverPosition - clientPosition;
 
             return positionDifference.magnitude > acceptablePositionError;
         }
 
-        private void Reconcile(Player controlledPlayer, ClientGameSnapshot gameSnapshot)
+        private void Reconcile(ClientControllablePlayer clientControllablePlayer, ClientGameSnapshot gameSnapshot)
         {
-            ClientControllable clientControllable = controlledPlayer.clientControllable;
+            ClientControllable clientControllable = clientControllablePlayer.clientControllable;
             Vector2 incorrectClientPosition = clientControllable.stateSnapshots[gameSnapshot.yourLastProcessedInputId].position;
-            Vector2 correctServerPosition = gameSnapshot.playersInfo[controlledPlayer.information.id].position;
+            Vector2 correctServerPosition = gameSnapshot.playersInfo[clientControllablePlayer.basePlayer.information.id].position;
 
             Physics2D.simulationMode = SimulationMode2D.Script;
 
             // Teleport to server location
-            controlledPlayer.movable.Teleport(correctServerPosition);
+            clientControllablePlayer.basePlayer.movable.Teleport(correctServerPosition);
             Physics2D.Simulate(Time.fixedDeltaTime);
-            clientControllable.UpdateSnapshotStatePosition(gameSnapshot.yourLastProcessedInputId, controlledPlayer.transform.position);
+            clientControllable.UpdateSnapshotStatePosition(gameSnapshot.yourLastProcessedInputId, clientControllablePlayer.transform.position);
 
             // Apply not yet processed by server inputs
             for (int inputId = gameSnapshot.yourLastProcessedInputId + 1; inputId <= clientControllable.stateSnapshots.Keys.Max(); inputId++)
             {
-                controlledPlayer.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
+                clientControllablePlayer.basePlayer.movable.MoveByPlayerInput(clientControllable.stateSnapshots[inputId].input);
                 Physics2D.Simulate(Time.fixedDeltaTime);
-                clientControllable.UpdateSnapshotStatePosition(inputId, controlledPlayer.transform.position);
+                clientControllable.UpdateSnapshotStatePosition(inputId, clientControllablePlayer.transform.position);
             }
 
             Physics2D.simulationMode = SimulationMode2D.FixedUpdate;

@@ -40,17 +40,17 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacketToAllExceptOne(playerId, packetTypeId, packet);
         }
 
-        public void SendPlayerConnectedPacket(int playerId, Player player)
+        public void SendPlayerConnectedPacket(int playerId, ServerPlayer serverPlayer)
         {
             const ServerPacketType packetType = ServerPacketType.PlayerConnected;
 
             Packet packet = new Packet((int) packetType);
-            packet.Write(player.information.id);
-            packet.Write(player.information.name);
-            packet.Write(player.information.isLobbyHost);
-            packet.Write((int) player.colorable.color);
-            packet.Write(player.information.transform.position);
-            packet.Write(!player.spriteRenderer.flipX);
+            packet.Write(serverPlayer.basePlayer.information.id);
+            packet.Write(serverPlayer.basePlayer.information.name);
+            packet.Write(serverPlayer.remoteControllable.isLobbyHost);
+            packet.Write((int) serverPlayer.basePlayer.colorable.color);
+            packet.Write(serverPlayer.transform.position);
+            packet.Write(!serverPlayer.spriteRenderer.flipX);
 
             SendTcpPacket(playerId, packetType, packet);
         }

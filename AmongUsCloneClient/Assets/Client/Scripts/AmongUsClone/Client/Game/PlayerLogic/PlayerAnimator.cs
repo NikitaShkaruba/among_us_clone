@@ -6,7 +6,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.PlayerLogic
 {
-    [RequireComponent(typeof(Player))]
+    [RequireComponent(typeof(ClientPlayer))]
     [RequireComponent(typeof(Animator))]
     public class PlayerAnimator : MonoBehaviour
     {
@@ -14,32 +14,32 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         private static readonly int animatorPropertyIsLookingRight = Animator.StringToHash("IsLookingRight");
 
         [SerializeField] private AstronautAnimatorControllersRepository astronautAnimatorControllersRepository;
-        [SerializeField] private Player player;
+        [SerializeField] private ClientPlayer clientPlayer;
         [SerializeField] private Animator animator;
 
         public bool isLookingRight;
 
         public void Awake()
         {
-            isLookingRight = !player.spriteRenderer.flipX;
+            isLookingRight = !clientPlayer.spriteRenderer.flipX;
         }
 
         public void Start()
         {
             UpdateAnimatorController();
-            player.colorable.colorChanged += UpdateAnimatorController;
+            clientPlayer.basePlayer.colorable.colorChanged += UpdateAnimatorController;
         }
 
         public void OnDestroy()
         {
-            player.colorable.colorChanged -= UpdateAnimatorController;
+            clientPlayer.basePlayer.colorable.colorChanged -= UpdateAnimatorController;
         }
 
         private void UpdateAnimatorController()
         {
             RuntimeAnimatorController animatorController;
 
-            switch (player.colorable.color)
+            switch (clientPlayer.basePlayer.colorable.color)
             {
                 case PlayerColor.Red:
                     animatorController = astronautAnimatorControllersRepository.redAnimatorController;
@@ -101,17 +101,17 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         {
             UpdateIsLookingRight();
 
-            animator.SetBool(animatorPropertyIsMoving, player.controllable.IsMoving());
+            animator.SetBool(animatorPropertyIsMoving, clientPlayer.basePlayer.controllable.IsMoving());
             animator.SetBool(animatorPropertyIsLookingRight, isLookingRight);
         }
 
         private void UpdateIsLookingRight()
         {
-            if (player.controllable.playerInput.moveRight)
+            if (clientPlayer.basePlayer.controllable.playerInput.moveRight)
             {
                 isLookingRight = true;
             }
-            else if (player.controllable.playerInput.moveLeft)
+            else if (clientPlayer.basePlayer.controllable.playerInput.moveLeft)
             {
                 isLookingRight = false;
             }

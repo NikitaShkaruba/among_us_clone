@@ -7,7 +7,7 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     {
         [SerializeField] private LayerMask targetMask;
 
-        public List<Player> visiblePlayers = new List<Player>();
+        public List<ServerPlayer> visiblePlayers = new List<ServerPlayer>();
 
         public void FixedUpdate()
         {
@@ -27,19 +27,19 @@ namespace AmongUsClone.Server.Game.PlayerLogic
                 RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll(transform.position, vectorsDifference.normalized, vectorsDifference.magnitude, targetMask);
                 foreach (RaycastHit2D raycastHit2D in raycastHit2Ds)
                 {
-                    Player visiblePlayer = raycastHit2D.collider.GetComponentInParent<Player>();
+                    ServerPlayer visibleServerPlayer = raycastHit2D.collider.GetComponentInParent<ServerPlayer>();
 
-                    if (visiblePlayer.viewable == this)
+                    if (visibleServerPlayer.viewable == this)
                     {
                         continue;
                     }
 
-                    if (visiblePlayers.Contains(visiblePlayer))
+                    if (visiblePlayers.Contains(visibleServerPlayer))
                     {
                         continue;
                     }
 
-                    visiblePlayers.Add(visiblePlayer);
+                    visiblePlayers.Add(visibleServerPlayer);
                 }
             }
         }

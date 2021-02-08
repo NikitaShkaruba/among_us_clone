@@ -6,6 +6,7 @@ using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Server.Networking.Tcp;
 using AmongUsClone.Server.Networking.Udp;
+using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Networking;
@@ -19,7 +20,8 @@ namespace AmongUsClone.Server.Networking
     public class Client
     {
         public readonly int playerId;
-        public Player player;
+        public ServerPlayer serverPlayer;
+        public BasePlayer basePlayer;
 
         private Tcp.TcpConnection tcpConnection;
         private IPEndPoint udpIpEndPoint;
@@ -50,12 +52,13 @@ namespace AmongUsClone.Server.Networking
          */
         public bool IsFullyInitialized()
         {
-            return player != null;
+            return serverPlayer != null;
         }
 
-        public void FinishInitialization(Player player)
+        public void FinishInitialization(ServerPlayer serverPlayer)
         {
-            this.player = player;
+            this.serverPlayer = serverPlayer;
+            basePlayer = serverPlayer.basePlayer;
         }
 
         public void ConnectTcp(TcpClient tcpClient)

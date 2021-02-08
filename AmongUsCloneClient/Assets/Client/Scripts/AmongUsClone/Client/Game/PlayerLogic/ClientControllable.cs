@@ -1,21 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUsClone.Client.Game;
-using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
 using PlayerInput = AmongUsClone.Shared.Game.PlayerLogic.PlayerInput;
 
-namespace AmongUsClone.Client.PlayerLogic
+namespace AmongUsClone.Client.Game.PlayerLogic
 {
     public class ClientControllable : MonoBehaviour
     {
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private InputReader inputReader;
 
-        [SerializeField] private Player player;
+        [SerializeField] private ClientPlayer clientPlayer;
 
         private Vector2 movement;
 
@@ -23,7 +21,7 @@ namespace AmongUsClone.Client.PlayerLogic
 
         private void Awake()
         {
-            player = GetComponent<Player>();
+            clientPlayer = GetComponent<ClientPlayer>();
         }
 
         private void OnEnable() {
@@ -44,22 +42,22 @@ namespace AmongUsClone.Client.PlayerLogic
         {
             UpdatePlayerInput();
 
-            player.movable.MoveByPlayerInput(player.controllable.playerInput);
+            clientPlayer.basePlayer.movable.MoveByPlayerInput(clientPlayer.basePlayer.controllable.playerInput);
 
             StartCoroutine(SaveStateSnapshot());
-            packetsSender.SendPlayerInputPacket(player.controllable.playerInput.Clone());
+            packetsSender.SendPlayerInputPacket(clientPlayer.basePlayer.controllable.playerInput.Clone());
         }
 
         private IEnumerator SaveStateSnapshot()
         {
             yield return new WaitForFixedUpdate();
 
-            stateSnapshots[player.controllable.playerInput.id] = new ClientControllableStateSnapshot(player.controllable.playerInput, player.movable.transform.position);
+            stateSnapshots[clientPlayer.basePlayer.controllable.playerInput.id] = new ClientControllableStateSnapshot(clientPlayer.basePlayer.controllable.playerInput, clientPlayer.basePlayer.movable.transform.position);
         }
 
         private void UpdatePlayerInput()
         {
-            player.controllable.playerInput = new PlayerInput
+            clientPlayer.basePlayer.controllable.playerInput = new PlayerInput
             {
                 id = GenerateNextPlayerInputId(),
                 moveTop = movement.y > 0,

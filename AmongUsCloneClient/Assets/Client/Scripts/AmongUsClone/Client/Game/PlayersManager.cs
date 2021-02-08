@@ -10,8 +10,8 @@ namespace AmongUsClone.Client.Game
     // [CreateAssetMenu(fileName = "PlayersManager", menuName = "PlayersManager")]
     public class PlayersManager : ScriptableObject
     {
-        public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
-        public Player controlledPlayer;
+        public readonly Dictionary<int, ClientPlayer> players = new Dictionary<int, ClientPlayer>();
+        public ClientControllablePlayer controlledClientPlayer;
 
         public int[] knownImpostorPlayerIds;
         public int impostorsAmount;
@@ -26,13 +26,13 @@ namespace AmongUsClone.Client.Game
 
         public void UpdatePlayerWithServerState(int playerId, Vector2 playerPosition, PlayerInput playerInput)
         {
-            players[playerId].controllable.playerInput = playerInput;
-            players[playerId].movable.Teleport(playerPosition);
+            players[playerId].basePlayer.controllable.playerInput = playerInput;
+            players[playerId].basePlayer.movable.Teleport(playerPosition);
         }
 
-        public void AddPlayer(int playerId, Player player)
+        public void AddPlayer(int playerId, ClientPlayer clientPlayer)
         {
-            players[playerId] = player;
+            players[playerId] = clientPlayer;
             playersAmountChanged?.Invoke();
         }
 

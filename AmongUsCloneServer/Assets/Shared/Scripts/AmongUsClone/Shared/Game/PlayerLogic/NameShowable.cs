@@ -6,11 +6,11 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
     public class NameShowable : MonoBehaviour
     {
         public Text textLabel;
-        public PlayerInformation playerInformation;
+        public BasePlayer basePlayer;
 
         public void Start()
         {
-            textLabel.text = playerInformation.name;
+            textLabel.text = basePlayer.information.name;
         }
     }
 }

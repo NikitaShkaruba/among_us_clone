@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AmongUsClone.Client.PlayerLogic
+namespace AmongUsClone.Client.Game.PlayerLogic
 {
     public class Viewable : Shared.Game.PlayerLogic.Viewable
     {
