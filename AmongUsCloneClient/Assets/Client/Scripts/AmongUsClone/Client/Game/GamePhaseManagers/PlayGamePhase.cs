@@ -12,6 +12,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
     {
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private ScenesManager scenesManager;
+
         public ClientSkeld clientSkeld;
 
         public void Initialize()

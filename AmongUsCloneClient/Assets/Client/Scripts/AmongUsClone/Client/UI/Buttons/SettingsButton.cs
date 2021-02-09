@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using AmongUsClone.Client.Game;
 using UnityEngine;
 
-namespace AmongUsClone.Client.UI
+namespace AmongUsClone.Client.UI.Buttons
 {
     public class SettingsButton : MonoBehaviour
     {
@@ -13,6 +14,10 @@ namespace AmongUsClone.Client.UI
         [SerializeField] private float menuUpdateRate;
         [SerializeField] private float menuMinScale;
         [SerializeField] private float menuMaxScale;
+
+        public bool SettingsMenuActive { get; private set; }
+
+        public Action onSettingsToggle;
 
         private void OnEnable()
         {
@@ -28,13 +33,17 @@ namespace AmongUsClone.Client.UI
         {
             if (settingsMenu.activeSelf)
             {
+                SettingsMenuActive = false;
                 StartCoroutine(ShrinkMenu());
             }
             else
             {
+                SettingsMenuActive = true;
                 settingsMenu.SetActive(true);
                 StartCoroutine(ExpandMenu());
             }
+
+            onSettingsToggle?.Invoke();
         }
 
         private IEnumerator ExpandMenu()

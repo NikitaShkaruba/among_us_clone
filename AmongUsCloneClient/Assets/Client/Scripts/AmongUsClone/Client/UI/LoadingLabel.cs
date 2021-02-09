@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
-namespace AmongUsClone.Client.UI.UiElements
+namespace AmongUsClone.Client.UI
 {
     public class LoadingLabel : MonoBehaviour
     {

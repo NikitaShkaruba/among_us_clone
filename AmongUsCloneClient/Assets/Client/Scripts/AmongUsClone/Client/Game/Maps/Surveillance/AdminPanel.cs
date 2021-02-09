@@ -7,8 +7,6 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.Maps.Surveillance
 {
-    // Todo: forbid hotkeys when in adminmap (just E)
-    // Todo: forbid hotkeys when in minimap (just wasd + tab)
     // Todo: fix strange drag when activating admin panel (probably because of a server prediction)
     public class AdminPanel : Interactable
     {

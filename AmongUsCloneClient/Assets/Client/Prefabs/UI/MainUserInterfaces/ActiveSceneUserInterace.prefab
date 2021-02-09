@@ -102,6 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 234447103118264312}
+  - component: {fileID: 2340558613225368973}
   m_Layer: 0
   m_Name: ActiveSceneUserInterace
   m_TagString: Untagged
@@ -120,8 +121,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8683879528177187149}
   - {fileID: 3909743624026778378}
+  - {fileID: 8683879528177187149}
   - {fileID: 2707735954429038656}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -131,6 +132,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2340558613225368973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329251861969935529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4142cfcced3e4c6dac53a4d34043892c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsButton: {fileID: 6713886196261068839}
+  interactButton: {fileID: 3344413638588496992}
 --- !u!1 &8546404843771678253
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +177,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 234447103118264312}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -221,6 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactor: {fileID: 0}
   buttonImage: {fileID: 2060660982899177675}
+  settingsButton: {fileID: 6713886196261068839}
   customizeButtonSprite: {fileID: 21300000, guid: a741b6df28a876744bb81fb421f66a08, type: 3}
   useAdminPanelButtonSprite: {fileID: 21300000, guid: 8a363b34c8d73664884822d3c8c7eb7d, type: 3}
   useButtonSprite: {fileID: 21300000, guid: 143e2420ec9ee6c45afc8f46be6daa3d, type: 3}
@@ -448,7 +464,7 @@ GameObject:
   - component: {fileID: 8683879528177187146}
   - component: {fileID: 8683879528177187147}
   - component: {fileID: 8683879528177187148}
-  - component: {fileID: 1822798215422870929}
+  - component: {fileID: 6713886196261068839}
   m_Layer: 0
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -469,7 +485,7 @@ RectTransform:
   m_Children:
   - {fileID: 8683879528237402283}
   m_Father: {fileID: 234447103118264312}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -557,8 +573,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1822798215422870929}
-        m_TargetAssemblyTypeName: AmongUsClone.Client.UI.SettingsButton, Assembly-CSharp
+      - m_Target: {fileID: 6713886196261068839}
+        m_TargetAssemblyTypeName: AmongUsClone.Client.UI.Buttons.SettingsButton,
+          Assembly-CSharp
         m_MethodName: ToggleMenu
         m_Mode: 1
         m_Arguments:
@@ -569,7 +586,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1822798215422870929
+--- !u!114 &6713886196261068839
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -578,14 +595,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8683879528177187150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d687a728baa24669a093df2ff87d0cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d129b08b1415eb4b92513cdb3b3c9fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
   settingsMenu: {fileID: 8683879528237402284}
   menuExpandSpeed: 0.1
-  menuUpdateRate: 0.005
-  menuMinScale: 0.01
+  menuUpdateRate: 0.001
+  menuMinScale: 0.05
   menuMaxScale: 1
 --- !u!1 &8683879528237402284
 GameObject:

@@ -1,4 +1,5 @@
 using System;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Scenes;
@@ -13,6 +14,8 @@ namespace AmongUsClone.Client.Game.Interactions
     public class Interactor : NearbyMonoBehavioursChooser<Interactable>
     {
         [SerializeField] private ScenesManager scenesManager;
+        [SerializeField] private PlayGamePhase playGamePhase;
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private InputReader inputReader;
 
         private bool interactButtonPressed;
@@ -38,8 +41,8 @@ namespace AmongUsClone.Client.Game.Interactions
             chosenInteractableLastFrame = chosen;
             base.Update();
 
-            BroadcastToInteractablesTheirStates(chosen);
-            CallInteractableChangedIfNeeded(chosen);
+            BroadcastToInteractablesTheirStates();
+            CallInteractableChangedIfNeeded();
         }
 
         private void Interact()
@@ -50,22 +53,45 @@ namespace AmongUsClone.Client.Game.Interactions
                 return;
             }
 
+            if (!IsAbleToInteract())
+            {
+                Logger.LogNotice(LoggerSection.Interactions, "Not calling interaction, because settings menu is active");
+                return;
+            }
+
             chosen.Interact();
         }
 
-        private void CallInteractableChangedIfNeeded(Interactable interactable)
+        private bool IsAbleToInteract()
         {
-            bool wasNullAndNowNot = chosenInteractableLastFrame == null && interactable != null;
-            bool wasNotNullButNowIs = chosenInteractableLastFrame != null && interactable == null;
-            bool notNullAndChangedType = chosenInteractableLastFrame != null && interactable != null && interactable.type != chosenInteractableLastFrame.type;
+            if (playGamePhase.clientSkeld != null)
+            {
+                bool settingsMenuActive = playGamePhase.clientSkeld.playGamePhaseUserInterface.activeSceneUserInterface.settingsButton.SettingsMenuActive;
+                bool adminPanelActive = playGamePhase.clientSkeld.adminPanel.isControlledPlayerViewing;
+                return !settingsMenuActive && !adminPanelActive;
+            }
+
+            if (lobbyGamePhase.lobby != null)
+            {
+                return !lobbyGamePhase.lobby.activeSceneUserInterface.settingsButton.SettingsMenuActive;
+            }
+
+            return true;
+        }
+
+        private void CallInteractableChangedIfNeeded()
+        {
+            bool wasNullAndNowNot = chosenInteractableLastFrame == null && chosen != null;
+            bool wasNotNullButNowIs = chosenInteractableLastFrame != null && chosen == null;
+            bool notNullAndChangedType = chosenInteractableLastFrame != null && chosen != null && chosen.type != chosenInteractableLastFrame.type;
 
             if (wasNullAndNowNot || wasNotNullButNowIs || notNullAndChangedType)
             {
-                newInteractableChosen?.Invoke(interactable);
+                newInteractableChosen?.Invoke(chosen);
             }
         }
 
-        private void BroadcastToInteractablesTheirStates(Interactable possibleInteractable)
+        private void BroadcastToInteractablesTheirStates()
         {
             foreach (Interactable interactable in chosables)
             {
@@ -74,7 +100,7 @@ namespace AmongUsClone.Client.Game.Interactions
                     continue;
                 }
 
-                if (interactable == possibleInteractable)
+                if (interactable == chosen)
                 {
                     interactable.NoteThatMayBeSelected();
                 }

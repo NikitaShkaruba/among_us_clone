@@ -95,7 +95,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             playerCamera.target = playersManager.controlledClientPlayer.gameObject;
             playerCamera.transform.position = Vector3.zero;
 
-            lobby.interactButton.SetInteractor(clientControllablePlayer.interactor);
+            lobby.activeSceneUserInterface.interactButton.SetInteractor(clientControllablePlayer.interactor);
 
             if (playersManager.controlledClientPlayer.basePlayer.gameHostable.isHost)
             {

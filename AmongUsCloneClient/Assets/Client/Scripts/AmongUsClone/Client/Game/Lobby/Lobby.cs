@@ -1,4 +1,4 @@
-using AmongUsClone.Client.UI.InteractButtons;
+using AmongUsClone.Client.UI;
 using UnityEngine;
 
 namespace AmongUsClone.Client.Game.Lobby
@@ -7,7 +7,6 @@ namespace AmongUsClone.Client.Game.Lobby
     {
         public GameObject playersContainer;
         public GameStartable gameStartable;
-
-        public InteractButton interactButton;
+        public ActiveSceneUserInterface activeSceneUserInterface;
     }
 }

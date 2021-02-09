@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace AmongUsClone.Client.UI.InteractButtons
+namespace AmongUsClone.Client.UI.Buttons.ActionButtons
 {
     [RequireComponent(typeof(Image))]
     public class InteractButton : MonoBehaviour, IPointerClickHandler
@@ -12,6 +12,7 @@ namespace AmongUsClone.Client.UI.InteractButtons
         [Header("General")]
         [SerializeField] private Interactor interactor;
         [SerializeField] private Image buttonImage;
+        [SerializeField] private SettingsButton settingsButton;
 
         [Header("Button sprites")]
         [SerializeField] private Sprite customizeButtonSprite;
@@ -22,6 +23,16 @@ namespace AmongUsClone.Client.UI.InteractButtons
         {
             buttonImage.overrideSprite = useButtonSprite;
             buttonImage.color = Helpers.halfVisibleColor;
+        }
+
+        private void OnEnable()
+        {
+            settingsButton.onSettingsToggle += UpdateImageAfterSettingsUpdate;
+        }
+
+        private void OnDisable()
+        {
+            settingsButton.onSettingsToggle -= UpdateImageAfterSettingsUpdate;
         }
 
         private void OnDestroy()
@@ -42,7 +53,7 @@ namespace AmongUsClone.Client.UI.InteractButtons
 
         private void UpdateImage(Interactable interactable)
         {
-            if (interactable == null)
+            if (interactable == null || settingsButton.SettingsMenuActive)
             {
                 buttonImage.overrideSprite = useButtonSprite;
                 buttonImage.color = Helpers.halfVisibleColor;
@@ -68,9 +79,14 @@ namespace AmongUsClone.Client.UI.InteractButtons
             }
         }
 
+        private void UpdateImageAfterSettingsUpdate()
+        {
+            UpdateImage(interactor.chosen);
+        }
+
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (interactor.chosen == null)
+            if (interactor.chosen == null || settingsButton.SettingsMenuActive)
             {
                 return;
             }

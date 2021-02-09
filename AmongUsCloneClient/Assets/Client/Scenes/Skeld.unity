@@ -3618,10 +3618,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffff6f7189ac45cfb157e8a122cfa783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sharedSkeld: {fileID: 369211382}
   playerSpawnable: {fileID: 369211425}
   interactButton: {fileID: 616870673}
   adminPanel: {fileID: 369211429}
-  sharedSkeld: {fileID: 369211382}
+  playGamePhaseUserInterface: {fileID: 616870674}
 --- !u!1 &369211427 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2554691800538210367, guid: 88d1885001ae46642aa4e21409c56cd4, type: 3}
@@ -5275,30 +5276,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1055371399}
     m_Modifications:
-    - target: {fileID: 441936785045436751, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 441936785045436751, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 2473172156795023681, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
+      propertyPath: minimap
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 441936785045436751, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Toggle
-      objectReference: {fileID: 0}
-    - target: {fileID: 441936785045436751, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AmongUsClone.Client.UI.UiElements.OpenMinimapButton, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 441936785045436751, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 441936785045436751, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 0
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1441845717}
     - target: {fileID: 5497341380252620684, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
       propertyPath: m_Name
       value: PlayGameStateUserInterface
@@ -5391,10 +5372,6 @@ PrefabInstance:
       propertyPath: minimap
       value: 
       objectReference: {fileID: 1441845717}
-    - target: {fileID: 8216171008774997942, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
-      propertyPath: inputReader
-      value: 
-      objectReference: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
 --- !u!224 &616870672 stripped
@@ -5411,6 +5388,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa45a8370dec4a7ca2c9c9a54aff44a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &616870674 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4745326287321419674, guid: 78aaa2fee5658cd4bb92895c68c481e7, type: 3}
+  m_PrefabInstance: {fileID: 616870671}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4889c926b7e9d1b468a5251710fd2a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &623790436

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Client.Networking;
-using AmongUsClone.Client.UI.UiElements;
+using AmongUsClone.Client.UI;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;

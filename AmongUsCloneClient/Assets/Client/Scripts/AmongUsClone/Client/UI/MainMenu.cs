@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
 
-namespace AmongUsClone.Client.UI.UiElements
+namespace AmongUsClone.Client.UI
 {
     public class MainMenu : MonoBehaviour
     {
