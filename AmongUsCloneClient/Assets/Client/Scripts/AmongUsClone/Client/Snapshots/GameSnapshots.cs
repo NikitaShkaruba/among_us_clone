@@ -48,7 +48,8 @@ namespace AmongUsClone.Client.Snapshots
                 {
                     if (!player.gameObject.activeSelf)
                     {
-                        // Todo: fix slow 'just becoming visible' players
+                        // Todo: implement some kind of client anti-cheat (It is impossible to have a clear solution, check out my reddit question about it)
+                        // @link https://www.reddit.com/r/gamedev/comments/lcq93c/how_to_use_clientside_prediction_with_fog_of_war/
                         player.gameObject.SetActive(true);
                     }
 

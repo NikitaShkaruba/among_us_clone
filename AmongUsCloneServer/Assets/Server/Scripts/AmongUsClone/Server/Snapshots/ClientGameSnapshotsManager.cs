@@ -19,7 +19,7 @@ namespace AmongUsClone.Server.Snapshots
 
         public ClientGameSnapshot CreateClientGameSnapshot(Client client, GameSnapshot gameSnapshot)
         {
-            Dictionary<int, SnapshotPlayerInfo> visiblePlayersInfo = FilterHiddenPlayersFromSnapshot(gameSnapshot, client.playerId);
+            Dictionary<int, SnapshotPlayerInfo> visiblePlayersInfo = FilterDistantPlayersFromSnapshot(gameSnapshot, client.playerId);
             int remoteControllableLastProcessedInputId = client.serverPlayer.remoteControllable.lastProcessedInputId;
             Dictionary<int, int> adminPanelInformation = IsAdminPanelInformationNeeded(client.playerId) ? playGamePhase.serverSkeld.adminPanel.GeneratePlayersData(client.playerId) : new Dictionary<int, int>();
 
@@ -36,7 +36,7 @@ namespace AmongUsClone.Server.Snapshots
             return playGamePhase.serverSkeld.adminPanel.IsPlayerLooking(playerId);
         }
 
-        private Dictionary<int, SnapshotPlayerInfo> FilterHiddenPlayersFromSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)
+        private Dictionary<int, SnapshotPlayerInfo> FilterDistantPlayersFromSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)
         {
             // Everyone sees everyone in the lobby
             if (scenesManager.GetActiveScene() == Scene.Lobby)
@@ -46,24 +46,16 @@ namespace AmongUsClone.Server.Snapshots
 
             Dictionary<int, SnapshotPlayerInfo> visibleSnapshotPlayersInfo = new Dictionary<int, SnapshotPlayerInfo>();
 
-            foreach (Client client in playersManager.clients.Values)
+            foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
             {
-                foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
+                bool isSelfInformation = snapshotPlayerInfo.id == currentPlayerId;
+                bool isTooFarAway = (gameSnapshot.playersInfo[currentPlayerId].position - snapshotPlayerInfo.position).magnitude > 8;
+                if (isTooFarAway && !isSelfInformation)
                 {
-                    if (!client.IsFullyInitialized())
-                    {
-                        continue;
-                    }
-
-                    bool isSelfInformation = snapshotPlayerInfo.id == currentPlayerId;
-                    bool isVisibleForCurrentPlayer = playersManager.clients[currentPlayerId].serverPlayer.viewable.visiblePlayers.Exists(player => player.basePlayer.information.id == snapshotPlayerInfo.id);
-                    if (!isVisibleForCurrentPlayer && !isSelfInformation)
-                    {
-                        continue;
-                    }
-
-                    visibleSnapshotPlayersInfo[snapshotPlayerInfo.id] = snapshotPlayerInfo;
+                    continue;
                 }
+
+                visibleSnapshotPlayersInfo[snapshotPlayerInfo.id] = snapshotPlayerInfo;
             }
 
             return visibleSnapshotPlayersInfo;
