@@ -22,6 +22,7 @@ namespace AmongUsClone.Client.Networking.PacketManagers
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private NetworkSimulation networkSimulation;
         [SerializeField] private GameSnapshots gameSnapshots;
         [SerializeField] private ConnectionToServer connectionToServer;
@@ -43,6 +44,8 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 {(int) ServerPacketType.ColorChanged, ProcessPlayerColorChangedPacket},
                 {(int) ServerPacketType.GameStarts, ProcessGameStartsPacket},
                 {(int) ServerPacketType.GameStarted, ProcessGameStartedPacket},
+                {(int) ServerPacketType.SecurityCamerasEnabled, ProcessSecurityCamerasEnabledPacket},
+                {(int) ServerPacketType.SecurityCamerasDisabled, ProcessSecurityCamerasDisabledPacket},
             };
         }
 
@@ -168,6 +171,20 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
                 lobbyGamePhase.StartGame(isPlayingAsImpostor, impostorsAmount, impostorPlayerIds.ToArray());
             };
+
+            networkSimulation.ReceiveThroughNetwork(action);
+        }
+
+        private void ProcessSecurityCamerasEnabledPacket(Packet packet)
+        {
+            Action action = () => playGamePhase.EnableSecurityCameras();
+
+            networkSimulation.ReceiveThroughNetwork(action);
+        }
+
+        private void ProcessSecurityCamerasDisabledPacket(Packet packet)
+        {
+            Action action = () => playGamePhase.DisableSecurityCameras();
 
             networkSimulation.ReceiveThroughNetwork(action);
         }

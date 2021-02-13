@@ -5,6 +5,7 @@ namespace AmongUsClone.Client.Game.Interactions
     /**
      * Object which can be interacted with
      */
+    // Todo: remove abstraction from Highlighting methods
     public abstract class Interactable : MonoBehaviour
     {
         public InteractableType type;

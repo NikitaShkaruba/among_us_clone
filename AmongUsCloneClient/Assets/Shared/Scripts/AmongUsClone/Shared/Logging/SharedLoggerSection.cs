@@ -9,5 +9,6 @@ namespace AmongUsClone.Shared.Logging
         public const string GameStart = "GameStart";
         public const string ScenesManager = "GameStart";
         public const string Rooms = "Rooms";
+        public const string Interactions = "Interactions";
     }
 }

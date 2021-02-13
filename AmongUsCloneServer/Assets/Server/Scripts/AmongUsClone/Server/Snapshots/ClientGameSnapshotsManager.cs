@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.GamePhaseManagers;
+using AmongUsClone.Server.Game.Maps.Surveillance;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Shared.Scenes;
 using AmongUsClone.Shared.Snapshots;
@@ -14,12 +15,11 @@ namespace AmongUsClone.Server.Snapshots
     public class ClientGameSnapshotsManager : ScriptableObject
     {
         [SerializeField] private PlayGamePhase playGamePhase;
-        [SerializeField] private PlayersManager playersManager;
         [SerializeField] private ScenesManager scenesManager;
 
         public ClientGameSnapshot CreateClientGameSnapshot(Client client, GameSnapshot gameSnapshot)
         {
-            Dictionary<int, SnapshotPlayerInfo> visiblePlayersInfo = FilterDistantPlayersFromSnapshot(gameSnapshot, client.playerId);
+            Dictionary<int, SnapshotPlayerInfo> visiblePlayersInfo = FilterNotViewablePlayersFromSnapshot(gameSnapshot, client.playerId);
             int remoteControllableLastProcessedInputId = client.serverPlayer.remoteControllable.lastProcessedInputId;
             Dictionary<int, int> adminPanelInformation = IsAdminPanelInformationNeeded(client.playerId) ? playGamePhase.serverSkeld.adminPanel.GeneratePlayersData(client.playerId) : new Dictionary<int, int>();
 
@@ -36,7 +36,7 @@ namespace AmongUsClone.Server.Snapshots
             return playGamePhase.serverSkeld.adminPanel.IsPlayerLooking(playerId);
         }
 
-        private Dictionary<int, SnapshotPlayerInfo> FilterDistantPlayersFromSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)
+        private Dictionary<int, SnapshotPlayerInfo> FilterNotViewablePlayersFromSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)
         {
             // Everyone sees everyone in the lobby
             if (scenesManager.GetActiveScene() == Scene.Lobby)
@@ -50,7 +50,10 @@ namespace AmongUsClone.Server.Snapshots
             {
                 bool isSelfInformation = snapshotPlayerInfo.id == currentPlayerId;
                 bool isTooFarAway = (gameSnapshot.playersInfo[currentPlayerId].position - snapshotPlayerInfo.position).magnitude > 8;
-                if (isTooFarAway && !isSelfInformation)
+                SecurityPanel securityPanel = playGamePhase.serverSkeld.securityPanel;
+                bool isSeenFromSecurityCameras = securityPanel.IsPlayerLooking(currentPlayerId) && securityPanel.IsSeenFromSecurityCameras(snapshotPlayerInfo.id);
+
+                if (isTooFarAway && !isSelfInformation && !isSeenFromSecurityCameras)
                 {
                     continue;
                 }

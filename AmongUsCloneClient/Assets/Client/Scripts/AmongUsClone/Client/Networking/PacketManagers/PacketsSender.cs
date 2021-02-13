@@ -86,5 +86,18 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
             networkSimulation.SendThroughNetwork(action);
         }
+
+        public void SendSecurityPanelInteractionPacket()
+        {
+            Action action = () =>
+            {
+                const ClientPacketType clientPacketType = ClientPacketType.SecurityPanelInteraction;
+
+                Packet packet = new Packet((int) clientPacketType);
+                connectionToServer.SendTcpPacket(clientPacketType, packet);
+            };
+
+            networkSimulation.SendThroughNetwork(action);
+        }
     }
 }

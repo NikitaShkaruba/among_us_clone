@@ -15,6 +15,7 @@ MonoBehaviour:
   scenesManager: {fileID: 11400000, guid: fe8eb626ff7820746ab99d60c9a11cdd, type: 2}
   mainMenuGamePhase: {fileID: 11400000, guid: 35986724e249bf048b03654746391693, type: 2}
   lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
+  playGamePhase: {fileID: 11400000, guid: a4440e641faf0c14fbfbaa8c50831f37, type: 2}
   networkSimulation: {fileID: 11400000, guid: 5b791409b5a78644eae59cba7109c634, type: 2}
   gameSnapshots: {fileID: 11400000, guid: 0f38b4fc6e54829498f9513fdca82ac2, type: 2}
   connectionToServer: {fileID: 11400000, guid: 7b4f52cd3260d664d80972118dea3c64, type: 2}

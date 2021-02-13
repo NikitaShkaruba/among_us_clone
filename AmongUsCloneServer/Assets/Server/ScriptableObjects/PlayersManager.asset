@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scenesManager: {fileID: 11400000, guid: e5db509cc25877842ba67a5005d280f9, type: 2}
   packetsSender: {fileID: 11400000, guid: 01e5ca764c91ea547a70c58b861cd0c5, type: 2}
+  basePlayersManager: {fileID: 11400000, guid: bc4409e7842213f418dabacc649b13b6, type: 2}

@@ -66,9 +66,10 @@ namespace AmongUsClone.Client.Game.Interactions
         {
             if (playGamePhase.clientSkeld != null)
             {
+                // Todo: fix ui buttons enabling / disabling
                 bool settingsMenuActive = playGamePhase.clientSkeld.playGamePhaseUserInterface.activeSceneUserInterface.settingsButton.SettingsMenuActive;
-                bool adminPanelActive = playGamePhase.clientSkeld.adminPanel.isControlledPlayerViewing;
-                return !settingsMenuActive && !adminPanelActive;
+
+                return !settingsMenuActive;
             }
 
             if (lobbyGamePhase.lobby != null)

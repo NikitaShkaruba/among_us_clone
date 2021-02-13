@@ -6,7 +6,11 @@ namespace AmongUsClone.Server.Game.Maps
 {
     public class ServerSkeld : MonoBehaviour
     {
-        public AdminPanel adminPanel;
+        [Header("Parent component")]
         public Skeld sharedSkeld;
+
+        [Header("Interactable")]
+        public AdminPanel adminPanel;
+        public SecurityPanel securityPanel;
     }
 }

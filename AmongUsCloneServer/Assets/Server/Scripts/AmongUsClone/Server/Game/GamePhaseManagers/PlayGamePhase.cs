@@ -59,7 +59,19 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             Interactable interactable = playersManager.clients[playerId].serverPlayer.nearbyInteractableChooser.chosen;
             if (interactable == null || interactable.GetType() != typeof(AdminPanel))
             {
-                Logger.LogError(LoggerSection.Interactions, $"Attempt to reveal admin panel map for a player {playerId} which does not stand nearby");
+                Logger.LogError(LoggerSection.Interactions, $"Attempt to interact with admin panel for the player {playerId} which does not stand nearby");
+                return;
+            }
+
+            interactable.Interact(playerId);
+        }
+
+        public void InteractWithSecurityPanel(int playerId)
+        {
+            Interactable interactable = playersManager.clients[playerId].serverPlayer.nearbyInteractableChooser.chosen;
+            if (interactable == null || interactable.GetType() != typeof(SecurityPanel))
+            {
+                Logger.LogError(LoggerSection.Interactions, $"Attempt to interact with security panel for the player {playerId} which does not stand nearby");
                 return;
             }
 

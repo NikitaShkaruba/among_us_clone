@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AmongUsClone.Client.Game.PlayerLogic;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace AmongUsClone.Client.Game
     // [CreateAssetMenu(fileName = "PlayersManager", menuName = "PlayersManager")]
     public class PlayersManager : ScriptableObject
     {
+        public BasePlayersManager basePlayersManager;
+
         public readonly Dictionary<int, ClientPlayer> players = new Dictionary<int, ClientPlayer>();
         public ClientControllablePlayer controlledClientPlayer;
 
@@ -33,6 +36,7 @@ namespace AmongUsClone.Client.Game
         public void AddPlayer(int playerId, ClientPlayer clientPlayer)
         {
             players[playerId] = clientPlayer;
+            basePlayersManager.players[playerId] = clientPlayer.basePlayer;
             playersAmountChanged?.Invoke();
         }
 
@@ -45,12 +49,14 @@ namespace AmongUsClone.Client.Game
 
             Destroy(players[playerId].gameObject);
             players.Remove(playerId);
+            basePlayersManager.players.Remove(playerId);
             playersAmountChanged?.Invoke();
         }
 
         public void ClearPlayers()
         {
             players.Clear();
+            basePlayersManager.players.Clear();
             playersAmountChanged?.Invoke();
         }
     }

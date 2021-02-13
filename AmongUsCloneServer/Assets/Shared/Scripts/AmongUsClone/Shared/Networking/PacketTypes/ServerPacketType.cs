@@ -12,5 +12,7 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
         ColorChanged,
         GameStarts,
         GameStarted,
+        SecurityCamerasEnabled,
+        SecurityCamerasDisabled,
     }
 }

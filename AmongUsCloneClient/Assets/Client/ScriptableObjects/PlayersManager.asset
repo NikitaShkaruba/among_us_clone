@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcc2ae0899847b8b80cabaf0538c703, type: 3}
   m_Name: PlayersManager
   m_EditorClassIdentifier: 
-  controlledPlayer: {fileID: 0}
+  basePlayersManager: {fileID: 11400000, guid: bc4409e7842213f418dabacc649b13b6, type: 2}
+  controlledClientPlayer: {fileID: 0}
   knownImpostorPlayerIds: 
   impostorsAmount: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http.Headers;
 using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Logging;
@@ -127,6 +128,22 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
                 SendTcpPacket(playerId, packetType, packet);
             }
+        }
+
+        public void SendSecurityCamerasEnabledPacket()
+        {
+            const ServerPacketType packetType = ServerPacketType.SecurityCamerasEnabled;
+
+            Packet packet = new Packet((int) packetType);
+            SendTcpPacketToAll(packetType, packet);
+        }
+
+        public void SendSecurityCamerasDisabledPacket()
+        {
+            const ServerPacketType packetType = ServerPacketType.SecurityCamerasDisabled;
+
+            Packet packet = new Packet((int) packetType);
+            SendTcpPacketToAll(packetType, packet);
         }
 
         private void SendTcpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)

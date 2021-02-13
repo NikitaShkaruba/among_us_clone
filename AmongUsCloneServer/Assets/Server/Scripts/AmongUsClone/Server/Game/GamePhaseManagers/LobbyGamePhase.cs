@@ -51,6 +51,7 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             serverPlayer.Initialize(playerId, playerName, playerColor, isLookingRight, isLobbyHost);
 
             playersManager.clients[playerId].FinishInitialization(serverPlayer);
+            playersManager.basePlayersManager.players[playerId] = serverPlayer.basePlayer;
 
             foreach (Client client in playersManager.clients.Values.ToList())
             {

@@ -9,5 +9,6 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
         ColorChangeRequest,
         StartGame,
         AdminPanelInteraction,
+        SecurityPanelInteraction,
     }
 }

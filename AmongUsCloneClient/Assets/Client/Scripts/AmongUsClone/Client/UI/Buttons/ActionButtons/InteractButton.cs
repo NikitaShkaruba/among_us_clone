@@ -1,4 +1,5 @@
 using AmongUsClone.Client.Game;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.Interactions;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +10,9 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
     [RequireComponent(typeof(Image))]
     public class InteractButton : MonoBehaviour, IPointerClickHandler
     {
+        [Header("Scriptable objects")]
+        [SerializeField] private PlayGamePhase playGamePhase;
+
         [Header("General")]
         [SerializeField] private Interactor interactor;
         [SerializeField] private Image buttonImage;
@@ -17,6 +21,7 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
         [Header("Button sprites")]
         [SerializeField] private Sprite customizeButtonSprite;
         [SerializeField] private Sprite useAdminPanelButtonSprite;
+        [SerializeField] private Sprite useSecurityPanelButtonSprite;
         [SerializeField] private Sprite useButtonSprite;
 
         private void Start()
@@ -53,7 +58,7 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
 
         private void UpdateImage(Interactable interactable)
         {
-            if (interactable == null || settingsButton.SettingsMenuActive)
+            if (interactable == null || settingsButton.SettingsMenuActive || playGamePhase.clientSkeld != null && playGamePhase.clientSkeld.securityPanel.isControlledPlayerViewing)
             {
                 buttonImage.overrideSprite = useButtonSprite;
                 buttonImage.color = Helpers.halfVisibleColor;
@@ -69,6 +74,11 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
 
                 case InteractableType.UseAdminPanel:
                     buttonImage.overrideSprite = useAdminPanelButtonSprite;
+                    buttonImage.color = Helpers.fullyVisibleColor;
+                    break;
+
+                case InteractableType.UseSecurityPanel:
+                    buttonImage.overrideSprite = useSecurityPanelButtonSprite;
                     buttonImage.color = Helpers.fullyVisibleColor;
                     break;
 

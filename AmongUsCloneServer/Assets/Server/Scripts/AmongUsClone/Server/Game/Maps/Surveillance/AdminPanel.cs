@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using AmongUsClone.Server.Game.Interactions;
 using AmongUsClone.Server.Logging;
+using AmongUsClone.Shared.Game.Interactions;
 using AmongUsClone.Shared.Game.Rooms;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game.Maps.Surveillance
 {
+    [RequireComponent(typeof(PlayersLockable))]
     public class AdminPanel : Interactable
     {
-        [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private PlayersLockable playersLockable;
 
-        public List<int> lookingPlayerIds;
         public Dictionary<int, List<int>> playerIdsInRooms = new Dictionary<int, List<int>>();
 
         private void OnEnable()
@@ -36,23 +37,26 @@ namespace AmongUsClone.Server.Game.Maps.Surveillance
 
         public override void Interact(int playerId)
         {
-            if (IsPlayerLooking(playerId))
+            if (playersLockable.IsPlayerLocked(playerId))
             {
-                lookingPlayerIds.Remove(playerId);
-                playersManager.clients[playerId].basePlayer.movable.isDisabled = false;
+                playersLockable.Remove(playerId);
                 Logger.LogEvent(LoggerSection.AdminPanelViewing, $"Player {playerId} stopped looking at admin panel");
             }
             else
             {
-                lookingPlayerIds.Add(playerId);
-                playersManager.clients[playerId].basePlayer.movable.isDisabled = true;
+                playersLockable.Add(playerId);
                 Logger.LogEvent(LoggerSection.AdminPanelViewing, $"Player {playerId} started looking at admin panel");
             }
         }
 
+        public bool IsPlayerLooking(int playerId)
+        {
+            return playersLockable.IsPlayerLocked(playerId);
+        }
+
         public Dictionary<int, int> GeneratePlayersData(int playerId)
         {
-            if (!IsPlayerLooking(playerId))
+            if (!playersLockable.IsPlayerLocked(playerId))
             {
                 Logger.LogError(LoggerSection.AdminPanelViewing, $"Unable to generate admin panel information for player {playerId}, because he is not viewing it right now");
                 return null;
@@ -72,11 +76,6 @@ namespace AmongUsClone.Server.Game.Maps.Surveillance
             Logger.LogEvent(LoggerSection.AdminPanelViewing, $"Generated admin panel data for player {playerId}");
 
             return adminPanelData;
-        }
-
-        public bool IsPlayerLooking(int playerId)
-        {
-            return lookingPlayerIds.Contains(playerId);
         }
 
         private void OnPlayerEntered(Room room, int playerId)

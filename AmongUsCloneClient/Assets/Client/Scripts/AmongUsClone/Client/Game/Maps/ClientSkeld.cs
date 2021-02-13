@@ -16,6 +16,7 @@ namespace AmongUsClone.Client.Game.Maps
         public PlayerSpawnable playerSpawnable;
         public InteractButton interactButton;
         public AdminPanel adminPanel;
+        public SecurityPanel securityPanel;
         public PlayGamePhaseUserInterface playGamePhaseUserInterface;
     }
 }

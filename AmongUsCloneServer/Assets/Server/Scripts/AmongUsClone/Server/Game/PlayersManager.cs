@@ -17,6 +17,8 @@ namespace AmongUsClone.Server.Game
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PacketsSender packetsSender;
 
+        public BasePlayersManager basePlayersManager;
+
         public const int MinPlayerId = 0;
         public const int MaxPlayerId = GameConfiguration.MaxPlayersAmount - 1;
 
@@ -60,6 +62,7 @@ namespace AmongUsClone.Server.Game
             PlayerColors.ReleasePlayerColor(playerId);
             Destroy(clients[playerId].serverPlayer.gameObject);
             clients.Remove(playerId);
+            basePlayersManager.players.Remove(playerId);
         }
     }
 }

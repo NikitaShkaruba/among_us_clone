@@ -56,5 +56,15 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         {
             clientSkeld.adminPanel.UpdateMinimap(gameSnapshotAdminPanelPositions);
         }
+
+        public void EnableSecurityCameras()
+        {
+            clientSkeld.securityPanel.EnableSecurityCameras();
+        }
+
+        public void DisableSecurityCameras()
+        {
+            clientSkeld.securityPanel.DisableSecurityCameras();
+        }
     }
 }
