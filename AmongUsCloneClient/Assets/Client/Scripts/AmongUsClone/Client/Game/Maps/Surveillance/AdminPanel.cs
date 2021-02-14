@@ -14,17 +14,15 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
     [RequireComponent(typeof(PlayersLockable))]
     public class AdminPanel : Interactable
     {
+        [Header("Scriptable objects")]
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private PacketsSender packetsSender;
 
+        [Header("Self fields")]
         [SerializeField] private GameObject adminPanelMinimap;
-        [SerializeField] private Material materialWithOutline;
-        [SerializeField] private Material materialWithOutlineAndHighlight;
-        [SerializeField] private new Renderer renderer;
         [SerializeField] private AdminPanelCrewMateIconsShowable adminPanelCrewMateIconsShowable;
         [SerializeField] private PlayersLockable playersLockable;
-
         public bool isControlledPlayerViewing;
 
         public Action onInteraction;
@@ -58,16 +56,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         public void UpdateMinimap(Dictionary<int, int> gameSnapshotAdminPanelPositions)
         {
             adminPanelCrewMateIconsShowable.UpdateIcons(gameSnapshotAdminPanelPositions);
-        }
-
-        protected override void SetHighlighting()
-        {
-            renderer.material = materialWithOutlineAndHighlight;
-        }
-
-        protected override void RemoveHighlighting()
-        {
-            renderer.material = materialWithOutline;
         }
     }
 }

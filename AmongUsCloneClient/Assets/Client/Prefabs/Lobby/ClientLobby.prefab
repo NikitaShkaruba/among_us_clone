@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &6022722268506130147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53394011835196798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c210bacf89d48b2bba2a04af2de6cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  renderer: {fileID: 2126654680724612371}
+  interactableHighlightMaterials: {fileID: 11400000, guid: 36d462ffe19940f4381ca67b4abc8b76, type: 2}
+  packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
 --- !u!114 &2534496954062599824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,24 +30,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersContainer: {fileID: 0}
   gameStartable: {fileID: 0}
-  interactButton: {fileID: 0}
---- !u!114 &6022722268506130147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 53394011835196798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c210bacf89d48b2bba2a04af2de6cfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
-  materialWithOutline: {fileID: 2100000, guid: a6bc3567c91bc954d89f6b7153892031, type: 2}
-  materialWithOutlineAndHighlight: {fileID: 2100000, guid: 626712340f851fd4da441b6ce845330a, type: 2}
-  renderer: {fileID: 2126654680724612371}
+  activeSceneUserInterface: {fileID: 0}
 --- !u!1 &9218242306812547909
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,7 +301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4177487816967106534, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4721858878187064521, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
       propertyPath: m_RootOrder
@@ -390,7 +389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8933067791494579470, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f968dace4a6a554a9d4866c5647b0a7, type: 3}

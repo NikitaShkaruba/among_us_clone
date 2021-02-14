@@ -15,10 +15,12 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
     [RequireComponent(typeof(PlayersLockable))]
     public class SecurityPanel : Interactable
     {
+        [Header("Scriptable objects")]
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private PacketsSender packetsSender;
 
+        [Header("Self fields")]
         [SerializeField] private PlayersLockable playersLockable;
         [SerializeField] private GameObject securityPanelUI;
         [SerializeField] private Image blackScreenImage;
@@ -29,10 +31,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         private bool isFirstTransition;
 
         [SerializeField] private List<SecurityCamera> cameras;
-
-        [SerializeField] private new Renderer renderer;
-        [SerializeField] private Material materialWithOutline;
-        [SerializeField] private Material materialWithOutlineAndHighlight;
 
         public bool isControlledPlayerViewing;
 
@@ -114,16 +112,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
             }
 
             StartCoroutine(BlinkFade());
-        }
-
-        protected override void SetHighlighting()
-        {
-            renderer.material = materialWithOutlineAndHighlight;
-        }
-
-        protected override void RemoveHighlighting()
-        {
-            renderer.material = materialWithOutline;
         }
     }
 }

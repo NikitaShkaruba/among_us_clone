@@ -8,26 +8,13 @@ namespace AmongUsClone.Client.Game.Lobby
 {
     public class Computer : Interactable
     {
+        [Header("Scriptable objects")]
         public PacketsSender packetsSender;
-
-        public Material materialWithOutline;
-        public Material materialWithOutlineAndHighlight;
-        public new Renderer renderer;
 
         public override void Interact()
         {
             packetsSender.SendColorChangeRequestPacket();
             Logger.LogEvent(SharedLoggerSection.PlayerColors, "Sent request to change the color");
-        }
-
-        protected override void SetHighlighting()
-        {
-            renderer.material = materialWithOutlineAndHighlight;
-        }
-
-        protected override void RemoveHighlighting()
-        {
-            renderer.material = materialWithOutline;
         }
     }
 }

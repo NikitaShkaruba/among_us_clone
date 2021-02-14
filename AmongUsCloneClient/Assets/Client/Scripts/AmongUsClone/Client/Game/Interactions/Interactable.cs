@@ -4,48 +4,44 @@ namespace AmongUsClone.Client.Game.Interactions
 {
     /**
      * Object which can be interacted with
+     * Todo: fix wrong shader highlighting when standing over the interactable (even from a far distance)
      */
-    // Todo: remove abstraction from Highlighting methods
     public abstract class Interactable : MonoBehaviour
     {
+        [Header("Interactable base")]
         public InteractableType type;
+
+        [Header("Visual highlighting")]
+        [SerializeField] private new Renderer renderer;
+        [SerializeField] private InteractableHighlightMaterials interactableHighlightMaterials;
+
         private bool wasInteractableFrameBefore;
 
-        public void NoteThatMayBeSelected()
+        /**
+         * Callback that is getting called when player presses interaction key near interactable
+         */
+        public abstract void Interact();
+
+        public void ChooseAsClosestInteractable()
         {
             if (wasInteractableFrameBefore)
             {
                 return;
             }
 
-            SetHighlighting();
+            renderer.material = interactableHighlightMaterials.materialWithOutlineAndHighlight;
             wasInteractableFrameBefore = true;
         }
 
-        public void NoteThatMayNotBeSelected()
+        public void DiscardAsClosestInteractable()
         {
             if (!wasInteractableFrameBefore)
             {
                 return;
             }
 
-            RemoveHighlighting();
+            renderer.material = interactableHighlightMaterials.materialWithOutline;
             wasInteractableFrameBefore = false;
         }
-
-        /**
-         * Callback that is getting called when the controlled player may interact with this object by pressing his interaction key
-         */
-        protected abstract void SetHighlighting();
-
-        /**
-         * Callback that is getting called when the controlled player loses an ability interact with this object by pressing his interaction key
-         */
-        protected abstract void RemoveHighlighting();
-
-        /**
-         * Callback that is getting called when player presses interaction key near interactable
-         */
-        public abstract void Interact();
     }
 }

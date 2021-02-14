@@ -3839,6 +3839,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  renderer: {fileID: 369211386}
+  interactableHighlightMaterials: {fileID: 11400000, guid: 36d462ffe19940f4381ca67b4abc8b76, type: 2}
   playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
   playGamePhase: {fileID: 11400000, guid: a4440e641faf0c14fbfbaa8c50831f37, type: 2}
   packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
@@ -3851,9 +3853,6 @@ MonoBehaviour:
   - {fileID: 448940290}
   - {fileID: 203419313}
   - {fileID: 1926058330}
-  renderer: {fileID: 369211386}
-  materialWithOutline: {fileID: 2100000, guid: a6bc3567c91bc954d89f6b7153892031, type: 2}
-  materialWithOutlineAndHighlight: {fileID: 2100000, guid: 626712340f851fd4da441b6ce845330a, type: 2}
   isControlledPlayerViewing: 0
 --- !u!114 &369211385
 MonoBehaviour:
@@ -3950,13 +3949,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  renderer: {fileID: 369211428}
+  interactableHighlightMaterials: {fileID: 11400000, guid: 36d462ffe19940f4381ca67b4abc8b76, type: 2}
   playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
   playGamePhase: {fileID: 11400000, guid: a4440e641faf0c14fbfbaa8c50831f37, type: 2}
   packetsSender: {fileID: 11400000, guid: 1738617f9ae8948499ac7093ff4d4f0d, type: 2}
   adminPanelMinimap: {fileID: 1470689115}
-  materialWithOutline: {fileID: 2100000, guid: a6bc3567c91bc954d89f6b7153892031, type: 2}
-  materialWithOutlineAndHighlight: {fileID: 2100000, guid: 626712340f851fd4da441b6ce845330a, type: 2}
-  renderer: {fileID: 369211428}
   adminPanelCrewMateIconsShowable: {fileID: 50358882}
   playersLockable: {fileID: 369211430}
   isControlledPlayerViewing: 0

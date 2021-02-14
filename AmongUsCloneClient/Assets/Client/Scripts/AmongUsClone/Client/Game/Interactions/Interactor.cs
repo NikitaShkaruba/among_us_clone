@@ -102,11 +102,11 @@ namespace AmongUsClone.Client.Game.Interactions
 
                 if (interactable == chosen)
                 {
-                    interactable.NoteThatMayBeSelected();
+                    interactable.ChooseAsClosestInteractable();
                 }
                 else
                 {
-                    interactable.NoteThatMayNotBeSelected();
+                    interactable.DiscardAsClosestInteractable();
                 }
             }
         }
