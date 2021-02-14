@@ -18,6 +18,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public void Initialize()
         {
             clientSkeld = FindObjectOfType<ClientSkeld>();
+            clientSkeld.playGamePhaseUserInterface.activeSceneUserInterface.interactButton.UpdateCallbacks();
 
             InitializePlayers();
             SetupCamera();

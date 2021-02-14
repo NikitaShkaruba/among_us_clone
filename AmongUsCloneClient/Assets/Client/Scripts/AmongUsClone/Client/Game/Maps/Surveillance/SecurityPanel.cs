@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.Interactions;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.Interactions;
@@ -14,6 +16,7 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
     public class SecurityPanel : Interactable
     {
         [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private PacketsSender packetsSender;
 
         [SerializeField] private PlayersLockable playersLockable;
@@ -33,8 +36,15 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
 
         public bool isControlledPlayerViewing;
 
+        public Action onInterfaceToggle;
+
         public override void Interact()
         {
+            if (playGamePhase.clientSkeld.playGamePhaseUserInterface.minimapButton.IsMinimapShown)
+            {
+                return;
+            }
+
             if (isTransitionGoing)
             {
                 Logger.LogNotice(SharedLoggerSection.Interactions, "Unable to interact with security panel, because fade animation is still going");
@@ -100,6 +110,7 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
             {
                 isFirstTransition = false;
                 securityPanelUI.SetActive(!securityPanelUI.activeSelf);
+                onInterfaceToggle?.Invoke();
             }
 
             StartCoroutine(BlinkFade());
@@ -114,6 +125,5 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         {
             renderer.material = materialWithOutline;
         }
-
     }
 }

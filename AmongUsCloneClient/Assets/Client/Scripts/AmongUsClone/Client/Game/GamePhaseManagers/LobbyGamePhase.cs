@@ -31,6 +31,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby.Lobby>();
+            lobby.activeSceneUserInterface.interactButton.UpdateCallbacks();
         }
 
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool playerLookingRight, bool isPlayerHost)

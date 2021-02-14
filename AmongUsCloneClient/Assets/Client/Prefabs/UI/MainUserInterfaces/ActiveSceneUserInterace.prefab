@@ -234,10 +234,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa45a8370dec4a7ca2c9c9a54aff44a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
   playGamePhase: {fileID: 11400000, guid: a4440e641faf0c14fbfbaa8c50831f37, type: 2}
   interactor: {fileID: 0}
   buttonImage: {fileID: 2060660982899177675}
-  settingsButton: {fileID: 6713886196261068839}
   customizeButtonSprite: {fileID: 21300000, guid: a741b6df28a876744bb81fb421f66a08, type: 3}
   useAdminPanelButtonSprite: {fileID: 21300000, guid: 8a363b34c8d73664884822d3c8c7eb7d, type: 3}
   useSecurityPanelButtonSprite: {fileID: 21300000, guid: 76c29fe946eebe241ad0a28a0bfb0e33, type: 3}

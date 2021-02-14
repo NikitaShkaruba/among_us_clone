@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.Interactions;
 using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.Interactions;
@@ -13,6 +15,7 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
     public class AdminPanel : Interactable
     {
         [SerializeField] private PlayersManager playersManager;
+        [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private PacketsSender packetsSender;
 
         [SerializeField] private GameObject adminPanelMinimap;
@@ -24,8 +27,15 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
 
         public bool isControlledPlayerViewing;
 
+        public Action onInteraction;
+
         public override void Interact()
         {
+            if (playGamePhase.clientSkeld.playGamePhaseUserInterface.minimapButton.IsMinimapShown)
+            {
+                return;
+            }
+
             isControlledPlayerViewing = !isControlledPlayerViewing;
             packetsSender.SendAdminPanelInteractionPacket();
 
@@ -41,6 +51,8 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
                 playersLockable.Remove(playersManager.controlledClientPlayer.basePlayer.information.id);
                 Logger.LogEvent(SharedLoggerSection.Interactions, "Stopped viewing admin panel");
             }
+
+            onInteraction?.Invoke();
         }
 
         public void UpdateMinimap(Dictionary<int, int> gameSnapshotAdminPanelPositions)

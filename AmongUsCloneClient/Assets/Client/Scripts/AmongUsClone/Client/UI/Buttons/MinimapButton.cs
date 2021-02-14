@@ -13,7 +13,9 @@ namespace AmongUsClone.Client.UI.Buttons
         public GameObject minimap;
         public SettingsButton settingsButton;
 
-        public Action<bool> minimapToggled;
+        public Action onToggle;
+
+        public bool IsMinimapShown => minimap.activeSelf;
 
         private void OnEnable()
         {
@@ -39,8 +41,15 @@ namespace AmongUsClone.Client.UI.Buttons
                 return;
             }
 
+            if (playGamePhase.clientSkeld.securityPanel.isControlledPlayerViewing)
+            {
+                playGamePhase.clientSkeld.securityPanel.Interact();
+                return;
+            }
+
             minimap.SetActive(!minimap.activeSelf);
-            minimapToggled?.Invoke(minimap.activeSelf);
+
+            onToggle?.Invoke();
         }
     }
 }

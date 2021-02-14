@@ -22,7 +22,7 @@ namespace AmongUsClone.Client.Game.Interactions
 
         private Interactable chosenInteractableLastFrame;
 
-        public Action<Interactable> newInteractableChosen;
+        public Action newInteractableChosen;
 
         private void OnEnable()
         {
@@ -66,7 +66,6 @@ namespace AmongUsClone.Client.Game.Interactions
         {
             if (playGamePhase.clientSkeld != null)
             {
-                // Todo: fix ui buttons enabling / disabling
                 bool settingsMenuActive = playGamePhase.clientSkeld.playGamePhaseUserInterface.activeSceneUserInterface.settingsButton.SettingsMenuActive;
 
                 return !settingsMenuActive;
@@ -88,7 +87,7 @@ namespace AmongUsClone.Client.Game.Interactions
 
             if (wasNullAndNowNot || wasNotNullButNowIs || notNullAndChangedType)
             {
-                newInteractableChosen?.Invoke(chosen);
+                newInteractableChosen?.Invoke();
             }
         }
 

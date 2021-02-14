@@ -17,7 +17,7 @@ namespace AmongUsClone.Client.UI.Buttons
 
         public bool SettingsMenuActive { get; private set; }
 
-        public Action onSettingsToggle;
+        public Action onToggle;
 
         private void OnEnable()
         {
@@ -43,7 +43,7 @@ namespace AmongUsClone.Client.UI.Buttons
                 StartCoroutine(ExpandMenu());
             }
 
-            onSettingsToggle?.Invoke();
+            onToggle?.Invoke();
         }
 
         private IEnumerator ExpandMenu()
