@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace AmongUsClone.Client.Game.Interactions
 {
+    // Todo: fix wrong shader highlighting when standing over the interactable (even from a far distance)
     /**
      * Object which can be interacted with
-     * Todo: fix wrong shader highlighting when standing over the interactable (even from a far distance)
      */
     public abstract class Interactable : MonoBehaviour
     {
