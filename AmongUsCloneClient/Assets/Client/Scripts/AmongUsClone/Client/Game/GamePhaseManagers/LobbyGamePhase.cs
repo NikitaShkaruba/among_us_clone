@@ -11,7 +11,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 {
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
     // [CreateAssetMenu(fileName = "LobbyGamePhase", menuName = "LobbyGamePhase")]
-    // Todo: fix countdown when not the host
     public class LobbyGamePhase : ScriptableObject
     {
         [SerializeField] private PlayersManager playersManager;

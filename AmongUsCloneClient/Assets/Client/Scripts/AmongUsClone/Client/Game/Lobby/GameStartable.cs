@@ -31,7 +31,7 @@ namespace AmongUsClone.Client.Game.Lobby
 
         public void ShowStartButtonForHost()
         {
-            startGameButton.gameObject.SetActive(true);
+            startGameButton.enabled = true;
         }
 
         public void OnPointerClick(PointerEventData eventData)
