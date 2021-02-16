@@ -20,7 +20,6 @@ namespace AmongUsClone.Server.Networking.PacketManagers
     {
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
-        [SerializeField] private PlayGamePhase playGamePhase;
 
         private Dictionary<int, TcpConnection.OnPacketReceivedCallback> packetHandlers;
 
@@ -30,10 +29,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             {
                 {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
                 {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
-                {(int) ClientPacketType.ColorChangeRequest, ProcessColorChangeRequestPacket},
                 {(int) ClientPacketType.StartGame, ProcessStartGamePacket},
-                {(int) ClientPacketType.AdminPanelInteraction, ProcessAdminPanelInteractionPacket},
-                {(int) ClientPacketType.SecurityPanelInteraction, ProcessSecurityPanelInteractionPacket}
             };
         }
 
@@ -86,12 +82,7 @@ namespace AmongUsClone.Server.Networking.PacketManagers
 
             PlayerInput playerInput = packet.ReadPlayerInput();
 
-            lobbyGamePhase.SavePlayerInput(playerId, playerInput);
-        }
-
-        private void ProcessColorChangeRequestPacket(int playerId, Packet packet)
-        {
-            lobbyGamePhase.ChangePlayerColor(playerId);
+            playersManager.clients[playerId].serverPlayer.remoteControllable.EnqueueInput(playerInput);
         }
 
         private void ProcessStartGamePacket(int playerId, Packet packet)
@@ -103,16 +94,6 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
 
             lobbyGamePhase.ScheduleGameStart();
-        }
-
-        private void ProcessAdminPanelInteractionPacket(int playerId, Packet packet)
-        {
-            playGamePhase.InteractWithAdminPanel(playerId);
-        }
-
-        private void ProcessSecurityPanelInteractionPacket(int playerId, Packet packet)
-        {
-            playGamePhase.InteractWithSecurityPanel(playerId);
         }
     }
 }

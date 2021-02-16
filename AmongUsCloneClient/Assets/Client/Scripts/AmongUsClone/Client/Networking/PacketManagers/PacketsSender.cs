@@ -33,34 +33,6 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             networkSimulation.SendThroughNetwork(action);
         }
 
-        public void SendPlayerInputPacket(PlayerInput playerInput)
-        {
-            Action action = () =>
-            {
-                const ClientPacketType clientPacketType = ClientPacketType.PlayerInput;
-
-                Packet packet = new Packet((int) clientPacketType);
-                packet.Write(playerInput);
-
-                connectionToServer.SendUdpPacket(clientPacketType, packet);
-            };
-
-            networkSimulation.SendThroughNetwork(action);
-        }
-
-        public void SendColorChangeRequestPacket()
-        {
-            Action action = () =>
-            {
-                const ClientPacketType clientPacketType = ClientPacketType.ColorChangeRequest;
-
-                Packet packet = new Packet((int) clientPacketType);
-                connectionToServer.SendTcpPacket(clientPacketType, packet);
-            };
-
-            networkSimulation.SendThroughNetwork(action);
-        }
-
         public void SendStartGamePacket()
         {
             Action action = () =>
@@ -74,27 +46,16 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             networkSimulation.SendThroughNetwork(action);
         }
 
-        public void SendAdminPanelInteractionPacket()
+        public void SendPlayerInputPacket(PlayerInput playerInput)
         {
             Action action = () =>
             {
-                const ClientPacketType clientPacketType = ClientPacketType.AdminPanelInteraction;
+                const ClientPacketType clientPacketType = ClientPacketType.PlayerInput;
 
                 Packet packet = new Packet((int) clientPacketType);
-                connectionToServer.SendTcpPacket(clientPacketType, packet);
-            };
+                packet.Write(playerInput);
 
-            networkSimulation.SendThroughNetwork(action);
-        }
-
-        public void SendSecurityPanelInteractionPacket()
-        {
-            Action action = () =>
-            {
-                const ClientPacketType clientPacketType = ClientPacketType.SecurityPanelInteraction;
-
-                Packet packet = new Packet((int) clientPacketType);
-                connectionToServer.SendTcpPacket(clientPacketType, packet);
+                connectionToServer.SendUdpPacket(clientPacketType, packet);
             };
 
             networkSimulation.SendThroughNetwork(action);

@@ -71,23 +71,6 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             }
         }
 
-        public void SavePlayerInput(int playerId, PlayerInput playerInput)
-        {
-            playersManager.clients[playerId].serverPlayer.remoteControllable.EnqueueInput(playerInput);
-        }
-
-        public void ChangePlayerColor(int playerId)
-        {
-            Interactable interactable = playersManager.clients[playerId].serverPlayer.nearbyInteractableChooser.chosen;
-            if (interactable == null || interactable.GetType() != typeof(LobbyComputer))
-            {
-                Logger.LogError(SharedLoggerSection.PlayerColors, $"Attempt to change a color for player {playerId} when not being nearby a lobby computer");
-                return;
-            }
-
-            interactable.Interact(playerId);
-        }
-
         public void ScheduleGameStart()
         {
             if (playersManager.clients.Count < GameConfiguration.MinRequiredPlayersAmountForGame)

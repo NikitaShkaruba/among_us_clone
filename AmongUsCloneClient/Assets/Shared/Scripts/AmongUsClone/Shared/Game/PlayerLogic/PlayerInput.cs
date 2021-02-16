@@ -12,11 +12,13 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
         public bool moveRight;
         public bool moveBottom;
 
+        public bool interact;
+
         public PlayerInput()
         {
         }
 
-        public PlayerInput(int id, bool moveTop, bool moveLeft, bool moveBottom, bool moveRight)
+        public PlayerInput(int id, bool moveTop, bool moveLeft, bool moveBottom, bool moveRight, bool interact)
         {
             this.id = id;
 
@@ -24,6 +26,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             this.moveLeft = moveLeft;
             this.moveBottom = moveBottom;
             this.moveRight = moveRight;
+
+            this.interact = interact;
         }
 
         public static PlayerInput Deserialize(int id, bool[] serializedInputValues)
@@ -33,7 +37,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 serializedInputValues[0],
                 serializedInputValues[1],
                 serializedInputValues[2],
-                serializedInputValues[3]
+                serializedInputValues[3],
+                serializedInputValues[4]
             );
         }
 
@@ -44,7 +49,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 moveTop,
                 moveLeft,
                 moveBottom,
-                moveRight
+                moveRight,
+                interact,
             };
         }
 
@@ -56,7 +62,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 moveTop = moveTop,
                 moveBottom = moveBottom,
                 moveLeft = moveLeft,
-                moveRight = moveRight
+                moveRight = moveRight,
+                interact = interact,
             };
         }
 
@@ -67,6 +74,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                    $"a: {SerializeInputValue(moveLeft)}, " +
                    $"s: {SerializeInputValue(moveBottom)}, " +
                    $"d: {SerializeInputValue(moveRight)}" +
+                   $"interact: {SerializeInputValue(interact)}" +
                    ")";
         }
 

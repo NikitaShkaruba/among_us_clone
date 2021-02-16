@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.Interactions;
-using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.Interactions;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
@@ -17,7 +16,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         [Header("Scriptable objects")]
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PlayGamePhase playGamePhase;
-        [SerializeField] private PacketsSender packetsSender;
 
         [Header("Self fields")]
         [SerializeField] private GameObject adminPanelMinimap;
@@ -35,7 +33,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
             }
 
             isControlledPlayerViewing = !isControlledPlayerViewing;
-            packetsSender.SendAdminPanelInteractionPacket();
 
             if (isControlledPlayerViewing)
             {

@@ -16,6 +16,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         [SerializeField] private ClientPlayer clientPlayer;
 
         private Vector2 movement;
+        private bool interact;
 
         public readonly Dictionary<int, ClientControllableStateSnapshot> stateSnapshots = new Dictionary<int, ClientControllableStateSnapshot>();
 
@@ -26,16 +27,23 @@ namespace AmongUsClone.Client.Game.PlayerLogic
 
         private void OnEnable() {
             inputReader.onMove += OnMovement;
+            inputReader.onInteract += OnInteract;
         }
 
         private void OnDisable()
         {
             inputReader.onMove -= OnMovement;
+            inputReader.onInteract -= OnInteract;
         }
 
         private void OnMovement(Vector2 movement)
         {
             this.movement = movement;
+        }
+
+        private void OnInteract()
+        {
+            interact = true;
         }
 
         private void FixedUpdate()
@@ -44,14 +52,15 @@ namespace AmongUsClone.Client.Game.PlayerLogic
 
             clientPlayer.basePlayer.movable.MoveByPlayerInput(clientPlayer.basePlayer.controllable.playerInput);
 
-            StartCoroutine(SaveStateSnapshot());
             packetsSender.SendPlayerInputPacket(clientPlayer.basePlayer.controllable.playerInput.Clone());
+            StartCoroutine(LateFixedUpdate());
         }
 
-        private IEnumerator SaveStateSnapshot()
+        private IEnumerator LateFixedUpdate()
         {
             yield return new WaitForFixedUpdate();
 
+            interact = false;
             stateSnapshots[clientPlayer.basePlayer.controllable.playerInput.id] = new ClientControllableStateSnapshot(clientPlayer.basePlayer.controllable.playerInput, clientPlayer.basePlayer.movable.transform.position);
         }
 
@@ -64,6 +73,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
                 moveLeft = movement.x < 0,
                 moveBottom = movement.y < 0,
                 moveRight = movement.x > 0,
+                interact = interact,
             };
         }
 

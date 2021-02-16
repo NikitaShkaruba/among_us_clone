@@ -324,6 +324,7 @@ namespace AmongUsClone.Shared.Networking
                 ReadBool(updateReadPosition),
                 ReadBool(updateReadPosition),
                 ReadBool(updateReadPosition),
+                ReadBool(updateReadPosition),
                 ReadBool(updateReadPosition)
             );
         }

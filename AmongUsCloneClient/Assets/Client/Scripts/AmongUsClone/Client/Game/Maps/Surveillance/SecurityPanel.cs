@@ -18,7 +18,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         [Header("Scriptable objects")]
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PlayGamePhase playGamePhase;
-        [SerializeField] private PacketsSender packetsSender;
 
         [Header("Self fields")]
         [SerializeField] private PlayersLockable playersLockable;
@@ -50,7 +49,6 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
             }
 
             isControlledPlayerViewing = !isControlledPlayerViewing;
-            packetsSender.SendSecurityPanelInteractionPacket();
 
             if (isControlledPlayerViewing)
             {

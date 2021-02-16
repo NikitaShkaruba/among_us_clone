@@ -18,7 +18,13 @@ namespace AmongUsClone.Server.Game.PlayerLogic
         public void FixedUpdate()
         {
             serverPlayer.basePlayer.controllable.playerInput = GetPlayerInput();
+
             serverPlayer.basePlayer.movable.MoveByPlayerInput(serverPlayer.basePlayer.controllable.playerInput);
+
+            if (serverPlayer.basePlayer.controllable.playerInput.interact && serverPlayer.nearbyInteractableChooser.chosen)
+            {
+                serverPlayer.nearbyInteractableChooser.chosen.Interact(serverPlayer.basePlayer.information.id);
+            }
         }
 
         private PlayerInput GetPlayerInput()
