@@ -17,7 +17,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             CacheChosables();
         }
 
-        protected void Update()
+        protected void FixedUpdate()
         {
             chosen = FindClosestInRange();
         }

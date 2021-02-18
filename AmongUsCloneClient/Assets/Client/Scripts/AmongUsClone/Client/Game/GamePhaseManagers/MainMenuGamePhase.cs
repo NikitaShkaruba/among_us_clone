@@ -27,6 +27,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         public void Initialize()
         {
+            // Todo: fix a bug when player duplicates on some occasions when reconnecting
             onSceneLoadedActions = new List<Action>();
             sceneLoadRequested = false;
 
@@ -45,11 +46,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             metaMonoBehaviours.applicationCallbacks.ScheduleOnApplicationQuitActions(OnApplicationQuit);
         }
 
-        public void InitializeLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool playerLookingRight, bool isPlayerHost)
+        public void InitializeLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
         {
             // We cannot instantly load a scene and then add a player to it - this is made at the next frame.
             // In order to solve it, we switch a scene and pass a callback where all wanted players will be added
-            onSceneLoadedActions.Add(() => lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, playerLookingRight, isPlayerHost));
+            onSceneLoadedActions.Add(() => lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, isPlayerHost));
 
             if (!sceneLoadRequested)
             {

@@ -139,8 +139,11 @@ namespace AmongUsClone.Shared.Networking
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in clientGameSnapshot.playersInfo.Values)
             {
                 Write(snapshotPlayerInfo.id);
-                Write(snapshotPlayerInfo.position);
+                Write(snapshotPlayerInfo.name);
+                Write(snapshotPlayerInfo.isLobbyHost);
                 Write(snapshotPlayerInfo.input);
+                Write(snapshotPlayerInfo.position);
+                Write(snapshotPlayerInfo.unseen);
                 Write((int)snapshotPlayerInfo.color);
                 Write(snapshotPlayerInfo.isImpostor);
             }
@@ -334,6 +337,7 @@ namespace AmongUsClone.Shared.Networking
                 ReadBool(updateReadPosition),
                 ReadBool(updateReadPosition),
                 ReadBool(updateReadPosition),
+                ReadBool(updateReadPosition),
                 ReadBool(updateReadPosition)
             );
         }
@@ -349,12 +353,15 @@ namespace AmongUsClone.Shared.Networking
             for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
             {
                 int playerId = ReadInt(updateReadPosition);
-                Vector2 playerPosition = ReadVector2(updateReadPosition);
+                string playerName = ReadString(updateReadPosition);
+                bool isPlayerLobbyHost = ReadBool(updateReadPosition);
                 PlayerInput playerInput = ReadPlayerInput(updateReadPosition);
+                Vector2 playerPosition = ReadVector2(updateReadPosition);
+                bool isPlayerUnseen = ReadBool(updateReadPosition);
                 PlayerColor playerColor = (PlayerColor)ReadInt(updateReadPosition);
                 bool isPlayerImpostor = ReadBool(updateReadPosition);
 
-                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput, playerColor, isPlayerImpostor);
+                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerName, isPlayerLobbyHost, playerInput, playerPosition, isPlayerUnseen, playerColor, isPlayerImpostor);
             }
 
             // Read lobby game starting info

@@ -29,7 +29,6 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             {
                 {(int) ClientPacketType.WelcomeReceived, ProcessWelcomeReceivedPacket},
                 {(int) ClientPacketType.PlayerInput, ProcessPlayerInputPacket},
-                {(int) ClientPacketType.StartGame, ProcessStartGamePacket},
             };
         }
 
@@ -83,17 +82,6 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             PlayerInput playerInput = packet.ReadPlayerInput();
 
             playersManager.clients[playerId].serverPlayer.remoteControllable.EnqueueInput(playerInput);
-        }
-
-        private void ProcessStartGamePacket(int playerId, Packet packet)
-        {
-            if (playerId != PlayersManager.MinPlayerId)
-            {
-                Logger.LogNotice(SharedLoggerSection.GameStart, "Not host trying to start the game");
-                return;
-            }
-
-            lobbyGamePhase.ScheduleGameStart();
         }
     }
 }

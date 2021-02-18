@@ -14,11 +14,13 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
 
         public bool interact;
 
+        public bool startGame;
+
         public PlayerInput()
         {
         }
 
-        public PlayerInput(int id, bool moveTop, bool moveLeft, bool moveBottom, bool moveRight, bool interact)
+        public PlayerInput(int id, bool moveTop, bool moveLeft, bool moveBottom, bool moveRight, bool interact, bool startGame)
         {
             this.id = id;
 
@@ -28,6 +30,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
             this.moveRight = moveRight;
 
             this.interact = interact;
+
+            this.startGame = startGame;
         }
 
         public static PlayerInput Deserialize(int id, bool[] serializedInputValues)
@@ -38,7 +42,8 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 serializedInputValues[1],
                 serializedInputValues[2],
                 serializedInputValues[3],
-                serializedInputValues[4]
+                serializedInputValues[4],
+                serializedInputValues[5]
             );
         }
 
@@ -51,6 +56,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 moveBottom,
                 moveRight,
                 interact,
+                startGame,
             };
         }
 
@@ -64,6 +70,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                 moveLeft = moveLeft,
                 moveRight = moveRight,
                 interact = interact,
+                startGame = startGame,
             };
         }
 
@@ -75,6 +82,7 @@ namespace AmongUsClone.Shared.Game.PlayerLogic
                    $"s: {SerializeInputValue(moveBottom)}, " +
                    $"d: {SerializeInputValue(moveRight)}" +
                    $"interact: {SerializeInputValue(interact)}" +
+                   $"startGame: {SerializeInputValue(startGame)}" +
                    ")";
         }
 

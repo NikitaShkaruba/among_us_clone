@@ -41,31 +41,6 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             SendTcpPacketToAllExceptOne(playerId, packetTypeId, packet);
         }
 
-        public void SendPlayerConnectedPacket(int playerId, ServerPlayer serverPlayer)
-        {
-            const ServerPacketType packetType = ServerPacketType.PlayerConnected;
-
-            Packet packet = new Packet((int) packetType);
-            packet.Write(serverPlayer.basePlayer.information.id);
-            packet.Write(serverPlayer.basePlayer.information.name);
-            packet.Write(serverPlayer.remoteControllable.isLobbyHost);
-            packet.Write((int) serverPlayer.basePlayer.colorable.color);
-            packet.Write(serverPlayer.transform.position);
-            packet.Write(!serverPlayer.spriteRenderer.flipX);
-
-            SendTcpPacket(playerId, packetType, packet);
-        }
-
-        public void SendPlayerDisconnectedPacket(int playerId)
-        {
-            const ServerPacketType packetType = ServerPacketType.PlayerDisconnected;
-
-            Packet packet = new Packet((int) packetType);
-            packet.Write(playerId);
-
-            SendTcpPacketToAll(packetType, packet);
-        }
-
         public void SendGameSnapshotPackets(GameSnapshot gameSnapshot)
         {
             const ServerPacketType packetType = ServerPacketType.GameSnapshot;

@@ -10,6 +10,7 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Server.Game
 {
+    // Todo: fix a bug where players stop moving randomly, but they can connect \ disconnect
     // CreateAssetMenu commented because we don't want to have more then 1 scriptable object of this type
     // [CreateAssetMenu(fileName = "PlayersManager", menuName = "PlayersManager")]
     public class PlayersManager : ScriptableObject
@@ -23,6 +24,11 @@ namespace AmongUsClone.Server.Game
         public const int MaxPlayerId = GameConfiguration.MaxPlayersAmount - 1;
 
         public readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
+
+        public static bool IsLobbyHost(int playerId)
+        {
+            return playerId == MinPlayerId;
+        }
 
         public List<int> GetImpostorPlayerIds()
         {
@@ -67,7 +73,6 @@ namespace AmongUsClone.Server.Game
             }
             else
             {
-                packetsSender.SendPlayerDisconnectedPacket(playerId);
                 RemovePlayerFromGame(playerId);
             }
         }

@@ -36,7 +36,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             lobby.activeSceneUserInterface.interactButton.UpdateCallbacks();
         }
 
-        public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool playerLookingRight, bool isPlayerHost)
+        public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
         {
             bool isControlledPlayerConnecting = playerId == connectionToServer.myPlayerId;
 
@@ -45,7 +45,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             clientPlayer.name = isControlledPlayerConnecting ? $"Player{playerId} (ClientControllable)" : $"Player{playerId}";
             clientPlayer.Initialize(playerId, playerName, playerColor, isPlayerHost);
             clientPlayer.transform.parent = lobby.playersContainer.transform;
-            clientPlayer.animator.isLookingRight = playerLookingRight;
+            clientPlayer.animator.isLookingRight = playerId < 5;
 
             playersManager.AddPlayer(playerId, clientPlayer);
 
@@ -62,7 +62,8 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                 return;
             }
 
-            packetsSender.SendStartGamePacket();
+            playersManager.controlledClientPlayer.clientControllable.OnStartGame();
+            Logger.LogEvent(SharedLoggerSection.GameStart, "Requested game start");
         }
 
         public void InitiateGameStart()

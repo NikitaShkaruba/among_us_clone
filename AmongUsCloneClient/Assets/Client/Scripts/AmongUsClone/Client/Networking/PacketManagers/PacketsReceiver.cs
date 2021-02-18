@@ -19,14 +19,9 @@ namespace AmongUsClone.Client.Networking.PacketManagers
     // [CreateAssetMenu(fileName = "PacketsReceiver", menuName = "PacketsReceiver")]
     public class PacketsReceiver : ScriptableObject
     {
-        [SerializeField] private ScenesManager scenesManager;
-        [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
-        [SerializeField] private LobbyGamePhase lobbyGamePhase;
-        [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private NetworkSimulation networkSimulation;
         [SerializeField] private GameSnapshots gameSnapshots;
         [SerializeField] private ConnectionToServer connectionToServer;
-        [SerializeField] private PlayersManager playersManager;
 
         private delegate void OnPacketReceivedCallback(Packet packet);
 
@@ -38,8 +33,6 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             {
                 {(int) ServerPacketType.Welcome, ProcessWelcomePacket},
                 {(int) ServerPacketType.Kicked, ProcessKickedPacket},
-                {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
-                {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
                 {(int) ServerPacketType.GameSnapshot, ProcessGameSnapshotPacket},
             };
         }
@@ -76,45 +69,6 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private void ProcessPlayerConnectedPacket(Packet packet)
-        {
-            Action action = () =>
-            {
-                int playerId = packet.ReadInt();
-                string playerName = packet.ReadString();
-                bool isPlayerLobbyHost = packet.ReadBool();
-                PlayerColor playerColor = (PlayerColor) packet.ReadInt();
-                Vector2 playerPosition = packet.ReadVector2();
-                bool playerLookingRight = packet.ReadBool();
-
-                if (scenesManager.GetActiveScene() == Scene.MainMenu)
-                {
-                    mainMenuGamePhase.InitializeLobby(playerId, playerName, playerColor, playerPosition, playerLookingRight, isPlayerLobbyHost);
-                }
-                else
-                {
-                    lobbyGamePhase.AddPlayerToLobby(playerId, playerName, playerColor, playerPosition, playerLookingRight, isPlayerLobbyHost);
-                }
-
-                Logger.LogEvent(LoggerSection.Connection, $"Added player {playerId} to lobby");
-            };
-
-            networkSimulation.ReceiveThroughNetwork(action);
-        }
-
-        private void ProcessPlayerDisconnectedPacket(Packet packet)
-        {
-            Action action = () =>
-            {
-                int playerId = packet.ReadInt();
-                playersManager.RemovePlayer(playerId);
-
-                Logger.LogEvent(LoggerSection.Connection, $"Player {playerId} has disconnected");
-            };
-
-            networkSimulation.ReceiveThroughNetwork(action);
-        }
-
         private void ProcessGameSnapshotPacket(Packet packet)
         {
             Action action = () =>
@@ -125,6 +79,5 @@ namespace AmongUsClone.Client.Networking.PacketManagers
 
             networkSimulation.ReceiveThroughNetwork(action);
         }
-
     }
 }

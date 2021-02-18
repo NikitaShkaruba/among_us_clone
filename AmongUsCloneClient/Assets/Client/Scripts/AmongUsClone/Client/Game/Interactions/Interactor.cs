@@ -53,34 +53,34 @@ namespace AmongUsClone.Client.Game.Interactions
         {
             if (chosen == null)
             {
-                Logger.LogError(LoggerSection.Interactions, "Unable to interact without any chosen interactable");
+                Logger.LogNotice(LoggerSection.Interactions, "Unable to interact without any chosen interactable");
                 return;
             }
 
-            if (!IsAbleToInteract())
+            if (IsInteractionDisabled())
             {
-                Logger.LogNotice(LoggerSection.Interactions, "Not calling interaction, because settings menu is active");
+                Logger.LogNotice(LoggerSection.Interactions, "Not calling interaction, because interaction is disabled");
                 return;
             }
 
             chosen.Interact();
         }
 
-        private bool IsAbleToInteract()
+        private bool IsInteractionDisabled()
         {
             if (playGamePhase.clientSkeld != null)
             {
                 bool settingsMenuActive = playGamePhase.clientSkeld.playGamePhaseUserInterface.activeSceneUserInterface.settingsButton.SettingsMenuActive;
 
-                return !settingsMenuActive;
+                return settingsMenuActive;
             }
 
             if (lobbyGamePhase.lobby != null)
             {
-                return !lobbyGamePhase.lobby.activeSceneUserInterface.settingsButton.SettingsMenuActive;
+                return lobbyGamePhase.lobby.activeSceneUserInterface.settingsButton.SettingsMenuActive;
             }
 
-            return true;
+            return false;
         }
 
         private void CallInteractableChangedIfNeeded()

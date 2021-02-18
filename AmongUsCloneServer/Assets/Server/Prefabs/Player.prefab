@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ab2d7e335c40089ff11fd2689d35d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyGamePhase: {fileID: 11400000, guid: 1b6423200ac2837428679aa22764623f, type: 2}
   serverPlayer: {fileID: 7919225120034550726}
   isLobbyHost: 0
   lastProcessedInputId: -1

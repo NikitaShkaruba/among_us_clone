@@ -59,7 +59,6 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
                 return;
             }
 
-            // Todo: consider adding \ removing relationship between ClientControllable and Interactor
             playersManager.controlledClientPlayer.clientControllable.OnInteract();
         }
 

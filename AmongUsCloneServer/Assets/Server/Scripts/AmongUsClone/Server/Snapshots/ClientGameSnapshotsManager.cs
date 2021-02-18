@@ -19,11 +19,11 @@ namespace AmongUsClone.Server.Snapshots
 
         public ClientGameSnapshot CreateClientGameSnapshot(Client client, GameSnapshot gameSnapshot)
         {
-            Dictionary<int, SnapshotPlayerInfo> visiblePlayersInfo = FilterNotViewablePlayersFromSnapshot(gameSnapshot, client.playerId);
+            gameSnapshot.playersInfo = AddUnseenInformationToGameSnapshot(gameSnapshot, client.playerId);
             int remoteControllableLastProcessedInputId = client.serverPlayer.remoteControllable.lastProcessedInputId;
             Dictionary<int, int> adminPanelInformation = IsAdminPanelInformationNeeded(client.playerId) ? playGamePhase.serverSkeld.adminPanel.GeneratePlayersData(client.playerId) : new Dictionary<int, int>();
 
-            return new ClientGameSnapshot(gameSnapshot, remoteControllableLastProcessedInputId, visiblePlayersInfo, adminPanelInformation);
+            return new ClientGameSnapshot(gameSnapshot, remoteControllableLastProcessedInputId, adminPanelInformation);
         }
 
         private bool IsAdminPanelInformationNeeded(int playerId)
@@ -36,7 +36,7 @@ namespace AmongUsClone.Server.Snapshots
             return playGamePhase.serverSkeld.adminPanel.IsPlayerLooking(playerId);
         }
 
-        private Dictionary<int, SnapshotPlayerInfo> FilterNotViewablePlayersFromSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)
+        private Dictionary<int, SnapshotPlayerInfo> AddUnseenInformationToGameSnapshot(GameSnapshot gameSnapshot, int currentPlayerId)
         {
             // Everyone sees everyone in the lobby
             if (scenesManager.GetActiveScene() == Scene.Lobby)
@@ -44,10 +44,9 @@ namespace AmongUsClone.Server.Snapshots
                 return gameSnapshot.playersInfo;
             }
 
-            Dictionary<int, SnapshotPlayerInfo> visibleSnapshotPlayersInfo = new Dictionary<int, SnapshotPlayerInfo>();
-
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
             {
+                // Todo: remove strange hiding on other players when they go to the right of the cafeteria
                 bool isSelfInformation = snapshotPlayerInfo.id == currentPlayerId;
                 bool isTooFarAway = (gameSnapshot.playersInfo[currentPlayerId].position - snapshotPlayerInfo.position).magnitude > 8;
                 SecurityPanel securityPanel = playGamePhase.serverSkeld.securityPanel;
@@ -55,13 +54,11 @@ namespace AmongUsClone.Server.Snapshots
 
                 if (isTooFarAway && !isSelfInformation && !isSeenFromSecurityCameras)
                 {
-                    continue;
+                    snapshotPlayerInfo.unseen = true;
                 }
-
-                visibleSnapshotPlayersInfo[snapshotPlayerInfo.id] = snapshotPlayerInfo;
             }
 
-            return visibleSnapshotPlayersInfo;
+            return gameSnapshot.playersInfo;
         }
     }
 }

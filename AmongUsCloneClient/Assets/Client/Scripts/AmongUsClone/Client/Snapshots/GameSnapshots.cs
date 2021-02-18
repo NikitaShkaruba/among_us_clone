@@ -19,16 +19,12 @@ namespace AmongUsClone.Client.Snapshots
     {
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
-        [SerializeField] private PlayGamePhase playGamePhase;
+        [SerializeField] private MainMenuGamePhase mainMenuGamePhase;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
+        [SerializeField] private PlayGamePhase playGamePhase;
 
         public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
-            if (!ShouldProcessServerSnapshots())
-            {
-                return;
-            }
-
             ProcessPlayersData(gameSnapshot);
             ProcessLobbyGamePhaseData(gameSnapshot);
             ProcessPlayGamePhaseData(gameSnapshot);
@@ -93,20 +89,73 @@ namespace AmongUsClone.Client.Snapshots
 
         private void ProcessPlayersData(ClientGameSnapshot gameSnapshot)
         {
-            foreach (ClientPlayer player in playersManager.players.Values)
+            AddNewlyConnectedPlayers(gameSnapshot);
+            UpdateExistentPlayers(gameSnapshot);
+            RemoveDisconnectedPlayers(gameSnapshot);
+        }
+
+        private void AddNewlyConnectedPlayers(ClientGameSnapshot gameSnapshot)
+        {
+            if (!mainMenuGamePhase.connectionToServer.IsConnected)
             {
-                if (player == playersManager.controlledClientPlayer.clientPlayer)
+                return;
+            }
+
+            foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
+            {
+                if (playersManager.players.ContainsKey(snapshotPlayerInfo.id))
                 {
-                    UpdateControlledPlayerWithServerState(gameSnapshot);
+                    continue;
                 }
-                else if (gameSnapshot.playersInfo.ContainsKey(player.basePlayer.information.id))
+
+                if (scenesManager.GetActiveScene() == Scene.MainMenu)
                 {
-                    UpdateNotControlledPlayerWithServerState(gameSnapshot.playersInfo[player.basePlayer.information.id]);
+                    mainMenuGamePhase.InitializeLobby(snapshotPlayerInfo.id, snapshotPlayerInfo.name, snapshotPlayerInfo.color, snapshotPlayerInfo.position, snapshotPlayerInfo.isLobbyHost);
                 }
                 else
                 {
-                    HideNotSeenPlayer(player);
+                    lobbyGamePhase.AddPlayerToLobby(snapshotPlayerInfo.id, snapshotPlayerInfo.name, snapshotPlayerInfo.color, snapshotPlayerInfo.position, snapshotPlayerInfo.isLobbyHost);
                 }
+            }
+        }
+
+        private void UpdateExistentPlayers(ClientGameSnapshot gameSnapshot)
+        {
+            if (!ShouldProcessServerSnapshots())
+            {
+                return;
+            }
+
+            foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
+            {
+                if (!playersManager.players.ContainsKey(snapshotPlayerInfo.id))
+                {
+                    continue;
+                }
+
+                ClientPlayer clientPlayer = playersManager.players[snapshotPlayerInfo.id];
+
+                if (clientPlayer == playersManager.controlledClientPlayer.clientPlayer)
+                {
+                    UpdateControlledPlayerWithServerState(gameSnapshot);
+                }
+                else if (gameSnapshot.playersInfo.ContainsKey(clientPlayer.basePlayer.information.id))
+                {
+                    UpdateNotControlledPlayerWithServerState(gameSnapshot.playersInfo[clientPlayer.basePlayer.information.id]);
+                }
+            }
+        }
+
+        private void RemoveDisconnectedPlayers(ClientGameSnapshot gameSnapshot)
+        {
+            foreach (int playerId in playersManager.players.Keys.ToList())
+            {
+                if (gameSnapshot.playersInfo.ContainsKey(playerId))
+                {
+                    continue;
+                }
+
+                playersManager.RemovePlayer(playerId);
             }
         }
 
@@ -136,7 +185,12 @@ namespace AmongUsClone.Client.Snapshots
 
         public void UpdateNotControlledPlayerWithServerState(SnapshotPlayerInfo snapshotPlayerInfo)
         {
-            if (!playersManager.players[snapshotPlayerInfo.id].gameObject.activeSelf)
+            if (snapshotPlayerInfo.unseen && playersManager.players[snapshotPlayerInfo.id].gameObject.activeSelf)
+            {
+                playersManager.players[snapshotPlayerInfo.id].gameObject.SetActive(false);
+                return;
+            }
+            else if (!snapshotPlayerInfo.unseen && !playersManager.players[snapshotPlayerInfo.id].gameObject.activeSelf)
             {
                 // Todo: implement some kind of client anti-cheat (It is impossible to have a clear solution, check out my reddit question about it)
                 // @link https://www.reddit.com/r/gamedev/comments/lcq93c/how_to_use_clientside_prediction_with_fog_of_war/
@@ -205,14 +259,6 @@ namespace AmongUsClone.Client.Snapshots
             Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
             Logger.LogEvent(LoggerSection.ServerReconciliation, $"Reconciled position with the server position. SnapshotId: {gameSnapshot.id}. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {incorrectClientPosition}.");
-        }
-
-        public void HideNotSeenPlayer(ClientPlayer player)
-        {
-            if (player.gameObject.activeSelf)
-            {
-                player.gameObject.SetActive(false);
-            }
         }
     }
 }

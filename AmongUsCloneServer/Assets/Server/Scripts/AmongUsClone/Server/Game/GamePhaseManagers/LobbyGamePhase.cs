@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using AmongUsClone.Server.Game.PlayerLogic;
-using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Logging;
@@ -20,7 +19,6 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
-        [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] public Lobby lobby;
 
@@ -44,32 +42,21 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
 
             PlayerColor playerColor = PlayerColors.TakeFreeColor(playerId);
             bool isLookingRight = !lobby.playerSpawnPrototypes[playerId].spriteRenderer.flipX;
-            bool isLobbyHost = playerId == PlayersManager.MinPlayerId;
+            bool isLobbyHost = PlayersManager.IsLobbyHost(playerId);
             serverPlayer.Initialize(playerId, playerName, playerColor, isLookingRight, isLobbyHost);
 
             playersManager.clients[playerId].FinishInitialization(serverPlayer);
             playersManager.basePlayersManager.players[playerId] = serverPlayer.basePlayer;
-
-            foreach (Client client in playersManager.clients.Values.ToList())
-            {
-                if (!client.IsFullyInitialized())
-                {
-                    continue;
-                }
-
-                // Connect existent players with the new client (including himself)
-                packetsSender.SendPlayerConnectedPacket(client.playerId, playersManager.clients[playerId].serverPlayer);
-
-                // Connect new player with each client (himself is already spawned)
-                if (client.playerId != playerId)
-                {
-                    packetsSender.SendPlayerConnectedPacket(playerId, client.serverPlayer);
-                }
-            }
         }
 
-        public void ScheduleGameStart()
+        public void TryToScheduleGameStart(int calledPlayerId)
         {
+            if (!PlayersManager.IsLobbyHost(calledPlayerId))
+            {
+                Logger.LogNotice(SharedLoggerSection.GameStart, $"Player {calledPlayerId} tries to schedule game start, but he's not the host");
+                return;
+            }
+
             if (playersManager.clients.Count < GameConfiguration.MinRequiredPlayersAmountForGame)
             {
                 Logger.LogError(SharedLoggerSection.GameStart, "Attempt to start a game with too few players in it");

@@ -10,7 +10,7 @@ namespace AmongUsClone.Shared.Snapshots
     public class GameSnapshot
     {
         public readonly int id;
-        public readonly Dictionary<int, SnapshotPlayerInfo> playersInfo;
+        public Dictionary<int, SnapshotPlayerInfo> playersInfo;
 
         public bool securityCamerasEnabled;
 

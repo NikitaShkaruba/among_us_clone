@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace AmongUsClone.Server.Game.PlayerLogic
     [RequireComponent(typeof(ServerPlayer))]
     public class RemoteControllable : MonoBehaviour
     {
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
+
         [SerializeField] private ServerPlayer serverPlayer;
         public bool isLobbyHost;
 
@@ -24,6 +27,11 @@ namespace AmongUsClone.Server.Game.PlayerLogic
             if (serverPlayer.basePlayer.controllable.playerInput.interact && serverPlayer.nearbyInteractableChooser.chosen)
             {
                 serverPlayer.nearbyInteractableChooser.chosen.Interact(serverPlayer.basePlayer.information.id);
+            }
+
+            if (serverPlayer.basePlayer.controllable.playerInput.startGame)
+            {
+                lobbyGamePhase.TryToScheduleGameStart(serverPlayer.basePlayer.information.id);
             }
         }
 

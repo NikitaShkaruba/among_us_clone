@@ -10,7 +10,6 @@ using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.Maps.Surveillance
 {
-    // Todo: fix strange drag when activating admin panel (probably because of a server prediction). This will be fixed if we start sending packets with next inputs ids
     [RequireComponent(typeof(PlayersLockable))]
     public class AdminPanel : Interactable
     {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUsClone.Server.Game;
 using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
@@ -15,7 +16,7 @@ namespace AmongUsClone.Server.Snapshots
     // [CreateAssetMenu(fileName = "GameSnapshotsManager", menuName = "GameSnapshotsManager")]
     public class GameSnapshotsManager : MonoBehaviour
     {
-        [SerializeField] private Game.PlayersManager playersManager;
+        [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
         [SerializeField] private PlayGamePhase playGamePhase;
@@ -95,8 +96,11 @@ namespace AmongUsClone.Server.Snapshots
 
                 snapshotPlayers[client.basePlayer.information.id] = new SnapshotPlayerInfo(
                     client.basePlayer.information.id,
-                    client.basePlayer.transform.position,
+                    client.basePlayer.information.name,
+                    PlayersManager.IsLobbyHost(client.playerId),
                     client.basePlayer.controllable.playerInput,
+                    client.basePlayer.transform.position,
+                    false,
                     client.basePlayer.colorable.color,
                     client.basePlayer.impostorable.isImpostor
                 );

@@ -29,14 +29,14 @@ namespace AmongUsClone.Client.Networking
 
         private TcpConnection tcpConnection;
         private UdpConnection udpConnection;
-        private bool isConnected;
+        public bool IsConnected { get; private set; }
 
         public void Connect()
         {
             tcpConnection = new TcpConnection(this, packetsReceiver, metaMonoBehaviours);
             udpConnection = null;
 
-            isConnected = true;
+            IsConnected = true;
         }
 
         public void FinishConnection(int myPlayerId)
@@ -50,12 +50,12 @@ namespace AmongUsClone.Client.Networking
         public void Disconnect()
         {
             // This check and this variable is needed, because unity is not Closing instantly on Application.Quit();
-            if (!isConnected)
+            if (!IsConnected)
             {
                 return;
             }
 
-            isConnected = false;
+            IsConnected = false;
 
             tcpConnection.tcpClient.Close();
             tcpConnection = null;
