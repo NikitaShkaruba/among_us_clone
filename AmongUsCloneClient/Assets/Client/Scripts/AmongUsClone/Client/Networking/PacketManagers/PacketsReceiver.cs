@@ -41,11 +41,6 @@ namespace AmongUsClone.Client.Networking.PacketManagers
                 {(int) ServerPacketType.PlayerConnected, ProcessPlayerConnectedPacket},
                 {(int) ServerPacketType.PlayerDisconnected, ProcessPlayerDisconnectedPacket},
                 {(int) ServerPacketType.GameSnapshot, ProcessGameSnapshotPacket},
-                {(int) ServerPacketType.ColorChanged, ProcessPlayerColorChangedPacket},
-                {(int) ServerPacketType.GameStarts, ProcessGameStartsPacket},
-                {(int) ServerPacketType.GameStarted, ProcessGameStartedPacket},
-                {(int) ServerPacketType.SecurityCamerasEnabled, ProcessSecurityCamerasEnabledPacket},
-                {(int) ServerPacketType.SecurityCamerasDisabled, ProcessSecurityCamerasDisabledPacket},
             };
         }
 
@@ -131,62 +126,5 @@ namespace AmongUsClone.Client.Networking.PacketManagers
             networkSimulation.ReceiveThroughNetwork(action);
         }
 
-        private void ProcessPlayerColorChangedPacket(Packet packet)
-        {
-            Action action = () =>
-            {
-                int playerId = packet.ReadInt();
-                PlayerColor playerColor = (PlayerColor) packet.ReadInt();
-
-                lobbyGamePhase.ChangePlayerColor(playerId, playerColor);
-            };
-
-            networkSimulation.ReceiveThroughNetwork(action);
-        }
-
-        private void ProcessGameStartsPacket(Packet packet)
-        {
-            Action action = () => lobbyGamePhase.InitiateGameStart();
-
-            networkSimulation.ReceiveThroughNetwork(action);
-        }
-
-        private void ProcessGameStartedPacket(Packet packet)
-        {
-            Action action = () =>
-            {
-                List<int> impostorPlayerIds = new List<int>();
-
-                bool isPlayingAsImpostor = packet.ReadBool();
-                int impostorsAmount = packet.ReadInt();
-
-                if (isPlayingAsImpostor)
-                {
-                    for (int impostorIndex = 0; impostorIndex < impostorsAmount; impostorIndex++)
-                    {
-                        int impostorPlayerId = packet.ReadInt();
-                        impostorPlayerIds.Add(impostorPlayerId);
-                    }
-                }
-
-                lobbyGamePhase.StartGame(isPlayingAsImpostor, impostorsAmount, impostorPlayerIds.ToArray());
-            };
-
-            networkSimulation.ReceiveThroughNetwork(action);
-        }
-
-        private void ProcessSecurityCamerasEnabledPacket(Packet packet)
-        {
-            Action action = () => playGamePhase.EnableSecurityCameras();
-
-            networkSimulation.ReceiveThroughNetwork(action);
-        }
-
-        private void ProcessSecurityCamerasDisabledPacket(Packet packet)
-        {
-            Action action = () => playGamePhase.DisableSecurityCameras();
-
-            networkSimulation.ReceiveThroughNetwork(action);
-        }
     }
 }

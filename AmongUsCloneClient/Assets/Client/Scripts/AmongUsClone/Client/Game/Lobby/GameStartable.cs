@@ -18,6 +18,9 @@ namespace AmongUsClone.Client.Game.Lobby
 
         private int secondsBeforeGameStartsLeft;
 
+        public bool gameStarts;
+        public bool gameStarted;
+
         private void Start()
         {
             playersManager.playersAmountChanged += UpdateStartButtonOpacity;
@@ -41,6 +44,8 @@ namespace AmongUsClone.Client.Game.Lobby
 
         public void InitiateGameStart()
         {
+            gameStarts = true;
+
             secondsBeforeGameStartsLeft = LobbyGamePhase.SecondsForGameLaunch;
             gameStartsInLabel.text = GetGameStartsInLabelText();
             gameStartsInLabel.gameObject.SetActive(true);

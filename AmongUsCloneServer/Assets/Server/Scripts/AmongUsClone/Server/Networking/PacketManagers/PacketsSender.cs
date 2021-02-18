@@ -86,66 +86,6 @@ namespace AmongUsClone.Server.Networking.PacketManagers
             }
         }
 
-        public void SendColorChanged(int playerId, PlayerColor newPlayerColor)
-        {
-            const ServerPacketType packetType = ServerPacketType.ColorChanged;
-
-            Packet packet = new Packet((int) packetType);
-            packet.Write(playerId);
-            packet.Write((int) newPlayerColor);
-
-            SendTcpPacketToAll(packetType, packet);
-        }
-
-        public void SendGameStartsPacket()
-        {
-            const ServerPacketType packetType = ServerPacketType.GameStarts;
-
-            Packet packet = new Packet((int) packetType);
-            SendTcpPacketToAll(packetType, packet);
-        }
-
-        public void SendGameStartedPacket(int[] impostorPlayerIds)
-        {
-            const ServerPacketType packetType = ServerPacketType.GameStarted;
-
-            foreach (int playerId in playersManager.clients.Keys)
-            {
-                bool isPlayerImposter = Array.Exists(impostorPlayerIds, imposterPlayerId => imposterPlayerId == playerId);
-
-                Packet packet = new Packet((int) packetType);
-
-                packet.Write(isPlayerImposter);
-                packet.Write(impostorPlayerIds.Length);
-
-                if (isPlayerImposter)
-                {
-                    foreach (int impostorPlayerId in impostorPlayerIds)
-                    {
-                        packet.Write(impostorPlayerId);
-                    }
-                }
-
-                SendTcpPacket(playerId, packetType, packet);
-            }
-        }
-
-        public void SendSecurityCamerasEnabledPacket()
-        {
-            const ServerPacketType packetType = ServerPacketType.SecurityCamerasEnabled;
-
-            Packet packet = new Packet((int) packetType);
-            SendTcpPacketToAll(packetType, packet);
-        }
-
-        public void SendSecurityCamerasDisabledPacket()
-        {
-            const ServerPacketType packetType = ServerPacketType.SecurityCamerasDisabled;
-
-            Packet packet = new Packet((int) packetType);
-            SendTcpPacketToAll(packetType, packet);
-        }
-
         private void SendTcpPacket(int playerId, ServerPacketType serverPacketType, Packet packet)
         {
             packet.WriteLength();

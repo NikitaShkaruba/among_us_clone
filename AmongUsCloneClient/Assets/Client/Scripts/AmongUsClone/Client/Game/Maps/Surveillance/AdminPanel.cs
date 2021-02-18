@@ -5,6 +5,7 @@ using AmongUsClone.Client.Game.Interactions;
 using AmongUsClone.Shared.Game.Interactions;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
+using UnityEngine.UI;
 using Logger = AmongUsClone.Shared.Logging.Logger;
 
 namespace AmongUsClone.Client.Game.Maps.Surveillance
@@ -19,11 +20,22 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
 
         [Header("Self fields")]
         [SerializeField] private GameObject adminPanelMinimap;
+        [SerializeField] private Button closeButton;
         [SerializeField] private AdminPanelCrewMateIconsShowable adminPanelCrewMateIconsShowable;
         [SerializeField] private PlayersLockable playersLockable;
         public bool isControlledPlayerViewing;
 
         public Action onInteraction;
+
+        public void OnEnable()
+        {
+            closeButton.onClick.AddListener(OnCloseButtonClick);
+        }
+
+        public void OnDisable()
+        {
+            closeButton.onClick.RemoveListener(OnCloseButtonClick);
+        }
 
         public override void Interact()
         {
@@ -53,6 +65,11 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         public void UpdateMinimap(Dictionary<int, int> gameSnapshotAdminPanelPositions)
         {
             adminPanelCrewMateIconsShowable.UpdateIcons(gameSnapshotAdminPanelPositions);
+        }
+
+        private void OnCloseButtonClick()
+        {
+            playersManager.controlledClientPlayer.clientControllable.OnInteract();
         }
     }
 }

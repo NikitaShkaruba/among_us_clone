@@ -16,7 +16,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         [SerializeField] private ClientPlayer clientPlayer;
 
         private Vector2 movement;
-        private bool interact;
+        public bool Interact { get; private set; }
 
         public readonly Dictionary<int, ClientControllableStateSnapshot> stateSnapshots = new Dictionary<int, ClientControllableStateSnapshot>();
 
@@ -41,9 +41,9 @@ namespace AmongUsClone.Client.Game.PlayerLogic
             this.movement = movement;
         }
 
-        private void OnInteract()
+        public void OnInteract()
         {
-            interact = true;
+            Interact = true;
         }
 
         private void FixedUpdate()
@@ -60,7 +60,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
         {
             yield return new WaitForFixedUpdate();
 
-            interact = false;
+            Interact = false;
             stateSnapshots[clientPlayer.basePlayer.controllable.playerInput.id] = new ClientControllableStateSnapshot(clientPlayer.basePlayer.controllable.playerInput, clientPlayer.basePlayer.movable.transform.position);
         }
 
@@ -73,7 +73,7 @@ namespace AmongUsClone.Client.Game.PlayerLogic
                 moveLeft = movement.x < 0,
                 moveBottom = movement.y < 0,
                 moveRight = movement.x > 0,
-                interact = interact,
+                interact = Interact,
             };
         }
 

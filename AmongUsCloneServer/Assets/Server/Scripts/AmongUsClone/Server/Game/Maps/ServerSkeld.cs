@@ -7,7 +7,7 @@ namespace AmongUsClone.Server.Game.Maps
     public class ServerSkeld : MonoBehaviour
     {
         [Header("Parent component")]
-        public Skeld sharedSkeld;
+        public Skeld sharedSkeld; // Todo: replace all != null checks with a method call
 
         [Header("Interactable")]
         public AdminPanel adminPanel;

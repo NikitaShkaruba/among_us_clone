@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using AmongUsClone.Client.Game.GamePhaseManagers;
 using AmongUsClone.Client.Game.Interactions;
-using AmongUsClone.Client.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.Interactions;
 using AmongUsClone.Shared.Logging;
 using UnityEngine;
@@ -23,6 +22,7 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         [SerializeField] private PlayersLockable playersLockable;
         [SerializeField] private GameObject securityPanelUI;
         [SerializeField] private Image blackScreenImage;
+        [SerializeField] private Button closeButton;
 
         [Range(0.0f, 0.1f)]
         [SerializeField] private float fadeSpeed;
@@ -30,10 +30,21 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
         private bool isFirstTransition;
 
         [SerializeField] private List<SecurityCamera> cameras;
+        public bool CamerasEnabled { get; private set; }
 
         public bool isControlledPlayerViewing;
 
         public Action onInterfaceToggle;
+
+        public void OnEnable()
+        {
+            closeButton.onClick.AddListener(OnCloseButtonClick);
+        }
+
+        public void OnDisable()
+        {
+            closeButton.onClick.RemoveListener(OnCloseButtonClick);
+        }
 
         public override void Interact()
         {
@@ -73,6 +84,8 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
                 camera.Enable();
             }
 
+            CamerasEnabled = true;
+
             Logger.LogEvent(SharedLoggerSection.Interactions, "Enabled security cameras");
         }
 
@@ -82,6 +95,8 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
             {
                 camera.Disable();
             }
+
+            CamerasEnabled = false;
 
             Logger.LogEvent(SharedLoggerSection.Interactions, "Enabled security cameras");
         }
@@ -110,6 +125,11 @@ namespace AmongUsClone.Client.Game.Maps.Surveillance
             }
 
             StartCoroutine(BlinkFade());
+        }
+
+        private void OnCloseButtonClick()
+        {
+            playersManager.controlledClientPlayer.clientControllable.OnInteract();
         }
     }
 }

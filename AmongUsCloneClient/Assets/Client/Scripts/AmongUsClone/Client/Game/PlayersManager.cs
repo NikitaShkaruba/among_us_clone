@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Shared.Game;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using UnityEngine;
 
 namespace AmongUsClone.Client.Game
@@ -25,12 +24,6 @@ namespace AmongUsClone.Client.Game
         {
             this.impostorsAmount = impostorsAmount;
             this.knownImpostorPlayerIds = knownImpostorPlayerIds;
-        }
-
-        public void UpdatePlayerWithServerState(int playerId, Vector2 playerPosition, PlayerInput playerInput)
-        {
-            players[playerId].basePlayer.controllable.playerInput = playerInput;
-            players[playerId].basePlayer.movable.Teleport(playerPosition);
         }
 
         public void AddPlayer(int playerId, ClientPlayer clientPlayer)

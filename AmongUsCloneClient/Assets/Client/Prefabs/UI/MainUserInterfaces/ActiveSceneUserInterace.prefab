@@ -236,6 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobbyGamePhase: {fileID: 11400000, guid: 49a84cf67f6854b4ab51e1eaf92b9a2c, type: 2}
   playGamePhase: {fileID: 11400000, guid: a4440e641faf0c14fbfbaa8c50831f37, type: 2}
+  playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
   interactor: {fileID: 0}
   buttonImage: {fileID: 2060660982899177675}
   customizeButtonSprite: {fileID: 21300000, guid: a741b6df28a876744bb81fb421f66a08, type: 3}

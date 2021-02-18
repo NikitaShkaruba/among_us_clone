@@ -21,7 +21,6 @@ namespace AmongUsClone.Server.Game.Maps.Surveillance
             PlayerColor newPlayerColor = PlayerColors.SwitchToRandomColor(playerId);
 
             playersManager.clients[playerId].basePlayer.colorable.ChangeColor(newPlayerColor);
-            packetsSender.SendColorChanged(playerId, newPlayerColor);
 
             Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Helpers.GetEnumName(newPlayerColor)}");
         }

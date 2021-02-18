@@ -8,6 +8,7 @@ namespace AmongUsClone.Client.UI.Buttons
     public class MinimapButton : MonoBehaviour
     {
         [SerializeField] private PlayGamePhase playGamePhase;
+        [SerializeField] private PlayersManager playersManager;
         [SerializeField] private InputReader inputReader;
 
         public GameObject minimap;
@@ -37,13 +38,13 @@ namespace AmongUsClone.Client.UI.Buttons
 
             if (playGamePhase.clientSkeld.adminPanel.isControlledPlayerViewing)
             {
-                playGamePhase.clientSkeld.adminPanel.Interact();
+                playersManager.controlledClientPlayer.clientControllable.OnInteract();
                 return;
             }
 
             if (playGamePhase.clientSkeld.securityPanel.isControlledPlayerViewing)
             {
-                playGamePhase.clientSkeld.securityPanel.Interact();
+                playersManager.controlledClientPlayer.clientControllable.OnInteract();
                 return;
             }
 

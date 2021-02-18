@@ -1,7 +1,5 @@
 using AmongUsClone.Server.Game.Interactions;
 using AmongUsClone.Server.Logging;
-using AmongUsClone.Server.Networking;
-using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game.Interactions;
 using UnityEngine;
 using Logger = AmongUsClone.Shared.Logging.Logger;
@@ -12,15 +10,13 @@ namespace AmongUsClone.Server.Game.Maps.Surveillance
     public class SecurityPanel : Interactable
     {
         [SerializeField] private PlayersManager playersManager;
-        [SerializeField] private PacketsSender packetsSender;
 
         [SerializeField] private PlayersLockable playersLockable;
 
         [SerializeField] private Transform[] cameras;
 
         public int cameraViewDistance;
-
-        private int watchingPlayersAmountPreviousFrame;
+        public bool securityCamerasEnabled => playersLockable.IsSomeoneLocked();
 
         public override void Interact(int playerId)
         {
@@ -34,39 +30,6 @@ namespace AmongUsClone.Server.Game.Maps.Surveillance
                 playersLockable.Add(playerId);
                 Logger.LogEvent(LoggerSection.SecurityPanelViewing, $"Player {playerId} has started looking at the security panel");
             }
-
-            EnableOrDisableSecurityCameras();
-        }
-
-        private void EnableOrDisableSecurityCameras()
-        {
-            int watchingPlayersAmount = GetWatchingPlayersAmount();
-
-            if (watchingPlayersAmountPreviousFrame == 0 && watchingPlayersAmount == 1)
-            {
-                packetsSender.SendSecurityCamerasEnabledPacket();
-            }
-            else if (watchingPlayersAmountPreviousFrame == 1 && watchingPlayersAmount == 0)
-            {
-                packetsSender.SendSecurityCamerasDisabledPacket();
-            }
-
-            watchingPlayersAmountPreviousFrame = watchingPlayersAmount;
-        }
-
-        private int GetWatchingPlayersAmount()
-        {
-            int watchingPlayersAmount = 0;
-
-            foreach (Client client in playersManager.clients.Values)
-            {
-                if (playersLockable.IsPlayerLocked(client.playerId))
-                {
-                    watchingPlayersAmount++;
-                }
-            }
-
-            return watchingPlayersAmount;
         }
 
         public bool IsPlayerLooking(int playerId)

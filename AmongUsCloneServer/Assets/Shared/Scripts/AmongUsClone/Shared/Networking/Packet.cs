@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AmongUsClone.Shared.Game;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Snapshots;
 using UnityEngine;
@@ -140,7 +141,13 @@ namespace AmongUsClone.Shared.Networking
                 Write(snapshotPlayerInfo.id);
                 Write(snapshotPlayerInfo.position);
                 Write(snapshotPlayerInfo.input);
+                Write((int)snapshotPlayerInfo.color);
+                Write(snapshotPlayerInfo.isImpostor);
             }
+
+            Write(clientGameSnapshot.gameStarts);
+            Write(clientGameSnapshot.gameStarted);
+            Write(clientGameSnapshot.impostorsAmount);
 
             Write(clientGameSnapshot.adminPanelPositions.Count);
             foreach (KeyValuePair<int, int> pair in clientGameSnapshot.adminPanelPositions)
@@ -148,6 +155,8 @@ namespace AmongUsClone.Shared.Networking
                 Write(pair.Key);
                 Write(pair.Value);
             }
+
+            Write(clientGameSnapshot.securityCamerasEnabled);
         }
 
         #endregion
@@ -334,6 +343,7 @@ namespace AmongUsClone.Shared.Networking
             int snapshotId = ReadInt(updateReadPosition);
             int lastProcessedInputId = ReadInt(updateReadPosition);
 
+            // Read players information
             Dictionary<int, SnapshotPlayerInfo> snapshotPlayerInfos = new Dictionary<int, SnapshotPlayerInfo>();
             int snapshotPlayersAmount = ReadInt(updateReadPosition);
             for (int snapshotPlayerIndex = 0; snapshotPlayerIndex < snapshotPlayersAmount; snapshotPlayerIndex++)
@@ -341,10 +351,18 @@ namespace AmongUsClone.Shared.Networking
                 int playerId = ReadInt(updateReadPosition);
                 Vector2 playerPosition = ReadVector2(updateReadPosition);
                 PlayerInput playerInput = ReadPlayerInput(updateReadPosition);
+                PlayerColor playerColor = (PlayerColor)ReadInt(updateReadPosition);
+                bool isPlayerImpostor = ReadBool(updateReadPosition);
 
-                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput);
+                snapshotPlayerInfos[playerId] = new SnapshotPlayerInfo(playerId, playerPosition, playerInput, playerColor, isPlayerImpostor);
             }
 
+            // Read lobby game starting info
+            bool gameStarts = ReadBool(updateReadPosition);
+            bool gameStarted = ReadBool(updateReadPosition);
+            int impostorsAmount = ReadInt(updateReadPosition);
+
+            // Read admin panel info
             Dictionary<int, int> adminPanelInfo = new Dictionary<int, int>();
             int adminPanelInfoLength = ReadInt(updateReadPosition);
             for (int adminPanelInfoPiece = 0; adminPanelInfoPiece < adminPanelInfoLength; adminPanelInfoPiece++)
@@ -355,7 +373,10 @@ namespace AmongUsClone.Shared.Networking
                 adminPanelInfo[roomId] = playersAmount;
             }
 
-            return new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos, adminPanelInfo);
+            // Read security cameras
+            bool securityCamerasEnabled = ReadBool(updateReadPosition);
+
+            return new ClientGameSnapshot(snapshotId, lastProcessedInputId, snapshotPlayerInfos, gameStarts, gameStarted, impostorsAmount, adminPanelInfo, securityCamerasEnabled);
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace AmongUsClone.Server.Snapshots
             int remoteControllableLastProcessedInputId = client.serverPlayer.remoteControllable.lastProcessedInputId;
             Dictionary<int, int> adminPanelInformation = IsAdminPanelInformationNeeded(client.playerId) ? playGamePhase.serverSkeld.adminPanel.GeneratePlayersData(client.playerId) : new Dictionary<int, int>();
 
-            return new ClientGameSnapshot(gameSnapshot.id, remoteControllableLastProcessedInputId, visiblePlayersInfo, adminPanelInformation);
+            return new ClientGameSnapshot(gameSnapshot, remoteControllableLastProcessedInputId, visiblePlayersInfo, adminPanelInformation);
         }
 
         private bool IsAdminPanelInformationNeeded(int playerId)

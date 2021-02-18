@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AmongUsClone.Server.Game.GamePhaseManagers;
 using AmongUsClone.Server.Logging;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
@@ -17,6 +18,8 @@ namespace AmongUsClone.Server.Snapshots
         [SerializeField] private Game.PlayersManager playersManager;
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private MetaMonoBehaviours metaMonoBehaviours;
+        [SerializeField] private PlayGamePhase playGamePhase;
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
 
         private static readonly Dictionary<int, GameSnapshot> gameSnapshots = new Dictionary<int, GameSnapshot>();
 
@@ -54,7 +57,24 @@ namespace AmongUsClone.Server.Snapshots
             int snapshotId = gameSnapshots.Count != 0 ? gameSnapshots.Keys.Max() + 1 : 0;
             Dictionary<int, SnapshotPlayerInfo> players = CaptureSnapshotPlayers();
 
-            return new GameSnapshot(snapshotId, players);
+            bool gameStarted = false;
+            bool gameStarts = false;
+            bool securityCamerasEnabled = false;
+            int impostorsAmount = 0;
+
+            if (lobbyGamePhase.lobby != null)
+            {
+                gameStarts = lobbyGamePhase.GameStarts;
+            }
+
+            if (playGamePhase.serverSkeld != null)
+            {
+                gameStarted = true;
+                impostorsAmount = playersManager.GetImpostorPlayerIds().Count;
+                securityCamerasEnabled = playGamePhase.serverSkeld.securityPanel.securityCamerasEnabled;
+            }
+
+            return new GameSnapshot(snapshotId, players, gameStarts, gameStarted, impostorsAmount, securityCamerasEnabled);
         }
 
         private Dictionary<int, SnapshotPlayerInfo> CaptureSnapshotPlayers()
@@ -76,7 +96,9 @@ namespace AmongUsClone.Server.Snapshots
                 snapshotPlayers[client.basePlayer.information.id] = new SnapshotPlayerInfo(
                     client.basePlayer.information.id,
                     client.basePlayer.transform.position,
-                    client.basePlayer.controllable.playerInput
+                    client.basePlayer.controllable.playerInput,
+                    client.basePlayer.colorable.color,
+                    client.basePlayer.impostorable.isImpostor
                 );
             }
 

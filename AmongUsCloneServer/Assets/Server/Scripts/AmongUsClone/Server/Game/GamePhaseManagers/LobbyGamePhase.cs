@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Linq;
-using AmongUsClone.Server.Game.Interactions;
-using AmongUsClone.Server.Game.Maps.Surveillance;
 using AmongUsClone.Server.Game.PlayerLogic;
 using AmongUsClone.Server.Networking;
 using AmongUsClone.Server.Networking.PacketManagers;
 using AmongUsClone.Shared.Game;
-using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Logging;
 using AmongUsClone.Shared.Meta;
 using AmongUsClone.Shared.Scenes;
@@ -25,17 +22,17 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PacketsSender packetsSender;
         [SerializeField] private GameObject playerPrefab;
-        [SerializeField] private Lobby lobby;
+        [SerializeField] public Lobby lobby;
 
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
 
-        private bool gameStartRequested;
+        public bool GameStarts { get; private set; }
 
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby>();
 
-            gameStartRequested = false;
+            GameStarts = false;
         }
 
         public void ConnectPlayer(int playerId, string playerName)
@@ -79,14 +76,13 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
                 return;
             }
 
-            if (gameStartRequested)
+            if (GameStarts)
             {
                 Logger.LogError(SharedLoggerSection.GameStart, "Attempt to start a game which is already starting");
                 return;
             }
 
-            gameStartRequested = true;
-            packetsSender.SendGameStartsPacket();
+            GameStarts = true;
             metaMonoBehaviours.coroutines.StartCoroutine(StartGame());
 
             Logger.LogEvent(SharedLoggerSection.GameStart, "Game starts");
@@ -101,8 +97,6 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             {
                 playersManager.clients[impostorPlayerId].basePlayer.impostorable.isImpostor = true;
             }
-
-            packetsSender.SendGameStartedPacket(impostorPlayerIds);
 
             scenesManager.LoadScene(Scene.Skeld);
 

@@ -2,7 +2,7 @@
 
 namespace AmongUsClone.Shared.Networking.PacketTypes
 {
-    // Todo: consider migrating a lot of packet types to GameSnapshot
+    // Todo: migrate player connected, player disconnected into GameSnapshot packet
     public enum ServerPacketType
     {
         Welcome,
@@ -10,10 +10,5 @@ namespace AmongUsClone.Shared.Networking.PacketTypes
         PlayerConnected,
         PlayerDisconnected,
         GameSnapshot,
-        ColorChanged,
-        GameStarts,
-        GameStarted,
-        SecurityCamerasEnabled,
-        SecurityCamerasDisabled,
     }
 }

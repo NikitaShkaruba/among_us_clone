@@ -27,6 +27,9 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public const int MinRequiredPlayersAmountForGame = GameConfiguration.MinRequiredPlayersAmountForGame;
         public const int SecondsForGameLaunch = GameConfiguration.SecondsForGameLaunch;
 
+        public bool IsGameStarting => lobby.gameStartable.gameStarts;
+        public bool IsGameStarted => lobby.gameStartable.gameStarted;
+
         public void Initialize()
         {
             lobby = FindObjectOfType<Lobby.Lobby>();
@@ -50,12 +53,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             {
                 InitializeControlledPlayer(playersManager.players[playerId].GetComponent<ClientControllablePlayer>());
             }
-        }
-
-        public void ChangePlayerColor(int playerId, PlayerColor playerColor)
-        {
-            playersManager.players[playerId].basePlayer.colorable.ChangeColor(playerColor);
-            Logger.LogEvent(SharedLoggerSection.PlayerColors, $"Changed player {playerId} color to {Shared.Helpers.GetEnumName(playerColor)}");
         }
 
         public void RequestGameStart()
@@ -85,6 +82,7 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
                 }
             }
 
+            lobby.gameStartable.gameStarted = true;
             scenesManager.LoadScene(Scene.RoleReveal);
         }
 

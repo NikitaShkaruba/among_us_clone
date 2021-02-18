@@ -24,6 +24,21 @@ namespace AmongUsClone.Server.Game
 
         public readonly Dictionary<int, Client> clients = new Dictionary<int, Client>();
 
+        public List<int> GetImpostorPlayerIds()
+        {
+            List<int> impostorPlayerIds = new List<int>();
+
+            foreach (Client client in clients.Values)
+            {
+                if (client.basePlayer.impostorable.isImpostor)
+                {
+                    impostorPlayerIds.Add(client.playerId);
+                }
+            }
+
+            return impostorPlayerIds;
+        }
+
         public void DisconnectPlayer(int playerId)
         {
             if (!clients.ContainsKey(playerId))

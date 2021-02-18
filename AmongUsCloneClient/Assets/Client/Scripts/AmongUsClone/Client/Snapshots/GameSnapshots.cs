@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using AmongUsClone.Client.Game;
 using AmongUsClone.Client.Game.GamePhaseManagers;
+using AmongUsClone.Client.Game.Maps.Surveillance;
 using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Shared.Scenes;
@@ -18,6 +20,7 @@ namespace AmongUsClone.Client.Snapshots
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayersManager playersManager;
         [SerializeField] private PlayGamePhase playGamePhase;
+        [SerializeField] private LobbyGamePhase lobbyGamePhase;
 
         public void ProcessSnapshot(ClientGameSnapshot gameSnapshot)
         {
@@ -26,64 +29,139 @@ namespace AmongUsClone.Client.Snapshots
                 return;
             }
 
-            UpdatePlayers(gameSnapshot);
+            ProcessPlayersData(gameSnapshot);
+            ProcessLobbyGamePhaseData(gameSnapshot);
+            ProcessPlayGamePhaseData(gameSnapshot);
+
+            Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
+        }
+
+        private void ProcessLobbyGamePhaseData(ClientGameSnapshot gameSnapshot)
+        {
+            if (lobbyGamePhase.lobby == null)
+            {
+                return;
+            }
+
+            if (gameSnapshot.gameStarts && !lobbyGamePhase.IsGameStarting)
+            {
+                lobbyGamePhase.InitiateGameStart();
+            }
+
+            if (gameSnapshot.gameStarted && !lobbyGamePhase.IsGameStarted)
+            {
+                List<int> impostorPlayerIds = new List<int>();
+
+                bool isPlayingAsImpostor = gameSnapshot.playersInfo[playersManager.controlledClientPlayer.basePlayer.information.id].isImpostor;
+                if (isPlayingAsImpostor)
+                {
+                    foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
+                    {
+                        if (snapshotPlayerInfo.isImpostor)
+                        {
+                            impostorPlayerIds.Add(snapshotPlayerInfo.id);
+                        }
+                    }
+                }
+
+                lobbyGamePhase.StartGame(isPlayingAsImpostor, gameSnapshot.impostorsAmount, impostorPlayerIds.ToArray());
+            }
+        }
+
+        private void ProcessPlayGamePhaseData(ClientGameSnapshot gameSnapshot)
+        {
+            if (playGamePhase.clientSkeld == null)
+            {
+                return;
+            }
 
             if (gameSnapshot.adminPanelPositions.Count != 0)
             {
                 playGamePhase.UpdateAdminPanelMinimap(gameSnapshot.adminPanelPositions);
             }
 
-            Logger.LogEvent(LoggerSection.GameSnapshots, $"Updated game state with snapshot {gameSnapshot}");
+            SecurityPanel securityPanel = playGamePhase.clientSkeld.securityPanel;
+            if (gameSnapshot.securityCamerasEnabled && !securityPanel.CamerasEnabled)
+            {
+                securityPanel.EnableSecurityCameras();
+            }
+            else if (!gameSnapshot.securityCamerasEnabled && securityPanel.CamerasEnabled)
+            {
+                securityPanel.DisableSecurityCameras();
+            }
         }
 
-        private void UpdatePlayers(ClientGameSnapshot gameSnapshot)
+        private void ProcessPlayersData(ClientGameSnapshot gameSnapshot)
         {
             foreach (ClientPlayer player in playersManager.players.Values)
             {
                 if (player == playersManager.controlledClientPlayer.clientPlayer)
                 {
-                    UpdateControlledPlayer(gameSnapshot, playersManager.controlledClientPlayer);
+                    UpdateControlledPlayerWithServerState(gameSnapshot);
                 }
                 else if (gameSnapshot.playersInfo.ContainsKey(player.basePlayer.information.id))
                 {
-                    if (!player.gameObject.activeSelf)
-                    {
-                        // Todo: implement some kind of client anti-cheat (It is impossible to have a clear solution, check out my reddit question about it)
-                        // @link https://www.reddit.com/r/gamedev/comments/lcq93c/how_to_use_clientside_prediction_with_fog_of_war/
-                        player.gameObject.SetActive(true);
-                    }
-
-                    UpdateNotControlledPlayer(gameSnapshot.playersInfo[player.basePlayer.information.id]);
+                    UpdateNotControlledPlayerWithServerState(gameSnapshot.playersInfo[player.basePlayer.information.id]);
                 }
                 else
                 {
-                    if (player.gameObject.activeSelf)
-                    {
-                        player.gameObject.SetActive(false);
-                    }
+                    HideNotSeenPlayer(player);
                 }
             }
         }
 
-        private void UpdateNotControlledPlayer(SnapshotPlayerInfo snapshotPlayerInfo)
+        private bool ShouldProcessServerSnapshots()
         {
-            // If we don't have disconnected player anymore
-            if (!playersManager.players.ContainsKey(snapshotPlayerInfo.id))
+            string[] activeScenes =
             {
-                return;
-            }
+                Scene.Lobby,
+                Scene.Skeld
+            };
 
-            playersManager.UpdatePlayerWithServerState(snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input);
+            return activeScenes.Contains(scenesManager.GetActiveScene());
         }
 
-        private void UpdateControlledPlayer(ClientGameSnapshot gameSnapshot, ClientControllablePlayer controlledClientPlayer)
+        public void UpdateControlledPlayerWithServerState(ClientGameSnapshot gameSnapshot)
         {
+            ClientControllablePlayer controlledClientPlayer = playersManager.controlledClientPlayer;
             controlledClientPlayer.clientControllable.RemoveObsoleteSnapshotStates(gameSnapshot);
 
             if (IsReconciliationNeeded(controlledClientPlayer, gameSnapshot))
             {
                 Reconcile(controlledClientPlayer, gameSnapshot);
             }
+
+            UpdatePlayerWithServerState(gameSnapshot.playersInfo[controlledClientPlayer.basePlayer.information.id]);
+        }
+
+        public void UpdateNotControlledPlayerWithServerState(SnapshotPlayerInfo snapshotPlayerInfo)
+        {
+            if (!playersManager.players[snapshotPlayerInfo.id].gameObject.activeSelf)
+            {
+                // Todo: implement some kind of client anti-cheat (It is impossible to have a clear solution, check out my reddit question about it)
+                // @link https://www.reddit.com/r/gamedev/comments/lcq93c/how_to_use_clientside_prediction_with_fog_of_war/
+                playersManager.players[snapshotPlayerInfo.id].gameObject.SetActive(true);
+            }
+
+            // snapshotPlayerInfo.id, snapshotPlayerInfo.position, snapshotPlayerInfo.input, snapshotPlayerInfo.color, snapshotPlayerInfo.isImpostor
+            ClientPlayer clientPlayer = playersManager.players[snapshotPlayerInfo.id];
+
+            clientPlayer.basePlayer.controllable.playerInput = snapshotPlayerInfo.input;
+            clientPlayer.basePlayer.movable.Teleport(snapshotPlayerInfo.position);
+
+            UpdatePlayerWithServerState(snapshotPlayerInfo);
+        }
+
+        private void UpdatePlayerWithServerState(SnapshotPlayerInfo snapshotPlayerInfo)
+        {
+            ClientPlayer clientPlayer = playersManager.players[snapshotPlayerInfo.id];
+
+            if (clientPlayer.basePlayer.colorable.color != snapshotPlayerInfo.color)
+            {
+                clientPlayer.basePlayer.colorable.ChangeColor(snapshotPlayerInfo.color);
+            }
+
+            clientPlayer.basePlayer.impostorable.isImpostor = snapshotPlayerInfo.isImpostor;
         }
 
         private bool IsReconciliationNeeded(ClientControllablePlayer controlledClientPlayer, ClientGameSnapshot gameSnapshot)
@@ -129,15 +207,12 @@ namespace AmongUsClone.Client.Snapshots
             Logger.LogEvent(LoggerSection.ServerReconciliation, $"Reconciled position with the server position. SnapshotId: {gameSnapshot.id}. YourLastProcessedInputId: {gameSnapshot.yourLastProcessedInputId}. Server position: {correctServerPosition}. Client position: {incorrectClientPosition}.");
         }
 
-        private bool ShouldProcessServerSnapshots()
+        public void HideNotSeenPlayer(ClientPlayer player)
         {
-            string[] activeScenes =
+            if (player.gameObject.activeSelf)
             {
-                Scene.Lobby,
-                Scene.Skeld
-            };
-
-            return activeScenes.Contains(scenesManager.GetActiveScene());
+                player.gameObject.SetActive(false);
+            }
         }
     }
 }

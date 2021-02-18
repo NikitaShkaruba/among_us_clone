@@ -14,6 +14,7 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
         [Header("Scriptable objects")]
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
         [SerializeField] private PlayGamePhase playGamePhase;
+        [SerializeField] private PlayersManager playersManager;
 
         [Header("General")]
         [SerializeField] private Interactor interactor;
@@ -58,7 +59,8 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
                 return;
             }
 
-            interactor.chosen.Interact();
+            // Todo: consider adding \ removing relationship between ClientControllable and Interactor
+            playersManager.controlledClientPlayer.clientControllable.OnInteract();
         }
 
         public void UpdateCallbacks()

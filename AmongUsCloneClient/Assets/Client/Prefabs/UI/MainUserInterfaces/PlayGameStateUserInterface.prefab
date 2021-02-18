@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playGamePhase: {fileID: 11400000, guid: a4440e641faf0c14fbfbaa8c50831f37, type: 2}
+  playersManager: {fileID: 11400000, guid: 1a97b226bf5ca6a43943ad933eddb6e6, type: 2}
   inputReader: {fileID: 11400000, guid: 0e96d8744f837ef4cb76b37b299dcbe9, type: 2}
   minimap: {fileID: 0}
   settingsButton: {fileID: 3545972337845988098}
@@ -160,7 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4889c926b7e9d1b468a5251710fd2a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playGamePhase: {fileID: 0}
   activeSceneUserInterface: {fileID: 5503967509438965416}
   minimapButton: {fileID: 2473172156795023681}
 --- !u!1001 &7789345960800406309

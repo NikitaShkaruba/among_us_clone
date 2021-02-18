@@ -12,10 +12,26 @@ namespace AmongUsClone.Shared.Snapshots
         public readonly int id;
         public readonly Dictionary<int, SnapshotPlayerInfo> playersInfo;
 
-        public GameSnapshot(int id, Dictionary<int, SnapshotPlayerInfo> snapshotPlayersInfo)
+        public bool securityCamerasEnabled;
+
+        public bool gameStarts;
+        public bool gameStarted;
+
+        public int impostorsAmount;
+
+        public GameSnapshot(int id, Dictionary<int, SnapshotPlayerInfo> playersInfo, bool gameStarts, bool gameStarted, int impostorsAmount, bool securityCamerasEnabled)
         {
+            // Shared
             this.id = id;
-            playersInfo = snapshotPlayersInfo;
+            this.playersInfo = playersInfo;
+
+            // Lobby game phase
+            this.gameStarts = gameStarts;
+            this.gameStarted = gameStarted;
+
+            // Play game phase
+            this.impostorsAmount = impostorsAmount;
+            this.securityCamerasEnabled = securityCamerasEnabled;
         }
 
         public override string ToString()

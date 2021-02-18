@@ -44,5 +44,10 @@ namespace AmongUsClone.Shared.Game.Interactions
         {
             return lockedPlayerIds.Contains(playerId);
         }
+
+        public bool IsSomeoneLocked()
+        {
+            return lockedPlayerIds.Count != 0;
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using AmongUsClone.Client.Game.GamePhaseManagers;
+using AmongUsClone.Client.Game.PlayerLogic;
 using AmongUsClone.Client.Logging;
 using AmongUsClone.Shared.Game.PlayerLogic;
 using AmongUsClone.Shared.Scenes;
@@ -16,7 +17,7 @@ namespace AmongUsClone.Client.Game.Interactions
         [SerializeField] private ScenesManager scenesManager;
         [SerializeField] private PlayGamePhase playGamePhase;
         [SerializeField] private LobbyGamePhase lobbyGamePhase;
-        [SerializeField] private InputReader inputReader;
+        [SerializeField] private ClientControllablePlayer clientControllablePlayer;
 
         private bool interactButtonPressed;
 
@@ -27,25 +28,28 @@ namespace AmongUsClone.Client.Game.Interactions
         private void OnEnable()
         {
             scenesManager.onSceneUpdate += CacheChosables;
-            inputReader.onInteract += Interact;
         }
 
         private void OnDisable()
         {
             scenesManager.onSceneUpdate -= CacheChosables;
-            inputReader.onInteract -= Interact;
         }
 
-        private new void Update()
+        private new void FixedUpdate()
         {
             chosenInteractableLastFrame = chosen;
-            base.Update();
+            base.FixedUpdate();
 
             BroadcastToInteractablesTheirStates();
             CallInteractableChangedIfNeeded();
+
+            if (clientControllablePlayer.clientControllable.Interact)
+            {
+                Interact();
+            }
         }
 
-        private void Interact()
+        public void Interact()
         {
             if (chosen == null)
             {
