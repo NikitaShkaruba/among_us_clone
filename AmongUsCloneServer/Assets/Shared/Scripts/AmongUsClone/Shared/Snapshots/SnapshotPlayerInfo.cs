@@ -28,5 +28,9 @@ namespace AmongUsClone.Shared.Snapshots
             this.color = color;
             this.isImpostor = isImpostor;
         }
+
+        public SnapshotPlayerInfo(SnapshotPlayerInfo prototypeSnapshotPlayerInfo) : this(prototypeSnapshotPlayerInfo.id, prototypeSnapshotPlayerInfo.name, prototypeSnapshotPlayerInfo.isLobbyHost, prototypeSnapshotPlayerInfo.input, prototypeSnapshotPlayerInfo.position, prototypeSnapshotPlayerInfo.unseen, prototypeSnapshotPlayerInfo.color, prototypeSnapshotPlayerInfo.isImpostor)
+        {
+        }
     }
 }

@@ -19,11 +19,12 @@ namespace AmongUsClone.Server.Snapshots
 
         public ClientGameSnapshot CreateClientGameSnapshot(Client client, GameSnapshot gameSnapshot)
         {
-            gameSnapshot.playersInfo = AddUnseenInformationToGameSnapshot(gameSnapshot, client.playerId);
+            GameSnapshot gameSnapshotCopy = new GameSnapshot(gameSnapshot);
+            gameSnapshotCopy.playersInfo = AddUnseenInformationToGameSnapshot(gameSnapshotCopy, client.playerId);
             int remoteControllableLastProcessedInputId = client.serverPlayer.remoteControllable.lastProcessedInputId;
             Dictionary<int, int> adminPanelInformation = IsAdminPanelInformationNeeded(client.playerId) ? playGamePhase.serverSkeld.adminPanel.GeneratePlayersData(client.playerId) : new Dictionary<int, int>();
 
-            return new ClientGameSnapshot(gameSnapshot, remoteControllableLastProcessedInputId, adminPanelInformation);
+            return new ClientGameSnapshot(gameSnapshotCopy, remoteControllableLastProcessedInputId, adminPanelInformation);
         }
 
         private bool IsAdminPanelInformationNeeded(int playerId)
@@ -46,7 +47,6 @@ namespace AmongUsClone.Server.Snapshots
 
             foreach (SnapshotPlayerInfo snapshotPlayerInfo in gameSnapshot.playersInfo.Values)
             {
-                // Todo: remove strange hiding on other players when they go to the right of the cafeteria
                 bool isSelfInformation = snapshotPlayerInfo.id == currentPlayerId;
                 bool isTooFarAway = (gameSnapshot.playersInfo[currentPlayerId].position - snapshotPlayerInfo.position).magnitude > 8;
                 SecurityPanel securityPanel = playGamePhase.serverSkeld.securityPanel;

@@ -27,7 +27,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
 
         public void Initialize()
         {
-            // Todo: fix a bug when player duplicates on some occasions when reconnecting
             onSceneLoadedActions = new List<Action>();
             sceneLoadRequested = false;
 

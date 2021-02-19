@@ -34,6 +34,15 @@ namespace AmongUsClone.Shared.Snapshots
             this.securityCamerasEnabled = securityCamerasEnabled;
         }
 
+        public GameSnapshot(GameSnapshot prototypeGameSnapshot) : this(prototypeGameSnapshot.id, null, prototypeGameSnapshot.gameStarts, prototypeGameSnapshot.gameStarted, prototypeGameSnapshot.impostorsAmount, prototypeGameSnapshot.securityCamerasEnabled)
+        {
+            playersInfo = new Dictionary<int, SnapshotPlayerInfo>();
+            foreach (KeyValuePair<int,SnapshotPlayerInfo> snapshotPlayerInfoPair in prototypeGameSnapshot.playersInfo)
+            {
+                playersInfo[snapshotPlayerInfoPair.Key] = new SnapshotPlayerInfo(snapshotPlayerInfoPair.Value);
+            }
+        }
+
         public override string ToString()
         {
             List<string> playersInfoDescriptionPieces = new List<string>(playersInfo.Count);
