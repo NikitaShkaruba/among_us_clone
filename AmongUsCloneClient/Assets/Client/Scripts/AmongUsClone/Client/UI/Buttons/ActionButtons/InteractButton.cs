@@ -73,13 +73,13 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
             isDisabled = false;
             isHidden = false;
 
-            if (lobbyGamePhase.lobby != null)
+            if (lobbyGamePhase.IsActive())
             {
                 isDisabled = lobbyGamePhase.lobby.activeSceneUserInterface.settingsButton.SettingsMenuActive;
                 isHidden = false;
             }
 
-            if (playGamePhase.clientSkeld != null)
+            if (playGamePhase.IsActive())
             {
                 ClientSkeld clientSkeld = playGamePhase.clientSkeld;
 
@@ -141,13 +141,13 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
                 interactor.newInteractableChosen += UpdateState;
             }
 
-            if (lobbyGamePhase.lobby != null)
+            if (lobbyGamePhase.IsActive())
             {
                 ActiveSceneUserInterface lobbyUserInterface = lobbyGamePhase.lobby.activeSceneUserInterface;
                 lobbyUserInterface.settingsButton.onToggle += UpdateState;
             }
 
-            if (playGamePhase.clientSkeld != null)
+            if (playGamePhase.IsActive())
             {
                 PlayGamePhaseUserInterface skeldUserInterface = playGamePhase.clientSkeld.playGamePhaseUserInterface;
                 skeldUserInterface.minimapButton.onToggle += UpdateState;
@@ -166,13 +166,13 @@ namespace AmongUsClone.Client.UI.Buttons.ActionButtons
                 interactor.newInteractableChosen -= UpdateState;
             }
 
-            if (lobbyGamePhase.lobby != null)
+            if (lobbyGamePhase.IsActive())
             {
                 ActiveSceneUserInterface lobbyUserInterface = lobbyGamePhase.lobby.activeSceneUserInterface;
                 lobbyUserInterface.settingsButton.onToggle -= UpdateState;
             }
 
-            if (playGamePhase.clientSkeld != null)
+            if (playGamePhase.IsActive())
             {
                 PlayGamePhaseUserInterface skeldUserInterface = playGamePhase.clientSkeld.playGamePhaseUserInterface;
                 skeldUserInterface.minimapButton.onToggle -= UpdateState;

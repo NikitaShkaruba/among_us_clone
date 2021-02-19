@@ -36,6 +36,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             lobby.activeSceneUserInterface.interactButton.UpdateCallbacks();
         }
 
+        public bool IsActive()
+        {
+            return lobby != null;
+        }
+
         public void AddPlayerToLobby(int playerId, string playerName, PlayerColor playerColor, Vector2 playerPosition, bool isPlayerHost)
         {
             bool isControlledPlayerConnecting = playerId == connectionToServer.myPlayerId;

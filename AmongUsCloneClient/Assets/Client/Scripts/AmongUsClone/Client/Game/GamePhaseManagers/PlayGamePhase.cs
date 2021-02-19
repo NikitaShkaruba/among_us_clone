@@ -26,6 +26,11 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
             scenesManager.UnloadScene(Scene.RoleReveal);
         }
 
+        public bool IsActive()
+        {
+            return clientSkeld != null;
+        }
+
         private void InitializePlayers()
         {
             foreach (ClientPlayer player in playersManager.players.Values)
@@ -56,16 +61,6 @@ namespace AmongUsClone.Client.Game.GamePhaseManagers
         public void UpdateAdminPanelMinimap(Dictionary<int, int> gameSnapshotAdminPanelPositions)
         {
             clientSkeld.adminPanel.UpdateMinimap(gameSnapshotAdminPanelPositions);
-        }
-
-        public void EnableSecurityCameras()
-        {
-            clientSkeld.securityPanel.EnableSecurityCameras();
-        }
-
-        public void DisableSecurityCameras()
-        {
-            clientSkeld.securityPanel.DisableSecurityCameras();
         }
     }
 }

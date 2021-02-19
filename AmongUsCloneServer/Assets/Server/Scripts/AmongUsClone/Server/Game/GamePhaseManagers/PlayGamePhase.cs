@@ -53,5 +53,10 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
                 client.basePlayer.movable.isDisabled = false;
             }
         }
+
+        public bool IsActive()
+        {
+            return serverSkeld != null;
+        }
     }
 }

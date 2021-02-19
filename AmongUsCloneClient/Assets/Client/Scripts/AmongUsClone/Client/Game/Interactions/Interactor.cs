@@ -68,14 +68,14 @@ namespace AmongUsClone.Client.Game.Interactions
 
         private bool IsInteractionDisabled()
         {
-            if (playGamePhase.clientSkeld != null)
+            if (playGamePhase.IsActive())
             {
                 bool settingsMenuActive = playGamePhase.clientSkeld.playGamePhaseUserInterface.activeSceneUserInterface.settingsButton.SettingsMenuActive;
 
                 return settingsMenuActive;
             }
 
-            if (lobbyGamePhase.lobby != null)
+            if (lobbyGamePhase.IsActive())
             {
                 return lobbyGamePhase.lobby.activeSceneUserInterface.settingsButton.SettingsMenuActive;
             }

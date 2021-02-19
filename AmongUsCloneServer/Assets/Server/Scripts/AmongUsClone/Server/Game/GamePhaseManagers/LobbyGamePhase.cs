@@ -33,6 +33,11 @@ namespace AmongUsClone.Server.Game.GamePhaseManagers
             GameStarts = false;
         }
 
+        public bool IsActive()
+        {
+            return lobby != null;
+        }
+
         public void ConnectPlayer(int playerId, string playerName)
         {
             Vector2 playerPosition = lobby.playerSpawnPrototypes[playerId].transform.position;

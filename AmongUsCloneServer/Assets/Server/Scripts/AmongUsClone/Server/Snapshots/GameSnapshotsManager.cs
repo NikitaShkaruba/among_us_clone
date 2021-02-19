@@ -63,12 +63,12 @@ namespace AmongUsClone.Server.Snapshots
             bool securityCamerasEnabled = false;
             int impostorsAmount = 0;
 
-            if (lobbyGamePhase.lobby != null)
+            if (lobbyGamePhase.IsActive())
             {
                 gameStarts = lobbyGamePhase.GameStarts;
             }
 
-            if (playGamePhase.serverSkeld != null)
+            if (playGamePhase.IsActive())
             {
                 gameStarted = true;
                 impostorsAmount = playersManager.GetImpostorPlayerIds().Count;
