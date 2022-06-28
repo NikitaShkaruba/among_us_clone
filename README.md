@@ -1,4 +1,4 @@
-# among_us_clone
+# Among Us Clone
 A proper scalable version of Among Us game - which is infamous for it's badly written code and a lot of hackers
 
 There's a [video](https://www.youtube.com/watch?v=wi3cgAh4ugI) about the development process
